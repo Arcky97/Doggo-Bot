@@ -55,6 +55,38 @@ const commands = [
         required: true
       }
     ]
+  },
+  {
+    name: 'embed',
+    description: 'Sends an Embed!'
+  },
+  {
+    name: 'buttonroles',
+    description: 'Set up a message with roles that are being given by a button.',
+    options: [
+      {
+        name: 'channel',
+        description: "The message's Channel",
+        type: ApplicationCommandOptionType.Channel,
+        required: true
+      },
+      {
+        name: 'role-1',
+        description: 'The first role.',
+        type: ApplicationCommandOptionType.Role,
+        required: true
+      },
+      {
+        name: 'role-2',
+        description: 'The second role',
+        type: ApplicationCommandOptionType.Role,
+      },
+      {
+        name: 'role-3',
+        description: 'The third role',
+        type: ApplicationCommandOptionType.Role
+      }
+    ]
   }
 ];
 
