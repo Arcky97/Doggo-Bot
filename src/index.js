@@ -26,6 +26,14 @@ client.on('ready', (c) => {
   
 });
 
+client.on('interactionCreate', (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'hey') {
+    interaction.reply('Hey!');
+  }
+})
+
 client.on('messageCreate', (ctx) => {
   if (ctx.channel.id === '934542823724818452') {
     let message = ctx.content.toLowerCase()
