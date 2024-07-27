@@ -1,3 +1,4 @@
+<h2>25/07/2024</h2>
 - Added slash command: "hey"<br>
   replies with "Hey!"
 - Added slash command: "ping"<br>
@@ -5,3 +6,19 @@
 - Added slash command: "add"<br>
   asks 2 numbers and returns the sum<br>
   replies with "num1 + num2 = sum"
+
+<h2>27/07/2024</h2>
+- Removed slash command: "hey"<br>
+- Removed slash command: "add" <br>
+
+- Added slash command: "bark" <br>
+  replies with "Woof!"
+- Added slash command: "pat" <br>
+  replies with "Thank you for the pat"
+- Added slash command: "say" <br>
+  repeats your message input.
+- Added slash command: "slap" <br>
+  asks a target and object and slaps your target with the object.
+- Added a slash command: "ban" <br>
+  asks a target to ban <br>
+  bans the chosen target from the server.
