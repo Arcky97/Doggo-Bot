@@ -1,0 +1,8 @@
+CREATE DATABASE DoggoBotDB;
+
+CREATE TABLE Guilds (
+  guildId VARCHAR(100) NOT NULL PRIMARY KEY,
+  guildOwnerId VARCHAR(100) NOT NULL,
+  createdAt DATE NOT NULL,
+  guildName VARCHAR(100) NOT NULL
+);

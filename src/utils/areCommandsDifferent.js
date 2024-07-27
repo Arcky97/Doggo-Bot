@@ -50,6 +50,5 @@ module.exports = (existingCommand, localCommand) => {
   ) {
     return true;
   }
-
   return false;
 };

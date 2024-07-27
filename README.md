@@ -1,4 +1,5 @@
 <h2>25/07/2024</h2>
+
 - Added slash command: "hey"<br>
   replies with "Hey!"
 - Added slash command: "ping"<br>
@@ -8,6 +9,7 @@
   replies with "num1 + num2 = sum"
 
 <h2>27/07/2024</h2>
+
 - Removed slash command: "hey"<br>
 - Removed slash command: "add" <br>
 
