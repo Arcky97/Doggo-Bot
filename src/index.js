@@ -12,6 +12,14 @@ const client = new Client({
   ]
 });
 
-eventHandler(client);
+async function startBot() {
+  try {
+    eventHandler(client);
+    await database.initDatabase();
+    await client.login(process.env.CLIENT_TOKEN);
+  } catch (error) {
+    console.error('Error starting the bot:', error);
+  }
+}
 
-client.login(process.env.CLIENT_TOKEN);
+startBot();

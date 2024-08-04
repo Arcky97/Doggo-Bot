@@ -21,5 +21,4 @@ module.exports = {
   callback: (client, interaction) => {
     interaction.channel.send('ban...');
   }
-
 }
