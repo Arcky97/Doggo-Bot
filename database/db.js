@@ -3,14 +3,25 @@ const mysql = require('mysql2/promise');
 
 let db; // Declare a variable to hold the database connection
 
-const columnMapping = {
-  'botchat': 'chattingChannel',
-  'message-logging': 'messageLogging',
-  'member-logging': 'memberLogging',
-  'server-logging': 'serverLogging',
-  'voice-logging': 'voiceLogging',
-  'joinleave-logging': 'joinLeaveLogging'
-};
+const getSetting = ((setting) => {
+  const columnMapping = {
+    'botchat': 'chattingChannel',
+    'message-logging': 'messageLogging',
+    'member-logging': 'memberLogging',
+    'server-logging': 'serverLogging',
+    'voice-logging': 'voiceLogging',
+    'joinleave-logging': 'joinLeaveLogging'
+  };
+
+  const column = columnMapping[setting];
+
+  if (!column) {
+    console.error('Invalid setting name:', setting);
+    return null;
+  } else {
+    return column;
+  }
+})  
 
 async function initDatabase() {
   try {
@@ -62,4 +73,4 @@ async function query(sql, params) {
 }
 
 // Export the functions and connection
-module.exports = { initDatabase, query, columnMapping }; // Make sure to export both
+module.exports = { initDatabase, query, getSetting }; // Make sure to export both

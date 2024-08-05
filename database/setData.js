@@ -1,23 +1,17 @@
-const { query } = require('./db'); // Import the query function
+const { query, getSetting } = require('./db'); // Import the query function
 const { insertChannel } = require('./insertData.js');
 const { updateChannel } = require('./updateData');
 
 async function setChannel(guildId, settingName, channelId) {
   // First, check if the channel setting already exists
 
-  const columnMapping = {
-    'botchat': 'chattingChannel',
-    'message-logging': 'messageLogging',
-    'member-logging': 'memberLogging',
-    'server-logging': 'serverLogging',
-    'voice-logging': 'voiceLogging',
-    'joinleave-logging': 'joinLeaveLogging'
-  };
-
-  const column = columnMapping[settingName];
+  const column = getSetting(settingName);
+  if(!column) return;
 
   const checkQuery = `
-    SELECT ${column} FROM GuildSettings WHERE guildId = ?;
+    SELECT ${column} 
+    FROM GuildSettings 
+    WHERE guildId = ?;
   `;
 
   try {

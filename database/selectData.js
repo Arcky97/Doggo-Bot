@@ -1,23 +1,15 @@
-const { query } = require('./db'); // Import the query function
+const { query, getSetting } = require('./db'); // Import the query function
 
 async function getChannel(guildId, settingName) {
-  const columnMapping = {
-    'botchat': 'chattingChannel',
-    'message-logging': 'messageLogging',
-    'member-logging': 'memberLogging',
-    'server-logging': 'serverLogging',
-    'voice-logging': 'voiceLogging',
-    'joinleave-logging': 'joinLeaveLogging'
-  };
 
-  const column = columnMapping[settingName];
+  const column = getSetting(settingName);
+  if(!column) return;
 
-  if (!column) {
-    console.error('Invalid setting name:', settingName);
-    return null; // Return null for invalid setting names
-  }
-
-  const selectQuery = `SELECT ${column} FROM GuildSettings WHERE guildId = ?`;
+  const selectQuery = `
+    SELECT ${column} 
+    FROM GuildSettings 
+    WHERE guildId = ?
+  `;
 
   try {
     const [rows] = await query(selectQuery, [guildId]);
