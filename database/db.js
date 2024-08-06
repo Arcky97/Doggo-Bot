@@ -55,6 +55,15 @@ async function initDatabase() {
         PRIMARY KEY (guildId, memberId)
       );
     `;
+
+    const createTriggerResponseTable = `
+      CREATE TABLE IF NOT EXISTS TriggerResponses (
+        id VARCHAR(100) NOT NULL,
+        trigger VARCHAR(100) NOT NULL,
+        resonse VARCHAR(100) NOT NULL,
+        PRIMARY KEY (id)
+      );
+    `;
     
     await db.query(createGuildSettingsTable);
     await db.query(createMemberLevelsTable);
@@ -73,4 +82,4 @@ async function query(sql, params) {
 }
 
 // Export the functions and connection
-module.exports = { initDatabase, query, getSetting }; // Make sure to export both
+module.exports = { initDatabase, query, getSetting };

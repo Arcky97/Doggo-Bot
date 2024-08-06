@@ -3,8 +3,6 @@ const { insertChannel } = require('./insertData.js');
 const { updateChannel } = require('./updateData');
 
 async function setChannel(guildId, settingName, channelId) {
-  // First, check if the channel setting already exists
-
   const column = getSetting(settingName);
   if(!column) return;
 
