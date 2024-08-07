@@ -2,6 +2,8 @@ const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.j
 const { setChannel } = require('../../../database/setData.js');
 const { getChannel } = require('../../../database/selectData.js');
 const { deleteChannel } = require('../../../database/deleteData.js');
+const { setGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js');
+
 
 module.exports = {
   name: 'setup-chat',
@@ -19,7 +21,8 @@ module.exports = {
     const subcommand = 'botchat';
     const channel = interaction.options.get('channel').value;
     const guildID = interaction.guild.id;
-    console.log(getChannel(guildID, subcommand))
+    const response = setGuildSettings(guildID, subcommand, channel)
+    await interaction.reply(response);
     try {
       if (await getChannel(guildID, subcommand) === channel) {
         await deleteChannel(guildID, subcommand, channel);

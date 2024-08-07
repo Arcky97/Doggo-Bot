@@ -1,4 +1,5 @@
-const { query, getSetting } = require('./db'); // Import the query function
+const { query } = require('./db'); // Import the query function
+const { getSetting } = require('./guildSettings/setGuildSettings.js');
 const { insertChannel } = require('./insertData.js');
 const { updateChannel } = require('./updateData');
 
