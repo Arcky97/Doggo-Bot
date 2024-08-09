@@ -7,11 +7,9 @@ module.exports = async (client, message) => {
   const chatChannelId = await selectData('GuildSettings', {guildId: message.guild.id });
   if (message.channel.id === chatChannelId["chattingChannel"]) {
     try {
-      console.log("You sent this message in the correct channel! Woof woof!");
+      
     } catch (error) {
       console.error('Error inserting guild data:', error);
     }
-  } else {
-    console.log("Message was not sent in the correct channel.");
   }
 };
