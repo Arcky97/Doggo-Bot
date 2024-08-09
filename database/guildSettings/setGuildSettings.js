@@ -25,30 +25,38 @@ async function setGuildSettings(guildId, settingName, channelId) {
   const column = getSetting(settingName);
   if (!column) return;
 
+  const key = {
+    guildId: guildId
+  }
+
   const data = {
-    guildId: guildId,
     [column]: channelId
   }
 
-  console.log(data)
-  const dataExist = await selectData('GuildSettings', data, ['guildId'])
+  console.log("Let's check if the data already exists in the database table.");
+  const dataExist = await selectData('GuildSettings', key)
   let action;
   if (dataExist) {
-    if (dataExist[settingName] === data[settingName]) {
+    console.log("The data exist so we either delete or update");
+    if (dataExist[column] === data[column]) {
+      console.log("The data is the same with what's already present, so we delete.")
       action = "delete";
     } else {
+      console.log("The data is not the same with what's already present, so we update.")
       action = "update";
     }
   } else {
+    console.log("The data doesn't exist so we insert.")
     action = "insert";
   }
-  await setData('GuildSettings', data, action);
+  console.log("we call setData and pass the table name, data and action.")
   try {
+    await setData('GuildSettings', key, data, action);
     switch(action) {
       case "insert":
-        return `The channel for ${settingName} has been set to <#${channelId} successfully!>`;
+        return `The channel for ${settingName} has been set to <#${channelId}> successfully!>`;
       case "update":
-        return `The channel for ${settingName} has been updated to <#${channelId} successfully!`;
+        return `The channel for ${settingName} has been updated to <#${channelId}> successfully!`;
       case "delete":
         return `The channel for ${settingName} has been resetted!`;
       }

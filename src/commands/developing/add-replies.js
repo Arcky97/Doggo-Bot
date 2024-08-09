@@ -1,4 +1,5 @@
 const { ApplicationCommandOptionType } = require('discord.js');
+const { setTriggerResponses } = require('../../../database/triggerResponses/setTriggerResponses');
 
 module.exports = {
   name: 'addreply',
@@ -21,6 +22,7 @@ module.exports = {
   callback: async (client, interaction) => {
     const trigger = interaction.options.getString('trigger');
     const response = interaction.options.getString('response');
+    await setTriggerResponses(trigger, response);
     await interaction.reply(`sending "${trigger}" will make me reply with "${response}".`);
   }
 };

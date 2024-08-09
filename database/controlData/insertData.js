@@ -1,7 +1,9 @@
 const { query } = require("../db");
 
-async function insertData(table, data, uniqueKeys) {
-  const columns = Object.keys(data);
+async function insertData(table, key, data) {
+  const combinedData = { ...key, ...data };
+
+  const columns = Object.keys(combinedData);
   const placeholders = columns.map(() => '?').join(', ');
   const insertQuery = `
     INSERT INTO ${table} (${columns.join(', ')})
@@ -9,12 +11,12 @@ async function insertData(table, data, uniqueKeys) {
   `;
 
   try {
-    await query(insertQuery, Object.values(data));
+    console.log("Since the data didn't exist yet, we insert it.")
+    await query(insertQuery, Object.values(combinedData));
     console.log('Data inserted successfully.');
   } catch (error) {
     console.error('Error inserting data:', error);
   }
-
 }
 
 module.exports = { insertData };

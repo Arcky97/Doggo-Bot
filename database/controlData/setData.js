@@ -2,16 +2,19 @@ const { deleteData } = require("./deleteData");
 const { insertData } = require("./insertData");
 const { updateData } = require("./updateData");
   
-async function setData(table, data, action) {
+async function setData(table, key, data, action) {
   switch(action) {
   case "insert":
-    insertData(table, data);
+    console.log("let's call the insertData function.");
+    await insertData(table, key, data);
     break;
   case "update":
-    updateData(table, data);
+    console.log("let's call the updateData function.");
+    await updateData(table, key, data);
     break;
   case "delete":
-    deleteData(table, data);
+    console.log("let's call the deleteData function.");
+    await deleteData(table, key, data);
     break;
   default:
     return `${action} is not a valid Action!`;

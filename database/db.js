@@ -39,14 +39,15 @@ async function initDatabase() {
     const createTriggerResponseTable = `
       CREATE TABLE IF NOT EXISTS TriggerResponses (
         id VARCHAR(100) NOT NULL,
-        trigger VARCHAR(100) NOT NULL,
-        resonse VARCHAR(100) NOT NULL,
+        \`trigger\` VARCHAR(100) NOT NULL,
+        response VARCHAR(100) NOT NULL,
         PRIMARY KEY (id)
       );
     `;
     
     await db.query(createGuildSettingsTable);
     await db.query(createMemberLevelsTable);
+    await db.query(createTriggerResponseTable);
     console.log('Tables created successfully!');
   } catch (err) {
     console.error('Error initializing the database:', err);
