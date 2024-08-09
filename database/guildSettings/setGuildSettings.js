@@ -37,7 +37,7 @@ async function setGuildSettings(guildId, settingName, channelId) {
   const dataExist = await selectData('GuildSettings', key)
   let action;
   if (dataExist) {
-    console.log("The data exist so we either delete or update");
+    console.log("The data exist so we either delete or update.");
     if (dataExist[column] === data[column]) {
       console.log("The data is the same with what's already present, so we delete.")
       action = "delete";
