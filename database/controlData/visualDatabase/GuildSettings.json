@@ -1,0 +1,20 @@
+[
+  {
+    "guildId": "1263545537303416863",
+    "chattingChannel": "1264595722624303165",
+    "messageLogging": null,
+    "memberLogging": null,
+    "serverLogging": null,
+    "voiceLogging": null,
+    "joinLeaveLogging": null
+  },
+  {
+    "guildId": "925765418545741854",
+    "chattingChannel": "952962389853229136",
+    "messageLogging": null,
+    "memberLogging": null,
+    "serverLogging": null,
+    "voiceLogging": null,
+    "joinLeaveLogging": null
+  }
+]

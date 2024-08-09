@@ -14,6 +14,11 @@ async function initDatabase() {
     });
 
     console.log('Connected to the database successfully!');
+
+    //const dropTriggerResponseTable = `DROP TABLE IF EXISTS TriggerResponses`;
+
+    //await db.query(dropTriggerResponseTable);
+
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
         guildId VARCHAR(100) NOT NULL PRIMARY KEY,
@@ -39,8 +44,8 @@ async function initDatabase() {
     const createTriggerResponseTable = `
       CREATE TABLE IF NOT EXISTS TriggerResponses (
         id VARCHAR(100) NOT NULL,
-        \`trigger\` VARCHAR(100) NOT NULL,
-        response VARCHAR(100) NOT NULL,
+        triggers VARCHAR(100) NOT NULL,
+        responses VARCHAR(100) NOT NULL,
         PRIMARY KEY (id)
       );
     `;

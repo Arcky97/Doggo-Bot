@@ -1,5 +1,8 @@
-const { selectData } = require("../controlData/selectData");
-const { setData } = require("../controlData/setData");
+const { selectData } = require("../controlData/selectData.js");
+const { insertData } = require("../controlData/insertData.js");
+const { updateData } = require("../controlData/updateData.js");
+const { deleteData } = require("../controlData/deleteData.js");
+const { exportToJson } = require("../controlData/visualDatabase/exportToJson.js");
 
 const getSetting = ((setting) => {
   const columnMapping = {
@@ -35,31 +38,26 @@ async function setGuildSettings(guildId, settingName, channelId) {
 
   console.log("Let's check if the data already exists in the database table.");
   const dataExist = await selectData('GuildSettings', key)
-  let action;
-  if (dataExist) {
-    console.log("The data exist so we either delete or update.");
-    if (dataExist[column] === data[column]) {
-      console.log("The data is the same with what's already present, so we delete.")
-      action = "delete";
-    } else {
-      console.log("The data is not the same with what's already present, so we update.")
-      action = "update";
-    }
-  } else {
-    console.log("The data doesn't exist so we insert.")
-    action = "insert";
-  }
-  console.log("we call setData and pass the table name, data and action.")
+  let message;
   try {
-    await setData('GuildSettings', key, data, action);
-    switch(action) {
-      case "insert":
-        return `The channel for ${settingName} has been set to <#${channelId}> successfully!>`;
-      case "update":
-        return `The channel for ${settingName} has been updated to <#${channelId}> successfully!`;
-      case "delete":
-        return `The channel for ${settingName} has been resetted!`;
+    if (dataExist[column]) {
+      console.log("The data exist so we either delete or update.");
+      if (dataExist[column] === data[column]) {
+        console.log("The data is the same with what's already present, so we delete.")
+        await deleteData('GuildSettings', key, data);
+        message = `The channel for ${settingName} has been resetted!`;
+      } else {
+        console.log("The data is not the same with what's already present, so we update.")
+        await updateData('GuildSettings', key, data);
+        message = `The channel for ${settingName} has been updated to <#${channelId}> successfully!`;
       }
+    } else {
+      console.log("The data doesn't exist so we insert.")
+      await insertData('GuildSettings', key, data);
+      message = `The channel for ${settingName} has been set to <#${channelId}> successfully!`;
+    }
+    exportToJson('GuildSettings');
+    return message;
   } catch (error) {
     console.error('Error setting channel:', error);
     return 'There was an error setting the channel. Please try again later.';

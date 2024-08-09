@@ -5,9 +5,11 @@ async function insertData(table, key, data) {
 
   const columns = Object.keys(combinedData);
   const placeholders = columns.map(() => '?').join(', ');
+
   const insertQuery = `
     INSERT INTO ${table} (${columns.join(', ')})
-    VALUES (${placeholders});
+    VALUES (${placeholders})
+    ON DUPLICATE KEY UPDATE ${columns.map(col => `${col} = VALUES(${col})`).join(', ')};
   `;
 
   try {
