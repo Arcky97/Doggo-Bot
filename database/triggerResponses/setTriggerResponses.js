@@ -10,7 +10,6 @@ const Fuse = require('fuse.js');
 async function getTriggers() {
   try {
     const [rows] = await query('SELECT triggers FROM TriggerResponses');
-
     return rows.map(row => row.triggers);
   } catch (error) {
     console.error('Error fetching triggers:', error);
@@ -18,19 +17,42 @@ async function getTriggers() {
   }
 }
 
+async function getReplies() {
+  try {
+    const [rows] = await query('SELECT * FROM TriggerResponses');
+    return rows.map(row => [row.id, row.triggers, row.responses]);
+  } catch (error) {
+    console.error('Error fetching replies:', error);
+    return []
+  }
+}
+
 async function findClosestMatch(target, array) {
+  if (array.length < 1) return;
   let closestMatches;
   const options = {
     includeScore: true,
-    threshold: 0.9, // Adjust threshold for more or less fuzziness
-    keys: ['str'] // Specify the keys to search in objects
+    threshold: 0.7, // Adjust threshold for more or less fuzziness
+    distance: 50,
+    keys: ['str'], // Specify the keys to search in objects
+    limit: array.length
   };
-
   const fuse = new Fuse(array.map(str => ({ str })), options);
   const result = fuse.search(target);
+  let color;
+  if (result.length > 0) {
+    if (result[0].score >= 0.5) {
+      color = 0xED4245
+    } else if (result[0].score >= 0.25) {
+      color = 0xE67E22
+    } else {
+      color = 0x57F287
+    }
+  }
+  
   // Get the closest matches
-  closestMatches = result.map(match => `- ${match.item.str}`);
-  return closestMatches.slice(0, 5).join('\n');
+  closestMatches = result.map(match => match.item.str);
+  return { matches: closestMatches.slice(0, 5), color: color };
 }
 
 async function setTriggerResponses({ trigger, response, action, id }) {
@@ -65,10 +87,13 @@ async function setTriggerResponses({ trigger, response, action, id }) {
     } else if ("check") {
       const triggers = await getTriggers();
       const closestMatch = await findClosestMatch(trigger, triggers);
-      if (closestMatch) {
-        message = `These triggers seems close to your given trigger "${trigger}": \n${closestMatch}`;
+      if (closestMatch.matches !== '') {
+        message = closestMatch;
       } else {
-        message = `No close match found to the given trigger "${trigger}"`
+        message = {
+          matches: '\n none 💀',
+          color: 0xED4245
+        }
       }
     } else {
       const dataExist = await selectData('TriggerResponses', key);
@@ -93,4 +118,4 @@ async function setTriggerResponses({ trigger, response, action, id }) {
   }
 }
 
-module.exports = { setTriggerResponses };
+module.exports = { setTriggerResponses, findClosestMatch, getTriggers, getReplies };

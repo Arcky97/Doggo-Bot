@@ -43,5 +43,15 @@
     "id": "83290048971",
     "triggers": "arcky",
     "responses": "is the developer"
+  },
+  {
+    "id": "93377850535",
+    "triggers": "do you have bugs",
+    "responses": "No, I let the bug bugging the bugs!"
+  },
+  {
+    "id": "98352860353",
+    "triggers": "cookie",
+    "responses": "yes, me want cookie"
   }
 ]

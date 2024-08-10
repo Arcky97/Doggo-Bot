@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const { setTriggerResponses } = require("../../../database/triggerResponses/setTriggerResponses");
 
 module.exports = {
@@ -16,6 +16,12 @@ module.exports = {
   callback: async (client, interaction) => {
     const trigger = interaction.options.getString('trigger');
     const message = await setTriggerResponses({trigger: trigger, action: 'check'});
-    await interaction.reply(message);
+    const matches = message.matches.map(match => `- ${match}`).join('\n');
+    const embed = new EmbedBuilder()
+      .setColor(message.color)
+      .setTitle('Found Matches')
+      .setDescription(`for "${trigger}": \n ${matches}`)
+      .setTimestamp()
+    await interaction.reply({ embeds: [embed] });
   }
 }
