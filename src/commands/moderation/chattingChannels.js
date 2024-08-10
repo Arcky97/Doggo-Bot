@@ -10,15 +10,14 @@ module.exports = {
       type: ApplicationCommandOptionType.Channel,
       name: 'channel',
       description: 'The channel for chatting with the Bot.',
-      required: true,
+      required: true
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
-    const subcommand = 'botchat';
     const channel = interaction.options.get('channel').value;
-    const guildID = interaction.guild.id;
-    const response = await setGuildSettings(guildID, subcommand, channel)
+    const guildID = interaction.guild.id; 
+    const response = await setGuildSettings(guildID, 'botchat', channel)
     await interaction.reply(response);
   }
 };

@@ -1,0 +1,5 @@
+{
+  "ignore": [
+    "database/controlData/visualDatabase/*.json"
+  ]
+}

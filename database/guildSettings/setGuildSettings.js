@@ -7,11 +7,11 @@ const { exportToJson } = require("../controlData/visualDatabase/exportToJson.js"
 const getSetting = ((setting) => {
   const columnMapping = {
     'botchat': 'chattingChannel',
-    'message-logging': 'messageLogging',
-    'member-logging': 'memberLogging',
-    'server-logging': 'serverLogging',
-    'voice-logging': 'voiceLogging',
-    'joinleave-logging': 'joinLeaveLogging'
+    'message logging': 'messageLogging',
+    'member logging': 'memberLogging',
+    'server logging': 'serverLogging',
+    'voice logging': 'voiceLogging',
+    'join-leave logging': 'joinLeaveLogging'
   };
 
   const column = columnMapping[setting];
