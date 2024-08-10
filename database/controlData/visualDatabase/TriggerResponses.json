@@ -1,7 +1,47 @@
 [
   {
+    "id": "06005249558",
+    "triggers": "owo",
+    "responses": "uwu"
+  },
+  {
+    "id": "26791050582",
+    "triggers": "zetabyte",
+    "responses": "zetanium!"
+  },
+  {
     "id": "33321494491",
     "triggers": "hey",
     "responses": "Hey!"
+  },
+  {
+    "id": "34839704683",
+    "triggers": "uwu",
+    "responses": "owo"
+  },
+  {
+    "id": "50148901783",
+    "triggers": "what are you doing",
+    "responses": "i'm cooking"
+  },
+  {
+    "id": "52965244230",
+    "triggers": "arckybye",
+    "responses": "arckynium"
+  },
+  {
+    "id": "55693731294",
+    "triggers": "hello",
+    "responses": "hoi"
+  },
+  {
+    "id": "56573606998",
+    "triggers": "💀",
+    "responses": "💀"
+  },
+  {
+    "id": "83290048971",
+    "triggers": "arcky",
+    "responses": "is the developer"
   }
 ]

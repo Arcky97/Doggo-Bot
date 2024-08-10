@@ -12,6 +12,7 @@
   "dependencies": {
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
+    "fuse.js": "^7.0.0",
     "leven": "^4.0.0",
     "mysql2": "^3.11.0",
     "nanoid": "^5.0.7"

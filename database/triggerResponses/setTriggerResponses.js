@@ -5,6 +5,7 @@ const { insertData } = require('../controlData/insertData');
 const { deleteData } = require('../controlData/deleteData');
 const { updateData } = require('../controlData/updateData');
 const { exportToJson } = require('../controlData/visualDatabase/exportToJson');
+const Fuse = require('fuse.js');
 
 async function getTriggers() {
   try {
@@ -18,21 +19,19 @@ async function getTriggers() {
 }
 
 async function findClosestMatch(target, array) {
-  const { default: leven } = await import('leven');
-  let closestMatch = null;
-  let smallestDistance = 15;
+  let closestMatches;
+  const options = {
+    includeScore: true,
+    threshold: 0.9, // Adjust threshold for more or less fuzziness
+    keys: ['str'] // Specify the keys to search in objects
+  };
 
-  array.forEach((str) => {
-    const distance = leven(target, str);
-    if (distance <= smallestDistance) {
-      smallestDistance = distance;
-      console.log(smallestDistance);
-      closestMatch = str;
-    }
-  });
-  return closestMatch;
+  const fuse = new Fuse(array.map(str => ({ str })), options);
+  const result = fuse.search(target);
+  // Get the closest matches
+  closestMatches = result.map(match => `- ${match.item.str}`);
+  return closestMatches.slice(0, 5).join('\n');
 }
-
 
 async function setTriggerResponses({ trigger, response, action, id }) {
   const { customAlphabet } = await import('nanoid');
@@ -60,15 +59,16 @@ async function setTriggerResponses({ trigger, response, action, id }) {
   let message;
   try {
     if (action === "insert") {
+      console.log("we insert the date since it doesn't exist in the database!")
+      await insertData('TriggerResponses', key, data);
+      message = "reply successfully added!"
+    } else if ("check") {
       const triggers = await getTriggers();
-      const closestMatch = await findClosestMatch("trigger", triggers);
-      console.log(closestMatch);
+      const closestMatch = await findClosestMatch(trigger, triggers);
       if (closestMatch) {
-        message = `The trigger "${closestMatch}" seems similar to the trigger you're trying to add. Do you want to add "${response}" to this trigger instead?`;
+        message = `These triggers seems close to your given trigger "${trigger}": \n${closestMatch}`;
       } else {
-        console.log("we insert the date since it doesn't exist in the database!")
-        await insertData('TriggerResponses', key, data);
-        message = "reply successfully added!"
+        message = `No close match found to the given trigger "${trigger}"`
       }
     } else {
       const dataExist = await selectData('TriggerResponses', key);
