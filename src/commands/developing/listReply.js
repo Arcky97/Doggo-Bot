@@ -9,18 +9,25 @@ module.exports = {
   callback: async (client, interaction) => {
     replies = await getReplies();
     const embeds = [];
-    for (var i = 0; i < Math.ceil(replies.length / 5); i++) {
+    const pageSize = 8;
+
+    for (var i = 0; i < Math.ceil(replies.length / pageSize); i++) {
       const embed = new EmbedBuilder()
         .setColor("Green")
         .setTitle('List with Replies')
-        .setTimestamp();
+        .setTimestamp()
+        .setFooter({
+          text: `${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, replies.length)} of ${replies.length} Replies`
+        });
 
       let description = '';
 
-      for (let j = i; j < i + 5 && j < replies.length; j++) {
+      for (let j = i * pageSize; j < (i * pageSize) + pageSize && j < replies.length; j++) {
         description += `**ID:** ${replies[j][0]}\n` +
         `**Trigger:** ${replies[j][1]}\n` +
-        `**Response(s):** ${replies[j][2]}\n\n`;
+        `${Array.isArray(replies[j][2]) ? 
+          `**Response:** ${replies[j][2].join('\n')}\n\n`: 
+          `**Response:** ${replies[j][2]}\n\n`}`;
       }
 
       embed.setDescription(description);

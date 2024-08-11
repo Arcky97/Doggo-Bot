@@ -23,7 +23,17 @@ async function getReplies() {
     return rows.map(row => [row.id, row.triggers, row.responses]);
   } catch (error) {
     console.error('Error fetching replies:', error);
-    return []
+    return [];
+  }
+}
+
+async function getIDs() {
+  try {
+    const [rows] = await query('SELECT id FROM TriggerResponses');
+    return rows.map(row => [row.id]);
+  } catch (error) {
+    console.error('Error fetching IDs:', error);
+    return [];
   }
 }
 
@@ -62,6 +72,13 @@ async function setTriggerResponses({ trigger, response, action, id }) {
   const generateNumericId = customAlphabet(numbers, 11);
   let key; 
   let data;
+  const existIDs = getIDs()
+  let id = generateNumericId; 
+
+  while (existIDs.includes(id)) {
+    console.log(`Generating a new id since ${id} is already in use!`);
+    id = generateNumericId();
+  }
 
   if (action === "insert") {
     key = {
@@ -84,7 +101,7 @@ async function setTriggerResponses({ trigger, response, action, id }) {
       console.log("we insert the date since it doesn't exist in the database!")
       await insertData('TriggerResponses', key, data);
       message = "reply successfully added!"
-    } else if ("check") {
+    } else if (action === "check") {
       const triggers = await getTriggers();
       const closestMatch = await findClosestMatch(trigger, triggers);
       if (closestMatch.matches !== '') {
@@ -105,7 +122,7 @@ async function setTriggerResponses({ trigger, response, action, id }) {
           const dataChange = await selectData('TriggerResponses', key);
           message = `The trigger-response has been updated from ${dataExist.trigger}-${dataExist.response} to ${dataChange.trigger}-${dataChange.response}`
         } else {
-          deleteData('TriggerResponse', key);
+          deleteData('TriggerResponses', key);
           message = `The trigger-response was successfully deleted`;
         }
       }      
