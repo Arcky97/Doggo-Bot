@@ -81,7 +81,6 @@ async function setTriggerResponses({ trigger, response, action, id }) {
       numberId = generateNumericId();
     }
     response = JSON.stringify(response);
-    console.log(response);
 
     key = {
       id: numberId
@@ -105,38 +104,60 @@ async function setTriggerResponses({ trigger, response, action, id }) {
   try {
     if (action === "insert") {
       console.log("we insert the date since it doesn't exist in the database!")
-      await insertData('TriggerResponses', key, data);
-
-      let respString = JSON.parse(data.responses);
-      let string = respString.join(', ')
-      console.log(string);
-
-      message = `reply: "${data.triggers}: ${string}" successfully added!`
+      try {
+        await insertData('TriggerResponses', key, data);
+        let responseArray = JSON.parse(data.responses);
+        let responseString = responseArray.join(', ')
+        message = `reply: "${data.triggers}: ${responseString}" successfully added!`
+      } catch (error) {
+        console.error("Error inserting data:", error);
+        return `Oh no! Something went wrong while adding your new reply. Please try again.`
+      }
     } else if (action === "check") {
-      const triggers = await getTriggers();
-      const closestMatch = await findClosestMatch(trigger, triggers);
-      if (closestMatch.matches !== '') {
-        message = closestMatch;
-      } else {
-        message = {
+      try {
+        const triggers = await getTriggers();
+        const closestMatch = await findClosestMatch(trigger, triggers);
+        if (closestMatch.matches !== '') {
+          message = closestMatch;
+        } else {
+          message = {
           matches: '\n none 💀',
           color: 0xED4245
         }
       }
+      } catch (error) {
+        console.error("Error checking for similar replies:", error);
+        return `Oh no! Something went wrong when checking for similar replies to "${trigger}". Please try again.`
+      }
     } else {
-      const dataExist = await selectData('TriggerResponses', key);
-      if (!dataExist) {
-        message = `${key} doesn't seem to exist, check if you gave the correct ID and try again.`
-      } else {
-        if (action === "update") {
-          await updateData('TriggerResponses', key, data);
-          const dataChange = await selectData('TriggerResponses', key);
-          message = `The trigger-response has been updated from ${dataExist.trigger}-${dataExist.response} to ${dataChange.trigger}-${dataChange.response}`
+      try {
+        const dataExist = await selectData('TriggerResponses', key);
+        if (!dataExist) {
+          message = `${key} doesn't seem to exist, check if you gave the correct ID and try again.`
         } else {
-          deleteData('TriggerResponses', key);
-          message = `The trigger-response was successfully deleted`;
+          if (action === "update") {
+            try {
+              await updateData('TriggerResponses', key, data);
+              const dataChange = await selectData('TriggerResponses', key);
+              message = `The trigger-response has been updated from ${dataExist.trigger}-${dataExist.response} to ${dataChange.trigger}-${dataChange.response}`
+            } catch (error) {
+              console.error("Error updating data:", error);
+              return `Oh no! Something went wrong when updating the reply with ID:${key.id}. Please try again.`
+            }
+          } else {
+            try {
+              await deleteData('TriggerResponses', key);
+              message = `The trigger-response was successfully deleted`;
+            } catch (error) {
+              console.error("Error deleting data:", error);
+              return `Oh no! Something went wrong when deleting the reply with ID:${key.id}. Please try again.`
+            }
+          }
         }
-      }      
+      } catch (error) {
+        console.error("Error retrieving data:", error);
+        return `Oh no! Something went wrong when retrieving the reply with ID:${key.id} from the database. Please try again.`
+      }
     }
     exportToJson('TriggerResponses');
     return message;

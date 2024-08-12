@@ -10,9 +10,19 @@
     "responses": "[\"Oh no, Zeta is going to crash me again! 💀\"]"
   },
   {
+    "id": "47020796113",
+    "triggers": "💀",
+    "responses": "[\"💀\",\"Please don't die!\"]"
+  },
+  {
     "id": "68622545393",
     "triggers": "what are you doing",
     "responses": "[\"I'm cooking!\",\"Nothing special, just watching you <:ISeeYou:949790258952798289>\"]"
+  },
+  {
+    "id": "85966207662",
+    "triggers": "uwu",
+    "responses": "[\"UwU\",\"OwO\",\"EwE\",\"IwI\",\"AwA\"]"
   },
   {
     "id": "97474983246",
