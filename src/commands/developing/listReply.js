@@ -7,10 +7,10 @@ module.exports = {
   description: 'Get a list of all Trigger-Resonses with their id',
   devOnly: true,
   callback: async (client, interaction) => {
+    const embeds = [];
+    const pageSize = 8;
     try {
       replies = await getReplies();
-      const embeds = [];
-      const pageSize = 8;
       if (replies.length > 0) {
         for (var i = 0; i < Math.ceil(replies.length / pageSize); i++) {
           const embed = new EmbedBuilder()
