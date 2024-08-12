@@ -10,18 +10,14 @@ module.exports = async (client, message) => {
     try {
       let responses = await getReplies();
       let closestMatches = await findClosestMatch(message.content, await getTriggers());
-      console.log(closestMatches)
-      if (closestMatches.matches.length > 0) {
+      if (closestMatches && closestMatches.matches.length > 0) {
         const matchingResponse = responses.find(response => 
           response[1] === closestMatches.matches[0]
         );
-
         if (matchingResponse) {
-          const reply = matchingResponse[2];
-          if (reply.length > 0) {
-            const responseToSend = Array.isArray(reply) ? reply[Math.floor(Math.random() * reply.length)] : reply; 
-            message.channel.send(responseToSend);
-          }
+          const responses = JSON.parse(matchingResponse[2]);
+          const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+          message.channel.send(randomResponse);
         } else {
           console.log("No close match found!")
         }

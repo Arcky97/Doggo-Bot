@@ -72,17 +72,19 @@ async function setTriggerResponses({ trigger, response, action, id }) {
   const generateNumericId = customAlphabet(numbers, 11);
   let key; 
   let data;
-  const existIDs = getIDs()
-  let id = generateNumericId; 
-
-  while (existIDs.includes(id)) {
-    console.log(`Generating a new id since ${id} is already in use!`);
-    id = generateNumericId();
-  }
+  let existIDs = await getIDs()
 
   if (action === "insert") {
+    let numberId = generateNumericId();
+    while (existIDs.includes(numberId)) {
+      console.log(`Generating a new id since ${numberId} is already in use!`);
+      numberId = generateNumericId();
+    }
+    response = JSON.stringify(response);
+    console.log(response);
+
     key = {
-      id: generateNumericId()
+      id: numberId
     }
 
     data = {
@@ -93,6 +95,10 @@ async function setTriggerResponses({ trigger, response, action, id }) {
     key = {
       id: id 
     }
+
+    data = {
+      triggers: trigger
+    }
   }
 
   let message;
@@ -100,7 +106,12 @@ async function setTriggerResponses({ trigger, response, action, id }) {
     if (action === "insert") {
       console.log("we insert the date since it doesn't exist in the database!")
       await insertData('TriggerResponses', key, data);
-      message = "reply successfully added!"
+
+      let respString = JSON.parse(data.responses);
+      let string = respString.join(', ')
+      console.log(string);
+
+      message = `reply: "${data.triggers}: ${string}" successfully added!`
     } else if (action === "check") {
       const triggers = await getTriggers();
       const closestMatch = await findClosestMatch(trigger, triggers);

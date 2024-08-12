@@ -1,57 +1,22 @@
 [
   {
-    "id": "06005249558",
-    "triggers": "owo",
-    "responses": "uwu"
-  },
-  {
-    "id": "26791050582",
-    "triggers": "zetabyte",
-    "responses": "zetanium!"
-  },
-  {
-    "id": "33321494491",
-    "triggers": "hey",
-    "responses": "Hey!"
-  },
-  {
-    "id": "34839704683",
-    "triggers": "uwu",
-    "responses": "owo"
-  },
-  {
-    "id": "50148901783",
-    "triggers": "what are you doing",
-    "responses": "i'm cooking"
-  },
-  {
-    "id": "52965244230",
-    "triggers": "arckybye",
-    "responses": "arckynium"
-  },
-  {
-    "id": "55693731294",
+    "id": "13421387420",
     "triggers": "hello",
-    "responses": "hoi"
+    "responses": "[\"Hey!\",\"Hello!\",\"Hoi!\"]"
   },
   {
-    "id": "56573606998",
-    "triggers": "💀",
-    "responses": "💀"
+    "id": "30154555681",
+    "triggers": "Zeta",
+    "responses": "[\"Oh no, Zeta is going to crash me again! 💀\"]"
   },
   {
-    "id": "83290048971",
-    "triggers": "arcky",
-    "responses": "is the developer"
+    "id": "68622545393",
+    "triggers": "what are you doing",
+    "responses": "[\"I'm cooking!\",\"Nothing special, just watching you <:ISeeYou:949790258952798289>\"]"
   },
   {
-    "id": "93377850535",
-    "triggers": "do you have bugs",
-    "responses": "No, I let the bug bugging the bugs!"
-  },
-  {
-    "id": "98352860353",
-    "triggers": "cookie",
-    "responses": "yes, me want cookie"
+    "id": "97474983246",
+    "triggers": "owo",
+    "responses": "[\"UwU\",\"OwO\",\"EwE\",\"IwI\",\"AwA\"]"
   }
 ]

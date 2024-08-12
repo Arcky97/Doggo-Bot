@@ -9,7 +9,7 @@ module.exports = async (client, message) => {
     try {
       
     } catch (error) {
-      console.error('Error inserting guild data:', error);
+      console.error('Error giving user xp:', error);
     }
   }
 };

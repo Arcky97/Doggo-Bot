@@ -1,7 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { setTriggerResponses } = require("../../../database/triggerResponses/setTriggerResponses");
 
-
 module.exports = {
   name: 'removereply',
   description: 'Remove an exisiting reply.',

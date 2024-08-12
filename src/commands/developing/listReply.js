@@ -10,27 +10,36 @@ module.exports = {
     replies = await getReplies();
     const embeds = [];
     const pageSize = 8;
+    if (replies.length > 0) {
+      for (var i = 0; i < Math.ceil(replies.length / pageSize); i++) {
+        const embed = new EmbedBuilder()
+          .setColor("Green")
+          .setTitle('List with Replies')
+          .setTimestamp()
+          .setFooter({
+            text: `${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, replies.length)} of ${replies.length} Replies`
+          });
 
-    for (var i = 0; i < Math.ceil(replies.length / pageSize); i++) {
-      const embed = new EmbedBuilder()
-        .setColor("Green")
-        .setTitle('List with Replies')
-        .setTimestamp()
-        .setFooter({
-          text: `${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, replies.length)} of ${replies.length} Replies`
-        });
-
-      let description = '';
-
-      for (let j = i * pageSize; j < (i * pageSize) + pageSize && j < replies.length; j++) {
-        description += `**ID:** ${replies[j][0]}\n` +
-        `**Trigger:** ${replies[j][1]}\n` +
-        `${Array.isArray(replies[j][2]) ? 
-          `**Response:** ${replies[j][2].join('\n')}\n\n`: 
-          `**Response:** ${replies[j][2]}\n\n`}`;
+        let description = '';
+        let replyArray;
+        let responses;
+        for (let j = i * pageSize; j < (i * pageSize) + pageSize && j < replies.length; j++) {
+          replyArray = JSON.parse(replies[j][2])
+          let resp = (replyArray.length > 1) ? '**Responses:**' : '**Response:**'
+          responses = `\n   - ${replyArray.join('\n  - ')}`
+          description += `**ID:** ${replies[j][0]}\n` +
+          `- **Trigger:** ${replies[j][1]}\n` +
+          `- ${resp} ${responses}\n\n`;
+        }
+        embed.setDescription(description);
+        embeds.push(embed);
       }
-
-      embed.setDescription(description);
+    } else {
+      const embed = new EmbedBuilder()
+        .setColor("Red")
+        .setTitle("No Replies found")
+        .setDescription('use `/addreply` to start adding replies.')
+        .setTimestamp();
       embeds.push(embed);
     }
     await pagination(interaction, embeds);
