@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require('discord.js');
-const { setTriggerResponses } = require('../../../database/triggerResponses/setTriggerResponses');
+const { setBotReplies } = require('../../../database/botReplies/setBotReplies');
 
 module.exports = {
   name: 'addreply',
@@ -27,7 +27,7 @@ module.exports = {
     } else {
       response = [response.trim()];
     }
-    const message = await setTriggerResponses({trigger: trigger, response: response, action: "insert" });
+    const message = await setBotReplies({trigger: trigger, response: response, action: "insert" });
     await interaction.reply(message);
   }
 };

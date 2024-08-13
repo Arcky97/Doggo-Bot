@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { setTriggerResponses } = require("../../../database/triggerResponses/setTriggerResponses");
+const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
 
 module.exports = {
   name: 'updatereply',
@@ -22,7 +22,7 @@ module.exports = {
   callback: async (client, interaction) => {
     const replyID = interaction.options.getString('replyid');
     const trigger = interaction.options.getString('newtrigger');
-    const message = await setTriggerResponses({trigger: trigger, action: "update", id: replyID });
+    const message = await setBotReplies({trigger: trigger, action: "update", id: replyID });
     await interaction.reply(message);
   }
 }

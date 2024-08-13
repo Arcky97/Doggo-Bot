@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
-const { setTriggerResponses } = require("../../../database/triggerResponses/setTriggerResponses");
+const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
 
 module.exports = {
   name: 'checkreply',
@@ -15,7 +15,7 @@ module.exports = {
   ],
   callback: async (client, interaction) => {
     const trigger = interaction.options.getString('trigger');
-    const message = await setTriggerResponses({trigger: trigger, action: 'check'});
+    const message = await setBotReplies({trigger: trigger, action: 'check'});
     const matches = message.matches.map(match => `- ${match}`).join('\n');
     const embed = new EmbedBuilder()
       .setColor(message.color)

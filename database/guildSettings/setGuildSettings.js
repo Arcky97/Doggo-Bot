@@ -37,30 +37,35 @@ async function setGuildSettings(guildId, settingName, channelId) {
   }
 
   console.log("Let's check if the data already exists in the database table.");
-  const dataExist = await selectData('GuildSettings', key)
-  let message;
   try {
-    if (dataExist[column]) {
-      console.log("The data exist so we either delete or update.");
-      if (dataExist[column] === data[column]) {
-        console.log("The data is the same with what's already present, so we delete.")
-        await deleteData('GuildSettings', key, data);
-        message = `The channel for ${settingName} has been resetted!`;
+    const dataExist = await selectData('GuildSettings', key)
+    let message;
+    try {
+      if (dataExist && dataExist[column]) {
+        console.log("The data exist so we either delete or update.");
+        if (dataExist[column] === data[column]) {
+          console.log("The data is the same with what's already present, so we delete.")
+          await deleteData('GuildSettings', key, data);
+          message = `The channel for ${settingName} has been resetted!`;
+        } else {
+          console.log("The data is not the same with what's already present, so we update.")
+          await updateData('GuildSettings', key, data);
+          message = `The channel for ${settingName} has been updated to <#${channelId}> successfully!`;
+        }
       } else {
-        console.log("The data is not the same with what's already present, so we update.")
-        await updateData('GuildSettings', key, data);
-        message = `The channel for ${settingName} has been updated to <#${channelId}> successfully!`;
+        console.log("The data doesn't exist so we insert.")
+        await insertData('GuildSettings', key, data);
+        message = `The channel for ${settingName} has been set to <#${channelId}> successfully!`;
       }
-    } else {
-      console.log("The data doesn't exist so we insert.")
-      await insertData('GuildSettings', key, data);
-      message = `The channel for ${settingName} has been set to <#${channelId}> successfully!`;
+      exportToJson('GuildSettings');
+      return message;
+    } catch (error) {
+      console.error('Error setting channel:', error);
+      return 'There was an error setting the channel. Please try again later.';
     }
-    exportToJson('GuildSettings');
-    return message;
   } catch (error) {
-    console.error('Error setting channel:', error);
-    return 'There was an error setting the channel. Please try again later.';
+    console.error('Error getting setted channel:', error);
+    return `There was an error getting the Guild Settings. Please try again later.`;
   }
 }
 

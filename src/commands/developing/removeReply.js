@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { setTriggerResponses } = require("../../../database/triggerResponses/setTriggerResponses");
+const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
 
 module.exports = {
   name: 'removereply',
@@ -15,7 +15,7 @@ module.exports = {
   ],
   callback: async (client, interaction) => {
     const replyID = interaction.options.getString('replyid');
-    const message = await setTriggerResponses({id: replyID, action: "remove"});
+    const message = await setBotReplies({id: replyID, action: "remove"});
     await interaction.reply(message);
   }
 }

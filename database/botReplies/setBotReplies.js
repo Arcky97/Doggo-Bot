@@ -9,7 +9,7 @@ const Fuse = require('fuse.js');
 
 async function getTriggers() {
   try {
-    const [rows] = await query('SELECT triggers FROM TriggerResponses');
+    const [rows] = await query('SELECT triggers FROM BotReplies');
     return rows.map(row => row.triggers);
   } catch (error) {
     console.error('Error fetching triggers:', error);
@@ -19,7 +19,7 @@ async function getTriggers() {
 
 async function getReplies() {
   try {
-    const [rows] = await query('SELECT * FROM TriggerResponses');
+    const [rows] = await query('SELECT * FROM BotReplies');
     return rows.map(row => [row.id, row.triggers, row.responses]);
   } catch (error) {
     console.error('Error fetching replies:', error);
@@ -29,7 +29,7 @@ async function getReplies() {
 
 async function getIDs() {
   try {
-    const [rows] = await query('SELECT id FROM TriggerResponses');
+    const [rows] = await query('SELECT id FROM BotReplies');
     return rows.map(row => [row.id]);
   } catch (error) {
     console.error('Error fetching IDs:', error);
@@ -65,7 +65,7 @@ async function findClosestMatch(target, array) {
   return { matches: closestMatches.slice(0, 5), color: color };
 }
 
-async function setTriggerResponses({ trigger, response, action, id }) {
+async function setBotReplies({ trigger, response, action, id }) {
   const { customAlphabet } = await import('nanoid');
   const numbers = '0123456789';
 
@@ -105,7 +105,7 @@ async function setTriggerResponses({ trigger, response, action, id }) {
     if (action === "insert") {
       console.log("we insert the date since it doesn't exist in the database!")
       try {
-        await insertData('TriggerResponses', key, data);
+        await insertData('BotReplies', key, data);
         let responseArray = JSON.parse(data.responses);
         let responseString = responseArray.join(', ')
         message = `reply: "${data.triggers}: ${responseString}" successfully added!`
@@ -131,14 +131,14 @@ async function setTriggerResponses({ trigger, response, action, id }) {
       }
     } else {
       try {
-        const dataExist = await selectData('TriggerResponses', key);
+        const dataExist = await selectData('BotReplies', key);
         if (!dataExist) {
           message = `${key} doesn't seem to exist, check if you gave the correct ID and try again.`
         } else {
           if (action === "update") {
             try {
-              await updateData('TriggerResponses', key, data);
-              const dataChange = await selectData('TriggerResponses', key);
+              await updateData('BotReplies', key, data);
+              const dataChange = await selectData('BotReplies', key);
               message = `The trigger-response has been updated from ${dataExist.trigger}-${dataExist.response} to ${dataChange.trigger}-${dataChange.response}`
             } catch (error) {
               console.error("Error updating data:", error);
@@ -146,7 +146,7 @@ async function setTriggerResponses({ trigger, response, action, id }) {
             }
           } else {
             try {
-              await deleteData('TriggerResponses', key);
+              await deleteData('BotReplies', key);
               message = `The trigger-response was successfully deleted`;
             } catch (error) {
               console.error("Error deleting data:", error);
@@ -159,7 +159,7 @@ async function setTriggerResponses({ trigger, response, action, id }) {
         return `Oh no! Something went wrong when retrieving the reply with ID:${key.id} from the database. Please try again.`
       }
     }
-    exportToJson('TriggerResponses');
+    exportToJson('BotReplies');
     return message;
   } catch (error) {
     console.error(`Error when trying to ${action} Reply:`, error);
@@ -167,4 +167,4 @@ async function setTriggerResponses({ trigger, response, action, id }) {
   }
 }
 
-module.exports = { setTriggerResponses, findClosestMatch, getTriggers, getReplies };
+module.exports = { setBotReplies, findClosestMatch, getTriggers, getReplies };

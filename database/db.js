@@ -15,9 +15,9 @@ async function initDatabase() {
 
     console.log('Connected to the database successfully!');
 
-    //const dropTriggerResponseTable = `DROP TABLE IF EXISTS TriggerResponses`;
+    //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
 
-    //await db.query(dropTriggerResponseTable);
+    //await db.query(dropBotRepliesTable);
 
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
@@ -41,8 +41,8 @@ async function initDatabase() {
       );
     `;
 
-    const createTriggerResponseTable = `
-      CREATE TABLE IF NOT EXISTS TriggerResponses (
+    const createBotRepliesTable = `
+      CREATE TABLE IF NOT EXISTS BotReplies (
         id VARCHAR(100) NOT NULL,
         triggers VARCHAR(100) NOT NULL,
         responses VARCHAR(100) NOT NULL,
@@ -52,7 +52,7 @@ async function initDatabase() {
     
     await db.query(createGuildSettingsTable);
     await db.query(createMemberLevelsTable);
-    await db.query(createTriggerResponseTable);
+    await db.query(createBotRepliesTable);
     console.log('Tables created successfully!');
   } catch (err) {
     console.error('Error initializing the database:', err);

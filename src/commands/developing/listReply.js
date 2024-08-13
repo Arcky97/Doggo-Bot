@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-const { getReplies } = require("../../../database/triggerResponses/setTriggerResponses");
+const { getReplies } = require("../../../database/botReplies/setBotReplies");
 const pagination = require("../../handlers/pagination");
 
 module.exports = {
