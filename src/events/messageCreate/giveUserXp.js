@@ -5,7 +5,7 @@ module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot) return;
 
   const chatChannelId = await selectData('GuildSettings', {guildId: message.guild.id });
-  if (message.channel.id === chatChannelId["chattingChannel"]) {
+  if (chatChannelId["chattingChannel"] && message.channel.id === chatChannelId["chattingChannel"]) {
     try {
       
     } catch (error) {
