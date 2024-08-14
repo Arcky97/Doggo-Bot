@@ -1,9 +1,8 @@
-
 const { selectData } = require('../controlData/selectData');
-const { query } = require('../db');
 const { insertData } = require('../controlData/insertData');
-const { deleteData } = require('../controlData/deleteData');
 const { updateData } = require('../controlData/updateData');
+const { deleteData } = require('../controlData/deleteData');
+const { query } = require('../db');
 const { exportToJson } = require('../controlData/visualDatabase/exportToJson');
 const Fuse = require('fuse.js');
 

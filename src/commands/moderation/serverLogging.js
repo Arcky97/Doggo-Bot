@@ -16,7 +16,7 @@ module.exports = {
   callback: async (client, interaction) => {
     const channel = interaction.options.get('channel').value;
     const guildID = interaction.guild.id;
-    const response = await setGuildSettings(guildID, 'server logging', channel);
+    const response = await setGuildSettings(guildID, 'serverLogging', channel);
     await interaction.reply(response);
   }
 };

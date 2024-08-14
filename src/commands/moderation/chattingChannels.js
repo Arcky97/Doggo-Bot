@@ -1,7 +1,6 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.js');
 const { setGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js');
 
-
 module.exports = {
   name: 'setup-chat',
   description: 'Setup the channel for chatting with the Bot.',
@@ -17,7 +16,7 @@ module.exports = {
   callback: async (client, interaction) => {
     const channel = interaction.options.get('channel').value;
     const guildID = interaction.guild.id; 
-    const response = await setGuildSettings(guildID, 'botchat', channel)
+    const response = await setGuildSettings(guildID, 'chattingChannel', channel)
     await interaction.reply(response);
   }
 };
