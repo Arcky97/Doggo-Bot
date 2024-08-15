@@ -1,5 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const addReply = require("./addReply");
+const { addReply } = require("../../utils/addReply");
+const { updateReply } = require("../../utils/updateReply");
 
 module.exports = {
   name: 'reply',
@@ -37,7 +38,7 @@ module.exports = {
           options: [
             {
               type: ApplicationCommandOptionType.String,
-              name: 'ID',
+              name: 'id',
               description: 'The ID of the trigger to edit',
               required: true
             },
@@ -56,7 +57,7 @@ module.exports = {
           options: [
             {
               type: ApplicationCommandOptionType.String,
-              name: 'ID',
+              name: 'id',
               description: 'The ID of the response to edit',
               required: true
             }, 
@@ -81,7 +82,24 @@ module.exports = {
     const subCommand = interaction.options.getSubcommand();
     switch(subCommand) {
       case 'add':
-        await addReply(interaction);
+        addReply(interaction);
+        break;
+      case 'update':
+        const subCommandGroup = interaction.options.getSubcommandGroup();
+        switch (subCommandGroup) {
+          case 'response':
+            await updateReply(interaction);
+            break;
+          case 'trigger':
+            
+            break;
+        }
+        break;
+      case 'remove':
+        break;
+      case 'list':
+        break;
+      case 'check':
         break;
     }
   }

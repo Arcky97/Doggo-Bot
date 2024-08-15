@@ -14,7 +14,6 @@ module.exports = async (client, guild) => {
       const existingCommand = await applicationCommands.cache.find(
         (cmd) => cmd.name === name
       );
-      
       if (existingCommand) {
         if (localCommand.deleted) {
           await applicationCommands.delete(existingCommand.id);
