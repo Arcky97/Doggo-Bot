@@ -1,9 +1,9 @@
 const { setBotReplies } = require("../../database/botReplies/setBotReplies");
 
 const updateReply = async (interaction) => {
-  const replyID = interaction.options.getString('replyid');
-  const trigger = interaction.options.getString('newtrigger');
-  const message = await setBotReplies({trigger: trigger, action: "update", id: replyID });
+  const replyID = interaction.options.getString('id');
+  const trigger = interaction.options.getString('new');
+  const message = await setBotReplies({trigger: trigger, action: 'update', id: replyID });
   await interaction.reply(message);
 }
 

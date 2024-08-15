@@ -138,7 +138,7 @@ async function setBotReplies({ trigger, response, action, id }) {
             try {
               await updateData('BotReplies', key, data);
               const dataChange = await selectData('BotReplies', key);
-              message = `The trigger-response has been updated from ${dataExist.trigger}-${dataExist.response} to ${dataChange.trigger}-${dataChange.response}`
+              message = `The trigger-response has been updated from ${dataExist.triggers}-${JSON.parse(dataExist.responses).join(', ')} to ${dataChange.triggers}-${JSON.parse(dataChange.responses).join(', ')}`
             } catch (error) {
               console.error("Error updating data:", error);
               return `Oh no! Something went wrong when updating the reply with ID:${key.id}. Please try again.`

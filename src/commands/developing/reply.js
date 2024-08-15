@@ -1,6 +1,9 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { addReply } = require("../../utils/addReply");
 const { updateReply } = require("../../utils/updateReply");
+const { removeReply } = require("../../utils/removeReply");
+const { checkReply } = require("../../utils/checkReply");
+const { listReply } = require("../../utils/listReply");
 
 module.exports = {
   name: 'reply',
@@ -44,7 +47,7 @@ module.exports = {
             },
             {
               type: ApplicationCommandOptionType.String,
-              name: 'newtrigger',
+              name: 'new',
               description: 'The new Trigger phrase',
               required: true
             }
@@ -76,31 +79,56 @@ module.exports = {
           ]
         }
       ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'remove',
+      description: 'Remove a reply by ID.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.String,
+          name: 'id',
+          description: 'The ID of the reply you want to remove.',
+          required: true
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'check',
+      description: 'Check for existing similar replies.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.String,
+          name: 'trigger',
+          description: 'The trigger phrase to check.',
+          required: true
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'list',
+      description: 'Show a list of all Replies with their id.'
     }
   ],
   callback: async (client, interaction) => {
     const subCommand = interaction.options.getSubcommand();
-    switch(subCommand) {
-      case 'add':
-        addReply(interaction);
-        break;
-      case 'update':
-        const subCommandGroup = interaction.options.getSubcommandGroup();
-        switch (subCommandGroup) {
-          case 'response':
-            await updateReply(interaction);
-            break;
-          case 'trigger':
-            
-            break;
-        }
-        break;
-      case 'remove':
-        break;
-      case 'list':
-        break;
-      case 'check':
-        break;
+    const subCommandGroup = interaction.options.getSubcommandGroup();
+    if (subCommand === 'add') {
+      await addReply(interaction);
+    } else if (subCommandGroup === 'update') {
+      if (subCommand === 'trigger') {
+        await updateReply(interaction);
+      } else if (subCommand === 'response') {
+
+      }
+    } else if (subCommand === 'remove') {
+      await removeReply(interaction);
+    } else if (subCommand === 'check') {
+      await checkReply(interaction)
+    } else if (subCommand === 'list') {
+      await listReply(interaction)
     }
   }
 };
