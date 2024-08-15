@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
-
+const { setGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
 
 module.exports = {
   name: 'setup',
@@ -7,7 +7,7 @@ module.exports = {
   options: [
     {
       type: ApplicationCommandOptionType.Subcommand,
-      name: 'chat',
+      name: 'bot-chat',
       description: 'Setup the channel for chatting with the bot.',
       options: [
         {
@@ -30,10 +30,71 @@ module.exports = {
           required: true 
         }
       ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'member-logging',
+      description: 'Setup the channel for Member Logging.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Channel,
+          name: 'channel',
+          description: 'The channel for Member Logging.',
+          required: true
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'voice-logging',
+      description: 'Setup the channel for Voice Logging.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Channel,
+          name: 'channel',
+          description: 'The channel for Voice Logging.',
+          required: true
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'server-logging',
+      description: 'Setup the channel for Server Logging.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Channel,
+          name: 'channel',
+          description: 'The channel for Server Logging',
+          required: true
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'join-leave-logging',
+      description: 'Setup the channel for Join/Leave Logging',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Channel,
+          name: 'channel',
+          description: 'The channel for Join/Leave Logging',
+          required: true
+        }
+      ]
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
-    interaction.reply('You succeeded in using this command! Woof!');
+    const subCommand = interaction.options.getSubcommand();
+    const channel = interaction.options.get('channel').value;
+    const guildId = interaction.guild.id;
+    try {
+      let response = await setGuildSettings(guildId, subCommand, channel);
+      interaction.reply(response);
+    } catch (error) {
+      console.error('Error setting channel:', error);
+      interaction.reply('There was an error setting the channel. Please try again later');
+    }
   }
 }

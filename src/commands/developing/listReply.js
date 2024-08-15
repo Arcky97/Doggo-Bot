@@ -20,7 +20,6 @@ module.exports = {
             .setFooter({
               text: `${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, replies.length)} of ${replies.length} Replies`
             });
-
           let description = '';
           let replyArray;
           let responses;
@@ -51,6 +50,5 @@ module.exports = {
     } catch (error) {
       console.error('Error generating pages for the embed:', error);
     }
-    
   }
 }

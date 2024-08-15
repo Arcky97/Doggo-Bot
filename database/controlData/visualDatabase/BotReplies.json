@@ -3,5 +3,10 @@
     "id": "16951028509",
     "triggers": "who's a good doggo",
     "responses": "[\"I am! Woof!\",\"I wonder who... <:DoggoThinks:1259444056988192799>\",\"I'm a doggo so maybe me?\"]"
+  },
+  {
+    "id": "78789291469",
+    "triggers": "bitch",
+    "responses": "[\"No u!\"]"
   }
 ]

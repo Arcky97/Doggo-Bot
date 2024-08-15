@@ -8,6 +8,7 @@ module.exports = async (client, guild) => {
     const applicationCommands = await getApplicationCommands(
       client, guild.id
     );
+
     for (const localCommand of localCommands) {
       const { name, description, options } = localCommand;
       const existingCommand = await applicationCommands.cache.find(

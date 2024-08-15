@@ -5,6 +5,26 @@ const { deleteData } = require("../controlData/deleteData");
 const { query } = require("../db");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
+const convertSetupCommand = ((setting) => {
+  const columnMapping = {
+    'bot-chat': 'chattingChannel',
+    'message-logging': 'messageLogging',
+    'member-logging': 'memberLogging',
+    'server-logging': 'serverLogging',
+    'voice-logging': 'voiceLogging',
+    'join-leave-logging': 'joinLeaveLogging'
+  };
+
+  const column = columnMapping[setting];
+
+  if (!column) {
+    console.error('Invalid setting name:', setting);
+    return null;
+  } else {
+    return column;
+  }
+})
+
 async function getGuildSettings(guildId) {
   try {
     const [guildSetting] = await query('SELECT * FROM GuildSettings WHERE guildId = ?', [guildId]);
@@ -16,7 +36,7 @@ async function getGuildSettings(guildId) {
 }
 
 async function setGuildSettings(guildId, settingName, channelId) {
-  const column = settingName;
+  const column = convertSetupCommand(settingName);
   if (!column) return;
 
   const key = {
@@ -60,4 +80,4 @@ async function setGuildSettings(guildId, settingName, channelId) {
   }
 }
 
-module.exports = { setGuildSettings, getGuildSettings };
+module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand };

@@ -5,6 +5,7 @@ module.exports = {
   name: 'updatereply',
   description: 'Update an existing Trigger.',
   devOnly: true,
+  deleted: true,
   options: [
     {
       name: 'replyid',

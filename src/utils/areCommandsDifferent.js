@@ -26,10 +26,11 @@ module.exports = (existingCommand, localCommand) => {
         return true;
       }
 
+      // Check if the main attributes of the options are different
       if (
         localOption.description !== existingOption.description ||
         localOption.type !== existingOption.type ||
-        (localOption.required || false) !== existingOption.required ||
+        (localOption.required || false) !== (existingOption.required || false) ||
         (localOption.choices?.length || 0) !==
           (existingOption.choices?.length || 0) ||
         areChoicesDifferent(
@@ -39,10 +40,20 @@ module.exports = (existingCommand, localCommand) => {
       ) {
         return true;
       }
+
+      // Recursively check if there are options within options (subcommands)
+      if (
+        localOption.options &&
+        existingOption.options &&
+        areOptionsDifferent(existingOption.options, localOption.options)
+      ) {
+        return true;
+      }
     }
     return false;
   };
 
+  // Compare the main command attributes
   if (
     existingCommand.description !== localCommand.description ||
     existingCommand.options?.length !== (localCommand.options?.length || 0) ||
