@@ -4,7 +4,7 @@ const { getReplies } = require("../../database/botReplies/setBotReplies");
 
 const listReply = async (interaction) => {
   const embeds = [];
-  const pageSize = 8;
+  const pageSize = 9;
   try {
     replies = await getReplies();
     if (replies.length > 0) {

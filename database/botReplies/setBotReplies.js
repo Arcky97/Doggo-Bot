@@ -102,12 +102,19 @@ async function setBotReplies({ trigger, response, action, id }) {
   let message;
   try {
     if (action === "insert") {
-      console.log("we insert the date since it doesn't exist in the database!")
       try {
-        await insertData('BotReplies', key, data);
-        let responseArray = JSON.parse(data.responses);
-        let responseString = responseArray.join(', ')
-        message = `reply: "${data.triggers}: ${responseString}" successfully added!`
+        const triggers = await getTriggers();
+        if (!triggers.includes(trigger)) {
+          //let responseArray = JSON.parse(data.responses);
+          //let responseString = responseArray.join(', ')
+          //message = `reply: "${data.triggers}: ${responseString}" successfully added!`
+          console.log("we insert the date since it doesn't exist in the database!")
+          await insertData('BotReplies', key, data);
+          message = {...key, ...data};
+        } else {
+          console.log('Data with the same trigger already exists in the database!')
+          message = `A trigger "${trigger}" already exists!`;
+        }        
       } catch (error) {
         console.error("Error inserting data:", error);
         return `Oh no! Something went wrong while adding your new reply. Please try again.`
@@ -132,7 +139,7 @@ async function setBotReplies({ trigger, response, action, id }) {
       try {
         const dataExist = await selectData('BotReplies', key);
         if (!dataExist) {
-          message = `${key} doesn't seem to exist, check if you gave the correct ID and try again.`
+          message = `No reply was found with ID: "${id}", check if you gave the correct ID and try again.`
         } else {
           if (action === "update") {
             try {
