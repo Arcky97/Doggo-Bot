@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+const { PermissionFlagsBits, EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
 const { getGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js')
 
 module.exports = {
