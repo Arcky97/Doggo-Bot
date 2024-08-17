@@ -1,6 +1,6 @@
-module.exports = async (client, member) => {
+module.exports = async (client, oldMember, newMember) => {
   try {
-    console.log(`${member.user.username} updated their profile!`);
+    console.log(`${oldMember.user.username} updated their profile!`);
   } catch (error) {
     console.error('Failed to update Activity!')
   }
