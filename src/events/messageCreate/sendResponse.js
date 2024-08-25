@@ -12,7 +12,7 @@ module.exports = async (client, message) => {
       try {
         let responses = await getReplies();
         let closestMatches = await findClosestMatch(message.content, await getTriggers());
-        if (closestMatches && closestMatches.matches.length > 0 && closestMatches.color !== 0xED4245) {
+        if (closestMatches && closestMatches.matches.length > 0 && closestMatches.color === 0x57F287) {
           const matchingResponse = responses.find(response => 
             response[1] === closestMatches.matches[0] 
           );
