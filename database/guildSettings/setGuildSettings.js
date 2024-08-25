@@ -47,24 +47,19 @@ async function setGuildSettings(guildId, settingName, channelId) {
     [column]: channelId
   }
 
-  console.log("Let's check if the data already exists in the database table.");
   try {
     const dataExist = await selectData('GuildSettings', key)
     let message;
     try {
       if (dataExist && dataExist[column]) {
-        console.log("The data exist so we either delete or update.");
         if (dataExist[column] === data[column]) {
-          console.log("The data is the same with what's already present, so we delete.")
           await deleteData('GuildSettings', key, data);
           message = `The channel for ${settingName} has been resetted!`;
         } else {
-          console.log("The data is not the same with what's already present, so we update.")
           await updateData('GuildSettings', key, data);
           message = `The channel for ${settingName} has been updated to <#${channelId}> successfully!`;
         }
       } else {
-        console.log("The data doesn't exist so we insert.")
         await insertData('GuildSettings', key, data);
         message = `The channel for ${settingName} has been set to <#${channelId}> successfully!`;
       }

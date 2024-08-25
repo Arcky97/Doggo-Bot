@@ -105,14 +105,9 @@ async function setBotReplies({ trigger, response, action, id }) {
       try {
         const triggers = await getTriggers();
         if (!triggers.includes(trigger)) {
-          //let responseArray = JSON.parse(data.responses);
-          //let responseString = responseArray.join(', ')
-          //message = `reply: "${data.triggers}: ${responseString}" successfully added!`
-          console.log("we insert the date since it doesn't exist in the database!")
           await insertData('BotReplies', key, data);
           message = {...key, ...data};
         } else {
-          console.log('Data with the same trigger already exists in the database!')
           message = `A trigger "${trigger}" already exists!`;
         }        
       } catch (error) {

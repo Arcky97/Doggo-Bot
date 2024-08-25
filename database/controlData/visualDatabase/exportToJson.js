@@ -10,7 +10,6 @@ async function exportToJson(table) {
     const filePath = path.join(__dirname, `${table}.json`);
 
     fs.writeFileSync(filePath, jsonData);
-    console.log(`Data exported successfully to ${filePath}`);
   } catch (error) {
     console.error('Error exporting data to JSON:', error);    
   }

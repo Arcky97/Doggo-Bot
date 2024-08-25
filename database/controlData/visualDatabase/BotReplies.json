@@ -30,9 +30,19 @@
     "responses": "[\"Arcky is my creator!\",\"Arcky is my master!\"]"
   },
   {
+    "id": "13776406725",
+    "triggers": "<:ConfusedCat:1259444053964095488>",
+    "responses": "[\"<:ConfusedCat:1259444053964095488>\"]"
+  },
+  {
     "id": "16951028509",
     "triggers": "who's a good doggo",
     "responses": "[\"I am! Woof!\",\"I wonder who... <:DoggoThinks:1259444056988192799>\",\"I'm a doggo so maybe me?\"]"
+  },
+  {
+    "id": "29819949442",
+    "triggers": "who's there",
+    "responses": "[\"Me! <:CattoPewPew:1276808821808959498>\"]"
   },
   {
     "id": "30686336185",
@@ -40,9 +50,9 @@
     "responses": "[\"You think?\",\"Can you think?\",\"I didn't know you could think!\"]"
   },
   {
-    "id": "35102054878",
-    "triggers": "test",
-    "responses": "[\"with color in the embed\"]"
+    "id": "37135348296",
+    "triggers": "hello doggo",
+    "responses": "[\"Hoi!\",\"Hey!\",\"Hello!\"]"
   },
   {
     "id": "38925828374",
@@ -70,6 +80,21 @@
     "responses": "[\"yes that's me\"]"
   },
   {
+    "id": "63328276570",
+    "triggers": "hey doggo",
+    "responses": "[\"Hoi!\",\"Hey!\",\"Hello!\"]"
+  },
+  {
+    "id": "68403578084",
+    "triggers": "tell a joke",
+    "responses": "[\"Knock knock\"]"
+  },
+  {
+    "id": "69795360972",
+    "triggers": "💀",
+    "responses": "[\"💀\"]"
+  },
+  {
     "id": "73120456168",
     "triggers": "😎",
     "responses": "[\"😎\",\"It's sunny outside 😎\"]"
@@ -90,8 +115,18 @@
     "responses": "[\"No u!\"]"
   },
   {
+    "id": "80419379110",
+    "triggers": "hoi doggo",
+    "responses": "[\"Hoi!\",\"Hey!\",\"Hello!\"]"
+  },
+  {
     "id": "83944192321",
     "triggers": "bruh",
     "responses": "[\"Putain!\",\"What happened?\"]"
+  },
+  {
+    "id": "90205604144",
+    "triggers": "nah bro",
+    "responses": "[\"Do you mean Sodium hydride hypobamite?\"]"
   }
 ]
