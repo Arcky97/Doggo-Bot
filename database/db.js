@@ -1,23 +1,40 @@
 require('dotenv').config();
 const mysql = require('mysql2/promise');
 
-let db; // Declare a variable to hold the database connection
+let pool; // Declare a variable to hold the database connection
 
 async function initDatabase() {
   try {
-    db = await mysql.createConnection({
+    pool = mysql.createPool({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       port: process.env.DB_PORT,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0
     });
 
     console.log('Connected to the database successfully!');
 
-    //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
+/*
+    const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
 
-    //await db.query(dropBotRepliesTable);
+    await pool.query(dropBotRepliesTable);
+
+    const dropGuildSettingsTable = `DROP TABLE IF EXISTS GuildSettings`;
+
+    await pool.query(dropGuildSettingsTable);
+*/
+
+    //const dropLevelXpRequirements = `DROP TABLE IF EXISTS LevelXpRequirements`;
+
+    //await pool.query(dropLevelXpRequirements);
+
+    //const dropcreateMemberLevelsTable = `DROP TABLE IF EXISTS LevelSystem`;
+
+    //await pool.query(dropcreateMemberLevelsTable);
 
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
@@ -31,8 +48,8 @@ async function initDatabase() {
       );
     `;
 
-    const createMemberLevelsTable = `
-      CREATE TABLE IF NOT EXISTS MemberLevels (
+    const createLevelSystemTable = `
+      CREATE TABLE IF NOT EXISTS LevelSystem (
         guildId VARCHAR(100) NOT NULL,
         memberId VARCHAR(100) NOT NULL,
         level INT DEFAULT 1,
@@ -49,10 +66,33 @@ async function initDatabase() {
         PRIMARY KEY (id)
       );
     `;
+
+    const levelSettingsTable = `
+      CREATE TABLE IF NOT EXISTS LevelSettings (
+        guildId VARCHAR(100) NOT NULL PRIMARY KEY,
+        levelMultiplier FLOAT DEFAULT 1.0,
+        announcementId VARCHAR(100) NOT NULL,
+        announcementPing BOOLEAN DEFAULT false,
+        roleMultiplier JSON NOT NULL,
+        chnannelMultiplier JSON NOT NULL,
+        blackListRoles JSON NOT NULL,
+        blackListChannels JSON NOT NULL,
+        xpCooldown INT DEFAULT 30 
+      );
+    `
+
+    const levelXpRequirements = `
+      CREATE TABLE IF NOT EXISTS LevelXpRequirements (
+        level INT NOT NULL PRIMARY KEY,
+        requiredXp INT NOT NULL
+      )
+    `
     
-    await db.query(createGuildSettingsTable);
-    await db.query(createMemberLevelsTable);
-    await db.query(createBotRepliesTable);
+    await pool.query(createGuildSettingsTable);
+    await pool.query(createLevelSystemTable);
+    await pool.query(createBotRepliesTable);
+    await pool.query(levelSettingsTable);
+    //await pool.query(levelXpRequirements);
     console.log('Tables created successfully!');
   } catch (err) {
     console.error('Error initializing the database:', err);
@@ -61,10 +101,13 @@ async function initDatabase() {
 
 // Function to execute queries
 async function query(sql, params) {
-  if (!db) {
-    throw new Error('Database connection not initialized. Call initDatabase first.');
+  const connection = await pool.getConnection();
+  try {
+    const rows = await connection.execute(sql, params);
+    return rows;
+  } finally {
+    connection.release();
   }
-  return db.execute(sql, params);
 }
 
 // Export the functions and connection

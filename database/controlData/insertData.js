@@ -2,7 +2,7 @@ const { query } = require("../db");
 
 async function insertData(table, key, data) {
   const combinedData = { ...key, ...data };
-
+  
   const columns = Object.keys(combinedData);
   const placeholders = columns.map(() => '?').join(', ');
 
@@ -13,7 +13,6 @@ async function insertData(table, key, data) {
   `;
 
   try {
-    console.log("Since the data didn't exist yet, we insert it.")
     await query(insertQuery, Object.values(combinedData));
     console.log('Data inserted successfully.');
   } catch (error) {
