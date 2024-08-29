@@ -32,9 +32,13 @@ async function initDatabase() {
 
     //await pool.query(dropLevelXpRequirements);
 
-    //const dropcreateMemberLevelsTable = `DROP TABLE IF EXISTS LevelSystem`;
+    //const dropMemberLevelsTable = `DROP TABLE IF EXISTS LevelSystem`;
 
-    //await pool.query(dropcreateMemberLevelsTable);
+    //await pool.query(dropMemberLevelsTable);
+
+    //const droplevelSettingsTable = `DROP TABLE IF EXISTS LevelSettings`;
+
+    //await pool.query(droplevelSettingsTable);
 
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
@@ -52,7 +56,7 @@ async function initDatabase() {
       CREATE TABLE IF NOT EXISTS LevelSystem (
         guildId VARCHAR(100) NOT NULL,
         memberId VARCHAR(100) NOT NULL,
-        level INT DEFAULT 1,
+        level INT DEFAULT 0,
         xp INT DEFAULT 0,
         PRIMARY KEY (guildId, memberId)
       );
@@ -71,12 +75,12 @@ async function initDatabase() {
       CREATE TABLE IF NOT EXISTS LevelSettings (
         guildId VARCHAR(100) NOT NULL PRIMARY KEY,
         levelMultiplier FLOAT DEFAULT 1.0,
-        announcementId VARCHAR(100) NOT NULL,
+        announcementId VARCHAR(100) DEFAULT 'not set',
         announcementPing BOOLEAN DEFAULT false,
-        roleMultiplier JSON NOT NULL,
-        chnannelMultiplier JSON NOT NULL,
-        blackListRoles JSON NOT NULL,
-        blackListChannels JSON NOT NULL,
+        roleMultiplier JSON DEFAULT '[]',
+        chnannelMultiplier JSON DEFAULT '[]',
+        blackListRoles JSON DEFAULT '[]',
+        blackListChannels JSON DEFAULT '[]',
         xpCooldown INT DEFAULT 30 
       );
     `
