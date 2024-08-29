@@ -1,11 +1,11 @@
 [
   {
     "guildId": "925765418545741854",
-    "levelMultiplier": 5,
+    "levelMultiplier": 1,
     "announcementId": "not set",
     "announcementPing": 0,
-    "roleMultiplier": "[]",
-    "chnannelMultiplier": "[]",
+    "roleMultipliers": "[]",
+    "channelMultipliers": "[]",
     "blackListRoles": "[]",
     "blackListChannels": "[]",
     "xpCooldown": 30

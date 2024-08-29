@@ -73,7 +73,7 @@ async function setBotReplies({ trigger, response, action, id }) {
   let data;
   let existIDs = await getIDs()
 
-  if (action === "insert") {
+  if (action === 'insert') {
     let numberId = generateNumericId();
     while (existIDs.includes(numberId)) {
       console.log(`Generating a new id since ${numberId} is already in use!`);
@@ -101,7 +101,7 @@ async function setBotReplies({ trigger, response, action, id }) {
 
   let message;
   try {
-    if (action === "insert") {
+    if (action === 'insert') {
       try {
         const triggers = await getTriggers();
         if (!triggers.includes(trigger)) {
@@ -114,7 +114,7 @@ async function setBotReplies({ trigger, response, action, id }) {
         console.error("Error inserting data:", error);
         return `Oh no! Something went wrong while adding your new reply. Please try again.`
       }
-    } else if (action === "check") {
+    } else if (action === 'check') {
       try {
         const triggers = await getTriggers();
         const closestMatch = await findClosestMatch(trigger, triggers);
@@ -136,7 +136,7 @@ async function setBotReplies({ trigger, response, action, id }) {
         if (!dataExist) {
           message = `No reply was found with ID: "${id}", check if you gave the correct ID and try again.`
         } else {
-          if (action === "update") {
+          if (action === 'update') {
             try {
               await updateData('BotReplies', key, data);
               const dataChange = await selectData('BotReplies', key);

@@ -10,7 +10,7 @@ const listReply = async (interaction) => {
     if (replies.length > 0) {
       for (var i = 0; i < Math.ceil(replies.length / pageSize); i++) {
         const embed = new EmbedBuilder()
-          .setColor("Green")
+          .setColor('Green')
           .setTitle('List with Replies')
           .setTimestamp()
           .setFooter({
@@ -32,8 +32,8 @@ const listReply = async (interaction) => {
       }
     } else {
       const embed = new EmbedBuilder()
-        .setColor("Red")
-        .setTitle("No Replies found")
+        .setColor('Red')
+        .setTitle('No Replies found')
         .setDescription('use `/addreply` to start adding replies.')
         .setTimestamp();
       embeds.push(embed);

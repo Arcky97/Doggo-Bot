@@ -77,8 +77,8 @@ async function initDatabase() {
         levelMultiplier FLOAT DEFAULT 1.0,
         announcementId VARCHAR(100) DEFAULT 'not set',
         announcementPing BOOLEAN DEFAULT false,
-        roleMultiplier JSON DEFAULT '[]',
-        chnannelMultiplier JSON DEFAULT '[]',
+        roleMultipliers JSON DEFAULT '[]',
+        channelMultipliers JSON DEFAULT '[]',
         blackListRoles JSON DEFAULT '[]',
         blackListChannels JSON DEFAULT '[]',
         xpCooldown INT DEFAULT 30 

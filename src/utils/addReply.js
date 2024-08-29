@@ -9,15 +9,15 @@ const addReply = async (interaction) => {
   } else {
     response = [response.trim()];
   }
-  const message = await setBotReplies({trigger: trigger, response: response, action: "insert" });
+  const message = await setBotReplies({trigger: trigger, response: response, action: 'insert' });
   try {
-    if (typeof message == "object") {
+    if (typeof message == 'object') {
       let responseArray = JSON.parse(message.responses);
       let responseString = responseArray.join('\n- ')
       let response = responseArray.length > 1 ? 'Responses:' : 'Response:'
       const embed = new EmbedBuilder()
         .setColor(0x57F287)
-        .setTitle("New Reply Added")
+        .setTitle('New Reply Added')
         .setDescription(`**ID:** ${message.id}\n\n**Trigger:** ${message.triggers}\n\n**${response}**\n- ${responseString}`)
         .setTimestamp();
       await interaction.reply({ embeds: [embed] });
