@@ -3,7 +3,6 @@ const { query } = require("../db");
 async function selectData(table, key) {
   const whereClause = Object.keys(key).map(key => `${key} = ?`).join(' AND ');
   const whereValues = Object.values(key);
-
   const selectQuery = `
     SELECT * FROM ${table} WHERE ${whereClause};
   `;

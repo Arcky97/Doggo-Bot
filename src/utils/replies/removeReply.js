@@ -1,4 +1,4 @@
-const { setBotReplies } = require("../../database/botReplies/setBotReplies");
+const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
 
 const removeReply = async (interaction) => {
   const replyID = interaction.options.getString('id');

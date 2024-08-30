@@ -9,6 +9,7 @@ const client = new Client({
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.GuildMembers,
+    IntentsBitField.Flags.GuildPresences,
     IntentsBitField.Flags.MessageContent
   ]
 });

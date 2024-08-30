@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
-const pagination = require("../handlers/pagination");
-const { getReplies } = require("../../database/botReplies/setBotReplies");
+const pagination = require("../../handlers/pagination");
+const { getReplies } = require("../../../database/botReplies/setBotReplies");
 
 const listReply = async (interaction) => {
   const embeds = [];

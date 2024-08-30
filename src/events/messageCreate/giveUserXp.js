@@ -14,7 +14,7 @@ function getRandomXp(min, max) {
 module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.guild.id + message.author.id)) return;
 
-  const xpToGive = getRandomXp(5, 15);
+  const xpToGive = getRandomXp(15, 25);
   const userXp = await selectData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id })
   let newLevel = 0;
   let newXp = 0;
@@ -26,7 +26,8 @@ module.exports = async (client, message) => {
       newXp = userXp['xp'] + xpToGive;
       if (newXp > userLevelXp) {
         newLevel = userXp['level'] + 1
-        await message.channel.send(`Hooray! ${message.author.globalName} leveled up to level ${newLevel}`);
+        const nickname = message.member.nickname || message.author.globalName; 
+        await message.channel.send(`Hooray! ${nickname} leveled up to level ${newLevel}!`);
       } else {
         newLevel = userXp['level']
       }
@@ -43,7 +44,6 @@ module.exports = async (client, message) => {
       }, 30000);
     }
     await insertData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id }, { level: newLevel, xp: newXp })
-    message.channel.send(`${xpToGive} XP was added for ${message.author.globalName} (total: ${newXp} XP)`);
     exportToJson('LevelSystem');
   } catch (error) {
     console.log(`Error giving xp:`, error);

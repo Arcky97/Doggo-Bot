@@ -7,13 +7,11 @@ module.exports = (level) => {
   let lev = 1;
   if (level > 0) {
     while (lev <= level) {
-      console.log(level)
       totalXp += currIncr;
       currIncr += incrStep;
       lev++;
     }
   }
-  console.log(`Level ${level} requires a total of ${totalXp} XP.`)
   return totalXp
 };
 

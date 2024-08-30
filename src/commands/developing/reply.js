@@ -1,9 +1,9 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { addReply } = require("../../utils/addReply");
-const { updateReply } = require("../../utils/updateReply");
-const { removeReply } = require("../../utils/removeReply");
-const { checkReply } = require("../../utils/checkReply");
-const { listReply } = require("../../utils/listReply");
+const { addReply } = require("../../utils/replies/addReply");
+const { updateReply } = require("../../utils/replies/updateReply");
+const { removeReply } = require("../../utils/replies/removeReply");
+const { checkReply } = require("../../utils/replies/checkReply");
+const { listReply } = require("../../utils/replies/listReply");
 
 module.exports = {
   name: 'reply',

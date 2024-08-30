@@ -1,5 +1,12 @@
-{
-  "id": "45009632896",
-  "triggers": "hello",
-  "responses": "[\"Hey!\"]"
-}
+[
+  {
+    "id": "45009632896",
+    "triggers": "hello",
+    "responses": "[\"Hey!\"]"
+  },
+  {
+    "id": "56159021878",
+    "triggers": "are programmers lazy",
+    "responses": "[\"No, only Doggo is lazy (~~and his creator~~)\",\"No, <@763287145615982592> is lazy, but he's not a programmer!\"]"
+  }
+]

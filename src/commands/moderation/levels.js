@@ -143,7 +143,7 @@ module.exports = {
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
     const subCommand = interaction.options.getSubcommand();
-    const multi = interaction.options.get('multiplier').value;
+    const multi = interaction.options.get('value').value;
     const guildId = interaction.guild.id;
     try {
       //await insertData('LevelSettings', { guildId: guildId, levelMultiplier: multi })

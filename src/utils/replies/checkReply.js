@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-const { setBotReplies } = require("../../database/botReplies/setBotReplies");
+const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
 
 const checkReply = async (interaction) => {
   const trigger = interaction.options.getString('trigger');
