@@ -43,7 +43,6 @@ module.exports = {
     }
 
     const guildUsers = await getAllUsersLevel(interaction.guild.id);
-    console.log(guildUsers);
 
     guildUsers.sort((a, b) => {
       if (a.level === b.level) {
