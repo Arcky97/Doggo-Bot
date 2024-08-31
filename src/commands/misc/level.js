@@ -55,7 +55,7 @@ module.exports = {
 
     const targetAvatarURL = targetUserObj.user.displayAvatarURL({ size: 256 })
     const color = await getAccentColor(targetAvatarURL);
-    console.log(color) // #e4caa4, #281d1b, 
+    //console.log(color) // #e4caa4, #281d1b, 
     
     const startLevelXp = calculateLevelXp(userLevel.level - 1)
     const endLevelXp = calculateLevelXp(userLevel.level)
