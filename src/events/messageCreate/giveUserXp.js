@@ -34,14 +34,14 @@ module.exports = async (client, message) => {
       cooldowns.add(message.guild.id + message.author.id);
       setTimeout(() => {
         cooldowns.delete(message.guild.id + message.author.id);
-      }, 1000);
+      }, 15000);
     } else {
       newLevel = 0;
       newXp = xpToGive;
       cooldowns.add(message.guild.id + message.author.id);
       setTimeout(() => {
         cooldowns.delete(message.guild.id + message.author.id);
-      }, 1000);
+      }, 15000);
     }
     await insertData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id }, { level: newLevel, xp: newXp })
     exportToJson('LevelSystem');
