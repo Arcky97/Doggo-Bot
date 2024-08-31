@@ -4,7 +4,7 @@ module.exports = (level) => {
 
   let totalXp = initialXp;
   let currIncr = 20;
-  let lev = 1;
+  let lev = 0;
   if (level > 0) {
     while (lev <= level) {
       totalXp += currIncr;

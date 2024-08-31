@@ -33,6 +33,8 @@ module.exports = {
     const targetUserId = mentionUserId || interaction.member.id;
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
 
+    console.log(interaction)
+
     const userLevel = await getUserLevel(interaction.guild.id, targetUserId);
 
     if (!userLevel && subCommand === 'show') {
@@ -59,10 +61,28 @@ module.exports = {
       .setRank(currentRank)
       .setLevel(userLevel.level)
       .setCurrentXP(userLevel.xp)
-      .setRequiredXP(calculateLevelXp(userLevel.level + 1))
+      .setRequiredXP(calculateLevelXp(userLevel.level))
       .setStatus(targetUserObj.presence?.status || 'offline')  // Fallback for status
-      .setUsername(targetUserObj.user.username)
-
+      .setUsername(targetUserObj.user.globalName)
+      .setStyles({
+        username: {
+          handle: 'text-3xl text-white' 
+        },
+        statistics: {
+          xp: {
+            value: 'text-4xl text-orange-500',
+            text: 'text-3xl text-white'
+          },
+          level: {
+            value: 'text-4xl text-orange-500',
+            text: 'text-3xl text-white'
+          },
+          rank: {
+            value: 'text-4xl text-orange-500',
+            text: 'text-3xl text-white'
+          }
+        }
+      })
     try {
       const data = await rank.build();
       const attachment = new AttachmentBuilder(data);
