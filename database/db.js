@@ -58,7 +58,7 @@ async function initDatabase() {
         memberId VARCHAR(100) NOT NULL,
         level INT DEFAULT 0,
         xp INT DEFAULT 0,
-        color VARCHAR(10) DEFAULT 'Orange',
+        color VARCHAR(10) DEFAULT '#f97316',
         PRIMARY KEY (guildId, memberId)
       );
     `;

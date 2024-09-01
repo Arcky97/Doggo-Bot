@@ -1,3 +1,4 @@
+const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
 const { query } = require("../db");
 
@@ -12,7 +13,11 @@ async function getAllUsersLevel(guildId) {
 }
 
 async function getUserLevel(guildId, memberId) {
-  return selectData('LevelSystem', { guildId: guildId, memberId: memberId });
+  return await selectData('LevelSystem', { guildId: guildId, memberId: memberId });
 }
 
-module.exports = { getAllUsersLevel, getUserLevel }
+async function addUserColor(guildId, memberId, color) {
+  await insertData('LevelSystem', { guildId: guildId, memberId: memberId, color: color });
+}
+
+module.exports = { getAllUsersLevel, getUserLevel, addUserColor }
