@@ -13,7 +13,13 @@ function getRandomXp(min, max) {
 
 module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.guild.id + message.author.id)) return;
-
+  const targetUserObj = await message.guild.members.fetch(message.author.id);
+  console.log(message.guild.members)
+  const roles = targetUserObj.roles.cache
+      .filter(role => role.name !== '@everyone')
+      .map(role => role.id)
+      .join(', ') || 'No roles';
+  console.log(roles)
   const xpToGive = getRandomXp(15, 25);
   const userXp = await selectData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id })
   let newLevel = 0;

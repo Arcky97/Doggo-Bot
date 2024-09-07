@@ -22,7 +22,6 @@ module.exports = async (client, member) => {
     //  .filter(role => role.name !== '@everyone')
     //  .map(role => role.id)
     //  .join(', ') || 'No roles';
-    const userID = member.guild.members.fetch(member.id);
     const roles = 'No roles';
 
     const embed = new EmbedBuilder()
