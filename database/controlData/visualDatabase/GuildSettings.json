@@ -6,14 +6,14 @@
     "memberLogging": null,
     "serverLogging": null,
     "voiceLogging": null,
-    "joinLeaveLogging": null
+    "joinLeaveLogging": "1264595722624303165"
   },
   {
     "guildId": "925765418545741854",
-    "chattingChannel": "1273771024801861734",
+    "chattingChannel": "1256639618103906324",
     "messageLogging": "934542984811274250",
     "memberLogging": "934543030936031243",
-    "serverLogging": "934542925700944003",
+    "serverLogging": "934543312554192957",
     "voiceLogging": "934543240642834463",
     "joinLeaveLogging": "934543093192077342"
   }
