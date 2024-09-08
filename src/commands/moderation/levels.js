@@ -1,5 +1,4 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType } = require("discord.js");
-const { exportToJson } = require("../../../database/controlData/visualDatabase/exportToJson");
 const { setLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 
 module.exports = {

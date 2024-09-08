@@ -18,15 +18,13 @@ async function initDatabase() {
 
     console.log('Connected to the database successfully!');
 
-/*
-    const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
+    //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
 
-    await pool.query(dropBotRepliesTable);
+    //await pool.query(dropBotRepliesTable);
 
-    const dropGuildSettingsTable = `DROP TABLE IF EXISTS GuildSettings`;
+    //const dropGuildSettingsTable = `DROP TABLE IF EXISTS GuildSettings`;
 
-    await pool.query(dropGuildSettingsTable);
-*/
+    //await pool.query(dropGuildSettingsTable);
 
     //const dropLevelXpRequirements = `DROP TABLE IF EXISTS LevelXpRequirements`;
 
@@ -39,6 +37,10 @@ async function initDatabase() {
     //const droplevelSettingsTable = `DROP TABLE IF EXISTS LevelSettings`;
 
     //await pool.query(droplevelSettingsTable);
+
+    //const dropWelcomeSettingsTable = `DROP TABLE IF EXISTS WelcomeSettings`;
+
+    //await pool.query(dropWelcomeSettingsTable);
 
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
@@ -72,7 +74,7 @@ async function initDatabase() {
       );
     `;
 
-    const levelSettingsTable = `
+    const createLevelSettingsTable = `
       CREATE TABLE IF NOT EXISTS LevelSettings (
         guildId VARCHAR(100) NOT NULL PRIMARY KEY,
         levelMultiplier FLOAT DEFAULT 1.0,
@@ -86,18 +88,30 @@ async function initDatabase() {
       );
     `
 
-    const levelXpRequirements = `
+    const createLevelXpRequirements = `
       CREATE TABLE IF NOT EXISTS LevelXpRequirements (
         level INT NOT NULL PRIMARY KEY,
         requiredXp INT NOT NULL
+      )
+    `
+
+    const createWelcomeSettingsTable = `
+      CREATE TABLE IF NOT EXISTS WelcomeSettings (
+        guildId VARCHAR(100) NOT NULL PRIMARY KEY,
+        channelId VARCHAR(100) DEFAULT 'not set',
+        message VARCHAR(1000) DEFAULT 'empty',
+        useEmbed BOOLEAN DEFAULT true,
+        embedColor VARCHAR(10) '#008000',
+        timeStamp BOOLEAN DEFAULT true
       )
     `
     
     await pool.query(createGuildSettingsTable);
     await pool.query(createLevelSystemTable);
     await pool.query(createBotRepliesTable);
-    await pool.query(levelSettingsTable);
-    //await pool.query(levelXpRequirements);
+    await pool.query(createLevelSettingsTable);
+    //await pool.query(createLevelXpRequirements);
+    //await pool.query(createWelcomeSettingsTable);
     console.log('Tables created successfully!');
   } catch (err) {
     console.error('Error initializing the database:', err);

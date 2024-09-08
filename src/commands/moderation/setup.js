@@ -3,7 +3,7 @@ const { setGuildSettings } = require("../../../database/guildSettings/setGuildSe
 
 module.exports = {
   name: 'setup',
-  description: 'setup channels for chatting and logging.',
+  description: 'setup channels for chatting, logging and welcome message.',
   options: [
     {
       type: ApplicationCommandOptionType.Subcommand,
@@ -91,10 +91,10 @@ module.exports = {
     const guildId = interaction.guild.id;
     try {
       let response = await setGuildSettings(guildId, subCommand, channel);
-      interaction.reply(response);
+      await interaction.reply(response);
     } catch (error) {
       console.error('Error setting channel:', error);
-      interaction.reply('There was an error setting the channel. Please try again later');
+      await interaction.reply('There was an error setting the channel. Please try again later');
     }
   }
 }
