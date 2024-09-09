@@ -1,12 +1,32 @@
 [
   {
+    "id": "19935436046",
+    "triggers": "<:CattoPewPew:1276808821808959498>",
+    "responses": "[\"<:CattoPewPew:1276808821808959498>\"]"
+  },
+  {
+    "id": "40010084652",
+    "triggers": "bye",
+    "responses": "[\"Where are you going?\"]"
+  },
+  {
     "id": "45009632896",
     "triggers": "hello",
     "responses": "[\"Hey!\"]"
   },
   {
+    "id": "46408306848",
+    "triggers": "where is my dad",
+    "responses": "[\"Searching for your dad...\",\"I don't know where your daddy is, sorry!\",\"You're dad is in the kitchen, he's cooking!\"]"
+  },
+  {
     "id": "56159021878",
     "triggers": "are programmers lazy",
     "responses": "[\"No, only Doggo is lazy (~~and his creator~~)\",\"No, <@763287145615982592> is lazy, but he's not a programmer!\"]"
+  },
+  {
+    "id": "92582136911",
+    "triggers": "what's up",
+    "responses": "[\"Waddup dog!\"]"
   }
 ]

@@ -38,9 +38,8 @@ async function initDatabase() {
 
     //await pool.query(droplevelSettingsTable);
 
-    //const dropWelcomeSettingsTable = `DROP TABLE IF EXISTS WelcomeSettings`;
-
-    //await pool.query(dropWelcomeSettingsTable);
+    const dropEventsEmbedTable = `DROP TABLE IF EXISTS EventEmbeds`;
+    await pool.query(dropEventsEmbedTable);
 
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
@@ -95,14 +94,48 @@ async function initDatabase() {
       )
     `
 
-    const createWelcomeSettingsTable = `
-      CREATE TABLE IF NOT EXISTS WelcomeSettings (
-        guildId VARCHAR(100) NOT NULL PRIMARY KEY,
-        channelId VARCHAR(100) DEFAULT 'not set',
-        message VARCHAR(1000) DEFAULT 'empty',
-        useEmbed BOOLEAN DEFAULT true,
-        embedColor VARCHAR(10) '#008000',
-        timeStamp BOOLEAN DEFAULT true
+    const createEventEmbedsTable = `
+      CREATE TABLE IF NOT EXISTS EventEmbeds (
+        guildId VARCHAR(100) NOT NULL,
+        channelId VARCHAR(100) NOT NULL,
+        type VARCHAR(50) NOT NULL,
+        message VARCHAR(2000) DEFAULT NULL,
+        color VARCHAR(10) DEFAULT NULL,
+        author VARCHAR(256) DEFAULT NULL,
+        authorUrl VARCHAR(512) DEFAULT NULL,
+        authorIconUrl VARCHAR(512) DEFAULT NULL,
+        title VARCHAR(256) DEFAULT NULL,
+        titleUrl VARCHAR(512) DEFAULT NULL,
+        description VARCHAR(2048) NOT NULL,
+        fields JSON DEFAULT NULL,
+        imageUrl VARCHAR(512) DEFAULT NULL,
+        thumbnailUrl VARCHAR(512) DEFAULT NULL,
+        footer VARCHAR(2048) DEFAULT NULL,
+        footerIconUrl VARCHAR(512) DEFAULT NULL,
+        timeStamp BOOLEAN DEFAULT true,
+        PRIMARY KEY (guildId, channelId, type)
+      )
+    `
+    const createGeneratedEmbedsTable = `
+      CREATE TABLE IF NOT EXISTS GeneratedEmbeds (
+        guildId VARCHAR(100) NOT NULL,
+        channelId VARCHAR(100) NOT NULL,
+        messageId VARCHAR(100) NOT NULL,
+        message VARCHAR(2000) DEFAULT NULL,
+        color VARCHAR(10) DEFAULT NULL,
+        author VARCHAR(256) DEFAULT NULL,
+        authorUrl VARCHAR(512) DEFAULT NULL,
+        authorIconUrl VARCHAR(512) DEFAULT NULL,
+        title VARCHAR(256) NOT NULL,
+        titleUrl VARCHAR(512) DEFAULT NULL,
+        description VARCHAR(2048) NOT NULL,
+        fields JSON DEFAULT NULL,
+        imageUrl VARCHAR(512) DEFAULT NULL,
+        thumbnailUrl VARCHAR(512) DEFAULT NULL,
+        footer VARCHAR(2048) DEFAULT NULL,
+        footerIconUrl VARCHAR(512) DEFAULT NULL,
+        timeStamp BOOLEAN DEFAULT true,
+        PRIMARY KEY (guildId, channelId, messageId)
       )
     `
     
@@ -111,7 +144,8 @@ async function initDatabase() {
     await pool.query(createBotRepliesTable);
     await pool.query(createLevelSettingsTable);
     //await pool.query(createLevelXpRequirements);
-    //await pool.query(createWelcomeSettingsTable);
+    await pool.query(createEventEmbedsTable);
+    //await pool.query(createGeneratedEmbedsTable);
     console.log('Tables created successfully!');
   } catch (err) {
     console.error('Error initializing the database:', err);

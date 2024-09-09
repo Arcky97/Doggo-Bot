@@ -3,7 +3,7 @@ const { setGuildSettings } = require("../../../database/guildSettings/setGuildSe
 
 module.exports = {
   name: 'setup',
-  description: 'setup channels for chatting, logging and welcome message.',
+  description: 'setup channels for chatting and logging.',
   options: [
     {
       type: ApplicationCommandOptionType.Subcommand,
@@ -82,7 +82,7 @@ module.exports = {
           required: true
         }
       ]
-    }
+    },
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {

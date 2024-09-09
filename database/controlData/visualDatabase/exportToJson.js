@@ -15,4 +15,4 @@ async function exportToJson(table) {
   }
 }
 
-module.exports = {exportToJson}
+module.exports = { exportToJson }

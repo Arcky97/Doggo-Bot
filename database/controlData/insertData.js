@@ -9,7 +9,6 @@ async function insertData(table, key, data) {
   const insertQuery = `
     INSERT INTO ${table} (${columns.join(', ')})
     VALUES (${placeholders})
-    ON DUPLICATE KEY UPDATE ${columns.map(col => `${col} = VALUES(${col})`).join(', ')};
   `;
 
   try {

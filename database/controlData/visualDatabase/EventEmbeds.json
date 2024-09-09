@@ -1,0 +1,21 @@
+[
+  {
+    "guildId": "1263545537303416863",
+    "channelId": "1263545537303416866",
+    "type": "welcome",
+    "message": null,
+    "color": null,
+    "author": null,
+    "authorUrl": null,
+    "authorIconUrl": null,
+    "title": "konnichiwa",
+    "titleUrl": null,
+    "description": "hello hello",
+    "fields": null,
+    "imageUrl": null,
+    "thumbnailUrl": null,
+    "footer": null,
+    "footerIconUrl": null,
+    "timeStamp": 1
+  }
+]
