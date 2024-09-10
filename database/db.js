@@ -38,8 +38,11 @@ async function initDatabase() {
 
     //await pool.query(droplevelSettingsTable);
 
-    const dropEventsEmbedTable = `DROP TABLE IF EXISTS EventEmbeds`;
-    await pool.query(dropEventsEmbedTable);
+    const dropEventsEmbedsTable = `DROP TABLE IF EXISTS EventEmbeds`;
+    await pool.query(dropEventsEmbedsTable);
+
+    //const dropGeneratedEmbedsTable = `DROP TABLE IF EXISTS GeneratedEmbeds`;
+    //await pool.query(dropGeneratedEmbedsTable);
 
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
@@ -145,7 +148,7 @@ async function initDatabase() {
     await pool.query(createLevelSettingsTable);
     //await pool.query(createLevelXpRequirements);
     await pool.query(createEventEmbedsTable);
-    //await pool.query(createGeneratedEmbedsTable);
+    await pool.query(createGeneratedEmbedsTable);
     console.log('Tables created successfully!');
   } catch (err) {
     console.error('Error initializing the database:', err);

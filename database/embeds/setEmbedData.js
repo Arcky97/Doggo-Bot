@@ -3,6 +3,10 @@ const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
+async function getGeneratedEmbed(guild, message) {
+  return await selectData('GeneratedEmbeds', { guildId: guild, messageId: message }) 
+}
+
 async function setEventEmbed(guild, channel, type, data) {
   const keys = {
     guildId: guild,
@@ -36,4 +40,4 @@ async function setEmbedData(table, keys, data) {
   }
 }
 
-module.exports = { setEventEmbed, setGeneratedEmbed };
+module.exports = { setEventEmbed, setGeneratedEmbed, getGeneratedEmbed };
