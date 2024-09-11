@@ -5,13 +5,8 @@ module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot) return;
   
   try {
-    const messageLogChannelId = await selectData('GuildSettings', { guildId: message.guild.id });
-
-    if (!messageLogChannelId || !messageLogChannelId.messageLogging) return;
-
-    const logChannel = client.channels.cache.get(messageLogChannelId.messageLogging);
-    
-    if (!logChannel) return;
+    const channel = await getLogChannel(client, message.guild.id, 'member');
+    if (!channel) return;
 
     const embed = new EmbedBuilder()
       .setColor('DarkOrange')
@@ -26,7 +21,7 @@ module.exports = async (client, message) => {
         text: `User ID: ${message.author.id}`
       });
 
-      await logChannel.send({ embeds: [embed] });
+      await channel.send({ embeds: [embed] });
   } catch (error) {
     console.error('There was an error sending the embed:', error);
   }

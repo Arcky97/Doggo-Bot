@@ -51,7 +51,7 @@ async function setGuildSettings(guildId, settingName, channelId) {
     const dataExist = await selectData('GuildSettings', key)
     let message;
     try {
-      if (dataExist && dataExist[column]) {
+      if (dataExist) {
         if (dataExist[column] === data[column]) {
           await deleteData('GuildSettings', key, data);
           message = `The channel for ${settingName} has been resetted!`;

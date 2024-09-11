@@ -13,8 +13,7 @@ function getRandomXp(min, max) {
 
 module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.guild.id + message.author.id)) return;
-  const targetUserObj = await message.guild.members.fetch(message.author.id);
-  /*console.log(message.guild.members)
+   /*const targetUserObj = await message.guild.members.fetch(message.author.id);
   const roles = targetUserObj.roles.cache
       .filter(role => role.name !== '@everyone')
       .map(role => role.id)

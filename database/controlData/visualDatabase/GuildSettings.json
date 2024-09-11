@@ -2,8 +2,8 @@
   {
     "guildId": "1263545537303416863",
     "chattingChannel": "1264595722624303165",
-    "messageLogging": null,
-    "memberLogging": null,
+    "messageLogging": "1264595722624303165",
+    "memberLogging": "1264595722624303165",
     "serverLogging": null,
     "voiceLogging": null,
     "joinLeaveLogging": "1264595722624303165"

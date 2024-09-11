@@ -218,10 +218,10 @@ module.exports = {
         }
         await interaction.editReply(replyMessage);
       } else {
-        const oldEmbed = getGeneratedEmbed(guildId, messageId);
-        const channel = client.channels.cache.get(oldEmbed.channelId);
         const messageId = interaction.options.getString('messageid');
         const message = await channel.messages.fetch(messageId);
+        const oldEmbed = getGeneratedEmbed(guildId, messageId);
+        const channel = client.channels.cache.get(oldEmbed.channelId);
         if (embedAction === 'edit') {
 
         } else if (embedAction === 'delete') {
