@@ -3,6 +3,7 @@ const { selectData } = require('../../../database/controlData/selectData');
 const { insertData } = require('../../../database/controlData/insertData');
 const { exportToJson } = require('../../../database/controlData/visualDatabase/exportToJson');
 const calculateLevelXp = require('../../utils/calculateLevelXp');
+const { updateData } = require('../../../database/controlData/updateData');
 const cooldowns = new Set();
 
 function getRandomXp(min, max) {
@@ -48,7 +49,11 @@ module.exports = async (client, message) => {
         cooldowns.delete(message.guild.id + message.author.id);
       }, 15000);
     }
-    await insertData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id }, { level: newLevel, xp: newXp })
+    if (userXp) {
+      await updateData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id }, { level: newLevel, xp: newXp })
+    } else {
+      await insertData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id }, { level: newLevel, xp: newXp })
+    }
     exportToJson('LevelSystem');
   } catch (error) {
     console.log(`Error giving xp:`, error);

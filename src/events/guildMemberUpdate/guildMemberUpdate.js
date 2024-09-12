@@ -8,7 +8,6 @@ module.exports = async (client, oldMember, newMember) => {
     const channel = await getLogChannel(client, newMember.guild.id, 'member');
     if (!channel) return;
 
-    console.log(channel);
     const oldRoles = getMemberRoles(oldMember);
     const newRoles = getMemberRoles(newMember);
     const oldNickName = oldMember.nickname;
@@ -16,8 +15,9 @@ module.exports = async (client, oldMember, newMember) => {
     let action;
     let title;
     let description;
+    let fields = [];
     let roles;
-    if (oldRoles !== newRoles) {
+    if (oldRoles.length !== newRoles.length) {
       // role has changed
       if (oldRoles.length < newRoles.length) {
         // role added
@@ -28,26 +28,39 @@ module.exports = async (client, oldMember, newMember) => {
         roles = oldRoles.filter(role => !newRoles.includes(role));
         action = 'removed'
       }
-      const roleMentions = roles.map(roleId => `<@${roleId}>`);
+      const roleMentions = roles.map(roleId => `<@&${roleId}>`);
       title = `${roles.length > 1 ? 'Roles' : 'Role'} ${action}`
       description = roleMentions.join(', ')
     } else if (oldNickName !== newNickName) {
       title = 'Nickname change';
-      description = `Before: ${oldNickName}\nAfter: ${newNickName}`;
+      fields.push({name: 'Before:', value: oldNickName});
+      fields.push({name: 'After:', value: newNickName});
+      //description = `Before: ${oldNickName}\nAfter+: ${newNickName}`;
     }
     //const embed = createEmbed(newMember, title, description);
-    const embed = new EmbedBuilder()
+    if (!title) return;
+    
+    let embed = new EmbedBuilder()
       .setColor('Blue')
       .setAuthor({
         name: newMember.user.globalName,
         iconURL: newMember.user.avatarURL()
       })
       .setTitle(title)
-      .setDescription(description)
       .setTimestamp()
       .setFooter({
         text: `User ID: ${newMember.user.id}`
       });
+    if (roles) {
+      embed.setDescription(description);
+    } else {
+      fields.forEach((field) => {
+        embed.addFields({
+          name: field.name,
+          value: field.value
+        })
+      });
+    }
     await channel.send({ embeds: [embed] })
     console.log(`${oldMember.user.username} updated their profile!`);
   } catch (error) {

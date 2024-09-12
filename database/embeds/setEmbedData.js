@@ -1,7 +1,13 @@
+const { deleteData } = require("../controlData/deleteData");
 const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+
+async function deleteGeneratedEmbed(guild, message) {
+  await deleteData('GeneratedEmbeds', { guildId: guild, messageId: message });
+  exportToJson('GeneratedEmbeds');
+}
 
 async function getGeneratedEmbed(guild, message) {
   return await selectData('GeneratedEmbeds', { guildId: guild, messageId: message }) 
@@ -33,11 +39,10 @@ async function setEmbedData(table, keys, data) {
     } else {
       await updateData(table, keys, data);
     }
-    
     exportToJson(table);
   } catch (error) {
     console.log('There was an error setting Data for the Embed:', error);
   }
 }
 
-module.exports = { setEventEmbed, setGeneratedEmbed, getGeneratedEmbed };
+module.exports = { setEventEmbed, setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed };

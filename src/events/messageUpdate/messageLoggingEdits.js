@@ -24,7 +24,7 @@ module.exports = async (client, oldMessage, newMessage) => {
       })
       .setTitle(`Message edited in #${oldMessage.channel.name}`)
       .setURL(`https://discord.com/channels/${oldMessage.guild.id}/${oldMessage.channelId}/${oldMessage.id}`)
-      .setDescription(`**Before:** ${oldContent}\n**After:** ${newContent}`)
+      .setDescription(`**Before:** ${oldContent}\n**After+:** ${newContent}`)
       .setTimestamp()
       .setFooter({
         text: `User ID: ${oldMessage.author.id}`

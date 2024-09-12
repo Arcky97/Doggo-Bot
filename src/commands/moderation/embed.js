@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { setEventEmbed, setGeneratedEmbed, getGeneratedEmbed } = require("../../../database/embeds/setEmbedData");
+const { setEventEmbed, setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed } = require("../../../database/embeds/setEmbedData");
 
 module.exports = {
   name: 'embed',
@@ -167,6 +167,7 @@ module.exports = {
 
       if (name.includes('icon')) name = name.replace('icon', 'Icon'); 
       if (name.includes('url')) name = name.replace('url', 'Url'); 
+      if (name.includes('stamp')) name = name.replace('stamp', 'Stamp');
 
       if(value !== undefined) {
         embedOptions[name] = value;
@@ -207,7 +208,7 @@ module.exports = {
           }
           if (embedOptions.timeStamp) embed.setTimestamp();
           
-          const message = await channel.send({ embeds: [embed] });
+          const message = await channel.send({content: embedOptions.message, embeds: [embed] });
           setGeneratedEmbed(guildId, channel.id, message.id, embedOptions);
           replyMessage = `Your embed has been generated and sent to <#${channel.id}>.`
           // create and send the embed and save it to the database
@@ -219,14 +220,19 @@ module.exports = {
         await interaction.editReply(replyMessage);
       } else {
         const messageId = interaction.options.getString('messageid');
-        const message = await channel.messages.fetch(messageId);
-        const oldEmbed = getGeneratedEmbed(guildId, messageId);
+        const oldEmbed = await getGeneratedEmbed(guildId, messageId);
         const channel = client.channels.cache.get(oldEmbed.channelId);
+        const message = await channel.messages.fetch(messageId);
         if (embedAction === 'edit') {
-
+          interaction.editReply('Sorry, but editing embeds is not possible yet.')
         } else if (embedAction === 'delete') {
-          await message.delete();
-          interaction.editReply(`The embed with message ID: ${messageId} in <#${channel} was deleted successfully.`);
+          if (oldEmbed) {
+            if (message) await message.delete();
+            await deleteGeneratedEmbed(guildId, messageId);
+            interaction.editReply(`The embed with message ID: ${messageId} in ${channel} was deleted successfully.`);
+          } else {
+            interaction.editReply(`The embed with message ID: ${messageId} does not exist.`)
+          }
         }
       }
     } catch (error) {

@@ -2,20 +2,20 @@ const { query } = require("../db");
 
 async function deleteData(table, key, data) {
   let deleteQuery;
-  const whereClause = Object.keys(key)[0]; 
-  const whereValues = [Object.values(key)[0]]; 
+  const whereClause = Object.keys(key).map(key => `${key} = ?`).join(' AND ');
+  const whereValues = Object.values(key);
 
   if (data) { // delete an element
-    const whereData = Object.keys(data)[0]
+    const whereData = Object.keys(data).map(col => `${col} = NULL`).join(', ');
     deleteQuery = `
       UPDATE ${table}
-      SET ${whereData} = NULL
-      WHERE ${whereClause} = ?;
+      SET ${whereData}
+      WHERE ${whereClause};
     `;
   } else { // delete entire row
     deleteQuery = `
       DELETE FROM ${table}
-      WHERE ${whereClause} = ?;
+      WHERE ${whereClause};
     `;
   }
 
