@@ -38,11 +38,14 @@ async function initDatabase() {
 
     //await pool.query(droplevelSettingsTable);
 
-    const dropEventsEmbedsTable = `DROP TABLE IF EXISTS EventEmbeds`;
-    await pool.query(dropEventsEmbedsTable);
+    //onst dropEventsEmbedsTable = `DROP TABLE IF EXISTS EventEmbeds`;
+    //await pool.query(dropEventsEmbedsTable);
 
     //const dropGeneratedEmbedsTable = `DROP TABLE IF EXISTS GeneratedEmbeds`;
     //await pool.query(dropGeneratedEmbedsTable);
+
+    //const dropReactionRolesTable = `DROP TABLE IF EXISTS ReactionRoles`;
+    //await pool.query(dropReactionRolesTable);
 
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
@@ -141,6 +144,16 @@ async function initDatabase() {
         PRIMARY KEY (guildId, channelId, messageId)
       )
     `
+
+    const createReactionRolesTable = `
+      CREATE TABLE IF NOT EXISTS ReactionRoles (
+        guildId VARCHAR(100) NOT NULL,
+        channelId VARCHAR(100) NOT NULL,
+        messageId VARCHAR(100) NOT NULL,
+        emojiRolePairs JSON DEFAULT NULL,
+        PRIMARY KEY (guildId, channelId, messageId)
+      )
+    `
     
     await pool.query(createGuildSettingsTable);
     await pool.query(createLevelSystemTable);
@@ -149,6 +162,7 @@ async function initDatabase() {
     //await pool.query(createLevelXpRequirements);
     await pool.query(createEventEmbedsTable);
     await pool.query(createGeneratedEmbedsTable);
+    await pool.query(createReactionRolesTable);
     console.log('Tables created successfully!');
   } catch (err) {
     console.error('Error initializing the database:', err);

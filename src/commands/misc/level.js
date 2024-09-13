@@ -174,37 +174,42 @@ module.exports = {
         interaction.editReply("There was an error generating the rank card.");
       }
     } else if (subCommand === 'color') {
-      const colorChoice = interaction.options.get('color').value;
-      let hexColor;
-
-      if (colorChoice.toLowerCase() === 'random') {
-        hexColor = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
-        interaction.editReply(`Your random color is ${hexColor}`);
-      } else if (colorChoice.startsWith('#', 0)) {
-        const hexPattern = /^#([A-Fa-f0-9]{6})$/;
-
-        if (hexPattern.test(colorChoice)) {
-          hexColor = colorChoice
-          interaction.editReply(`Your given color is ${colorChoice}`);
+      const userLevel = await getUserLevel(interaction.guild.id, interaction.member.id);
+      if (userLevel) {
+        const colorChoice = interaction.options.get('color').value;
+        let hexColor;
+  
+        if (colorChoice.toLowerCase() === 'random') {
+          hexColor = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
+          interaction.editReply(`Your random color is ${hexColor}`);
+        } else if (colorChoice.startsWith('#', 0)) {
+          const hexPattern = /^#([A-Fa-f0-9]{6})$/;
+  
+          if (hexPattern.test(colorChoice)) {
+            hexColor = colorChoice
+            interaction.editReply(`Your given color is ${colorChoice}`);
+          } else {
+            interaction.editReply(`The provided hex color "${colorChoice}" is not valid.`);
+          }        
         } else {
-          interaction.editReply(`The provided hex color "${colorChoice}" is not valid.`);
-        }        
+          const colorMatch = ntc.names.find(([hex, name]) => name.toLowerCase() === colorChoice.toLowerCase());
+          console.log(colorMatch)
+          if (colorMatch) {
+            hexColor = "#" + colorMatch[0];
+            await interaction.editReply(`Your given color name is ${colorMatch[1]} with hex #${colorMatch[0]}`)
+          } else {
+            await interaction.editReply(`The color name "${colorChoice}" was not found.`);
+          }
+        }
+        if (hexColor) {
+          try {
+            await addUserColor(interaction.guild.id, interaction.member.id, hexColor)
+          } catch (error) {
+            console.log('Error inserting color.', error);
+          }
+        }
       } else {
-        const colorMatch = ntc.names.find(([hex, name]) => name.toLowerCase() === colorChoice.toLowerCase());
-        console.log(colorMatch)
-        if (colorMatch) {
-          hexColor = "#" + colorMatch[0];
-          await interaction.editReply(`Your given color name is ${colorMatch[1]} with hex #${colorMatch[0]}`)
-        } else {
-          await interaction.editReply(`The color name "${colorChoice}" was not found.`);
-        }
-      }
-      if (hexColor) {
-        try {
-          await addUserColor(interaction.guild.id, interaction.member.id, hexColor)
-        } catch (error) {
-          console.log('Error inserting color.', error);
-        }
+        await interaction.editReply("You don't have a level yet so you can't set a color just yet.");
       }
     } else if (subCommand === 'leaderboard') {
       await interaction.editReply("Sorry but the leaderboard isn't finished yet. Try again another time or ask <@835094939724808232> to hurry up and finish it!");

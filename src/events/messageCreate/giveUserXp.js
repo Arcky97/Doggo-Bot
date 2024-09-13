@@ -5,6 +5,7 @@ const { exportToJson } = require('../../../database/controlData/visualDatabase/e
 const calculateLevelXp = require('../../utils/calculateLevelXp');
 const { updateData } = require('../../../database/controlData/updateData');
 const cooldowns = new Set();
+const { getUserLevel } = require('../../../database/levelSystem/setLevelSystem')
 
 function getRandomXp(min, max) {
   min = Math.ceil(min);
@@ -14,14 +15,8 @@ function getRandomXp(min, max) {
 
 module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.guild.id + message.author.id)) return;
-   /*const targetUserObj = await message.guild.members.fetch(message.author.id);
-  const roles = targetUserObj.roles.cache
-      .filter(role => role.name !== '@everyone')
-      .map(role => role.id)
-      .join(', ') || 'No roles';
-  console.log(roles)*/
   const xpToGive = getRandomXp(15, 25);
-  const userXp = await selectData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id })
+  const userXp = await getUserLevel(message.guild.id, message.author.id);
   let newLevel = 0;
   let newXp = 0;
   try {

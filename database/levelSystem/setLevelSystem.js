@@ -1,5 +1,5 @@
-const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
+const { updateData } = require("../controlData/updateData");
 const { query } = require("../db");
 
 async function getAllUsersLevel(guildId) {
@@ -17,7 +17,7 @@ async function getUserLevel(guildId, memberId) {
 }
 
 async function addUserColor(guildId, memberId, color) {
-  await insertData('LevelSystem', { guildId: guildId, memberId: memberId, color: color });
+  await updateData('LevelSystem', { guildId: guildId, memberId: memberId, color: color });
 }
 
 module.exports = { getAllUsersLevel, getUserLevel, addUserColor }

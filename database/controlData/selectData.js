@@ -1,8 +1,8 @@
 const { query } = require("../db");
 
-async function selectData(table, key) {
-  const whereClause = Object.keys(key).map(key => `${key} = ?`).join(' AND ');
-  const whereValues = Object.values(key);
+async function selectData(table, keys) {
+  const whereClause = Object.keys(keys).map(key => `${key} = ?`).join(' AND ');
+  const whereValues = Object.values(keys);
   const selectQuery = `
     SELECT * FROM ${table} WHERE ${whereClause};
   `;
