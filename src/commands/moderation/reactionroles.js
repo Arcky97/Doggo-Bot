@@ -1,7 +1,7 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { insertReactionRoles, getReactionRoles, updateReactionRoles } = require("../../../database/controlData/reactionRoles/setReactionRoles");
+const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
+const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles } = require("../../../database/controlData/reactionRoles/setReactionRoles");
 const { exportToJson } = require("../../../database/controlData/visualDatabase/exportToJson");
-const addMessageReactions = require("../../utils/addMessageReactions");
+const setMessageReactions = require("../../utils/setMessageReactions");
 
 module.exports = {
   name: 'reaction',
@@ -64,10 +64,29 @@ module.exports = {
               description: 'Channel where the message is located.'
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'delete',
+          description: 'Remove all Reaction Roles of a message.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'messageid',
+              description: 'The message ID of the message (or embed) to remove the Reaction Roles.',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'channel',
+              description: 'Channel where the message is located.'
+            }
+          ]
         }
       ]
     }
   ],
+  permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
     const subCommand = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
@@ -75,23 +94,26 @@ module.exports = {
     const channel = interaction.options.getChannel('channel') || interaction.channel;
     const overwrite = interaction.options.getBoolean('overwrite') || false; 
     const reactionRolesData = await getReactionRoles(guildId, channel.id, messageId);
-  
-    const emojiRoles = interaction.options.getString('emojiroles');
-    const splitEmojiRoles = emojiRoles.split(';').map(s => s.trim());
     let emojiRolePairs = [];
+
 
     await interaction.deferReply();
 
-    for (const pair of splitEmojiRoles) {
-      const [emoji, roleId] = pair.split(',');
+    if (subCommand !== 'delete') {
+      const emojiRoles = interaction.options.getString('emojiroles');
+      const splitEmojiRoles = emojiRoles.split(';').map(s => s.trim());   
   
-      if (!emoji || !roleId) {
-        return await interaction.editReply({ content: 'Invalid format for emoji-roles. Use format: :emoji:, @role', ephemeral: true });
+      for (const pair of splitEmojiRoles) {
+        const [emoji, roleId] = pair.split(',');
+    
+        if (!emoji || !roleId) {
+          return await interaction.editReply({ content: 'Invalid format for emoji-roles. Use format: :emoji:, @role', ephemeral: true });
+        }
+    
+        emojiRolePairs.push({ emoji: emoji.trim(), roleId: roleId.trim() });
       }
-  
-      emojiRolePairs.push({ emoji, roleId });
     }
-  
+
     let message;
     try {
       message = await channel.messages.fetch(messageId);
@@ -102,11 +124,11 @@ module.exports = {
     if (reactionRolesData && !overwrite) {
       emojiRolePairs = emojiRolePairs.concat(JSON.parse(reactionRolesData.emojiRolePairs));
     }
-  
+
     if (subCommand === 'create') {
       if (!reactionRolesData) {
-        await addMessageReactions(interaction, message, emojiRolePairs, overwrite)
-        await insertReactionRoles(guildId, channel.id, messageId, splitEmojiRoles);
+        await setMessageReactions(interaction, message, emojiRolePairs, overwrite)
+        await insertReactionRoles(guildId, channel.id, messageId, emojiRolePairs);
         await interaction.editReply('Reaction roles have been added to the message!');
       } else {
         await interaction.editReply('The message with ID ' + messageId + ' already has Reaction Roles added, use `/reaction roles edit` instead to add more or edit the existing ones.');
@@ -117,10 +139,13 @@ module.exports = {
       } else {
         await interaction.editReply('Reaction roles have been updated.');
       }
-      await addMessageReactions(interaction, message, emojiRolePairs, overwrite)
+      await setMessageReactions(interaction, message, emojiRolePairs, overwrite);
       await updateReactionRoles(guildId, channel.id, messageId, emojiRolePairs);
+    } else if (subCommand === 'delete') {
+      await interaction.editReply('Reaction roles have been removed from the message.');
+      await message.reactions.removeAll()
+      await removeReactionRoles(guildId, channel.id, messageId);
     }
-  
     exportToJson('ReactionRoles');
-  }  
+  }
 }

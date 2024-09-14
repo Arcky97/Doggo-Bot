@@ -1,8 +1,7 @@
 require('dotenv').config();
-const { Client, IntentsBitField, } = require('discord.js');
+const { Client, IntentsBitField, Partials } = require('discord.js');
 const eventHandler = require('./handlers/eventHandler');
 const database = require('./../database/db.js');
-const { levelXpRequirements } = require('./utils/levelXpRequirements.js');
 
 const client = new Client({
   intents: [
@@ -10,7 +9,13 @@ const client = new Client({
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.GuildMembers,
     IntentsBitField.Flags.GuildPresences,
-    IntentsBitField.Flags.MessageContent
+    IntentsBitField.Flags.MessageContent,
+    IntentsBitField.Flags.GuildMessageReactions
+  ],
+  partials: [
+    Partials.Message,
+    Partials.Reaction,
+    Partials.User
   ]
 });
 

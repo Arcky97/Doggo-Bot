@@ -1,3 +1,4 @@
+const { deleteData } = require("../deleteData");
 const { insertData } = require("../insertData");
 const { selectData } = require("../selectData");
 const { updateData } = require("../updateData");
@@ -38,4 +39,12 @@ async function updateReactionRoles(guild, channel, message, input) {
   await updateData('ReactionRoles', keys, data);
 }
 
-module.exports = { getReactionRoles, insertReactionRoles, updateReactionRoles };
+async function removeReactionRoles(guild, channel, message) {
+  const keys = reactionRolesKeys(guild, channel, message);
+
+
+  await deleteData('ReactionRoles', keys);
+  
+}
+
+module.exports = { getReactionRoles, insertReactionRoles, updateReactionRoles, removeReactionRoles };
