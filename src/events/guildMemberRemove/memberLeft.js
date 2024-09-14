@@ -14,7 +14,7 @@ module.exports = async (client, member) => {
 
     const joinedAt = moment(member.joinedAt).format("MMMM Do YYYY, h:mm:ss a");
     const leftAt = moment().format("MMMM Do YYYY, h:mm:ss a");
-    const timeSpent = formatTime(member.joinedAt);
+    const timeSpent = await formatTime(member.joinedAt);
     //const timeSpent = moment.duration(moment().diff(member.joinedAt)).humanize();
     const roles = getMemberRoles(member);
     let roleMentions;
