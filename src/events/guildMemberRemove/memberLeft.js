@@ -11,14 +11,12 @@ module.exports = async (client, member) => {
     const channel = await getLogChannel(client, member.guild.id, 'joinleave');
     if(!channel) return;
 
-
     const joinedAt = moment(member.joinedAt).format("MMMM Do YYYY, h:mm:ss a");
     const leftAt = moment().format("MMMM Do YYYY, h:mm:ss a");
     const timeSpent = await formatTime(member.joinedAt);
     //const timeSpent = moment.duration(moment().diff(member.joinedAt)).humanize();
     const roles = getMemberRoles(member);
     let roleMentions;
-    console.log(roles)
     if (roles.length !== 0) {
       roleMentions = roles.map(roleId => `<@&${roleId}>`);
     } else {

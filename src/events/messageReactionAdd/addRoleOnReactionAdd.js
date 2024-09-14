@@ -22,7 +22,6 @@ module.exports = async (client, reaction, user) => {
   }
 
   console.log(`${user.tag} added a reaction: ${reaction.emoji.name}`);
-  console.log('A reaction has been added to a message.');
 
   // Handle custom and standard emojis
   const emojiName = reaction.emoji.name;
