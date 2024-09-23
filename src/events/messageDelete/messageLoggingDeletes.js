@@ -1,11 +1,11 @@
 const { Client, Message, EmbedBuilder } = require("discord.js");
-const { selectData } = require("../../../database/controlData/selectData");
+const getLogChannel = require("../../utils/getLogChannel");
 
 module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot) return;
   
   try {
-    const channel = await getLogChannel(client, message.guild.id, 'member');
+    const channel = await getLogChannel(client, message.guild.id, 'message');
     if (!channel) return;
 
     const embed = new EmbedBuilder()

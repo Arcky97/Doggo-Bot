@@ -1,17 +1,12 @@
 const { Client, Message, EmbedBuilder } = require('discord.js');
-const { selectData } = require('../../../database/controlData/selectData');
+const getLogChannel = require('../../utils/getLogChannel');
 
 module.exports = async (client, oldMessage, newMessage) => {
   if (!oldMessage.inGuild() || oldMessage.author.bot) return;
 
   try {
-    const messageLogChannelId = await selectData('GuildSettings', { guildId: oldMessage.guild.id });
-
-    if (!messageLogChannelId || !messageLogChannelId.messageLogging) return;
-
-    const logChannel = client.channels.cache.get(messageLogChannelId.messageLogging);
-    
-    if (!logChannel) return;
+    const channel = await getLogChannel(client, oldMessage.guild.id, 'message');
+    if (!channel) return;
 
     const oldContent = oldMessage.content || '*No content*';
     const newContent = newMessage.content || '*No content*';
@@ -39,7 +34,7 @@ module.exports = async (client, oldMessage, newMessage) => {
         text: `User ID: ${oldMessage.author.id}`
       });
 
-      await logChannel.send({ embeds: [embed] });
+      await channel.send({ embeds: [embed] });
   } catch (error) {
     console.error('There was an error sending the embed:', error);
   }

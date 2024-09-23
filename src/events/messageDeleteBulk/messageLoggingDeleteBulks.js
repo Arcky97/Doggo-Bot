@@ -1,15 +1,10 @@
 const { Client, Message, EmbedBuilder } = require("discord.js");
-const { selectData } = require("../../../database/controlData/selectData");
+const getLogChannel = require("../../utils/getLogChannel");
 
 module.exports = async (client, bulk) => {
   try {
-    const messageLogChannelId = await selectData('GuildSettings', { guildId: bulk.first().guild.id });
-
-    if (!messageLogChannelId || !messageLogChannelId.messageLogging) return;
-
-    const logChannel = client.channels.cache.get(messageLogChannelId.messageLogging);
-    
-    if (!logChannel) return;
+    const channel = await getLogChannel(client, bulk.first().guild.id, 'message');
+    if (!channel) return;
 
     let bulkContent = [];
 
@@ -26,7 +21,7 @@ module.exports = async (client, bulk) => {
         text: `${bulkContent.length} latest shown`
       });
 
-      await logChannel.send({ embeds: [embed] })
+      await channel.send({ embeds: [embed] })
   } catch (error) {
     console.error('There was an error sending the embed:', error);
   }
