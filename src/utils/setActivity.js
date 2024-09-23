@@ -8,7 +8,7 @@ module.exports = async (client) => {
   });
 
   client.user.setActivity({
-    name: `${totalMembers} Users in ${serverCount} Server!`,
+    name: `${totalMembers} Users in ${serverCount} Servers!`,
     type: ActivityType.Watching,
   })
 }
