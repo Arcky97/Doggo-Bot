@@ -32,8 +32,8 @@ module.exports = async (client, member) => {
       .setTitle(`Member Left`)
       .addFields(
         {
-          name: 'User name:',
-          value: `<@${member.id}>`
+          name: 'User name',
+          value: `<@${member.user.id}>`
         },
         {
           name: 'Joined At',

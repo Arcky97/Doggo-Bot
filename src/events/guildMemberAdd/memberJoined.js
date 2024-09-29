@@ -2,6 +2,7 @@ const { EmbedBuilder } = require("discord.js");
 const setActivity = require("../../utils/setActivity");
 const getLogChannel = require("../../utils/getLogChannel");
 const formatTime = require("../../utils/formatTime");
+const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
 
 module.exports = async (client, member) => {
   try {
@@ -23,7 +24,7 @@ module.exports = async (client, member) => {
       await channelId.send({ embeds: [welcome] })
     }
     //const userAge = moment.duration(moment().diff(member.user.createdAt)).humanize();
-    const userAge = formatTime(member.user.createdAt);
+    const userAge = await formatTime(member.user.createdAt);
     const join = new EmbedBuilder()
       .setColor('Orange')
       .setAuthor({
@@ -33,12 +34,12 @@ module.exports = async (client, member) => {
       .setTitle(`Member Joined`)
       .addFields(
         {
-          name: 'User name:',
+          name: 'User name',
           value: `<@${member.id}>`
         },
         {
           name: 'Member count',
-          value: `${member.guild.memberCount}th`
+          value: `${getOrdinalSuffix(member.guild.memberCount)}`
         },
         {
           name: 'Created',

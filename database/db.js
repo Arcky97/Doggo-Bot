@@ -74,7 +74,7 @@ async function initDatabase() {
       CREATE TABLE IF NOT EXISTS BotReplies (
         id VARCHAR(100) NOT NULL,
         triggers VARCHAR(100) NOT NULL,
-        responses VARCHAR(100) NOT NULL,
+        responses JSON DEFAULT NULL,
         PRIMARY KEY (id)
       );
     `;

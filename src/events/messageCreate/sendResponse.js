@@ -10,14 +10,14 @@ module.exports = async (client, message) => {
 
     if (chatChannelId['chattingChannel'] && message.channel.id === chatChannelId['chattingChannel']) {
       try {
-        let responses = await getReplies();
+        let replies = await getReplies();
         let closestMatches = await findClosestMatch(message.content, await getTriggers());
         if (closestMatches && closestMatches.matches.length > 0 && closestMatches.color !== 0xED4245) {
-          const matchingResponse = responses.find(response => 
-            response[1] === closestMatches.matches[0] 
+          const matchingResponse = replies.find(reply => 
+            reply.triggers === closestMatches.matches[0] 
           );
           if (matchingResponse) {
-            const responses = JSON.parse(matchingResponse[2]);
+            const responses = matchingResponse.responses;
             const randomResponse = responses[Math.floor(Math.random() * responses.length)];
             message.channel.send(randomResponse);
           } else {

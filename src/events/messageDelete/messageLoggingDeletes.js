@@ -15,7 +15,16 @@ module.exports = async (client, message) => {
         iconURL: message.author.avatarURL()
       })
       .setTitle(`Message deleted in #${message.channel.name}`)
-      .setDescription(`**Content:** ${message.content}\n\n**Message ID:** ${message.id}`)
+      .addFields(
+        {
+          name: "Content",
+          value: message.content
+        },
+        {
+          name: "Message ID",
+          value: message.id
+        }
+      )
       .setTimestamp()
       .setFooter({
         text: `User ID: ${message.author.id}`

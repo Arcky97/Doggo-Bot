@@ -18,13 +18,13 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.String,
           name: 'trigger',
-          description: 'The trigger phrase',
+          description: 'The trigger phrase.',
           required: true
         },
         {
           type: ApplicationCommandOptionType.String,
           name: 'response',
-          description: 'The response phrase, you can add more than 1 at once by separting them with ";"',
+          description: 'The response phrase, you can add more than 1 at once by separating them with ";".',
           required: true
         }
       ]

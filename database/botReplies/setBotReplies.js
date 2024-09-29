@@ -19,7 +19,11 @@ async function getTriggers() {
 async function getReplies() {
   try {
     const [rows] = await query('SELECT * FROM BotReplies');
-    return rows.map(row => [row.id, row.triggers, row.responses]);
+    return rows.map(row => ({
+      id: row.id, 
+      triggers: row.triggers, 
+      responses: JSON.parse(row.responses)
+    }));
   } catch (error) {
     console.error('Error fetching replies:', error);
     return [];
