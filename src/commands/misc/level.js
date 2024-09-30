@@ -193,7 +193,6 @@ module.exports = {
           }        
         } else {
           const colorMatch = ntc.names.find(([hex, name]) => name.toLowerCase() === colorChoice.toLowerCase());
-          console.log(colorMatch)
           if (colorMatch) {
             hexColor = "#" + colorMatch[0];
             await interaction.editReply(`Your given color name is ${colorMatch[1]} with hex #${colorMatch[0]}`)

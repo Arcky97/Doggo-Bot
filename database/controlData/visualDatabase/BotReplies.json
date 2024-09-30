@@ -1,7 +1,12 @@
 [
   {
-    "id": "87094741528",
-    "triggers": "hello",
-    "responses": "[\"hello\"]"
+    "id": "61070434284",
+    "triggers": "[\"bye\",\"cya\",\"goodbye\",\"smell ya later\"]",
+    "responses": "[\"bye\",\"goodbye\"]"
+  },
+  {
+    "id": "97206358743",
+    "triggers": "[\"hello\",\"hey\"]",
+    "responses": "[\"hello\",\"hoi\",\"hey\"]"
   }
 ]

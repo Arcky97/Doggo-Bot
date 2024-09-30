@@ -121,7 +121,7 @@ module.exports = {
       if (subCommand === 'trigger') {
         await updateReply(interaction);
       } else if (subCommand === 'response') {
-
+        
       }
     } else if (subCommand === 'remove') {
       await removeReply(interaction);

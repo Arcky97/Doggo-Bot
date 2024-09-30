@@ -2,23 +2,40 @@ const { EmbedBuilder } = require('@discordjs/builders');
 const { setBotReplies } = require('../../../database/botReplies/setBotReplies');
 
 const addReply = async (interaction) => {
-  const trigger = interaction.options.getString('trigger');
+  let trigger = interaction.options.getString('trigger');
   let response = interaction.options.getString('response');
+  if (trigger.includes(';')) {
+    trigger = trigger.split(';').map(s => s.trim()).filter(Boolean);
+  } else {
+    trigger = [trigger.trim()];
+  };
   if (response.includes(';')) {
     response = response.split(';').map(s => s.trim()).filter(Boolean);
   } else {
     response = [response.trim()];
-  }
+  };
   const message = await setBotReplies({trigger: trigger, response: response, action: 'insert' });
   try {
-    if (typeof message == 'object') {
+    if (typeof message === 'object') {
+      let triggerArray = JSON.parse(message.triggers);
+      let triggerString = triggerArray.join('\n-  ');
+      let trig = triggerArray.length > 1 ? 'Triggers:' : 'Trigger:'
       let responseArray = JSON.parse(message.responses);
-      let responseString = responseArray.join('\n- ')
-      let response = responseArray.length > 1 ? 'Responses:' : 'Response:'
+      let responseString = responseArray.join('\n- ');
+      let resp = responseArray.length > 1 ? 'Responses:' : 'Response:'
       const embed = new EmbedBuilder()
         .setColor(0x57F287)
-        .setTitle('New Reply Added')
-        .setDescription(`**ID:** ${message.id}\n\n**Trigger:** ${message.triggers}\n\n**${response}**\n- ${responseString}`)
+        .setTitle('Reply Added')
+        .setDescription(`**ID:** ${message.id}`)
+        .addFields({
+            name: trig,
+            value: `- ${triggerString}`
+          },
+          {
+            name: resp,
+            value: `- ${responseString}`
+          }
+        )
         .setTimestamp();
       await interaction.reply({ embeds: [embed] });
     } else {
@@ -27,7 +44,6 @@ const addReply = async (interaction) => {
   } catch (error) {
     console.error('Error generating embed:', error)
   }
-  
 }
 
 module.exports = { addReply }

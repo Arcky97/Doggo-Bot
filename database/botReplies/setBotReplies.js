@@ -9,7 +9,7 @@ const Fuse = require('fuse.js');
 async function getTriggers() {
   try {
     const [rows] = await query('SELECT triggers FROM BotReplies');
-    return rows.map(row => row.triggers);
+    return rows.map(row => JSON.parse(row.triggers));
   } catch (error) {
     console.error('Error fetching triggers:', error);
     return [];
@@ -21,7 +21,7 @@ async function getReplies() {
     const [rows] = await query('SELECT * FROM BotReplies');
     return rows.map(row => ({
       id: row.id, 
-      triggers: row.triggers, 
+      triggers: JSON.parse(row.triggers), 
       responses: JSON.parse(row.responses)
     }));
   } catch (error) {
@@ -42,29 +42,33 @@ async function getIDs() {
 
 async function findClosestMatch(target, array) {
   if (array.length < 1) return;
-  let closestMatches;
+
+  const flattenedArray = array.flat();
   const options = {
     includeScore: true,
-    threshold: 0.7, // Adjust threshold for more or less fuzziness
+    threshold: 0.7, 
     distance: 50,
-    keys: ['str'], // Specify the keys to search in objects
-    limit: array.length
+    keys: ['str'], 
+    limit: flattenedArray.length
   };
-  const fuse = new Fuse(array.map(str => ({ str })), options);
+
+  const fuse = new Fuse(flattenedArray.map(str => ({ str })), options);
+
   const result = fuse.search(target);
   let color;
+
   if (result.length > 0) {
     if (result[0].score >= 0.5) {
-      color = 0xED4245
+      color = 0xED4245; // Red
     } else if (result[0].score >= 0.25) {
-      color = 0xE67E22
+      color = 0xE67E22; // Orange
     } else {
-      color = 0x57F287
+      color = 0x57F287; // Green
     }
   }
-  
-  // Get the closest matches
-  closestMatches = result.map(match => match.item.str);
+
+  const closestMatches = result.map(match => match.item.str);
+
   return { matches: closestMatches.slice(0, 5), color: color };
 }
 
@@ -76,13 +80,14 @@ async function setBotReplies({ trigger, response, action, id }) {
   let key; 
   let data;
   let existIDs = await getIDs()
-
+  trigger = JSON.stringify(trigger);
   if (action === 'insert') {
     let numberId = generateNumericId();
     while (existIDs.includes(numberId)) {
       console.log(`Generating a new id since ${numberId} is already in use!`);
       numberId = generateNumericId();
     }
+    
     response = JSON.stringify(response);
 
     key = {
@@ -108,12 +113,14 @@ async function setBotReplies({ trigger, response, action, id }) {
     if (action === 'insert') {
       try {
         const triggers = await getTriggers();
-        if (!triggers.includes(trigger)) {
+        trigger = JSON.parse(trigger);
+        if (!trigger.some(t => triggers.some(s => s.includes(t)))) {
           await insertData('BotReplies', key, data);
           message = {...key, ...data};
         } else {
+
           message = `A trigger "${trigger}" already exists!`;
-        }        
+        }
       } catch (error) {
         console.error("Error inserting data:", error);
         return `Oh no! Something went wrong while adding your new reply. Please try again.`
@@ -121,6 +128,7 @@ async function setBotReplies({ trigger, response, action, id }) {
     } else if (action === 'check') {
       try {
         const triggers = await getTriggers();
+        trigger = JSON.parse(trigger);
         const closestMatch = await findClosestMatch(trigger, triggers);
         if (closestMatch.matches !== '') {
           message = closestMatch;
@@ -144,7 +152,11 @@ async function setBotReplies({ trigger, response, action, id }) {
             try {
               await updateData('BotReplies', key, data);
               const dataChange = await selectData('BotReplies', key);
-              message = `The trigger-response has been updated from ${dataExist.triggers}-${JSON.parse(dataExist.responses).join(', ')} to ${dataChange.triggers}-${JSON.parse(dataChange.responses).join(', ')}`
+              message = {
+                old: dataExist,
+                new: dataChange
+              }
+              //message = `The trigger-response has been updated from ${dataExist.triggers}-${JSON.parse(dataExist.responses).join(', ')} to ${dataChange.triggers}-${JSON.parse(dataChange.responses).join(', ')}`
             } catch (error) {
               console.error("Error updating data:", error);
               return `Oh no! Something went wrong when updating the reply with ID:${key.id}. Please try again.`
@@ -152,7 +164,7 @@ async function setBotReplies({ trigger, response, action, id }) {
           } else {
             try {
               await deleteData('BotReplies', key);
-              message = `The trigger-response was successfully deleted`;
+              message = dataExist;
             } catch (error) {
               console.error("Error deleting data:", error);
               return `Oh no! Something went wrong when deleting the reply with ID:${key.id}. Please try again.`

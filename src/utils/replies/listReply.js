@@ -17,14 +17,19 @@ const listReply = async (interaction) => {
             text: `${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, replies.length)} of ${replies.length} Replies`
           });
         let description = '';
-        let replyArray;
+        let reply;
+        let triggers;
         let responses;
+        let resp;
+        let trig;
         for (let j = i * pageSize; j < (i * pageSize) + pageSize && j < replies.length; j++) {
-          replyArray = JSON.parse(replies[j][2])
-          let resp = (replyArray.length > 1) ? '**Responses:**' : '**Response:**'
-          responses = `\n   - ${replyArray.join('\n  - ')}`
-          description += `**ID:** ${replies[j][0]}\n` +
-          `- **Trigger:** ${replies[j][1]}\n` +
+          reply = replies[j]
+          trig = (reply.triggers.length > 1) ? '**Triggers:**' : '**Trigger:**'
+          resp = (reply.responses.length > 1) ? '**Responses:**' : '**Response:**'
+          triggers = `\n   - ${reply.triggers.join('\n  - ')}`
+          responses = `\n   - ${reply.responses.join('\n  - ')}`
+          description += `**ID:** ${reply.id}\n` +
+          `- ${trig} ${triggers}\n` +
           `- ${resp} ${responses}\n\n`;
         }
         embed.setDescription(description);

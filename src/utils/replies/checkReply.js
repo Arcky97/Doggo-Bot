@@ -8,7 +8,10 @@ const checkReply = async (interaction) => {
   const embed = new EmbedBuilder()
     .setColor(message.color)
     .setTitle('Found Matches')
-    .setDescription(`for "${trigger}": \n ${matches}`)
+    .addFields({
+      name: `for "${trigger}"`,
+      value: matches
+    })
     .setTimestamp()
   await interaction.reply({ embeds: [embed] });
 };
