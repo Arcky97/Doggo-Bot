@@ -2,7 +2,13 @@ const { Client, Message, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/getLogChannel');
 
 module.exports = async (client, oldMessage, newMessage) => {
-  if (!oldMessage.inGuild() || oldMessage.author.bot) return;
+  if (!oldMessage.inGuild() || 
+      oldMessage.author.bot || 
+      (
+        oldMessage.content === newMessage.content && 
+        newMessage.embeds.length > oldMessage.embeds.length
+      )
+    ) return;
 
   try {
     const channel = await getLogChannel(client, oldMessage.guild.id, 'message');
@@ -10,7 +16,8 @@ module.exports = async (client, oldMessage, newMessage) => {
 
     const oldContent = oldMessage.content || '*No content*';
     const newContent = newMessage.content || '*No content*';
-    
+    console.log(oldMessage);
+    console.log(newMessage);
     const embed = new EmbedBuilder()
       .setColor('Orange')
       .setAuthor({

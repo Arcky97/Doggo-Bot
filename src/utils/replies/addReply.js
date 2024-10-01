@@ -42,7 +42,7 @@ const addReply = async (interaction) => {
       await interaction.reply(message);
     } 
   } catch (error) {
-    console.error('Error generating embed:', error)
+    console.error('Error generating AddReply embed:', error)
   }
 }
 

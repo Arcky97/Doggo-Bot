@@ -31,7 +31,7 @@ const removeReply = async (interaction) => {
       await interaction.reply(message);
     }
   } catch (error) {
-    console.log('Error generating embed:', error);
+    console.log('Error generating removeReply embed:', error);
   }
 
 };

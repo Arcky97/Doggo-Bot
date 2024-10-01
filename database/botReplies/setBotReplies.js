@@ -81,6 +81,7 @@ async function setBotReplies({ trigger, response, action, id }) {
   let data;
   let existIDs = await getIDs()
   trigger = JSON.stringify(trigger);
+  response = JSON.stringify(response);
   if (action === 'insert') {
     let numberId = generateNumericId();
     while (existIDs.includes(numberId)) {
@@ -103,8 +104,14 @@ async function setBotReplies({ trigger, response, action, id }) {
       id: id 
     }
 
-    data = {
-      triggers: trigger
+    if (trigger) {
+      data = {
+        triggers: trigger
+      }
+    } else {
+      data = {
+        responses: response
+      }
     }
   }
 
@@ -130,7 +137,7 @@ async function setBotReplies({ trigger, response, action, id }) {
         const triggers = await getTriggers();
         trigger = JSON.parse(trigger);
         const closestMatch = await findClosestMatch(trigger, triggers);
-        if (closestMatch.matches !== '') {
+        if (closestMatch.matches.length > 0) {
           message = closestMatch;
         } else {
           message = {
@@ -156,7 +163,6 @@ async function setBotReplies({ trigger, response, action, id }) {
                 old: dataExist,
                 new: dataChange
               }
-              //message = `The trigger-response has been updated from ${dataExist.triggers}-${JSON.parse(dataExist.responses).join(', ')} to ${dataChange.triggers}-${JSON.parse(dataChange.responses).join(', ')}`
             } catch (error) {
               console.error("Error updating data:", error);
               return `Oh no! Something went wrong when updating the reply with ID:${key.id}. Please try again.`

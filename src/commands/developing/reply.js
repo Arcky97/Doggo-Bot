@@ -48,7 +48,7 @@ module.exports = {
             {
               type: ApplicationCommandOptionType.String,
               name: 'new',
-              description: 'The new Trigger phrase',
+              description: 'The new Trigger phrase(s)',
               required: true
             }
           ]
@@ -56,7 +56,7 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'response',
-          description: 'Update an existing Response by ID and current Response',
+          description: 'Update an existing Response by ID.',
           options: [
             {
               type: ApplicationCommandOptionType.String,
@@ -66,14 +66,8 @@ module.exports = {
             }, 
             {
               type: ApplicationCommandOptionType.String,
-              name: 'current',
-              description: 'The Current Response phrase.',
-              required: true
-            },
-            {
-              type: ApplicationCommandOptionType.String,
               name: 'new',
-              description: 'The New Response phrase',
+              description: 'The New Response phrase(s)',
               required: true
             }
           ]
@@ -119,9 +113,9 @@ module.exports = {
       await addReply(interaction);
     } else if (subCommandGroup === 'update') {
       if (subCommand === 'trigger') {
-        await updateReply(interaction);
+        await updateReply(interaction, 'trigger');
       } else if (subCommand === 'response') {
-        
+        await updateReply(interaction, 'response');
       }
     } else if (subCommand === 'remove') {
       await removeReply(interaction);

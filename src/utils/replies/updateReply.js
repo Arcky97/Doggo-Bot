@@ -1,15 +1,15 @@
 const { EmbedBuilder } = require("discord.js");
 const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
 
-const updateReply = async (interaction) => {
+const updateReply = async (interaction, type) => {
   const replyID = interaction.options.getString('id');
-  let trigger = interaction.options.getString('new');
-  if (trigger.includes(';')) {
-    trigger = trigger.split(';').map(s => s.trim()).filter(Boolean);
+  let input = interaction.options.getString('new');
+  if (input.includes(';')) {
+    input = input.split(';').map(s => s.trim()).filter(Boolean);
   } else {
-    trigger = [trigger.trim()];
+    input = [input.trim()];
   };
-  const message = await setBotReplies({trigger: trigger, action: 'update', id: replyID });
+  const message = await setBotReplies({[type]: input, action: 'update', id: replyID });
   try {
     if (typeof message === 'object') {
       let triggerArrayBefore = JSON.parse(message.old.triggers);
@@ -20,7 +20,6 @@ const updateReply = async (interaction) => {
       let responseStringBefore = responseArrayBefore.join('\n- ');
       let responseArrayAfter = JSON.parse(message.new.responses);
       let responseStringAfter = responseArrayAfter.join('\n- ');
-      let resp = responseArrayBefore.length > 1 ? 'Responses' : 'Response'
       const embed = new EmbedBuilder()
         .setColor(0xE67E22)
         .setTitle('Reply Updated')
@@ -61,7 +60,7 @@ const updateReply = async (interaction) => {
       await interaction.reply(message);
     }
   } catch (error) {
-    console.log('Error generating embed:', error);
+    console.log('Error generating UpdateReply embed:', error);
   }
 }
 
