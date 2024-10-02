@@ -1,17 +1,7 @@
 [
   {
-    "id": "61070434284",
-    "triggers": "[\"bye\",\"cya\",\"goodbye\",\"smell ya later\"]",
-    "responses": "[\"Bye!\",\"Goodbye!\",\"Where are you going?\",\"No, don't go away!\"]"
-  },
-  {
-    "id": "87611841229",
-    "triggers": "[\"<:CattoPewPew:1276808821808959498>\"]",
-    "responses": "[\"<:CattoPewPew:1276808821808959498>\"]"
-  },
-  {
-    "id": "97206358743",
-    "triggers": "[\"hello\",\"hey\",\"hoi\",\"yo\"]",
-    "responses": "[\"Hello!\",\"Hoi!\",\"Hey!\",\"Yo!\",\"Yeet!\",\"What's up?\"]"
+    "id": "81378933612",
+    "triggers": "[\"<:MirandaInteresting:1259444061669163028>\"]",
+    "responses": "[\"<:MirandaInteresting:1259444061669163028>\"]"
   }
 ]

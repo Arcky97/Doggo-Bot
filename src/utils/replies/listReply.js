@@ -17,13 +17,12 @@ const listReply = async (interaction) => {
             text: `${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, replies.length)} of ${replies.length} Replies`
           });
         let description = '';
-        let reply;
         let triggers;
         let responses;
         let resp;
         let trig;
         for (let j = i * pageSize; j < (i * pageSize) + pageSize && j < replies.length; j++) {
-          reply = replies[j]
+          let reply = replies[j]
           trig = (reply.triggers.length > 1) ? '**Triggers:**' : '**Trigger:**'
           resp = (reply.responses.length > 1) ? '**Responses:**' : '**Response:**'
           triggers = `\n   - ${reply.triggers.join('\n  - ')}`

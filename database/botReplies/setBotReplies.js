@@ -88,8 +88,6 @@ async function setBotReplies({ trigger, response, action, id }) {
       console.log(`Generating a new id since ${numberId} is already in use!`);
       numberId = generateNumericId();
     }
-    
-    response = JSON.stringify(response);
 
     key = {
       id: numberId
