@@ -1,4 +1,4 @@
-const { Client, Message } = require('discord.js');
+const { Client, Message, EmbedBuilder } = require('discord.js');
 const { selectData } = require('../../../database/controlData/selectData');
 const { insertData } = require('../../../database/controlData/insertData');
 const { exportToJson } = require('../../../database/controlData/visualDatabase/exportToJson');
@@ -28,7 +28,18 @@ module.exports = async (client, message) => {
       if (newXp > userLevelXp) {
         newLevel = userXp['level'] + 1
         const nickname = message.member.nickname || message.author.globalName; 
-        await message.channel.send(`Hooray! ${nickname} leveled up to level ${newLevel}!`);
+        const embed = new EmbedBuilder()
+          .setColor(0x57F287)
+          .setTitle(`${nickname} leveled up!`)
+          .setThumbnail(message.author.avatarURL())
+          .setDescription(`Congrats you leveled up to level ${newLevel}`)
+          .setFooter({
+            text: message.guild.name,
+            iconURL: message.guild.iconURL()
+          })
+          .setTimestamp()
+        await message.channel.send({ embeds: [ embed ]});
+        //await message.channel.send(`Hooray! ${nickname} leveled up to level ${newLevel}!`);
       } else {
         newLevel = userXp['level']
       }

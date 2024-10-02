@@ -13,7 +13,7 @@ module.exports = {
         embed = new EmbedBuilder()
           .setColor('Aqua')
           .setTitle('Server Settings')
-          .addFields(
+          .setFields(
             {
               name: '**Chatting**',
               value: `${settings.chattingChannel ? `<#${settings.chattingChannel}>` : 'Not set'}`,

@@ -27,7 +27,7 @@ const addReply = async (interaction) => {
         .setColor(0x57F287)
         .setTitle('Reply Added')
         .setDescription(`**ID:** ${message.id}`)
-        .addFields({
+        .setFields({
             name: trig,
             value: `- ${triggerString}`
           },

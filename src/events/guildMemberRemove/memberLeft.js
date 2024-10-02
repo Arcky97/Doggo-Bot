@@ -30,7 +30,7 @@ module.exports = async (client, member) => {
         iconURL: member.user.avatarURL()
       })
       .setTitle(`Member Left`)
-      .addFields(
+      .setFields(
         {
           name: 'User name',
           value: `<@${member.user.id}>`

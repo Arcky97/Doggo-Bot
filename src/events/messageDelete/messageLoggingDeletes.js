@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
         iconURL: message.author.avatarURL()
       })
       .setTitle(`Message deleted in #${message.channel.name}`)
-      .addFields(
+      .setFields(
         {
           name: "Content",
           value: message.content

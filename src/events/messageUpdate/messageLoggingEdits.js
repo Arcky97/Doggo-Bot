@@ -16,8 +16,6 @@ module.exports = async (client, oldMessage, newMessage) => {
 
     const oldContent = oldMessage.content || '*No content*';
     const newContent = newMessage.content || '*No content*';
-    console.log(oldMessage);
-    console.log(newMessage);
     const embed = new EmbedBuilder()
       .setColor('Orange')
       .setAuthor({

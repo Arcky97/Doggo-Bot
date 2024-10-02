@@ -32,7 +32,7 @@ module.exports = async (client, member) => {
         iconURL: member.user.avatarURL()
       })
       .setTitle(`Member Joined`)
-      .addFields(
+      .setFields(
         {
           name: 'User name',
           value: `<@${member.id}>`

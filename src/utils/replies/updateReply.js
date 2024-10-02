@@ -24,7 +24,7 @@ const updateReply = async (interaction, type) => {
         .setColor(0xE67E22)
         .setTitle('Reply Updated')
         .setDescription(`**ID:** ${message.old.id}`)
-        .addFields(
+        .setFields(
           {
             name: 'Triggers',
             value: ' '

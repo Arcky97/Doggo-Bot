@@ -14,7 +14,7 @@ const checkReply = async (interaction) => {
     const embed = new EmbedBuilder()
       .setColor(message.color)
       .setTitle('Found Matches')
-      .addFields(
+      .setFields(
         {
           name: 'Input',
           value: trigger

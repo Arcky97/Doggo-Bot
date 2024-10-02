@@ -16,7 +16,7 @@ const removeReply = async (interaction) => {
         .setColor(0xED4245)
         .setTitle('Reply Removed')
         .setDescription(`**ID:** ${message.id}`)
-        .addFields({
+        .setFields({
             name: trig,
             value: `- ${triggerString}`
           },
