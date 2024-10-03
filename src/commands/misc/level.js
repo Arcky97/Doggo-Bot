@@ -202,7 +202,7 @@ module.exports = {
         }
         if (hexColor) {
           try {
-            await addUserColor(interaction.guild.id, interaction.member.id, hexColor)
+            await addUserColor(interaction.guild.id, interaction.member.id, hexColor);
           } catch (error) {
             console.log('Error inserting color.', error);
           }

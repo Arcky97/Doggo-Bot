@@ -17,7 +17,8 @@ async function getUserLevel(guildId, memberId) {
 }
 
 async function addUserColor(guildId, memberId, color) {
-  await updateData('LevelSystem', { guildId: guildId, memberId: memberId, color: color });
+  await updateData('LevelSystem', { guildId: guildId, memberId: memberId} , {color: color });
+  exportToJson('LevelSystem')
 }
 
 module.exports = { getAllUsersLevel, getUserLevel, addUserColor }
