@@ -1,21 +1,21 @@
 [
   {
-    "guildId": "1263545537303416863",
-    "channelId": "1263545537303416866",
+    "guildId": "925765418545741854",
+    "channelId": "934536340022890517",
     "type": "welcome",
     "message": null,
-    "color": null,
+    "color": "green",
     "author": null,
     "authorUrl": null,
     "authorIconUrl": null,
-    "title": "konnichiwa",
+    "title": "welcome to the {server name} Server",
     "titleUrl": null,
-    "description": "hello hello",
+    "description": "Hey {user mention}, make sure to read and agree to the <#934547510825979914>. {new line} After you've done that, you'll have access to more channels to talk in. {new line} Check out <#926214632849432596> to get some fancy roles and <#941761135827353650> for a nice color for you name. {new line} We have now {member count} members! 👀",
     "fields": null,
     "imageUrl": null,
     "thumbnailUrl": null,
-    "footer": null,
-    "footerIconUrl": null,
+    "footer": "The admin team",
+    "footerIconUrl": "{server icon}",
     "timeStamp": 1
   }
 ]

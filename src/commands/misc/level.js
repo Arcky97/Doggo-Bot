@@ -2,9 +2,8 @@ const { ApplicationCommandOptionType, AttachmentBuilder, calculateUserDefaultAva
 const { getAllUsersLevel, getUserLevel, addUserColor } = require("../../../database/levelSystem/setLevelSystem");
 const calculateLevelXp = require("../../utils/calculateLevelXp");
 const { Font, RankCardBuilder } = require("canvacord");
-const ntc = require('ntc');
+const getOrConvertColor = require("../../utils/getOrConvertColor");
 
-ntc
 module.exports = {
   name: 'level',
   description: 'Various commands for the Level System',
@@ -177,29 +176,9 @@ module.exports = {
       const userLevel = await getUserLevel(interaction.guild.id, interaction.member.id);
       if (userLevel) {
         const colorChoice = interaction.options.get('color').value;
-        let hexColor;
-  
-        if (colorChoice.toLowerCase() === 'random') {
-          hexColor = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
-          interaction.editReply(`Your random color is ${hexColor}`);
-        } else if (colorChoice.startsWith('#', 0)) {
-          const hexPattern = /^#([A-Fa-f0-9]{6})$/;
-  
-          if (hexPattern.test(colorChoice)) {
-            hexColor = colorChoice
-            interaction.editReply(`Your given color is ${colorChoice}`);
-          } else {
-            interaction.editReply(`The provided hex color "${colorChoice}" is not valid.`);
-          }        
-        } else {
-          const colorMatch = ntc.names.find(([hex, name]) => name.toLowerCase() === colorChoice.toLowerCase());
-          if (colorMatch) {
-            hexColor = "#" + colorMatch[0];
-            await interaction.editReply(`Your given color name is ${colorMatch[1]} with hex #${colorMatch[0]}`)
-          } else {
-            await interaction.editReply(`The color name "${colorChoice}" was not found.`);
-          }
-        }
+        let { hexColor, message }= await getOrConvertColor(colorChoice, true);
+        await interaction.editReply(message);
+        console.log(hexColor);
         if (hexColor) {
           try {
             await addUserColor(interaction.guild.id, interaction.member.id, hexColor);

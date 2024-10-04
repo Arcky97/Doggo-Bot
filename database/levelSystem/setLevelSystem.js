@@ -1,5 +1,6 @@
 const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
+const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 const { query } = require("../db");
 
 async function getAllUsersLevel(guildId) {

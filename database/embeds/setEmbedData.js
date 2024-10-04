@@ -4,31 +4,30 @@ const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
-async function deleteGeneratedEmbed(guild, message) {
-  await deleteData('GeneratedEmbeds', { guildId: guild, messageId: message });
-  exportToJson('GeneratedEmbeds');
+function getUniq(table, messageOrType) {
+  return table === 'GeneratedEmbeds' ? { messageId: messageOrType } : { type: messageOrType }
 }
 
-async function getGeneratedEmbed(guild, message) {
-  return await selectData('GeneratedEmbeds', { guildId: guild, messageId: message }) 
-}
-
-async function setEventEmbed(guild, channel, type, data) {
+async function setEmbed(table, guild, channel, messageOrType, data) {
   const keys = {
     guildId: guild,
     channelId: channel,
-    type: type
+    ...getUniq(table, messageOrType)
   };
-  setEmbedData('EventEmbeds', keys, data);
+  await setEmbedData(table, keys, data);
 }
 
-async function setGeneratedEmbed(guildId, channelId, messageId, data) {
+async function getOrDeleteEmbed(table, action, guild, messageOrType) {
   const keys = {
-    guildId: guildId,
-    channelId: channelId,
-    messageId: messageId
+    guildId: guild,
+    ...getUniq(table, messageOrType) 
   };
-  setEmbedData('GeneratedEmbeds', keys, data);
+  if (action === 'get') {
+    return await selectData(table, keys);
+  } else {
+    await deleteData(table, keys);
+    exportToJson(table);
+  }
 }
 
 async function setEmbedData(table, keys, data) {
@@ -45,4 +44,11 @@ async function setEmbedData(table, keys, data) {
   }
 }
 
-module.exports = { setEventEmbed, setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed };
+module.exports = { 
+  setGeneratedEmbed: (guild, channel, message, data) => setEmbed('GeneratedEmbeds', guild, channel, message, data),
+  getGeneratedEmbed: (guild, message) => getOrDeleteEmbed('GeneratedEmbeds', 'get', guild, message),
+  deleteGeneratedEmbed: (guild, message) => getOrDeleteEmbed('GeneratedEmbeds', 'delete', guild, message),
+  setEventEmbed: (guild, channel, type, data) => setEmbed('EventEmbeds', guild, channel, type, data),
+  getEventEmbed: (guild, type) => getOrDeleteEmbed('EventEmbeds', 'get', guild, type),
+  deleteEventEmbed: (guild, type) => getOrDeleteEmbed('EventEmbeds', 'delete', guild, type)
+ };
