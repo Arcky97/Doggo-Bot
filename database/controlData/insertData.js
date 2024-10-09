@@ -6,6 +6,8 @@ async function insertData(table, key, data) {
   const columns = Object.keys(combinedData);
   const placeholders = columns.map(() => '?').join(', ');
 
+  console.log(Object.values(combinedData));
+
   const insertQuery = `
     INSERT INTO ${table} (${columns.join(', ')})
     VALUES (${placeholders})

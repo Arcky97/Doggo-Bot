@@ -19,23 +19,18 @@ async function initDatabase() {
     console.log('Connected to the database successfully!');
 
     //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
-
     //await pool.query(dropBotRepliesTable);
 
     //const dropGuildSettingsTable = `DROP TABLE IF EXISTS GuildSettings`;
-
     //await pool.query(dropGuildSettingsTable);
 
     //const dropLevelXpRequirements = `DROP TABLE IF EXISTS LevelXpRequirements`;
-
     //await pool.query(dropLevelXpRequirements);
 
     //const dropMemberLevelsTable = `DROP TABLE IF EXISTS LevelSystem`;
-
     //await pool.query(dropMemberLevelsTable);
 
     //const droplevelSettingsTable = `DROP TABLE IF EXISTS LevelSettings`;
-
     //await pool.query(droplevelSettingsTable);
 
     //onst dropEventsEmbedsTable = `DROP TABLE IF EXISTS EventEmbeds`;
@@ -83,13 +78,20 @@ async function initDatabase() {
       CREATE TABLE IF NOT EXISTS LevelSettings (
         guildId VARCHAR(100) NOT NULL PRIMARY KEY,
         levelMultiplier FLOAT DEFAULT 1.0,
+        levelRoles JSON DEFAULT '[]',
+        roleReplace BOOLEAN DEFAULT false,
         announcementId VARCHAR(100) DEFAULT 'not set',
         announcementPing BOOLEAN DEFAULT false,
+        announcementMessage JSON DEFAULT '[]',
         roleMultipliers JSON DEFAULT '[]',
         channelMultipliers JSON DEFAULT '[]',
         blackListRoles JSON DEFAULT '[]',
         blackListChannels JSON DEFAULT '[]',
-        xpCooldown INT DEFAULT 30 
+        xpCooldown INT DEFAULT 30,
+        clearOnLeave BOOLEAN DEFAULT false,
+        voiceEnable BOOLEAN DEFAULT false,
+        voiceMultiplier FLOAT DEFAULT 1.0,
+        voiceCooldown INT DEFAULT 2
       );
     `
 

@@ -18,11 +18,11 @@ module.exports = async (client, message) => {
       .setFields(
         {
           name: "Content",
-          value: message.content
+          value: message.content || 'empty'
         },
         {
           name: "Message ID",
-          value: message.id
+          value: message.id || 'unknown'
         }
       )
       .setTimestamp()

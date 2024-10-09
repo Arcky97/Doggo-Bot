@@ -1,16 +1,16 @@
 [
   {
     "guildId": "1263545537303416863",
-    "chattingChannel": "1264595722624303165",
+    "chattingChannel": "1263545537303416866",
     "messageLogging": "1264595722624303165",
-    "memberLogging": "1264595722624303165",
+    "memberLogging": null,
     "serverLogging": null,
     "voiceLogging": null,
-    "joinLeaveLogging": "1264595722624303165"
+    "joinLeaveLogging": null
   },
   {
     "guildId": "925765418545741854",
-    "chattingChannel": "1256639618103906324",
+    "chattingChannel": "1273771024801861734",
     "messageLogging": "934542984811274250",
     "memberLogging": "934543030936031243",
     "serverLogging": "934543312554192957",

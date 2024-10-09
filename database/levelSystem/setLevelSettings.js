@@ -4,7 +4,7 @@ const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
-async function setLevelSettings({ id, action, lvMult, annChan, annPing, roleMult, chanMult, blRoles, blChan, xpCD}) {
+async function setLevelSettings({ id, action, lvMult, lvRol, annChan, annPing, annMes, roleMult, chanMult, blRoles, blChan, xpCD}) {
   let settings = await selectData('LevelSettings', { guildId: id });
   // create default settings on server join.
   if (!settings) {
@@ -16,8 +16,10 @@ async function setLevelSettings({ id, action, lvMult, annChan, annPing, roleMult
     const updates = {};
 
     if (lvMult !== undefined) updates.levelMultiplier = lvMult;
+    if (lvRol !== undefined) updates.levelRoles = lvRol;
     if (annChan !== undefined) updates.announcementId = annChan;
     if (annPing !== undefined) updates.announcementPing = annPing;
+    if (annMes !== undefined) updates.announcementMessage = annMes;
     if (roleMult !== undefined) updates.roleMultipliers = roleMult;
     if (chanMult !== undefined) updates.channelMultipliers = chanMult;
     if (blRoles !== undefined) updates.blackListRoles = blRoles;

@@ -97,6 +97,44 @@ module.exports = {
               required: true
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'message',
+          description: 'The announcement message.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'description',
+              description: 'The level up message description.',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'title',
+              description: 'The title of the level up message.',
+            },
+            {
+              type: ApplicationCommandOptionType.Boolean,
+              name: 'thumbnail',
+              description: 'Wether to show the user thumbnail.'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'image',
+              description: 'Add an image or gif to the level up message.'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'footer',
+              description: 'The footer of the level up message.'
+            },
+            {
+              type: ApplicationCommandOptionType.Boolean,
+              name: 'timestamp',
+              description: 'Wether to show the time stamp on the level up message.'
+            }
+          ]
         }
       ]
     },
@@ -108,8 +146,24 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'channel',
-          description: "Add a Channel to the black list that won't give XP",
+          description: "Add/remove a Channel to the black list that won't give XP.",
           options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'action',
+              description: 'add/remove a Channel from the blacklist.',
+              required: true,
+              choices: [
+                {
+                  name: 'add',
+                  value: 'add'
+                },
+                {
+                  name: 'remove',
+                  value: 'remove'
+                }
+              ]
+            },
             {
               type: ApplicationCommandOptionType.Channel,
               name: 'name',
@@ -121,13 +175,172 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'role',
-          description: "Add a Role to the black list that won't give XP",
+          description: "Add a Role to the black list that won't give XP (mention the same channel to remove it.)",
           options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'action',
+              description: 'add/remove a Role from the blacklist.',
+              required: true,
+              choices: [
+                {
+                  name: 'add',
+                  value: 'add'
+                },
+                {
+                  name: 'remove',
+                  value: 'remove'
+                }
+              ]
+            },
             {
               type: ApplicationCommandOptionType.Role,
               name: 'name',
               description: 'The Role name.',
               required: true 
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.SubcommandGroup,
+      name: 'roles',
+      description: 'Add a role that can be earned by reaching a specific level',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'setting',
+          description: 'sets roles to accumulate/replace upon the next level up role.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'value',
+              description: 'Accumulate or Replace.',
+              required: true,
+              choices: [
+                {
+                  name: 'accumulate',
+                  value: 'false' 
+                },
+                {
+                  name: 'replace',
+                  value: 'true' 
+                }
+              ]
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'add',
+          description: 'Add a new level-role pair.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Integer,
+              name: 'level',
+              description: 'The level',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.Role,
+              name: 'role',
+              description: 'The role',
+              required: true
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'edit',
+          description: 'Edit or overwrite an exisiting level-role pair',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Integer,
+              name: 'level',
+              description: 'The level',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.Role,
+              name: 'role',
+              description: 'The role',
+              required: true
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'remove',
+          description: 'Remove an existing level-role pair',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Integer,
+              name: 'level',
+              description: 'The level',
+              required: true 
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'cooldown',
+      description: 'Set the time for the cooldown between messages that will give the user XP',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Number,
+          name: 'value',
+          description: 'Set the cooldown value',
+          required: true
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.SubcommandGroup,
+      name: 'voice',
+      description: 'Enable XP earning through voice channels and set the cooldown and XP earned.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'setting',
+          description: 'Enable/Disable earning XP through Voice Chat activity.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Boolean,
+              name: 'value',
+              description: 'your input.',
+              required: true 
+            }
+          ]
+        }, 
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'multiplier',
+          description: 'Set the multiplier for earning XP through Voice Chat activity.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'value',
+              description: 'the amount of XP.',
+              minValue: 1,
+              maxValue: 100,
+              required: true 
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'cooldown',
+          description: 'Set the cooldown for the time to pass before XP is earned again during Voice Activity.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'value',
+              description: 'The cooldown value.',
+              minValue: 1,
+              required: true
             }
           ]
         }
@@ -142,7 +355,7 @@ module.exports = {
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
     const subCommand = interaction.options.getSubcommand();
-    const multi = interaction.options.get('value').value;
+    const multi = interaction.options.get('value').value; 
     const guildId = interaction.guild.id;
     try {
       //await insertData('LevelSettings', { guildId: guildId, levelMultiplier: multi })

@@ -62,7 +62,6 @@ module.exports = async (client, oldMember, newMember) => {
       });
     }
     await channel.send({ embeds: [embed] })
-    console.log(`${oldMember.user.username} updated their profile!`);
   } catch (error) {
     console.error('Failed to log Member update!', error)
   }

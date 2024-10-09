@@ -21,8 +21,6 @@ module.exports = async (client, reaction, user) => {
     }
   }
 
-  console.log(`${user.tag} removed a reaction: ${reaction.emoji.name}`);
-
   // Handle custom and standard emojis
   const emojiName = reaction.emoji.name;
   const emojiId = reaction.emoji.id;

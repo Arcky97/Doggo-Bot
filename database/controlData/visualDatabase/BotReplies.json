@@ -1,67 +1,12 @@
 [
   {
-    "id": "04388487495",
+    "id": "37949800455",
+    "triggers": "[\"Jessy\"]",
+    "responses": "[\"Who's Jessy? Do you mean Eevee?\",\"# EEEVEEE!!\",\"Jessy is a Chinese woman!\"]"
+  },
+  {
+    "id": "38209283395",
     "triggers": "[\"<:Arcanine:1140599797385007106>\"]",
     "responses": "[\"<:Arcanine:1140599797385007106>\"]"
-  },
-  {
-    "id": "30144905656",
-    "triggers": "[\"<:DoggoThinks:1259444056988192799>\"]",
-    "responses": "[\"<:DoggoThinks:1259444056988192799>\"]"
-  },
-  {
-    "id": "35934402525",
-    "triggers": "[\"<:CattoWot:1267457973551235154>\",\"<:CattoDumb:1267457560609423411>\",\"<:SmollCattoStare:1267459030821900310>\",\"<:CattoAttack:1267458323683344526>\"]",
-    "responses": "[\"<:CattoWot:1267457973551235154>\",\"<:CattoDumb:1267457560609423411>\",\"<:SmollCattoStare:1267459030821900310>\",\"<:CattoAttack:1267458323683344526>\"]"
-  },
-  {
-    "id": "39136234076",
-    "triggers": "[\"bye\",\"goodbye\",\"cya\"]",
-    "responses": "[\"Bye!\",\"Goodbye!\",\"Cya!\",\"Smell you later!\",\"Where are you going?\",\"No, don't go away\"]"
-  },
-  {
-    "id": "52301527317",
-    "triggers": "[\"💀\"]",
-    "responses": "[\"💀\"]"
-  },
-  {
-    "id": "52390355891",
-    "triggers": "[\"<:VenomWut:952970123021533214>\"]",
-    "responses": "[\"<:VenomWut:952970123021533214>\"]"
-  },
-  {
-    "id": "73166122074",
-    "triggers": "[\"<:CattoPewPew:1276808821808959498>\"]",
-    "responses": "[\"<:CattoPewPew:1276808821808959498>\"]"
-  },
-  {
-    "id": "77640186110",
-    "triggers": "[\"🫡\"]",
-    "responses": "[\"🫡\"]"
-  },
-  {
-    "id": "81378933612",
-    "triggers": "[\"<:MirandaInteresting:1259444061669163028>\"]",
-    "responses": "[\"<:MirandaInteresting:1259444061669163028>\"]"
-  },
-  {
-    "id": "84532841353",
-    "triggers": "[\"hello\",\"hey\",\"hoi\",\"yo\"]",
-    "responses": "[\"Hello!\",\"Hey\",\"Hoi\",\"Yo\",\"Wat's up?\"]"
-  },
-  {
-    "id": "98563814479",
-    "triggers": "[\"are programmers lazy\"]",
-    "responses": "[\"No, programmers are not lazy but <@763287145615982592> is lazy and he's not a programmer!\",\"Depends who... <:DoggoThinks:1259444056988192799>\"]"
-  },
-  {
-    "id": "99266449787",
-    "triggers": "[\"<:ConfusedCat:1259444053964095488>\"]",
-    "responses": "[\"<:ConfusedCat:1259444053964095488>\"]"
-  },
-  {
-    "id": "99897520719",
-    "triggers": "[\"<:CatStare:1236341910491107429>\"]",
-    "responses": "[\"<:CatStare:1236341910491107429>\"]"
   }
 ]
