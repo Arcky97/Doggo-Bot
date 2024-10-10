@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType } = require("discord.js");
-const { setLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
+const { setLevelSettings, getRoleOrChannelMultipliers } = require("../../../database/levelSystem/setLevelSettings");
 
 module.exports = {
   name: 'levels',
@@ -28,8 +28,24 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'channel',
-          description: 'Set the XP Multiplier for 1 or more Channels.',
+          description: 'add/remove the XP Multiplier for 1 or more Channels.',
           options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'action',
+              description: 'Add/remove a Channel Multiplier.',
+              required: true,
+              choices: [
+                {
+                  name: 'add',
+                  value: 'insert'
+                },
+                {
+                  name: 'remove',
+                  value: 'delete'
+                }
+              ]
+            },
             {
               type: ApplicationCommandOptionType.Channel,
               name: 'name',
@@ -41,15 +57,32 @@ module.exports = {
               name: 'value',
               description: 'The Channel Multiplier.',
               minValue: 1.0,
-              maxValue: 10.0
+              maxValue: 10.0,
+              required: true,
             }
           ]
         },
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'role',
-          description: 'Set the XP Multiplier for 1 or more Roles.',
+          description: 'Add/remove the XP Multiplier for 1 or more Roles.',
           options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'action',
+              description: 'Add/remove a Role Multiplier.',
+              required: true,
+              choices: [
+                {
+                  name: 'add',
+                  value: 'insert'
+                },
+                {
+                  name: 'remove',
+                  value: 'delete'
+                }
+              ]
+            },
             {
               type: ApplicationCommandOptionType.Role,
               name: 'name',
@@ -61,7 +94,8 @@ module.exports = {
               name: 'value',
               description: 'The Role Multiplier.',
               minValue: 1.0,
-              maxValue: 10.0
+              maxValue: 10.0,
+              required: true
             }
           ]
         }
@@ -354,13 +388,79 @@ module.exports = {
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
-    const subCommand = interaction.options.getSubcommand();
-    const multi = interaction.options.get('value').value; 
+    const subCmdGroup = interaction.options.getSubcommandGroup();
+    const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
     try {
-      //await insertData('LevelSettings', { guildId: guildId, levelMultiplier: multi })
-      await setLevelSettings({ id: guildId, lvMult: multi, action: 'insert' });
-      interaction.reply(`The Global Multiplier was set to ${multi}!`)
+      let action, glMult, chanMult, roleMult, lvRol, rolRepl, annChan, annPing, annMes, blRoles, blChan, xpCldn, clrOnLea, voiEn, voiMult, voiCldn;
+
+      switch(subCmdGroup) {
+        case 'multiplier':
+          const value = interaction.options.get('value').value;
+          if (subCmd !== 'global') {
+            action = interaction.options.get('action').value;
+            let data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd });
+            if (!data) data = [];
+          }
+          switch(subCmd) {
+            case 'global':
+              glMult = value;
+              interaction.reply(`The Global Multiplier was set to ${glMult}!`);
+              action = 'insert'
+              break;
+            case 'channel':
+              const channelId = interaction.options.get('name').value;
+              chanMult = JSON.stringify([{ channelId, value }]);
+              interaction.reply(`A new Channel Multiplier of ${value} was set for <#${channelId}>!`);
+              break;
+            case 'role':
+              const roleId = interaction.options.get('name').value;
+              roleMult = JSON.stringify([{ roleId, value }]);
+              interaction.reply(`A new Role Multiplier of ${value} was set for <@&${roleId}>!`);
+              break;
+          }
+          break;
+        case 'announcement':
+
+          break;
+        case 'blacklist':
+
+          break;
+        case 'roles':
+
+          break;
+        case 'voice':
+
+          break;
+        default:
+          if (subCmd === 'cooldown') {
+
+          } else { // subCmd === 'settings'
+
+          }
+          break;
+      }
+      console.log(action);
+      await setLevelSettings({ 
+        id: guildId, 
+        action,
+        glMult,
+        chanMult,
+        roleMult,
+        lvRol,
+        rolRepl,
+        annChan,
+        annPing,
+        annMes,
+        blRoles,
+        blChan,
+        xpCldn,
+        clrOnLea,
+        voiEn,
+        voiMult,
+        voiCldn
+      });
+      
     } catch (error) {
       console.error('Error setting Global Multiplier:', error);
       interaction.reply('There was an error setting the Global Multiplier!');

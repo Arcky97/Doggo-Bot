@@ -77,7 +77,7 @@ async function initDatabase() {
     const createLevelSettingsTable = `
       CREATE TABLE IF NOT EXISTS LevelSettings (
         guildId VARCHAR(100) NOT NULL PRIMARY KEY,
-        levelMultiplier FLOAT DEFAULT 1.0,
+        globalMultiplier FLOAT DEFAULT 0.0,
         levelRoles JSON DEFAULT '[]',
         roleReplace BOOLEAN DEFAULT false,
         announcementId VARCHAR(100) DEFAULT 'not set',
