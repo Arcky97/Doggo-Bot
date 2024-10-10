@@ -234,6 +234,7 @@ module.exports = {
           type: ApplicationCommandOptionType.String,
           name: 'type',
           description: 'The type of the embed',
+          required: true,
           choices: [
             {
               name: 'regular',
@@ -366,10 +367,6 @@ module.exports = {
       } else {
         const messageId = interaction.options.getString('messageid');
         const oldEmbed = await getGeneratedEmbed(guildId, messageId);
-
-        if (!oldEmbed) {
-          return interaction.editReply(`The embed with message ID ${messageId} was not found.`);
-        }
         
         const channel = client.channels.cache.get(oldEmbed.channelId);
         let message;
