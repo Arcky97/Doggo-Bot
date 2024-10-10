@@ -366,10 +366,25 @@ module.exports = {
       } else {
         const messageId = interaction.options.getString('messageid');
         const oldEmbed = await getGeneratedEmbed(guildId, messageId);
+
+        if (!oldEmbed) {
+          return interaction.editReply(`The embed with message ID ${messageId} was not found.`);
+        }
+        
         const channel = client.channels.cache.get(oldEmbed.channelId);
         let message;
-        if (messageId) {
-           message = await channel.messages.fetch(messageId);
+        if (messageId && channel) {
+          try {
+            message = await channel.messages.fetch(messageId);
+          } catch (error) {
+            if (error.code === 10008) { // Discord API error code for "Unknown Message"
+              await deleteGeneratedEmbed(guildId, messageId); // Optionally remove the embed from the database
+              return interaction.reply('The specified message has been deleted from the server.');
+            } else {
+              console.error('Error fetching the message:', error);
+              return interaction.reply('An error occurred while fetching the message.');
+            }
+          }
         }
         if (embedAction === 'edit') {
           if (type === 'regular') {
