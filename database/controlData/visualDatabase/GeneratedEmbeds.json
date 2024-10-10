@@ -1,24 +1,5 @@
 [
   {
-    "guildId": "1263545537303416863",
-    "channelId": "1263545537303416866",
-    "messageId": "1293955624706773138",
-    "message": null,
-    "color": "orange",
-    "author": "835094939724808232",
-    "authorUrl": null,
-    "authorIconUrl": "1",
-    "title": "Hello",
-    "titleUrl": null,
-    "description": "Just a message",
-    "fields": null,
-    "imageUrl": null,
-    "thumbnailUrl": null,
-    "footer": null,
-    "footerIconUrl": null,
-    "timeStamp": 1
-  },
-  {
     "guildId": "925765418545741854",
     "channelId": "926214632849432596",
     "messageId": "1292772202151809107",

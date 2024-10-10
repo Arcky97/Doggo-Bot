@@ -367,8 +367,10 @@ module.exports = {
         const messageId = interaction.options.getString('messageid');
         const oldEmbed = await getGeneratedEmbed(guildId, messageId);
         const channel = client.channels.cache.get(oldEmbed.channelId);
-        const message = await channel.messages.fetch(messageId);
-
+        let message;
+        if (messageId) {
+           message = await channel.messages.fetch(messageId);
+        }
         if (embedAction === 'edit') {
           if (type === 'regular') {
             await message.edit({ content: embedOptions.message, embeds: [embed] });
