@@ -284,7 +284,7 @@ module.exports = {
     let embedData;
     let embed;
 
-    if (embedAction !== 'create') {
+    if (embedAction === 'edit' ) {
       const messageId = interaction.options.getString('messageid');
       if (type === 'regular') {
         embedData = await getGeneratedEmbed(guildId, messageId);
