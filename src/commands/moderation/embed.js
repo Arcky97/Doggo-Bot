@@ -229,6 +229,29 @@ module.exports = {
           name: 'messageid',
           description: 'The message ID of the embed to delete.',
           required: true
+        },
+        {
+          type: ApplicationCommandOptionType.String,
+          name: 'type',
+          description: 'The type of the embed',
+          choices: [
+            {
+              name: 'regular',
+              value: 'regular'
+            },
+            {
+              name: 'welcome',
+              value: 'welcome'
+            },
+            {
+              name: 'leave',
+              value: 'leave'
+            },
+            {
+              name: 'ban',
+              value: 'ban'
+            }
+          ]
         }
       ]
     }
@@ -359,7 +382,11 @@ module.exports = {
         } else if (embedAction === 'delete') {
           if (oldEmbed) {
             if (message) await message.delete();
-            await deleteGeneratedEmbed(guildId, messageId);
+            if (type === 'regular') {
+              await deleteGeneratedEmbed(guildId, messageId);
+            } else {
+              await deleteEventEmbed(guildId, type);
+            }
             interaction.editReply(`The embed with message ID: ${messageId} in <#${channel.id}> was deleted successfully.`);
           } else {
             interaction.editReply(`The embed with message ID: ${messageId} does not exist.`);
