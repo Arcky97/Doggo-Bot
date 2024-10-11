@@ -3,6 +3,7 @@ const getLogChannel = require('../../utils/getLogChannel');
 
 module.exports = async (client, oldMessage, newMessage) => {
   if (!oldMessage.inGuild() || 
+      !oldMessage.author ||
       oldMessage.author.bot || 
       (
         oldMessage.content === newMessage.content && 

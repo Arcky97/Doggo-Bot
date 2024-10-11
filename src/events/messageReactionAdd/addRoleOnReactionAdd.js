@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { getReactionRoles } = require('../../../database/controlData/reactionRoles/setReactionRoles');
+const { getReactionRoles, getMaxRolesLimit } = require('../../../database/controlData/reactionRoles/setReactionRoles');
 
 module.exports = async (client, reaction, user) => {
   const guild = reaction.message.guild;
@@ -8,6 +8,8 @@ module.exports = async (client, reaction, user) => {
   const messageId = reaction.message.id;
   
   const reactionRolesData = await getReactionRoles(guildId, channelId, messageId);
+  const roleLimit = reactionRolesData.maxRoles;
+
   if (!reactionRolesData) return;
 
   const emojiRolePairs = JSON.parse(reactionRolesData.emojiRolePairs);
@@ -44,6 +46,35 @@ module.exports = async (client, reaction, user) => {
   }
 
   const member = await guild.members.fetch(user.id);
+
+  const memberRoles = emojiRolePairs
+    .map(pair => pair.roleId.replace(/<@&|>/g, '').trim())
+    .filter(rId => member.roles.cache.has(rId));
+
+  console.log(memberRoles);
+  if (memberRoles.length >= roleLimit) {
+    const roleToRemoveId = memberRoles[0];
+    const roleToRemove = guild.roles.cache.get(roleToRemoveId);
+    
+    const emojiToRemove = emojiRolePairs.find(pair => pair.roleId.includes(roleToRemoveId)).emoji;
+
+
+    try {
+      await member.roles.remove(roleToRemove);
+      console.log(`Removed role ${roleToRemove.name} from ${user.tag} due to role limit of ${roleLimit}.`)
+    
+      const reactionToRemove = reaction.message.reactions.cache.find(r => r.emoji.name === emojiToRemove || r.emoji.id === emojiToRemove);
+
+      if (reactionToRemove) {
+        await reactionToRemove.users.remove(user.id);
+        console.log(`Removed reaction for ${roleToRemove.name} from ${user.tag}.`);
+      }
+
+    } catch (error) {
+      console.error('Failed to remove role:', error);
+      return;
+    }
+  }
 
   try {
     await member.roles.add(role);

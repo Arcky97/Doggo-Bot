@@ -42,9 +42,16 @@ async function updateReactionRoles(guild, channel, message, input) {
 async function removeReactionRoles(guild, channel, message) {
   const keys = reactionRolesKeys(guild, channel, message);
 
-
   await deleteData('ReactionRoles', keys);
-  
 }
 
-module.exports = { getReactionRoles, insertReactionRoles, updateReactionRoles, removeReactionRoles };
+async function setMaxRolesLimit(guild, channel, message, limit) {
+  const keys = reactionRolesKeys(guild, channel, message);
+
+  const data = limit 
+
+  await updateData('ReactionRoles', keys, data);
+}
+
+
+module.exports = { getReactionRoles, insertReactionRoles, updateReactionRoles, removeReactionRoles, setMaxRolesLimit };

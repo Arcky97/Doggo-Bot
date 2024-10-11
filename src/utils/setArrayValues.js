@@ -12,5 +12,5 @@ module.exports = async (action, id, value, data, type) => {
       data.splice(index, 1);
     }
   }
-  return data;
+  return JSON.stringify(data);
 }

@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
-const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles } = require("../../../database/controlData/reactionRoles/setReactionRoles");
+const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setMaxRolesLimit } = require("../../../database/controlData/reactionRoles/setReactionRoles");
 const { exportToJson } = require("../../../database/controlData/visualDatabase/exportToJson");
 const setMessageReactions = require("../../utils/setMessageReactions");
 
@@ -20,7 +20,7 @@ module.exports = {
             {
               type: ApplicationCommandOptionType.String,
               name: 'messageid',
-              description: 'The message ID of the message (or embed) to add Reaction Roles to.',
+              description: 'The ID of the message (or embed) to add Reaction Roles to.',
               required: true
             },
             {
@@ -33,7 +33,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Channel,
               name: 'channel',
               description: 'Channel where the message is located.',
-            },
+            }
           ]
         },
         {
@@ -82,6 +82,53 @@ module.exports = {
               description: 'Channel where the message is located.'
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'limit',
+          description: 'Set the limit of roles that can be assigned',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'messageid',
+              description: 'The ID of the message.',
+              required: true,
+            },
+            {
+              type: ApplicationCommandOptionType.Integer,
+              name: 'limit',
+              description: 'Set the limit for roles on a message.',
+              required: true,
+              minValue: 1,
+              maxValue: 250
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'limit',
+      description: 'Set the limit number of roles you can get from one message at once.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.String,
+          name: 'messageid',
+          description: 'The ID of the message.',
+          required: true,
+        },
+        {
+          type: ApplicationCommandOptionType.Integer,
+          name: 'limit',
+          description: 'The role limit.',
+          minvalue: 1,
+          maxValue: 250,
+          required: true
+        },
+        {
+          type: ApplicationCommandOptionType.Channel,
+          name: 'channel',
+          description: 'Channel where the message is located.'
         }
       ]
     }
@@ -93,13 +140,13 @@ module.exports = {
     const messageId = interaction.options.getString('messageid');
     const channel = interaction.options.getChannel('channel') || interaction.channel;
     const overwrite = interaction.options.getBoolean('overwrite') || false; 
+    const limit = interaction.options.getInteger('limit');
     const reactionRolesData = await getReactionRoles(guildId, channel.id, messageId);
     let emojiRolePairs = [];
 
-
     await interaction.deferReply();
 
-    if (subCommand !== 'delete') {
+    if (subCommand === 'create' || subCommand === 'edit') {
       const emojiRoles = interaction.options.getString('emojiroles');
       const splitEmojiRoles = emojiRoles.split(';').map(s => s.trim());   
   
@@ -145,6 +192,9 @@ module.exports = {
       await interaction.editReply('Reaction roles have been removed from the message.');
       await message.reactions.removeAll()
       await removeReactionRoles(guildId, channel.id, messageId);
+    } else if (subCommand === 'limit') {
+      await interaction.editReply(`Reaction role limit has been set to ${limit} for message with ID ${messageId}.`);
+      await setMaxRolesLimit(guildId, channel.id, messageId, {maxRoles: limit} );
     }
     exportToJson('ReactionRoles');
   }

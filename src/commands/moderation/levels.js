@@ -1,5 +1,6 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType } = require("discord.js");
 const { setLevelSettings, getRoleOrChannelMultipliers } = require("../../../database/levelSystem/setLevelSettings");
+const setArrayValues = require("../../utils/setArrayValues");
 
 module.exports = {
   name: 'levels',
@@ -391,32 +392,35 @@ module.exports = {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
+
+    await interaction.deferReply();
+
     try {
-      let action, glMult, chanMult, roleMult, lvRol, rolRepl, annChan, annPing, annMes, blRoles, blChan, xpCldn, clrOnLea, voiEn, voiMult, voiCldn;
+      let data, action, glMult, chanMult, roleMult, lvRol, rolRepl, annChan, annPing, annMes, blRoles, blChan, xpCldn, clrOnLea, voiEn, voiMult, voiCldn;
 
       switch(subCmdGroup) {
         case 'multiplier':
           const value = interaction.options.get('value').value;
           if (subCmd !== 'global') {
             action = interaction.options.get('action').value;
-            let data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd });
+            data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd });
             if (!data) data = [];
           }
           switch(subCmd) {
             case 'global':
               glMult = value;
-              interaction.reply(`The Global Multiplier was set to ${glMult}!`);
+              interaction.editReply(`The Global Multiplier was set to ${glMult}!`);
               action = 'insert'
               break;
             case 'channel':
               const channelId = interaction.options.get('name').value;
-              chanMult = JSON.stringify([{ channelId, value }]);
-              interaction.reply(`A new Channel Multiplier of ${value} was set for <#${channelId}>!`);
+              chanMult = await setArrayValues(action, channelId, value, data, 'channel');
+              interaction.editReply(`A new Channel Multiplier of ${value} was set for <#${channelId}>!`);
               break;
             case 'role':
               const roleId = interaction.options.get('name').value;
-              roleMult = JSON.stringify([{ roleId, value }]);
-              interaction.reply(`A new Role Multiplier of ${value} was set for <@&${roleId}>!`);
+              roleMult = await setArrayValues(action, roleId, value, data, 'role');
+              interaction.editReply(`A new Role Multiplier of ${value} was set for <@&${roleId}>!`);
               break;
           }
           break;
@@ -463,7 +467,7 @@ module.exports = {
       
     } catch (error) {
       console.error('Error setting Global Multiplier:', error);
-      interaction.reply('There was an error setting the Global Multiplier!');
+      interaction.editReply('There was an error setting the Global Multiplier!');
     }
   }
 }

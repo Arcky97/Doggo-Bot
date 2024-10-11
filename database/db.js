@@ -18,6 +18,9 @@ async function initDatabase() {
 
     console.log('Connected to the database successfully!');
 
+    //const editReactionRolesTable = `ALTER TABLE ReactionRoles ADD COLUMN maxReactions INT DEFAULT 0;`
+    //await pool.query(editReactionRolesTable);
+
     //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
     //await pool.query(dropBotRepliesTable);
 
@@ -153,6 +156,9 @@ async function initDatabase() {
         channelId VARCHAR(100) NOT NULL,
         messageId VARCHAR(100) NOT NULL,
         emojiRolePairs JSON DEFAULT NULL,
+        maxRoles INT DEFAULT 0,
+        maxReactions INT DEFAULT 0,
+        type VARCHAR(100) DEFAULT 'normal',
         PRIMARY KEY (guildId, channelId, messageId)
       )
     `

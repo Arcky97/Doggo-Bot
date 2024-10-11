@@ -2,7 +2,7 @@ const { Client, Message } = require('discord.js');
 const { selectData } = require('../../../database/controlData/selectData');
 
 module.exports = async (client, message) => {
-  if (!message.inGuild() || message.author.bot) return;
+  if (!message.inGuild() || !message.author || message.author.bot) return;
 
   try {
     const chatChannelId = await selectData('GuildSettings', {guildId: message.guild.id})
@@ -15,5 +15,4 @@ module.exports = async (client, message) => {
   } catch (error) {
     console.error('There was an error retrieving GuildSettings from the database:', error);
   }
-  
 }
