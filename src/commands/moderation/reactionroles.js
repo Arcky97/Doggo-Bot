@@ -98,8 +98,12 @@ module.exports = {
               type: ApplicationCommandOptionType.Integer,
               name: 'limit',
               description: 'Set the limit.',
-              required: true,
-              minValue: 0
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'channel',
+              description: 'Channel where the message is located.'
             }
           ]
         }
