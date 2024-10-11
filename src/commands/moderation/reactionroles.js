@@ -99,8 +99,7 @@ module.exports = {
               name: 'limit',
               description: 'Set the limit.',
               required: true,
-              minValue: 1,
-              maxValue: 250
+              minValue: 0
             }
           ]
         }
