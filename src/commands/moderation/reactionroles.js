@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
-const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setMaxRolesLimit } = require("../../../database/controlData/reactionRoles/setReactionRoles");
+const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setReactionOrRoleLimit } = require("../../../database/controlData/reactionRoles/setReactionRoles");
 const { exportToJson } = require("../../../database/controlData/visualDatabase/exportToJson");
 const setMessageReactions = require("../../utils/setMessageReactions");
 
@@ -86,7 +86,7 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'limit',
-          description: 'Set the limit of roles that can be assigned',
+          description: 'Set the limit of members that can get a reaction role.',
           options: [
             {
               type: ApplicationCommandOptionType.String,
@@ -97,7 +97,7 @@ module.exports = {
             {
               type: ApplicationCommandOptionType.Integer,
               name: 'limit',
-              description: 'Set the limit for roles on a message.',
+              description: 'Set the limit.',
               required: true,
               minValue: 1,
               maxValue: 250
@@ -135,7 +135,8 @@ module.exports = {
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
-    const subCommand = interaction.options.getSubcommand();
+    const subCmdGroup = interaction.options.getSubcommandGroup();
+    const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
     const messageId = interaction.options.getString('messageid');
     const channel = interaction.options.getChannel('channel') || interaction.channel;
@@ -146,7 +147,7 @@ module.exports = {
 
     await interaction.deferReply();
 
-    if (subCommand === 'create' || subCommand === 'edit') {
+    if (subCmd === 'create' || subCmd === 'edit') {
       const emojiRoles = interaction.options.getString('emojiroles');
       const splitEmojiRoles = emojiRoles.split(';').map(s => s.trim());   
   
@@ -172,7 +173,7 @@ module.exports = {
       emojiRolePairs = emojiRolePairs.concat(JSON.parse(reactionRolesData.emojiRolePairs));
     }
 
-    if (subCommand === 'create') {
+    if (subCmd === 'create') {
       if (!reactionRolesData) {
         await setMessageReactions(interaction, message, emojiRolePairs, overwrite)
         await insertReactionRoles(guildId, channel.id, messageId, emojiRolePairs);
@@ -180,7 +181,7 @@ module.exports = {
       } else {
         await interaction.editReply('The message with ID ' + messageId + ' already has Reaction Roles added, use `/reaction roles edit` instead to add more or edit the existing ones.');
       }
-    } else if (subCommand === 'edit') {
+    } else if (subCmd === 'edit') {
       if (overwrite) {
         await interaction.editReply('Reaction roles have been overwritten.');
       } else {
@@ -188,13 +189,19 @@ module.exports = {
       }
       await setMessageReactions(interaction, message, emojiRolePairs, overwrite);
       await updateReactionRoles(guildId, channel.id, messageId, emojiRolePairs);
-    } else if (subCommand === 'delete') {
+    } else if (subCmd === 'delete') {
       await interaction.editReply('Reaction roles have been removed from the message.');
       await message.reactions.removeAll()
       await removeReactionRoles(guildId, channel.id, messageId);
-    } else if (subCommand === 'limit') {
-      await interaction.editReply(`Reaction role limit has been set to ${limit} for message with ID ${messageId}.`);
-      await setMaxRolesLimit(guildId, channel.id, messageId, {maxRoles: limit} );
+    } else if (subCmd === 'limit') {
+      if (subCmdGroup === 'roles') {
+        await interaction.editReply(`Reaction role limit has been set to ${limit} for message with ID ${messageId}.`);
+        await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxRoles: limit } );
+      } else {
+        await interaction.editReply(`Reaction limit has been set to ${limit} for message with ID ${messageId}.`);
+        await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxReactions: limit } );
+      }
+
     }
     exportToJson('ReactionRoles');
   }
