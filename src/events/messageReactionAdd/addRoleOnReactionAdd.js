@@ -91,7 +91,6 @@ module.exports = async (client, reaction, user) => {
     }
   }
 
-
   try {
     await member.roles.add(role);
     console.log(`Assigned role ${role.name} to ${user.tag}.`);

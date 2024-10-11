@@ -201,7 +201,6 @@ module.exports = {
         await interaction.editReply(`Reaction limit has been set to ${limit} for message with ID ${messageId}.`);
         await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxReactions: limit } );
       }
-
     }
     exportToJson('ReactionRoles');
   }
