@@ -443,23 +443,52 @@ module.exports = {
             const settings = await getLevelSettings(guildId);
             let embed;
             if (settings) {
+              const globalMult = parseFloat(settings.globalMultiplier).toFixed(1)
               const roleMults = JSON.parse(settings.roleMultipliers)
-                .map((mult) => `<@&${mult.roleId}>: ${mult.value}`)
+                .map(mult => `${Math.round(mult.value * 100)}% - <@&${mult.roleId}>`)
                 .join('\n')
-                .trim();
+                .trim() || 'none';
+              const channelMults = JSON.parse(settings.channelMultipliers)
+                .map(mult => `${Math.round(mult.value * 100)}% - <#${mult.channelId}>`)
+                .join('\n')
+                .trim() || 'none';
+              const levelRoles = JSON.parse(settings.levelRoles)
+                .map(role => `lv. ${role.level} - <@&${role.roleId}>`)
+                .join('\n')
+                .trim() || 'none';
               embed = new EmbedBuilder()
                 .setColor('Orange')
                 .setTitle('Level System Settings')
                 .setFields(
                   {
                     name: '**Global Multiplier**',
-                    value: settings.globalMultiplier ? `${parseFloat(settings.globalMultiplier).toFixed(1)}` : 'not set',
+                    value: settings.globalMultiplier ? `${globalMult * 100}%` : 'not set',
                     inline: true
                   },
                   {
                     name: '**Role Multipliers**',
-                    value: settings.roleMultipliers ? `${roleMults}` : 'none',
+                    value: roleMults,
                     inline: true
+                  },
+                  {
+                    name: '**Channel Multipliers**', 
+                    value: channelMults,
+                    inline: true  
+                  },
+                  {
+                    name: '**Cooldown**',
+                    value: `${settings.xpCooldown} seconds`,
+                    inline: true 
+                  },
+                  {
+                    name: 'Replace Roles',
+                    value: settings.roleReplace ? 'Replace' : 'Do not replace',
+                    inline: true
+                  },
+                  {
+                    name: 'Level Roles', 
+                    value: levelRoles,
+                    inline: true 
                   }
                 )
                 .setTimestamp();
