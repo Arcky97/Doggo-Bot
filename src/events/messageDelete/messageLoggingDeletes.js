@@ -1,5 +1,6 @@
 const { Client, Message, EmbedBuilder } = require("discord.js");
 const getLogChannel = require("../../utils/getLogChannel");
+const truncateText = require("../../utils/truncateText");
 
 module.exports = async (client, message) => {
   if (!message.inGuild() || !message.author || message.author.bot) return;
@@ -18,7 +19,7 @@ module.exports = async (client, message) => {
       .setFields(
         {
           name: "Content",
-          value: message.content || 'empty'
+          value: await truncateText(message.content, 1024) || 'empty'
         },
         {
           name: "Message ID",

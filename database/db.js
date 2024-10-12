@@ -96,14 +96,14 @@ async function initDatabase() {
         voiceMultiplier FLOAT DEFAULT 1.0,
         voiceCooldown INT DEFAULT 2
       );
-    `
+    `;
 
     const createLevelXpRequirements = `
       CREATE TABLE IF NOT EXISTS LevelXpRequirements (
         level INT NOT NULL PRIMARY KEY,
         requiredXp INT NOT NULL
       )
-    `
+    `;
 
     const createEventEmbedsTable = `
       CREATE TABLE IF NOT EXISTS EventEmbeds (
@@ -126,7 +126,8 @@ async function initDatabase() {
         timeStamp BOOLEAN DEFAULT true,
         PRIMARY KEY (guildId, channelId, type)
       )
-    `
+    `;
+
     const createGeneratedEmbedsTable = `
       CREATE TABLE IF NOT EXISTS GeneratedEmbeds (
         guildId VARCHAR(100) NOT NULL,
@@ -148,7 +149,7 @@ async function initDatabase() {
         timeStamp BOOLEAN DEFAULT true,
         PRIMARY KEY (guildId, channelId, messageId)
       )
-    `
+    `;
 
     const createReactionRolesTable = `
       CREATE TABLE IF NOT EXISTS ReactionRoles (
@@ -161,7 +162,7 @@ async function initDatabase() {
         type VARCHAR(100) DEFAULT 'normal',
         PRIMARY KEY (guildId, channelId, messageId)
       )
-    `
+    `;
     
     await pool.query(createGuildSettingsTable);
     await pool.query(createLevelSystemTable);

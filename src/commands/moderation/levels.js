@@ -1,5 +1,5 @@
-const { PermissionFlagsBits, ApplicationCommandOptionType } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers } = require("../../../database/levelSystem/setLevelSettings");
+const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const setArrayValues = require("../../utils/setArrayValues");
 
 module.exports = {
@@ -440,31 +440,63 @@ module.exports = {
           if (subCmd === 'cooldown') {
 
           } else { // subCmd === 'settings'
-
+            const settings = await getLevelSettings(guildId);
+            let embed;
+            if (settings) {
+              const roleMults = JSON.parse(settings.roleMultipliers)
+                .map((mult) => `<@&${mult.roleId}>: ${mult.value}`)
+                .join('\n')
+                .trim();
+              console.log(roleMults) 
+              embed = new EmbedBuilder()
+                .setColor('Orange')
+                .setTitle('Level System Settings')
+                .setFields(
+                  {
+                    name: '**Global Multiplier**',
+                    value: settings.globalMultiplier ? `${parseFloat(settings.globalMultiplier).toFixed(1)}` : 'not set',
+                    inline: true
+                  },
+                  {
+                    name: '**Role Multipliers**',
+                    value: settings.roleMultipliers ? `${roleMults}` : 'none',
+                    inline: true
+                  }
+                )
+                .setTimestamp();
+            } else {
+              embed = new EmbedBuilder()
+                .setColor('Red')
+                .setTitle('Level System Settings')
+                .setDescription('No Settings available.')
+                .setTimestamp()
+            }
+            await interaction.editReply({ embeds: [embed] });
           }
           break;
       }
       console.log(action);
-      await setLevelSettings({ 
-        id: guildId, 
-        action,
-        glMult,
-        chanMult,
-        roleMult,
-        lvRol,
-        rolRepl,
-        annChan,
-        annPing,
-        annMes,
-        blRoles,
-        blChan,
-        xpCldn,
-        clrOnLea,
-        voiEn,
-        voiMult,
-        voiCldn
-      });
-      
+      if (action) {
+        await setLevelSettings({ 
+          id: guildId, 
+          action,
+          glMult,
+          chanMult,
+          roleMult,
+          lvRol,
+          rolRepl,
+          annChan,
+          annPing,
+          annMes,
+          blRoles,
+          blChan,
+          xpCldn,
+          clrOnLea,
+          voiEn,
+          voiMult,
+          voiCldn
+        });
+      }
     } catch (error) {
       console.error('Error setting Global Multiplier:', error);
       interaction.editReply('There was an error setting the Global Multiplier!');

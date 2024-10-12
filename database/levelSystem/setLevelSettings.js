@@ -53,4 +53,4 @@ async function setLevelSettings({ id, action, glMult, chanMult, roleMult, lvRol,
   exportToJson('LevelSettings')
 }
 
-module.exports = { setLevelSettings, getRoleOrChannelMultipliers };
+module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers };

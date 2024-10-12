@@ -1,5 +1,6 @@
 const { Client, Message, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/getLogChannel');
+const truncateText = require('../../utils/truncateText');
 
 module.exports = async (client, oldMessage, newMessage) => {
   if (!oldMessage.inGuild() || 
@@ -15,8 +16,9 @@ module.exports = async (client, oldMessage, newMessage) => {
     const channel = await getLogChannel(client, oldMessage.guild.id, 'message');
     if (!channel) return;
 
-    const oldContent = oldMessage.content || '*No content*';
-    const newContent = newMessage.content || '*No content*';
+    const oldContent = await truncateText(oldMessage.content, 1024) || '*No content*';
+    const newContent = await truncateText(newMessage.content, 1024) || '*No content*';
+    console.log(newContent);
     const embed = new EmbedBuilder()
       .setColor('Orange')
       .setAuthor({

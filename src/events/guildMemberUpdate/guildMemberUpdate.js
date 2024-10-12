@@ -10,8 +10,8 @@ module.exports = async (client, oldMember, newMember) => {
 
     const oldRoles = getMemberRoles(oldMember);
     const newRoles = getMemberRoles(newMember);
-    const oldNickName = oldMember.nickname;
-    const newNickName = newMember.nickname;
+    const oldNickName = oldMember.nickname || 'no Nickname';
+    const newNickName = newMember.nickname || 'no Nickname';
     let action;
     let title;
     let description;

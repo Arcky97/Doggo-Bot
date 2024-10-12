@@ -7,7 +7,7 @@ module.exports = {
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
     try {
-      settings = await getGuildSettings(interaction.guild.id);
+      const settings = await getGuildSettings(interaction.guild.id);
       let embed;
       if (settings) {
         embed = new EmbedBuilder()
