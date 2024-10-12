@@ -447,7 +447,6 @@ module.exports = {
                 .map((mult) => `<@&${mult.roleId}>: ${mult.value}`)
                 .join('\n')
                 .trim();
-              console.log(roleMults) 
               embed = new EmbedBuilder()
                 .setColor('Orange')
                 .setTitle('Level System Settings')
@@ -475,7 +474,6 @@ module.exports = {
           }
           break;
       }
-      console.log(action);
       if (action) {
         await setLevelSettings({ 
           id: guildId, 
