@@ -56,6 +56,11 @@ module.exports = {
         },
         {
           type: ApplicationCommandOptionType.String,
+          name: 'fields',
+          description: 'Add 1 or more Fields. (format: \'name: field name value: some field content inline: true\'',
+        },
+        {
+          type: ApplicationCommandOptionType.String,
           name: 'message',
           description: 'The message to include with the embed.'
         },
@@ -164,6 +169,11 @@ module.exports = {
         },
         {
           type: ApplicationCommandOptionType.String,
+          name: 'fields',
+          description: 'Add 1 or more Fields. (format: \'name: field name value: some field content inline: true\'',
+        },
+        {
+          type: ApplicationCommandOptionType.String,
           name: 'message',
           description: 'The message to include with the embed.'
         },
@@ -265,10 +275,12 @@ module.exports = {
     const channel = interaction.options.getChannel('channel');
     const type = interaction.options.getString('type');
 
+
     // Default options
     let embedOptions = {
       title: 'Embed Title',
       description: 'Description',
+      fields: null,
       message: null,
       color: null,
       author: null,

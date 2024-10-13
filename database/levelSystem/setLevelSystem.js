@@ -1,12 +1,11 @@
 const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
-const { query } = require("../db");
 
 async function getAllUsersLevel(guildId) {
   try {
-    const rows = await query(`SELECT * FROM LevelSystem WHERE guildId = ${guildId}`);
-    return rows[0];
+    const rows = await selectData('LevelSystem', {guildId: guildId });
+    return rows;
   } catch (error) {
     console.error('Error fetching users from LevelSystem:', error);
     return [];

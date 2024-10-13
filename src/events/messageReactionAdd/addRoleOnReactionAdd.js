@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { getReactionRoles, getMaxRolesLimit } = require('../../../database/controlData/reactionRoles/setReactionRoles');
+const { getReactionRoles } = require('../../../database/reactionRoles/setReactionRoles');
 
 module.exports = async (client, reaction, user) => {
   const guild = reaction.message.guild;

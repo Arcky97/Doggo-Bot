@@ -77,8 +77,8 @@ async function setBotReplies({ trigger, response, action, id }) {
   const numbers = '0123456789';
 
   const generateNumericId = customAlphabet(numbers, 11);
-  let key; 
-  let data;
+
+  let key, data;
   let existIDs = await getIDs()
   trigger = JSON.stringify(trigger);
   response = JSON.stringify(response);

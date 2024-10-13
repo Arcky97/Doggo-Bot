@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
-const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setReactionOrRoleLimit } = require("../../../database/controlData/reactionRoles/setReactionRoles");
+const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setReactionOrRoleLimit } = require("../../../database/reactionRoles/setReactionRoles");
 const { exportToJson } = require("../../../database/controlData/visualDatabase/exportToJson");
 const setMessageReactions = require("../../utils/setMessageReactions");
 

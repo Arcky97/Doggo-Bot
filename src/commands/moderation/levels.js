@@ -99,6 +99,11 @@ module.exports = {
               required: true
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'settings',
+          description: 'Shows the Settings set for Multipliers of the Level System.'
         }
       ]
     },
@@ -245,24 +250,14 @@ module.exports = {
       options: [
         {
           type: ApplicationCommandOptionType.Subcommand,
-          name: 'setting',
+          name: 'replace',
           description: 'sets roles to accumulate/replace upon the next level up role.',
           options: [
             {
-              type: ApplicationCommandOptionType.String,
+              type: ApplicationCommandOptionType.Boolean,
               name: 'value',
-              description: 'Accumulate or Replace.',
+              description: 'Replace (true) or Don\'t replace (false).',
               required: true,
-              choices: [
-                {
-                  name: 'accumulate',
-                  value: 'false' 
-                },
-                {
-                  name: 'replace',
-                  value: 'true' 
-                }
-              ]
             }
           ]
         },
@@ -393,6 +388,37 @@ module.exports = {
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
 
+    let settings, embed, globalMult, roleMults, channelMults, levelRoles, annMess, blackListRoles, blackListChannels;
+    try {
+      settings = await getLevelSettings(guildId);
+      if (settings) {
+        globalMult = parseFloat(settings.globalMultiplier).toFixed(1)
+        roleMults = JSON.parse(settings.roleMultipliers)
+          .map(mult => `- \`${Math.round(mult.value * 100)}%\` - <@&${mult.roleId}>`)
+          .join('\n')
+          .trim() || 'none';
+        channelMults = JSON.parse(settings.channelMultipliers)
+          .map(mult => `- \`${Math.round(mult.value * 100)}%\` - <#${mult.channelId}>`)
+          .join('\n')
+          .trim() || 'none';
+        levelRoles = JSON.parse(settings.levelRoles)
+          .map(role => `lv. ${role.level} - <@&${role.roleId}>`)
+          .join('\n')
+          .trim() || 'none';
+        annMess = JSON.parse(settings.announcementMessage)
+        blackListRoles = JSON.parse(settings.blackListRoles)
+          .map(role => `- <@&${role}>`)
+          .join('\n')
+          .trim() || 'none';
+        blackListChannels = JSON.parse(settings.blackListChannels)
+          .map(channel => `- <#${channel}>`)
+          .join('\n')
+          .trim() || 'none'
+      }
+    } catch (error) {
+      console.log('Error retrieving level system settings', error);
+    }
+
     await interaction.deferReply();
 
     try {
@@ -400,28 +426,56 @@ module.exports = {
 
       switch(subCmdGroup) {
         case 'multiplier':
-          const value = interaction.options.get('value').value;
-          if (subCmd !== 'global') {
-            action = interaction.options.get('action').value;
+          const value = interaction.options.get('value')?.value;
+          if (subCmd !== 'global' && subCmd !== 'settings') {
+            action = interaction.options.get('action')?.value;
             data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd });
             if (!data) data = [];
           }
           switch(subCmd) {
             case 'global':
               glMult = value;
-              interaction.editReply(`The Global Multiplier was set to ${glMult}!`);
+              await interaction.editReply(`The Global Multiplier was set to ${glMult}!`);
               action = 'insert'
               break;
             case 'channel':
               const channelId = interaction.options.get('name').value;
               chanMult = await setArrayValues(action, channelId, value, data, 'channel');
-              interaction.editReply(`A new Channel Multiplier of ${value} was set for <#${channelId}>!`);
-              break;
+              await interaction.editReply(`A new Channel Multiplier of ${value} was set for <#${channelId}>!`);
+              break
             case 'role':
               const roleId = interaction.options.get('name').value;
               roleMult = await setArrayValues(action, roleId, value, data, 'role');
-              interaction.editReply(`A new Role Multiplier of ${value} was set for <@&${roleId}>!`);
+              await interaction.editReply(`A new Role Multiplier of ${value} was set for <@&${roleId}>!`);
               break;
+            case 'settings':
+              embed = new EmbedBuilder()
+                .setColor('Green')
+                .setTitle('Level System Multipliers')
+                .setDescription('All multipliers set in this Server are shown below.' + 
+                  '\nThe max stack of multipliers is `1000%`.' +
+                  '\n- Global + Roles Stack' +
+                  '\n- Channel + Roles Stack' +
+                  '\n- Global + Channel don\'t stack')
+                .setFields(
+                  {
+                    name: 'Global Multiplier',
+                    value: settings.globalMultiplier ? `\`${globalMult * 100}%\`` : 'not set',
+                    inline: true 
+                  },
+                  {
+                    name: 'Role Multipliers',
+                    value: roleMults,
+                    inline: true 
+                  },
+                  {
+                    name: 'Channel Multipliers',
+                    value: channelMults,
+                    inline: true
+                  }
+                )
+                .setTimestamp()
+              await interaction.editReply({ embeds: [embed] });
           }
           break;
         case 'announcement':
@@ -434,49 +488,41 @@ module.exports = {
 
           break;
         case 'voice':
-
+          action = 'insert'
+          voiEn = interaction.options.getBoolean('value') 
+          await interaction.editReply(`Voice XP has been ${voiEn ? 'Enabled' : 'Disabled'}!`);
           break;
         default:
           if (subCmd === 'cooldown') {
 
           } else { // subCmd === 'settings'
-            const settings = await getLevelSettings(guildId);
-            let embed;
             if (settings) {
-              const globalMult = parseFloat(settings.globalMultiplier).toFixed(1)
-              const roleMults = JSON.parse(settings.roleMultipliers)
-                .map(mult => `${Math.round(mult.value * 100)}% - <@&${mult.roleId}>`)
-                .join('\n')
-                .trim() || 'none';
-              const channelMults = JSON.parse(settings.channelMultipliers)
-                .map(mult => `${Math.round(mult.value * 100)}% - <#${mult.channelId}>`)
-                .join('\n')
-                .trim() || 'none';
-              const levelRoles = JSON.parse(settings.levelRoles)
-                .map(role => `lv. ${role.level} - <@&${role.roleId}>`)
-                .join('\n')
-                .trim() || 'none';
               embed = new EmbedBuilder()
                 .setColor('Orange')
                 .setTitle('Level System Settings')
+                .setDescription('All Settings set for this Server of the Level System are shown below.' +
+                  '\nUse `/levels multiplier settings` to view all Multipliers for this Server.' + 
+                  '\nUse `/levels role settings` to view all Level Roles for this Server.' +
+                  '\nUse `/levels blacklist settings` to view all blacklisted Roles and Channels for this Server.'
+                )
                 .setFields(
                   {
-                    name: '**Global Multiplier**',
-                    value: settings.globalMultiplier ? `${globalMult * 100}%` : 'not set',
+                    name: 'Global Multiplier',
+                    value: settings.globalMultiplier ? `\`${globalMult * 100}%\`` : 'not set',
                     inline: true
                   },
                   {
-                    name: '**Role Multipliers**',
-                    value: roleMults,
+                    name: 'Role Multipliers',
+                    value: roleMults !== 'none' ? `${JSON.parse(settings.roleMultipliers).length} Role(s)` : roleMults,
                     inline: true
                   },
                   {
-                    name: '**Channel Multipliers**', 
-                    value: channelMults,
+                    name: 'Channel Multipliers', 
+                    value: channelMults !== 'none' ? `${JSON.parse(settings.channelMultipliers).length} Channel(s)` : channelMults,
                     inline: true  
                   },
                   {
-                    name: '**Cooldown**',
+                    name: 'Cooldown',
                     value: `${settings.xpCooldown} seconds`,
                     inline: true 
                   },
@@ -489,9 +535,59 @@ module.exports = {
                     name: 'Level Roles', 
                     value: levelRoles,
                     inline: true 
+                  },
+                  {
+                    name: 'Clear on Leave',
+                    value: settings.clearOnLeave ? 'Enabled' : 'Disabled',
+                    inline: true
+                  },
+                  {
+                    name: 'Black Listed Roles',
+                    value: blackListRoles !== 'none' ? `${blackListRoles.length} Role(s)` : blackListRoles,
+                    inline: true 
+                  },
+                  {
+                    name: 'Black Listed Channels',
+                    value: blackListChannels !== 'none' ? `${blackListChannels.length} Channel(s)` : blackListChannels,
+                    inline: true 
+                  },
+                  {
+                    name: 'Announcement Channel',
+                    value: settings.announcementId !== 'not set' ? `<#${settings.announcementId}>` : 'Not set',
+                    inline: true 
+                  },
+                  {
+                    name: 'Announcement Ping',
+                    value: settings.announcementPing ? 'Ping' : 'Don\'t ping',
+                    inline: true 
+                  },
+                  { 
+                    name: 'Voice XP',
+                    value: settings.voiceEnable ? 'Enabled' : 'Disabled',
+                    inline: true 
+                  }
+                )
+                .setFooter(
+                  {
+                    text: interaction.guild.name,
+                    iconURL: interaction.guild.iconURL()
                   }
                 )
                 .setTimestamp();
+                if (settings.voiceEnable) {
+                  embed.addFields(
+                    {
+                      name: 'Voice Multiplier',
+                      value: `\`${settings.voiceMultiplier * 100}%\``,
+                      inline: true 
+                    },
+                    {
+                      name: 'Voice Cooldown',
+                      value: settings.voiceCooldown > 1 ? `${settings.voiceCooldown} Seconds` : `${settings.voiceCooldown} Second`,
+                      inline: true 
+                    }
+                  )
+                }
             } else {
               embed = new EmbedBuilder()
                 .setColor('Red')
@@ -525,8 +621,8 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.error('Error setting Global Multiplier:', error);
-      interaction.editReply('There was an error setting the Global Multiplier!');
+      console.error('Error with the levels command:', error);
+      interaction.editReply('There was an error...');
     }
   }
 }

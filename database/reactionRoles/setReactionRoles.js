@@ -1,7 +1,7 @@
-const { deleteData } = require("../deleteData");
-const { insertData } = require("../insertData");
-const { selectData } = require("../selectData");
-const { updateData } = require("../updateData");
+const { deleteData } = require("../controlData/deleteData");
+const { insertData } = require("../controlData/insertData");
+const { selectData } = require("../controlData/selectData");
+const { updateData } = require("../controlData/updateData");
 
 function reactionRolesKeys(guild, channel, message) {
   return {

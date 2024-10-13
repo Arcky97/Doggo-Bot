@@ -27,8 +27,8 @@ const convertSetupCommand = ((setting) => {
 
 async function getGuildSettings(guildId) {
   try {
-    const [guildSetting] = await query('SELECT * FROM GuildSettings WHERE guildId = ?', [guildId]);
-    return guildSetting[0]
+    const guildSetting = await selectData('GuildSettings', { guildId: guildId });
+    return guildSetting
   } catch (error) {
     console.error('Error fetching guildSettings:', error);
     return [];
@@ -46,6 +46,7 @@ async function setGuildSettings(guildId, settingName, channelId) {
   const data = {
     [column]: channelId
   }
+  console.log(data);
 
   try {
     const dataExist = await selectData('GuildSettings', key)
