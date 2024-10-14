@@ -18,7 +18,6 @@ module.exports = async (client, oldMessage, newMessage) => {
 
     const oldContent = await truncateText(oldMessage.content, 1024) || '*No content*';
     const newContent = await truncateText(newMessage.content, 1024) || '*No content*';
-    console.log(newContent);
     const embed = new EmbedBuilder()
       .setColor('Orange')
       .setAuthor({

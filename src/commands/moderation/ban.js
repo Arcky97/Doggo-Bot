@@ -2,19 +2,19 @@ const { ApplicationCommandOptionType, PermissionFlagsBits } = require('discord.j
 
 module.exports = {
   name: 'ban',
-  description: 'Ban a member from the Server!',
+  description: 'Ban a member from the Server.',
   options: [
     {
+      type: ApplicationCommandOptionType.Mentionable,
       name: 'member',
       description: 'The user to ban.',
       required: true,
-      type: ApplicationCommandOptionType.Mentionable
     },
     {
+      type: ApplicationCommandOptionType.String,
       name: 'reason',
-      description: 'The reason for banning.',
-      type: ApplicationCommandOptionType.String
-    },
+      description: 'The reason for banning.'
+    }
   ],
   permissionsRequired: [
     PermissionFlagsBits.Administrator, 
