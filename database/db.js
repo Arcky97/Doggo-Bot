@@ -48,12 +48,15 @@ async function initDatabase() {
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
         guildId VARCHAR(100) NOT NULL PRIMARY KEY,
-        chattingChannel VARCHAR(100),
-        messageLogging VARCHAR(100),
-        memberLogging VARCHAR(100),
-        serverLogging VARCHAR(100),
-        voiceLogging VARCHAR(100),
-        joinLeaveLogging VARCHAR(100)
+        chattingChannel VARCHAR(100) DEFAULT NULL,
+        messageLogging VARCHAR(100) DEFAULT NULL,
+        memberLogging VARCHAR(100) DEFAULT NULL,
+        serverLogging VARCHAR(100) DEFAULT NULL,
+        voiceLogging VARCHAR(100) DEFAULT NULL,
+        joinLeaveLogging VARCHAR(100) DEFAULT NULL,
+        reportLogging VARCHAR(100) DEFAULT NULL,
+        ignoreLogging JSON DEFAULT '[]',
+        muteRole VARCHAR(100) DEFAULT NULL
       );
     `;
 

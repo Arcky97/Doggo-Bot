@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
 
 
 module.exports = {
@@ -77,7 +77,7 @@ module.exports = {
             {
               type: ApplicationCommandOptionType.String,
               name: 'reason',
-              descrition: 'The reason for the warning.'
+              description: 'The reason for the warning.'
             }
           ]
         },
@@ -115,26 +115,51 @@ module.exports = {
       ]
     },
     {
-      type: ApplicationCommandOptionType.Subcommand,
+      type: ApplicationCommandOptionType.SubcommandGroup,
       name: 'timeout',
       description: 'Time out a member.',
       options: [
         {
-          type: ApplicationCommandOptionType.Mentionable,
-          name: 'member',
-          description: 'The member to timeout.',
-          required: true
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'add',
+          description: 'Add a timeout to a member.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Mentionable,
+              name: 'member',
+              description: 'The member to timeout.',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'duration',
+              description: 'The duration of the timeout. (in s, m or h => For ex. 5m = 5 minutes.)',
+              required: true 
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'reason',
+              description: 'The reason for adding the timeout.',
+            }
+          ]
         },
         {
-          type: ApplicationCommandOptionType.String,
-          name: 'duration',
-          description: 'The duration of the timeout. (in s, m or h => For ex. 5m = 5 minutes.)',
-          required: true 
-        },
-        {
-          type: ApplicationCommandOptionType.String,
-          name: 'reason',
-          description: 'The reason of the timeout.',
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'remove',
+          description: 'Remove a timeout from a member.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Mentionable,
+              name: 'member',
+              description: 'The member to remove the timeout from.',
+              required: true 
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'reason',
+              description: 'The reason for removing the timeout.'
+            }
+          ]
         }
       ]
     },
@@ -241,5 +266,57 @@ module.exports = {
         }
       ]
     }
-  ]
+  ],
+  permissionsRequired: [
+    PermissionFlagsBits.Administrator,
+    PermissionFlagsBits.BanMembers,
+    PermissionFlagsBits.KickMembers,
+    PermissionFlagsBits.MuteMembers
+  ],
+  botPermissions: [
+    PermissionFlagsBits.Administrator,
+    PermissionFlagsBits.BanMembers,
+    PermissionFlagsBits.KickMembers,
+    PermissionFlagsBits.MuteMembers
+  ],
+  callback: async (client, interaction) => {
+    const subCmdGroup = interaction.options.getSubcommandGroup();
+    const subCmd = interaction.options.getSubcommand();
+    const guildId = interaction.guild.id;
+    const member = interaction.options.getMember('member');
+    const duration = interaction.options.getString('duration');
+    const reason = interaction.options.getString('reason');
+    const warnId = interaction.options.getString('id');
+
+    await interaction.deferReply();
+
+    switch(subCmdGroup) {
+      case 'warn':
+        
+        await interaction.editReply('You chose the warn command.');
+        break;
+      case 'timeout':
+        await interaction.editReply('You chose the time out command.');
+        break;
+      case 'ban':
+        await interaction.editReply('You chose the ban command.');
+        break;
+      default: 
+        switch(subCmd) {
+          case 'mute':
+            await interaction.editReply('You chose the mute command.');
+            break;
+          case 'unmute':
+            await interaction.editReply('You chose the unmute command.');
+            break; 
+          case 'kick':
+            await interaction.editReply('You chose the kick command.');
+            break;
+          case 'unban':
+            await interaction.editReply('You chose the unban command.');
+            break;
+        }
+        break;
+    }
+  }
 }
