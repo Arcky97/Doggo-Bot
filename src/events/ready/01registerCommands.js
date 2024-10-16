@@ -1,6 +1,6 @@
-const areCommandsDifferent = require('../../utils/areCommandsDifferent');
-const getApplicationCommands = require('../../utils/getApplicationCommands');
-const getLocalCommands = require('../../utils/getLocalCommands');
+const areCommandsDifferent = require('../../utils/commands/areCommandsDifferent');
+const getApplicationCommands = require('../../utils/commands/getApplicationCommands');
+const getLocalCommands = require('../../utils/commands/getLocalCommands');
 
 module.exports = async (client, guild) => {
   try {
@@ -21,7 +21,6 @@ module.exports = async (client, guild) => {
           console.log(`🗑 Deleted command "${name}".`);
           continue;
         }
-
         if (areCommandsDifferent(existingCommand, localCommand)) {
           await applicationCommands.edit(existingCommand.id, {
             description,

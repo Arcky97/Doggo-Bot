@@ -4,7 +4,7 @@ const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
-function getUniq(table, messageOrType) {
+const getUniq = (table, messageOrType) => {
   return table === 'GeneratedEmbeds' ? { messageId: messageOrType } : { type: messageOrType }
 }
 

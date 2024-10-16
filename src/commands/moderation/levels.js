@@ -32,22 +32,6 @@ module.exports = {
           description: 'add/remove the XP Multiplier for 1 or more Channels.',
           options: [
             {
-              type: ApplicationCommandOptionType.String,
-              name: 'action',
-              description: 'Add/remove a Channel Multiplier.',
-              required: true,
-              choices: [
-                {
-                  name: 'add',
-                  value: 'insert'
-                },
-                {
-                  name: 'remove',
-                  value: 'delete'
-                }
-              ]
-            },
-            {
               type: ApplicationCommandOptionType.Channel,
               name: 'name',
               description: 'The Channel name.',
@@ -68,22 +52,6 @@ module.exports = {
           name: 'role',
           description: 'Add/remove the XP Multiplier for 1 or more Roles.',
           options: [
-            {
-              type: ApplicationCommandOptionType.String,
-              name: 'action',
-              description: 'Add/remove a Role Multiplier.',
-              required: true,
-              choices: [
-                {
-                  name: 'add',
-                  value: 'insert'
-                },
-                {
-                  name: 'remove',
-                  value: 'delete'
-                }
-              ]
-            },
             {
               type: ApplicationCommandOptionType.Role,
               name: 'name',
@@ -388,29 +356,29 @@ module.exports = {
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
 
-    let settings, embed, globalMult, roleMults, channelMults, levelRoles, annMess, blackListRoles, blackListChannels;
+    let levSettings, embed, globalMult, roleMults, channelMults, levelRoles, annMess, blackListRoles, blackListChannels;
     try {
-      settings = await getLevelSettings(guildId);
-      if (settings) {
-        globalMult = parseFloat(settings.globalMultiplier).toFixed(1)
-        roleMults = JSON.parse(settings.roleMultipliers)
+      levSettings = await getLevelSettings(guildId);
+      if (levSettings) {
+        globalMult = parseFloat(levSettings.globalMultiplier).toFixed(1)
+        roleMults = JSON.parse(levSettings.roleMultipliers)
           .map(mult => `- \`${Math.round(mult.value * 100)}%\` - <@&${mult.roleId}>`)
           .join('\n')
           .trim() || 'none';
-        channelMults = JSON.parse(settings.channelMultipliers)
+        channelMults = JSON.parse(levSettings.channelMultipliers)
           .map(mult => `- \`${Math.round(mult.value * 100)}%\` - <#${mult.channelId}>`)
           .join('\n')
           .trim() || 'none';
-        levelRoles = JSON.parse(settings.levelRoles)
+        levelRoles = JSON.parse(levSettings.levelRoles)
           .map(role => `lv. ${role.level} - <@&${role.roleId}>`)
           .join('\n')
           .trim() || 'none';
-        annMess = JSON.parse(settings.announcementMessage)
-        blackListRoles = JSON.parse(settings.blackListRoles)
+        annMess = JSON.parse(levSettings.announcementMessage)
+        blackListRoles = JSON.parse(levSettings.blackListRoles)
           .map(role => `- <@&${role}>`)
           .join('\n')
           .trim() || 'none';
-        blackListChannels = JSON.parse(settings.blackListChannels)
+        blackListChannels = JSON.parse(levSettings.blackListChannels)
           .map(channel => `- <#${channel}>`)
           .join('\n')
           .trim() || 'none'
@@ -422,31 +390,31 @@ module.exports = {
     await interaction.deferReply();
 
     try {
-      let data, action, glMult, chanMult, roleMult, lvRol, rolRepl, annChan, annPing, annMes, blRoles, blChan, xpCldn, clrOnLea, voiEn, voiMult, voiCldn;
+      let data, setting, action, setData;
 
       switch(subCmdGroup) {
         case 'multiplier':
           const value = interaction.options.get('value')?.value;
           if (subCmd !== 'global' && subCmd !== 'settings') {
-            action = interaction.options.get('action')?.value;
             data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd });
             if (!data) data = [];
           }
           switch(subCmd) {
             case 'global':
-              glMult = value;
-              await interaction.editReply(`The Global Multiplier was set to ${glMult}!`);
-              action = 'insert'
+              setting = { 'globalMultiplier': value };
+              await interaction.editReply(`The Global Multiplier was set to ${value}!`);
               break;
             case 'channel':
               const channelId = interaction.options.get('name').value;
-              chanMult = await setArrayValues(action, channelId, value, data, 'channel');
-              await interaction.editReply(`A new Channel Multiplier of ${value} was set for <#${channelId}>!`);
+              [action, setData] = await setArrayValues(channelId, value, data, 'channel')
+              setting = { 'channelMultipliers': setData};
+              await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <#${channelId}>.`);
               break
             case 'role':
               const roleId = interaction.options.get('name').value;
-              roleMult = await setArrayValues(action, roleId, value, data, 'role');
-              await interaction.editReply(`A new Role Multiplier of ${value} was set for <@&${roleId}>!`);
+              [action, setData] = await setArrayValues(roleId, value, data, 'role')
+              setting = { 'roleMultipliers': setData };
+              await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${roleId}>.`);
               break;
             case 'settings':
               embed = new EmbedBuilder()
@@ -460,7 +428,7 @@ module.exports = {
                 .setFields(
                   {
                     name: 'Global Multiplier',
-                    value: settings.globalMultiplier ? `\`${globalMult * 100}%\`` : 'not set',
+                    value: levSettings.globalMultiplier ? `\`${globalMult * 100}%\`` : 'not set',
                     inline: true 
                   },
                   {
@@ -489,14 +457,14 @@ module.exports = {
           break;
         case 'voice':
           action = 'insert'
-          voiEn = interaction.options.getBoolean('value') 
+          setting = interaction.options.getBoolean('value') 
           await interaction.editReply(`Voice XP has been ${voiEn ? 'Enabled' : 'Disabled'}!`);
           break;
         default:
           if (subCmd === 'cooldown') {
 
           } else { // subCmd === 'settings'
-            if (settings) {
+            if (levSettings) {
               embed = new EmbedBuilder()
                 .setColor('Orange')
                 .setTitle('Level System Settings')
@@ -508,27 +476,27 @@ module.exports = {
                 .setFields(
                   {
                     name: 'Global Multiplier',
-                    value: settings.globalMultiplier ? `\`${globalMult * 100}%\`` : 'not set',
+                    value: levSettings.globalMultiplier ? `\`${globalMult * 100}%\`` : 'not set',
                     inline: true
                   },
                   {
                     name: 'Role Multipliers',
-                    value: roleMults !== 'none' ? `${JSON.parse(settings.roleMultipliers).length} Role(s)` : roleMults,
+                    value: roleMults !== 'none' ? `${JSON.parse(levSettings.roleMultipliers).length} Role(s)` : roleMults,
                     inline: true
                   },
                   {
                     name: 'Channel Multipliers', 
-                    value: channelMults !== 'none' ? `${JSON.parse(settings.channelMultipliers).length} Channel(s)` : channelMults,
+                    value: channelMults !== 'none' ? `${JSON.parse(levSettings.channelMultipliers).length} Channel(s)` : channelMults,
                     inline: true  
                   },
                   {
                     name: 'Cooldown',
-                    value: `${settings.xpCooldown} seconds`,
+                    value: `${levSettings.xpCooldown} seconds`,
                     inline: true 
                   },
                   {
                     name: 'Replace Roles',
-                    value: settings.roleReplace ? 'Replace' : 'Do not replace',
+                    value: levSettings.roleReplace ? 'Replace' : 'Do not replace',
                     inline: true
                   },
                   {
@@ -538,7 +506,7 @@ module.exports = {
                   },
                   {
                     name: 'Clear on Leave',
-                    value: settings.clearOnLeave ? 'Enabled' : 'Disabled',
+                    value: levSettings.clearOnLeave ? 'Enabled' : 'Disabled',
                     inline: true
                   },
                   {
@@ -553,17 +521,17 @@ module.exports = {
                   },
                   {
                     name: 'Announcement Channel',
-                    value: settings.announcementId !== 'not set' ? `<#${settings.announcementId}>` : 'Not set',
+                    value: levSettings.announcementId !== 'not set' ? `<#${levSettings.announcementId}>` : 'Not set',
                     inline: true 
                   },
                   {
                     name: 'Announcement Ping',
-                    value: settings.announcementPing ? 'Ping' : 'Don\'t ping',
+                    value: levSettings.announcementPing ? 'Ping' : 'Don\'t ping',
                     inline: true 
                   },
                   { 
                     name: 'Voice XP',
-                    value: settings.voiceEnable ? 'Enabled' : 'Disabled',
+                    value: levSettings.voiceEnable ? 'Enabled' : 'Disabled',
                     inline: true 
                   }
                 )
@@ -574,16 +542,16 @@ module.exports = {
                   }
                 )
                 .setTimestamp();
-                if (settings.voiceEnable) {
+                if (levSettings.voiceEnable) {
                   embed.addFields(
                     {
                       name: 'Voice Multiplier',
-                      value: `\`${settings.voiceMultiplier * 100}%\``,
+                      value: `\`${levSettings.voiceMultiplier * 100}%\``,
                       inline: true 
                     },
                     {
                       name: 'Voice Cooldown',
-                      value: settings.voiceCooldown > 1 ? `${settings.voiceCooldown} Seconds` : `${settings.voiceCooldown} Second`,
+                      value: levSettings.voiceCooldown > 1 ? `${levSettings.voiceCooldown} Seconds` : `${levSettings.voiceCooldown} Second`,
                       inline: true 
                     }
                   )
@@ -599,25 +567,11 @@ module.exports = {
           }
           break;
       }
-      if (action) {
+      if (subCmd !== 'setting') {
         await setLevelSettings({ 
           id: guildId, 
           action,
-          glMult,
-          chanMult,
-          roleMult,
-          lvRol,
-          rolRepl,
-          annChan,
-          annPing,
-          annMes,
-          blRoles,
-          blChan,
-          xpCldn,
-          clrOnLea,
-          voiEn,
-          voiMult,
-          voiCldn
+          setting
         });
       }
     } catch (error) {

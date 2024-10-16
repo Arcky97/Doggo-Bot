@@ -4,6 +4,12 @@ const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
+const convertLevelSetting = (setting => {
+  const columnMapping = {
+
+  }
+})
+
 async function getLevelSettings(id) {
   return await selectData('LevelSettings', { guildId: id} );
 }
@@ -17,38 +23,23 @@ async function getRoleOrChannelMultipliers({id, type}) {
   };
 }
 
-async function setLevelSettings({ id, action, glMult, chanMult, roleMult, lvRol, rolRepl, annChan, annPing, annMes, blRoles, blChan, xpCldn, clrOnLea, voiEn, voiMult, voiCldn}) {
-  let settings = await getLevelSettings(id);
+async function setLevelSettings({ id, setting}) {
+  console.log(setting);
+  let levSettings = await getLevelSettings(id);
   // create default settings on server join.
-  if (!settings) {
-    await insertData('LevelSettings', { guildId: id });
-    settings = {};
-  }
+  const settingKey = Object.keys(setting)[0];
+  const settingValue = Object.values(setting)[0];
 
-  if (action === 'insert') {
-    const updates = {};
+  const existValue = JSON.parse(levSettings[settingKey])
 
-    if (glMult !== undefined) updates.globalMultiplier = glMult;
-    if (chanMult !== undefined) updates.channelMultipliers = chanMult;
-    if (roleMult !== undefined) updates.roleMultipliers = roleMult;
-    if (lvRol !== undefined) updates.levelRoles = lvRol;
-    if (rolRepl !== undefined) updates.roleReplace = rolRepl;
-    if (annChan !== undefined) updates.announcementId = annChan;
-    if (annPing !== undefined) updates.announcementPing = annPing;
-    if (annMes !== undefined) updates.announcementMessage = annMes;
-    if (blRoles !== undefined) updates.blackListRoles = blRoles;
-    if (blChan !== undefined) updates.blackListChannels = blChannels;
-    if (xpCldn !== undefined) updates.xpCooldown = xpCldn;
-    if (clrOnLea !== undefined) updates.clearOnLeave = clrOnLea;
-    if (voiEn !== undefined) updates.voiceEnable = voiEn;
-    if (voiMult !== undefined) updates.voiceMultiplier = voiMult;
-    if (voiCldn !== undefined) updates.voiceCooldown = voiCldn;
-
-    if (Object.keys(updates).length > 0) {
-      await updateData('LevelSettings', { guildId: id}, updates);
+  try {
+    if (settingValue !== existValue) {
+      await updateData('LevelSettings', { guildId: id}, setting );
+    } else {
+      console.log('Data was not updated (it\'s the same as it was)');
     }
-  } else if (action === 'delete') {
-    await deleteData('LevelSettings', { guildId: id})
+  } catch (error) {
+    console.log('Error setting level settings', error);
   }
   exportToJson('LevelSettings')
 }

@@ -1,6 +1,6 @@
-const { ApplicationCommandOptionType, AttachmentBuilder, calculateUserDefaultAvatarIndex, ApplicationCommandOptionWithChoicesMixin } = require("discord.js");
+const { ApplicationCommandOptionType, AttachmentBuilder } = require("discord.js");
 const { getAllUsersLevel, getUserLevel, addUserColor } = require("../../../database/levelSystem/setLevelSystem");
-const calculateLevelXp = require("../../utils/calculateLevelXp");
+const calculateLevelXp = require("../../utils/levels/calculateLevelXp");
 const { Font, RankCardBuilder } = require("canvacord");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
 

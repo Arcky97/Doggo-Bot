@@ -2,10 +2,9 @@ const { selectData } = require("../controlData/selectData");
 const { insertData } = require("../controlData/insertData");
 const { updateData } = require("../controlData/updateData");
 const { deleteData } = require("../controlData/deleteData");
-const { query } = require("../db");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
-const convertSetupCommand = ((setting) => {
+const convertSetupCommand = (setting => {
   const columnMapping = {
     'bot-chat': 'chattingChannel',
     'message-logging': 'messageLogging',
@@ -17,18 +16,17 @@ const convertSetupCommand = ((setting) => {
 
   const column = columnMapping[setting];
 
-  if (!column) {
+  if (column) {
+    return column;
+  } else {
     console.error('Invalid setting name:', setting);
     return null;
-  } else {
-    return column;
   }
 })
 
 async function getGuildSettings(guildId) {
   try {
-    const guildSetting = await selectData('GuildSettings', { guildId: guildId });
-    return guildSetting
+    return await selectData('GuildSettings', { guildId: guildId });
   } catch (error) {
     console.error('Error fetching guildSettings:', error);
     return [];

@@ -1,5 +1,5 @@
-const { exportToJson } = require("../../database/controlData/visualDatabase/exportToJson");
-const { query } = require("../../database/db");
+const { exportToJson } = require("../../../database/controlData/visualDatabase/exportToJson");
+const { query } = require("../../../database/db");
 
 async function levelXpRequirements() {
   const initialXp = 35;
