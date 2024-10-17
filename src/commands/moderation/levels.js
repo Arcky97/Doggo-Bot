@@ -1,6 +1,7 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const setArrayValues = require("../../utils/setArrayValues");
+const createListFromArray = require("../../utils/settings/createListFromArray");
 
 module.exports = {
   name: 'levels',
@@ -360,28 +361,13 @@ module.exports = {
     try {
       levSettings = await getLevelSettings(guildId);
       if (levSettings) {
-        globalMult = parseFloat(levSettings.globalMultiplier).toFixed(1)
-        roleMults = JSON.parse(levSettings.roleMultipliers)
-          .map(mult => `- \`${Math.round(mult.value * 100)}%\` - <@&${mult.roleId}>`)
-          .join('\n')
-          .trim() || 'none';
-        channelMults = JSON.parse(levSettings.channelMultipliers)
-          .map(mult => `- \`${Math.round(mult.value * 100)}%\` - <#${mult.channelId}>`)
-          .join('\n')
-          .trim() || 'none';
-        levelRoles = JSON.parse(levSettings.levelRoles)
-          .map(role => `lv. ${role.level} - <@&${role.roleId}>`)
-          .join('\n')
-          .trim() || 'none';
-        annMess = JSON.parse(levSettings.announcementMessage)
-        blackListRoles = JSON.parse(levSettings.blackListRoles)
-          .map(role => `- <@&${role}>`)
-          .join('\n')
-          .trim() || 'none';
-        blackListChannels = JSON.parse(levSettings.blackListChannels)
-          .map(channel => `- <#${channel}>`)
-          .join('\n')
-          .trim() || 'none'
+        globalMult = levSettings.globalMultiplier
+        roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
+        channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
+        levelRoles = createListFromArray(levSettings.levelRoles, 'lv. ${level} - <@&${roleId}>');
+        annMess = JSON.parse(levSettings.announcementMessage);
+        blackListRoles = createListFromArray(levSettings.blackListRoles, '- <@&${roleId}>');
+        blackListChannels = createListFromArray(levSettings.blackListChannels, '- <#${channelId}>');
       }
     } catch (error) {
       console.log('Error retrieving level system settings', error);
@@ -394,7 +380,7 @@ module.exports = {
 
       switch(subCmdGroup) {
         case 'multiplier':
-          const value = interaction.options.get('value')?.value;
+          const value = Math.floor(interaction.options.get('value')?.value * 100);
           if (subCmd !== 'global' && subCmd !== 'settings') {
             data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd });
             if (!data) data = [];
@@ -428,7 +414,7 @@ module.exports = {
                 .setFields(
                   {
                     name: 'Global Multiplier',
-                    value: levSettings.globalMultiplier ? `\`${globalMult * 100}%\`` : 'not set',
+                    value: levSettings.globalMultiplier ? `\`${globalMult}%\`` : 'not set',
                     inline: true 
                   },
                   {
@@ -476,7 +462,7 @@ module.exports = {
                 .setFields(
                   {
                     name: 'Global Multiplier',
-                    value: levSettings.globalMultiplier ? `\`${globalMult * 100}%\`` : 'not set',
+                    value: levSettings.globalMultiplier ? `\`${globalMult}%\`` : 'not set',
                     inline: true
                   },
                   {
@@ -529,6 +515,11 @@ module.exports = {
                     value: levSettings.announcementPing ? 'Ping' : 'Don\'t ping',
                     inline: true 
                   },
+                  {
+                    name: 'Announcement Message',
+                    value: annMess.length === 0 ? 'Default' : 'Custom set.', 
+                    inline: true 
+                  },
                   { 
                     name: 'Voice XP',
                     value: levSettings.voiceEnable ? 'Enabled' : 'Disabled',
@@ -567,7 +558,7 @@ module.exports = {
           }
           break;
       }
-      if (subCmd !== 'setting') {
+      if (subCmd !== 'settings') {
         await setLevelSettings({ 
           id: guildId, 
           action,

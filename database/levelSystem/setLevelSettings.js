@@ -24,7 +24,6 @@ async function getRoleOrChannelMultipliers({id, type}) {
 }
 
 async function setLevelSettings({ id, setting}) {
-  console.log(setting);
   let levSettings = await getLevelSettings(id);
   // create default settings on server join.
   const settingKey = Object.keys(setting)[0];

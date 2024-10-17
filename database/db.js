@@ -18,8 +18,8 @@ async function initDatabase() {
 
     console.log('Connected to the database successfully!');
 
-    //const editReactionRolesTable = `ALTER TABLE ReactionRoles ADD COLUMN maxReactions INT DEFAULT 0;`
-    //await pool.query(editReactionRolesTable);
+    //const editLevelSettingsTable = `ALTER TABLE LevelSettings MODIFY COLUMN voiceMultiplier INT DEFAULT 0;`
+    //await pool.query(editLevelSettingsTable);
 
     //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
     //await pool.query(dropBotRepliesTable);
@@ -83,7 +83,7 @@ async function initDatabase() {
     const createLevelSettingsTable = `
       CREATE TABLE IF NOT EXISTS LevelSettings (
         guildId VARCHAR(100) NOT NULL PRIMARY KEY,
-        globalMultiplier FLOAT DEFAULT 0.0,
+        globalMultiplier INT DEFAULT 0,
         levelRoles JSON DEFAULT '[]',
         roleReplace BOOLEAN DEFAULT false,
         announcementId VARCHAR(100) DEFAULT 'not set',
@@ -96,7 +96,7 @@ async function initDatabase() {
         xpCooldown INT DEFAULT 30,
         clearOnLeave BOOLEAN DEFAULT false,
         voiceEnable BOOLEAN DEFAULT false,
-        voiceMultiplier FLOAT DEFAULT 1.0,
+        voiceMultiplier INT DEFAULT 1,
         voiceCooldown INT DEFAULT 2
       );
     `;
