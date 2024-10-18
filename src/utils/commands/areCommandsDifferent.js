@@ -36,7 +36,8 @@ module.exports = (existingCommand, localCommand) => {
         areChoicesDifferent(
           localOption.choices || [],
           existingOption.choices || []
-        )
+        ) || localOption.minValue !== existingOption.minValue || 
+        localOption.maxValue !== existingOption.maxValue
       ) {
         return true;
       }

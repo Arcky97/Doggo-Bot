@@ -2,6 +2,8 @@ const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = requ
 const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const setArrayValues = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
+const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
+const showLevelSystemSettings = require("../../utils/levels/showLevelSystemSettings");
 
 module.exports = {
   name: 'levels',
@@ -22,8 +24,8 @@ module.exports = {
               name: 'value',
               description: 'The Global XP Multiplier.',
               required: true,
-              minValue: 1.0,
-              maxValue: 10.0
+              minValue: 0.01,
+              maxValue: 5.0
             }
           ]
         },
@@ -42,8 +44,8 @@ module.exports = {
               type: ApplicationCommandOptionType.Number,
               name: 'value',
               description: 'The Channel Multiplier.',
-              minValue: 1.0,
-              maxValue: 10.0,
+              minValue: 0.01,
+              maxValue: 5.0,
               required: true,
             }
           ]
@@ -63,8 +65,8 @@ module.exports = {
               type: ApplicationCommandOptionType.Number,
               name: 'value',
               description: 'The Role Multiplier.',
-              minValue: 1.0,
-              maxValue: 10.0,
+              minValue: 0.01,
+              maxValue: 5.0,
               required: true
             }
           ]
@@ -357,10 +359,13 @@ module.exports = {
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
 
+    await interaction.deferReply();
+
     let levSettings, embed, globalMult, roleMults, channelMults, levelRoles, annMess, blackListRoles, blackListChannels;
     try {
       levSettings = await getLevelSettings(guildId);
-      if (levSettings) {
+      if (levSettings && subCmd === 'settings') {
+        console.log('we do this because the sub command includes settings');
         globalMult = levSettings.globalMultiplier
         roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
         channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
@@ -371,24 +376,33 @@ module.exports = {
       }
     } catch (error) {
       console.log('Error retrieving level system settings', error);
-    }
+      embed = new EmbedBuilder()
+        .setColor('Red')
+        .setTitle('Error!')
+        .setDescription('Oh no! Something went wrong trying to access the Level Settings for your server, please try again later!')
+        .setFooter({
+          text: interaction.guild.name,
+          iconURL: interaction.guild.iconURL()
+        })
+        .setTimestamp()
 
-    await interaction.deferReply();
+      await interaction.editReply({ embeds: [embed] });
+      return; 
+    }
 
     try {
       let data, setting, action, setData;
 
       switch(subCmdGroup) {
         case 'multiplier':
-          const value = Math.floor(interaction.options.get('value')?.value * 100);
+          const value = Math.round(interaction.options.get('value')?.value * 100);
           if (subCmd !== 'global' && subCmd !== 'settings') {
-            data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd });
-            if (!data) data = [];
+            data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd }) || [];
           }
           switch(subCmd) {
             case 'global':
               setting = { 'globalMultiplier': value };
-              await interaction.editReply(`The Global Multiplier was set to ${value}!`);
+              await interaction.editReply(`The Global Multiplier was set to ${value}%!`);
               break;
             case 'channel':
               const channelId = interaction.options.get('name').value;
@@ -403,32 +417,7 @@ module.exports = {
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${roleId}>.`);
               break;
             case 'settings':
-              embed = new EmbedBuilder()
-                .setColor('Green')
-                .setTitle('Level System Multipliers')
-                .setDescription('All multipliers set in this Server are shown below.' + 
-                  '\nThe max stack of multipliers is `1000%`.' +
-                  '\n- Global + Roles Stack' +
-                  '\n- Channel + Roles Stack' +
-                  '\n- Global + Channel don\'t stack')
-                .setFields(
-                  {
-                    name: 'Global Multiplier',
-                    value: levSettings.globalMultiplier ? `\`${globalMult}%\`` : 'not set',
-                    inline: true 
-                  },
-                  {
-                    name: 'Role Multipliers',
-                    value: roleMults,
-                    inline: true 
-                  },
-                  {
-                    name: 'Channel Multipliers',
-                    value: channelMults,
-                    inline: true
-                  }
-                )
-                .setTimestamp()
+              embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults);
               await interaction.editReply({ embeds: [embed] });
           }
           break;
@@ -450,110 +439,7 @@ module.exports = {
           if (subCmd === 'cooldown') {
 
           } else { // subCmd === 'settings'
-            if (levSettings) {
-              embed = new EmbedBuilder()
-                .setColor('Orange')
-                .setTitle('Level System Settings')
-                .setDescription('All Settings set for this Server of the Level System are shown below.' +
-                  '\nUse `/levels multiplier settings` to view all Multipliers for this Server.' + 
-                  '\nUse `/levels role settings` to view all Level Roles for this Server.' +
-                  '\nUse `/levels blacklist settings` to view all blacklisted Roles and Channels for this Server.'
-                )
-                .setFields(
-                  {
-                    name: 'Global Multiplier',
-                    value: levSettings.globalMultiplier ? `\`${globalMult}%\`` : 'not set',
-                    inline: true
-                  },
-                  {
-                    name: 'Role Multipliers',
-                    value: roleMults !== 'none' ? `${JSON.parse(levSettings.roleMultipliers).length} Role(s)` : roleMults,
-                    inline: true
-                  },
-                  {
-                    name: 'Channel Multipliers', 
-                    value: channelMults !== 'none' ? `${JSON.parse(levSettings.channelMultipliers).length} Channel(s)` : channelMults,
-                    inline: true  
-                  },
-                  {
-                    name: 'Cooldown',
-                    value: `${levSettings.xpCooldown} seconds`,
-                    inline: true 
-                  },
-                  {
-                    name: 'Replace Roles',
-                    value: levSettings.roleReplace ? 'Replace' : 'Do not replace',
-                    inline: true
-                  },
-                  {
-                    name: 'Level Roles', 
-                    value: levelRoles,
-                    inline: true 
-                  },
-                  {
-                    name: 'Clear on Leave',
-                    value: levSettings.clearOnLeave ? 'Enabled' : 'Disabled',
-                    inline: true
-                  },
-                  {
-                    name: 'Black Listed Roles',
-                    value: blackListRoles !== 'none' ? `${blackListRoles.length} Role(s)` : blackListRoles,
-                    inline: true 
-                  },
-                  {
-                    name: 'Black Listed Channels',
-                    value: blackListChannels !== 'none' ? `${blackListChannels.length} Channel(s)` : blackListChannels,
-                    inline: true 
-                  },
-                  {
-                    name: 'Announcement Channel',
-                    value: levSettings.announcementId !== 'not set' ? `<#${levSettings.announcementId}>` : 'Not set',
-                    inline: true 
-                  },
-                  {
-                    name: 'Announcement Ping',
-                    value: levSettings.announcementPing ? 'Ping' : 'Don\'t ping',
-                    inline: true 
-                  },
-                  {
-                    name: 'Announcement Message',
-                    value: annMess.length === 0 ? 'Default' : 'Custom set.', 
-                    inline: true 
-                  },
-                  { 
-                    name: 'Voice XP',
-                    value: levSettings.voiceEnable ? 'Enabled' : 'Disabled',
-                    inline: true 
-                  }
-                )
-                .setFooter(
-                  {
-                    text: interaction.guild.name,
-                    iconURL: interaction.guild.iconURL()
-                  }
-                )
-                .setTimestamp();
-                if (levSettings.voiceEnable) {
-                  embed.addFields(
-                    {
-                      name: 'Voice Multiplier',
-                      value: `\`${levSettings.voiceMultiplier * 100}%\``,
-                      inline: true 
-                    },
-                    {
-                      name: 'Voice Cooldown',
-                      value: levSettings.voiceCooldown > 1 ? `${levSettings.voiceCooldown} Seconds` : `${levSettings.voiceCooldown} Second`,
-                      inline: true 
-                    }
-                  )
-                }
-            } else {
-              embed = new EmbedBuilder()
-                .setColor('Red')
-                .setTitle('Level System Settings')
-                .setDescription('No Settings available.')
-                .setTimestamp()
-            }
+            embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess)
             await interaction.editReply({ embeds: [embed] });
           }
           break;
