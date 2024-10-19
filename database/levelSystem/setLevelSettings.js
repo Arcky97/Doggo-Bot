@@ -10,6 +10,7 @@ const convertLevelSetting = (setting => {
   }
 })
 
+
 async function getLevelSettings(id) {
   return await selectData('LevelSettings', { guildId: id} );
 }
@@ -25,22 +26,28 @@ async function getRoleOrChannelMultipliers({id, type}) {
 
 async function setLevelSettings({ id, setting}) {
   let levSettings = await getLevelSettings(id);
-  // create default settings on server join.
   const settingKey = Object.keys(setting)[0];
   const settingValue = Object.values(setting)[0];
+  
+  let existingValue = levSettings[settingKey];
 
-  const existValue = JSON.parse(levSettings[settingKey])
+  if (typeof existingValue === 'string' && !settingKey.includes('Id')) {
+    existingValue = JSON.parse(existingValue);
+  } else if (typeof existingValue === 'number' && !settingKey.includes('Multiplier') && !settingKey.includes('Cooldown')) {
+    existingValue = existingValue === 1;
+  }
 
   try {
-    if (settingValue !== existValue) {
+    if (settingValue !== existingValue) {
       await updateData('LevelSettings', { guildId: id}, setting );
     } else {
       console.log('Data was not updated (it\'s the same as it was)');
+      return;
     }
   } catch (error) {
     console.log('Error setting level settings', error);
   }
-  exportToJson('LevelSettings')
+  exportToJson('LevelSettings');
 }
 
 module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers };

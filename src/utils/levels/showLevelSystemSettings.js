@@ -3,6 +3,11 @@ const { EmbedBuilder } = require("discord.js");
 module.exports = (interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess) => {
   let embed;
 
+  let roleMultLength = JSON.parse(levSettings.roleMultipliers).length;
+  let channelMultLength = JSON.parse(levSettings.channelMultipliers).length;
+  let roleBlackListLength = JSON.parse(levSettings.blackListRoles).length;
+  let channelBlackListLength = JSON.parse(levSettings.blackListChannels).length; 
+
   if(levSettings) {
     embed = new EmbedBuilder()
       .setColor('Orange')
@@ -20,12 +25,12 @@ module.exports = (interaction, levSettings, globalMult, roleMults, channelMults,
         },
         {
           name: 'Role Multipliers',
-          value: roleMults !== 'none' ? `${JSON.parse(levSettings.roleMultipliers).length} Role(s)` : roleMults,
+          value: roleMults !== 'none' ? `${roleMultLength} ${roleMultLength > 1 ? 'Roles' : 'Role'}` : roleMults,
           inline: true
         },
         {
           name: 'Channel Multipliers', 
-          value: channelMults !== 'none' ? `${JSON.parse(levSettings.channelMultipliers).length} Channel(s)` : channelMults,
+          value: channelMults !== 'none' ? `${channelMultLength} ${channelMultLength > 1 ? 'Channels' : 'Channel'}` : channelMults,
           inline: true  
         },
         {
@@ -50,12 +55,12 @@ module.exports = (interaction, levSettings, globalMult, roleMults, channelMults,
         },
         {
           name: 'Black Listed Roles',
-          value: blackListRoles !== 'none' ? `${blackListRoles.length} Role(s)` : blackListRoles,
+          value: blackListRoles !== 'none' ? `${roleBlackListLength} ${roleBlackListLength > 1 ? 'Roles' : 'Role'}` : blackListRoles,
           inline: true 
         },
         {
           name: 'Black Listed Channels',
-          value: blackListChannels !== 'none' ? `${blackListChannels.length} Channel(s)` : blackListChannels,
+          value: blackListChannels !== 'none' ? `${channelBlackListLength} ${channelBlackListLength > 1 ? 'Channels' : 'Channel'}` : blackListChannels,
           inline: true 
         },
         {

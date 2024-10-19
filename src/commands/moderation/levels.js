@@ -1,9 +1,10 @@
-const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
+const { PermissionFlagsBits, ApplicationCommandOptionType } = require("discord.js");
 const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const setArrayValues = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
 const showLevelSystemSettings = require("../../utils/levels/showLevelSystemSettings");
+const createErrorEmbed = require("../../utils/createErrorEmbed");
 
 module.exports = {
   name: 'levels',
@@ -160,22 +161,6 @@ module.exports = {
           description: "Add/remove a Channel to the black list that won't give XP.",
           options: [
             {
-              type: ApplicationCommandOptionType.String,
-              name: 'action',
-              description: 'add/remove a Channel from the blacklist.',
-              required: true,
-              choices: [
-                {
-                  name: 'add',
-                  value: 'add'
-                },
-                {
-                  name: 'remove',
-                  value: 'remove'
-                }
-              ]
-            },
-            {
               type: ApplicationCommandOptionType.Channel,
               name: 'name',
               description: 'The Channel name.',
@@ -188,22 +173,6 @@ module.exports = {
           name: 'role',
           description: "Add a Role to the black list that won't give XP (mention the same channel to remove it.)",
           options: [
-            {
-              type: ApplicationCommandOptionType.String,
-              name: 'action',
-              description: 'add/remove a Role from the blacklist.',
-              required: true,
-              choices: [
-                {
-                  name: 'add',
-                  value: 'add'
-                },
-                {
-                  name: 'remove',
-                  value: 'remove'
-                }
-              ]
-            },
             {
               type: ApplicationCommandOptionType.Role,
               name: 'name',
@@ -294,7 +263,9 @@ module.exports = {
           type: ApplicationCommandOptionType.Number,
           name: 'value',
           description: 'Set the cooldown value',
-          required: true
+          required: true,
+          minValue: 1,
+          maxValue: 60
         }
       ]
     },
@@ -376,33 +347,29 @@ module.exports = {
       }
     } catch (error) {
       console.log('Error retrieving level system settings', error);
-      embed = new EmbedBuilder()
-        .setColor('Red')
-        .setTitle('Error!')
-        .setDescription('Oh no! Something went wrong trying to access the Level Settings for your server, please try again later!')
-        .setFooter({
-          text: interaction.guild.name,
-          iconURL: interaction.guild.iconURL()
-        })
-        .setTimestamp()
-
+      embed = createErrorEmbed(
+        interaction, 
+        'Oh no! Something went wrong trying to access the Level Settings for your server, please try again later!'
+      );
       await interaction.editReply({ embeds: [embed] });
       return; 
     }
 
+    let value = interaction.options.get('value')?.value 
     try {
       let data, setting, action, setData;
 
       switch(subCmdGroup) {
         case 'multiplier':
-          const value = Math.round(interaction.options.get('value')?.value * 100);
+          value = Math.round(value * 100);
+          console.log(value);
           if (subCmd !== 'global' && subCmd !== 'settings') {
             data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd }) || [];
           }
           switch(subCmd) {
             case 'global':
               setting = { 'globalMultiplier': value };
-              await interaction.editReply(`The Global Multiplier was set to ${value}%!`);
+              await interaction.editReply(`The Global Multiplier has been set to ${value}%!`);
               break;
             case 'channel':
               const channelId = interaction.options.get('name').value;
@@ -431,13 +398,26 @@ module.exports = {
 
           break;
         case 'voice':
-          action = 'insert'
-          setting = interaction.options.getBoolean('value') 
-          await interaction.editReply(`Voice XP has been ${voiEn ? 'Enabled' : 'Disabled'}!`);
+          switch(subCmd){
+            case 'setting':
+              setting = {'voiceEnable': interaction.options.getBoolean('value') };
+              await interaction.editReply(`Voice XP has been ${setting ? 'Enabled' : 'Disabled'}!`);
+              break;
+            case 'multiplier':
+              value = Math.round(value * 100);
+              setting = {'voiceMultiplier': value};
+              await interaction.editReply(`Voice Multiplier has been set to ${value}%`);
+              break;
+            case 'cooldown':
+              setting = {'voiceCooldown': value};
+              await interaction.editReply(`Voice cooldown has been set to ${value} ${value > 1 ? 'seconds' : 'second'}!`);
+              break;
+          }
           break;
         default:
           if (subCmd === 'cooldown') {
-
+            setting = { 'xpCooldown' : value };
+            await interaction.editReply(`The XP cool down has been set to ${value} ${value > 1 ? 'seconds' : 'second'}!`);
           } else { // subCmd === 'settings'
             embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess)
             await interaction.editReply({ embeds: [embed] });
@@ -446,14 +426,14 @@ module.exports = {
       }
       if (subCmd !== 'settings') {
         await setLevelSettings({ 
-          id: guildId, 
-          action,
+          id: guildId,
           setting
         });
       }
     } catch (error) {
       console.error('Error with the levels command:', error);
-      interaction.editReply('There was an error...');
+      embed = createErrorEmbed(interaction, 'There was an error...');
+      interaction.editReply({ embeds: [embed] });
     }
   }
 }
