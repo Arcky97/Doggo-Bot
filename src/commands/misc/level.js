@@ -176,7 +176,7 @@ module.exports = {
       const userLevel = await getUserLevel(interaction.guild.id, interaction.member.id);
       if (userLevel) {
         const colorChoice = interaction.options.get('color').value;
-        let { hexColor, message } = await getOrConvertColor(colorChoice, interaction, true);
+        let { hexColor, message } = await getOrConvertColor(colorChoice, true);
         const thumbnailUrl = `https://singlecolorimage.com/get/${hexColor.replace('#','')}/64x64`
         const embed = new EmbedBuilder()
           .setColor(hexColor)
@@ -186,7 +186,6 @@ module.exports = {
           .setTimestamp()
         await interaction.editReply({ embeds: [embed] });
         //await interaction.editReply(message);
-        console.log(hexColor);
         if (hexColor) {
           try {
             await addUserColor(interaction.guild.id, interaction.member.id, hexColor);

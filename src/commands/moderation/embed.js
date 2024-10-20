@@ -388,7 +388,7 @@ module.exports = {
           } catch (error) {
             if (error.code === 10008) { // Discord API error code for "Unknown Message"
               await deleteGeneratedEmbed(guildId, messageId); // Optionally remove the embed from the database
-              replyMessage = 'The specified message has been deleted from the server.';
+              replyMessage = 'The specified message has already been deleted.';
             } else {
               console.error('Error fetching the message:', error);
               replyMessage = 'An error occurred while fetching the message.';

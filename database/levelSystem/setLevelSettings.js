@@ -4,13 +4,6 @@ const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
-const convertLevelSetting = (setting => {
-  const columnMapping = {
-
-  }
-})
-
-
 async function getLevelSettings(id) {
   return await selectData('LevelSettings', { guildId: id} );
 }
@@ -37,9 +30,7 @@ async function setLevelSettings({ id, setting}) {
   let levSettings = await getLevelSettings(id);
   const settingKey = Object.keys(setting)[0];
   const settingValue = Object.values(setting)[0];
-  
   let existingValue = levSettings[settingKey];
-
   if (typeof existingValue === 'string' && !settingKey.includes('Channel')) {
     existingValue = JSON.parse(existingValue);
   } else if (typeof existingValue === 'number' && !settingKey.includes('Multiplier') && !settingKey.includes('Cooldown')) {

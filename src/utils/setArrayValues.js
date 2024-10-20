@@ -1,4 +1,4 @@
-module.exports = async (id, value, data, type) => {
+function setChannelOrRoleArray(id, value, data, type) {
   const index = data.findIndex(item => item[`${type}Id`] === id);
   let action; 
 
@@ -16,3 +16,31 @@ module.exports = async (id, value, data, type) => {
   }
   return [action, JSON.stringify(data)];
 }
+
+function setAnnounceLevelArray(levSettings, newData) {
+  existingData = JSON.parse(levSettings.announceLevelMessages);
+  const level = typeof newData === 'object' ? newData.lv : newData
+  const index = existingData.findIndex(item => item['lv'] === level);
+  let action;
+
+  if (index === -1 && typeof newData === 'object') {
+    existingData.push(newData);
+    existingData.sort((a, b) => a > b);
+    action = 'added';
+  } else {
+    if (typeof newData === 'object') {
+      existingData[index] = newData;
+      action = 'updated';
+    } else {
+      if (existingData.length !== 0) {
+        existingData.splice(index, 1);
+        action = 'removed';
+      } else {
+        action = 'error';
+      }
+    }
+  }
+  return [action, JSON.stringify(existingData)];
+}
+
+module.exports = { setChannelOrRoleArray, setAnnounceLevelArray }

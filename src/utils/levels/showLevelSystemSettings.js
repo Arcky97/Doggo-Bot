@@ -65,12 +65,12 @@ module.exports = (interaction, levSettings, globalMult, roleMults, channelMults,
         },
         {
           name: 'Announcement Channel',
-          value: levSettings.announcementChannel !== 'not set' ? `<#${levSettings.announcementChannel}>` : 'Not set',
+          value: levSettings.announceChannel !== 'not set' ? `<#${levSettings.announceChannel}>` : 'Not set',
           inline: true 
         },
         {
           name: 'Announcement Ping',
-          value: levSettings.announcementPing ? 'Ping' : 'Don\'t ping',
+          value: levSettings.announcePing ? 'Ping' : 'Don\'t ping',
           inline: true 
         },
         {

@@ -18,7 +18,7 @@ async function initDatabase() {
 
     console.log('Connected to the database successfully!');
 
-    //const editLevelSettingsTable = `ALTER TABLE LevelSettings CHANGE announcementId announcementChannel VARCHAR(100) DEFAULT 'not set';`
+    //const editLevelSettingsTable = `ALTER TABLE LevelSettings MODIFY COLUMN announceLevelMessages TEXT AFTER announceDefaultMessage;`
     //await pool.query(editLevelSettingsTable);
 
     //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
@@ -86,9 +86,10 @@ async function initDatabase() {
         globalMultiplier INT DEFAULT 0,
         levelRoles JSON DEFAULT '[]',
         roleReplace BOOLEAN DEFAULT false,
-        announcementChannel VARCHAR(100) DEFAULT 'not set',
-        announcementPing BOOLEAN DEFAULT false,
-        announcementMessage JSON DEFAULT '[]',
+        announceChannel VARCHAR(100) DEFAULT 'not set',
+        announcePing BOOLEAN DEFAULT false,
+        announceDefaultMessage JSON DEFAULT '[]',
+        announceLevelMessages JSON DEFAULT '[]',
         roleMultipliers JSON DEFAULT '[]',
         channelMultipliers JSON DEFAULT '[]',
         blackListRoles JSON DEFAULT '[]',

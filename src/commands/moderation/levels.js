@@ -1,10 +1,11 @@
-const { PermissionFlagsBits, ApplicationCommandOptionType } = require("discord.js");
+const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist } = require("../../../database/levelSystem/setLevelSettings");
-const setArrayValues = require("../../utils/setArrayValues");
+const { setChannelOrRoleArray, setAnnounceLevelArray } = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
 const showLevelSystemSettings = require("../../utils/levels/showLevelSystemSettings");
 const createErrorEmbed = require("../../utils/createErrorEmbed");
+const getOrConvertColor = require("../../utils/getOrConvertColor");
 
 module.exports = {
   name: 'levels',
@@ -122,6 +123,11 @@ module.exports = {
               required: true
             },
             {
+              type: ApplicationCommandOptionType.Integer,
+              name: 'level',
+              description: 'The level the level up message belongs to.',
+            },
+            {
               type: ApplicationCommandOptionType.String,
               name: 'color',
               description: 'The color of the level up message. (type `{user color}` for the user\'s Rank Card Color.)'
@@ -144,12 +150,30 @@ module.exports = {
             {
               type: ApplicationCommandOptionType.String,
               name: 'footer',
-              description: 'The footer of the level up message.'
+              description: 'The level up message\'s footer. (When set to `{server name}`, the server icon is used by default.)'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'footericonurl',
+              description: 'Add a footer icon to the level up message.'
             },
             {
               type: ApplicationCommandOptionType.Boolean,
               name: 'timestamp',
               description: 'Wether to show the time stamp on the level up message.'
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'remove',
+          description: 'remove a level up announcement message.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Integer,
+              name: 'level',
+              description: 'the level the level up message belongs to.',
+              required: true 
             }
           ]
         }
@@ -346,7 +370,7 @@ module.exports = {
         roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
         channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
         levelRoles = createListFromArray(levSettings.levelRoles, 'lv. ${level} - <@&${roleId}>');
-        annMess = JSON.parse(levSettings.announcementMessage);
+        annMess = JSON.parse(levSettings.announceDefaultMessage);
         blackListRoles = createListFromArray(levSettings.blackListRoles, '- <@&${roleId}>');
         blackListChannels = createListFromArray(levSettings.blackListChannels, '- <#${channelId}>');
       }
@@ -378,13 +402,13 @@ module.exports = {
               break;
             case 'channel':
               const channel = interaction.options.getChannel('name');
-              [action, setData] = await setArrayValues(channel.id, value, data, 'channel');
+              [action, setData] = setChannelOrRoleArray(channel.id, value, data, 'channel');
               setting = { 'channelMultipliers': setData };
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for ${channel}.`);
               break
             case 'role':
               const role = interaction.options.getRole('name');
-              [action, setData] = await setArrayValues(role.id, value, data, 'role');
+              [action, setData] = setChannelOrRoleArray(role.id, value, data, 'role');
               setting = { 'roleMultipliers': setData };
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${role}>.`);
               break;
@@ -394,21 +418,53 @@ module.exports = {
           }
           break;
         case 'announcement':
+          let level;
           switch(subCmd) {
             case 'channel':
               const channel = interaction.options.getChannel('name');
-              setting = { 'announcementChannel': channel.id };
+              setting = { 'announceChannel': channel.id };
               await interaction.editReply(`The level up announcement channel has been set to ${channel}`);
               break;
             case 'ping':
               value = interaction.options.getBoolean('value');
-              console.log(value);
-              setting = { 'announcementPing': value};
+              setting = { 'announcePing': value};
               await interaction.editReply(`The ping has been turned ${value ? 'on' : 'off'} for level up announcements.`);
               break;
             case 'message':
-              await interaction.editReply('Not available yet...');
-              return;
+              let embedOptions = {
+                title: interaction.options.getString('title') || '{user globalName} has leveled up!',
+                description: interaction.options.getString('description') || '{Congrats you leveled up to lv. {level}!',
+                message: levSettings.announcePing ? '{user mention}' : null,
+                color: interaction.options.getString('color') || await getOrConvertColor('green'),
+                thumbnailUrl: interaction.options.getBoolean('thumbnailurl') || true,
+                imageUrl: interaction.options.getString('imageurl') || null,
+                footer: {
+                  text: interaction.options.getString('footer') || '{server name}',
+                  iconUrl: interaction.options.getString('footericonurl') || '{server icon}'
+                },
+                timeStamp: interaction.options.getBoolean('timestamp') || true 
+              }
+              level = interaction.options.getInteger('level');
+              if (level !== null) {
+                [action, setData] = setAnnounceLevelArray(levSettings, {lv: level, embedOptions});
+                setting = { 'announceLevelMessages': setData};
+                await interaction.editReply(`The announcement message for lv. ${level} has been ${action}.`);
+              } else {
+                setting = { 'announceDefaultMessage': embedOptions };
+                await interaction.editReply('The default announcement message has been updated.');
+              }
+              break;
+            case 'remove':
+              level = interaction.options.getInteger('level');
+              [action, setData] = setAnnounceLevelArray(levSettings, level);
+              setting = { 'announceLevelMessages': setData};
+              if (action !== 'error') {
+                await interaction.editReply(`The announcement message for lv. ${level} has been ${action}.`);
+              } else {
+                await interaction.editReply(`The announcement message for lv. ${level} does not exist!`);
+              }
+              
+              break;
           }
           break;
         case 'blacklist':

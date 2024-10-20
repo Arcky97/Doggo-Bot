@@ -1,6 +1,6 @@
 const ntc = require("ntc");
 
-module.exports = async (input, output) => {
+module.exports = async (input, output = false) => {
   let hexColor;
   let message;
   if (input.toLowerCase() === 'random') {
@@ -24,7 +24,6 @@ module.exports = async (input, output) => {
       message = `The color name "${input}" was not found.`;
     }
   }
-  console.log(hexColor)
   if (output) {
     return { hexColor, message };
   } else {
