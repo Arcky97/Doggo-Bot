@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType, AttachmentBuilder } = require("discord.js");
+const { ApplicationCommandOptionType, AttachmentBuilder, EmbedBuilder } = require("discord.js");
 const { getAllUsersLevel, getUserLevel, addUserColor } = require("../../../database/levelSystem/setLevelSystem");
 const calculateLevelXp = require("../../utils/levels/calculateLevelXp");
 const { Font, RankCardBuilder } = require("canvacord");
@@ -176,8 +176,16 @@ module.exports = {
       const userLevel = await getUserLevel(interaction.guild.id, interaction.member.id);
       if (userLevel) {
         const colorChoice = interaction.options.get('color').value;
-        let { hexColor, message }= await getOrConvertColor(colorChoice, true);
-        await interaction.editReply(message);
+        let { hexColor, message } = await getOrConvertColor(colorChoice, interaction, true);
+        const thumbnailUrl = `https://singlecolorimage.com/get/${hexColor.replace('#','')}/64x64`
+        const embed = new EmbedBuilder()
+          .setColor(hexColor)
+          .setTitle('New Rank Card Color')
+          .setDescription(message)
+          .setThumbnail(thumbnailUrl)
+          .setTimestamp()
+        await interaction.editReply({ embeds: [embed] });
+        //await interaction.editReply(message);
         console.log(hexColor);
         if (hexColor) {
           try {

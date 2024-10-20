@@ -12,6 +12,7 @@ module.exports = async (text, guild, input) => {
     '{user avatar}': input.user.avatarURL(),
     '{new line}': '\n',
     '{user exp}': userLevelInfo.xp,
+    '{user color}': userLevelInfo.color,
     '{level}': userLevelInfo.level,
     '{level previous}': userLevelInfo.level -1,
     '{level previous xp}': calculateLevelXp(userLevelInfo.level - 1),
@@ -27,7 +28,6 @@ module.exports = async (text, guild, input) => {
     '{server name}': guild.name,    
     '{server member count}': guild.memberCount,
     '{server icon}': guild.iconURL(),
-
   };
 
   return text.replace(/\{[^}]+\}/g, match => {

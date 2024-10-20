@@ -5,15 +5,15 @@ module.exports = async (input, output) => {
   let message;
   if (input.toLowerCase() === 'random') {
     hexColor = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
-    interaction.editReply(`Your random color is ${hexColor}`);
+    message = `Your random color is ${hexColor}`;
   } else if (input.startsWith('#', 0)) {
     const hexPattern = /^#([A-Fa-f0-9]{6})$/;
 
     if (hexPattern.test(input)) {
       hexColor = input
-      interaction.editReply(`Your given color is ${input}`);
+      message = `Your given color is ${input}`;
     } else {
-      interaction.editReply(`The provided hex color "${input}" is not valid.`);
+      message = `The provided hex color "${input}" is not valid.`;
     }        
   } else {
     const colorMatch = ntc.names.find(([hex, name]) => name.toLowerCase() === input.toLowerCase());
@@ -24,6 +24,7 @@ module.exports = async (input, output) => {
       message = `The color name "${input}" was not found.`;
     }
   }
+  console.log(hexColor)
   if (output) {
     return { hexColor, message };
   } else {

@@ -21,7 +21,16 @@ async function getRoleOrChannelMultipliers({id, type}) {
     return JSON.parse(data.roleMultipliers);
   } else if (type === 'channel') {
     return JSON.parse(data.channelMultipliers);
-  };
+  }
+}
+
+async function getRoleOrChannelBlacklist({id, type}) {
+  const data = await getLevelSettings(id);
+  if (type === 'role') {
+    return JSON.parse(data.blackListRoles);
+  } else if (type === 'channel') {
+    return JSON.parse(data.blackListChannels);
+  }
 }
 
 async function setLevelSettings({ id, setting}) {
@@ -50,4 +59,4 @@ async function setLevelSettings({ id, setting}) {
   exportToJson('LevelSettings');
 }
 
-module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers };
+module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist };

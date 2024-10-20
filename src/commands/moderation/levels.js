@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist } = require("../../../database/levelSystem/setLevelSettings");
 const setArrayValues = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
@@ -123,17 +123,22 @@ module.exports = {
             },
             {
               type: ApplicationCommandOptionType.String,
+              name: 'color',
+              description: 'The color of the level up message. (type `{user color}` for the user\'s Rank Card Color.)'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
               name: 'title',
               description: 'The title of the level up message.',
             },
             {
               type: ApplicationCommandOptionType.Boolean,
-              name: 'thumbnail',
+              name: 'thumbnailurl',
               description: 'Wether to show the user thumbnail.'
             },
             {
               type: ApplicationCommandOptionType.String,
-              name: 'image',
+              name: 'imageurl',
               description: 'Add an image or gif to the level up message.'
             },
             {
@@ -373,13 +378,13 @@ module.exports = {
               break;
             case 'channel':
               const channel = interaction.options.getChannel('name');
-              [action, setData] = await setArrayValues(channel.id, value, data, 'channel')
-              setting = { 'channelMultipliers': setData};
+              [action, setData] = await setArrayValues(channel.id, value, data, 'channel');
+              setting = { 'channelMultipliers': setData };
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for ${channel}.`);
               break
             case 'role':
               const role = interaction.options.getRole('name');
-              [action, setData] = await setArrayValues(role.id, value, data, 'role')
+              [action, setData] = await setArrayValues(role.id, value, data, 'role');
               setting = { 'roleMultipliers': setData };
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${role}>.`);
               break;
@@ -402,12 +407,26 @@ module.exports = {
               await interaction.editReply(`The ping has been turned ${value ? 'on' : 'off'} for level up announcements.`);
               break;
             case 'message':
-              
-              break;
+              await interaction.editReply('Not available yet...');
+              return;
           }
           break;
         case 'blacklist':
-
+          data = await getRoleOrChannelBlacklist({id: guildId, type: subCmd }) || [];
+          switch(subCmd) {
+            case 'channel':
+              const channel = interaction.options.getChannel('name');
+              [action, setData] = ['added', '[]'];
+              setting = { 'blackListChannels' : setData };
+              await interaction.editReply(`${channel} has been added to the black list.`);
+              break;
+            case 'role':
+              const role = interaction.options.getRole('name');
+              [action, setData] = ['added', '[]'];
+              setting = { 'blackListRoles' : setData};
+              await interaction.editReply(`${role} has been added to the black list.`);
+              break;
+          }
           break;
         case 'roles':
 
