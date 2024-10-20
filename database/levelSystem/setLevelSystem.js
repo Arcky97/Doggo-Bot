@@ -5,7 +5,8 @@ const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 async function getAllUsersLevel(guildId) {
   try {
     const rows = await selectData('LevelSystem', {guildId: guildId });
-    return rows;
+    console.log(rows);
+    return [rows];
   } catch (error) {
     console.error('Error fetching users from LevelSystem:', error);
     return [];

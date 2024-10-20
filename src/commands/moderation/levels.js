@@ -372,16 +372,16 @@ module.exports = {
               await interaction.editReply(`The Global Multiplier has been set to ${value}%!`);
               break;
             case 'channel':
-              const channelId = interaction.options.get('name').value;
-              [action, setData] = await setArrayValues(channelId, value, data, 'channel')
+              const channel = interaction.options.getChannel('name');
+              [action, setData] = await setArrayValues(channel.id, value, data, 'channel')
               setting = { 'channelMultipliers': setData};
-              await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <#${channelId}>.`);
+              await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for ${channel}.`);
               break
             case 'role':
-              const roleId = interaction.options.get('name').value;
-              [action, setData] = await setArrayValues(roleId, value, data, 'role')
+              const role = interaction.options.getRole('name');
+              [action, setData] = await setArrayValues(role.id, value, data, 'role')
               setting = { 'roleMultipliers': setData };
-              await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${roleId}>.`);
+              await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${role}>.`);
               break;
             case 'settings':
               embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults);
@@ -389,7 +389,22 @@ module.exports = {
           }
           break;
         case 'announcement':
-
+          switch(subCmd) {
+            case 'channel':
+              const channel = interaction.options.getChannel('name');
+              setting = { 'announcementChannel': channel.id };
+              await interaction.editReply(`The level up announcement channel has been set to ${channel}`);
+              break;
+            case 'ping':
+              value = interaction.options.getBoolean('value');
+              console.log(value);
+              setting = { 'announcementPing': value};
+              await interaction.editReply(`The ping has been turned ${value ? 'on' : 'off'} for level up announcements.`);
+              break;
+            case 'message':
+              
+              break;
+          }
           break;
         case 'blacklist':
 

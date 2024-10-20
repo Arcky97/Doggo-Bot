@@ -65,7 +65,7 @@ module.exports = (interaction, levSettings, globalMult, roleMults, channelMults,
         },
         {
           name: 'Announcement Channel',
-          value: levSettings.announcementId !== 'not set' ? `<#${levSettings.announcementId}>` : 'Not set',
+          value: levSettings.announcementChannel !== 'not set' ? `<#${levSettings.announcementChannel}>` : 'Not set',
           inline: true 
         },
         {

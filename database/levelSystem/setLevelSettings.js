@@ -31,7 +31,7 @@ async function setLevelSettings({ id, setting}) {
   
   let existingValue = levSettings[settingKey];
 
-  if (typeof existingValue === 'string' && !settingKey.includes('Id')) {
+  if (typeof existingValue === 'string' && !settingKey.includes('Channel')) {
     existingValue = JSON.parse(existingValue);
   } else if (typeof existingValue === 'number' && !settingKey.includes('Multiplier') && !settingKey.includes('Cooldown')) {
     existingValue = existingValue === 1;

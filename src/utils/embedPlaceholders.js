@@ -1,18 +1,33 @@
-module.exports = (text, guild, input) => {
-  const userMention = `<@${input.user.id}>`;
-  const userName = input.user.name;
-  const userNick = input.user.nickName;
-  const newLine = '\n';
-  const memberCount = guild.memberCount;
-  const serverName = guild.name;
+const { getUserLevel } = require("../../database/levelSystem/setLevelSystem");
+const calculateLevelXp = require("./levels/calculateLevelXp");
 
+module.exports = async (text, guild, input) => {
+  const userLevelInfo = await getUserLevel(guild.id, input.user.id);
   const replacements = {
-    '{user mention}': userMention,
-    '{user name}': userName,
-    '{user nick}': userNick,
-    '{new line}': newLine,
-    '{member count}': memberCount,
-    '{server name}': serverName
+    '{user id}': input.user.id,
+    '{user mention}': `<@${input.user.id}>`,
+    '{user name}': input.user.username,
+    '{user globalName}': input.user.globalName,
+    '{user nick}': input.member.nickname,
+    '{user avatar}': input.user.avatarURL(),
+    '{new line}': '\n',
+    '{user exp}': userLevelInfo.xp,
+    '{level}': userLevelInfo.level,
+    '{level previous}': userLevelInfo.level -1,
+    '{level previous xp}': calculateLevelXp(userLevelInfo.level - 1),
+    '{level next}': userLevelInfo + 1,
+    '{level next xp}': calculateLevelXp(userLevelInfo.level + 1),
+    '{reward}': 'n.a.y.',
+    '{reward role name}': 'n.a.y.',
+    '{reward rolecount}': 'n.a.y.',
+    '{reward rolecount progress}': 'n.a.y.',
+    '{reward previous}': 'n.a.y.',
+    '{reward next}': 'n.a.y.',
+    '{server id}': guild.id,
+    '{server name}': guild.name,    
+    '{server member count}': guild.memberCount,
+    '{server icon}': guild.iconURL(),
+
   };
 
   return text.replace(/\{[^}]+\}/g, match => {
