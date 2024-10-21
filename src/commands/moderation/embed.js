@@ -331,8 +331,8 @@ module.exports = {
       }
       // Build the embed object
       embed = new EmbedBuilder()
-        .setTitle(await embedPlaceholders(embedOptions.title, interaction.guild, interaction))
-        .setDescription(await embedPlaceholders(embedOptions.description, interaction.guild, interaction));
+        .setTitle(await embedPlaceholders(embedOptions.title, interaction))
+        .setDescription(await embedPlaceholders(embedOptions.description, interaction));
 
       if (embedOptions.color) embed.setColor(await getOrConvertColor(embedOptions.color));
       if (embedOptions.titleUrl) embed.setURL(embedOptions.titleUrl);

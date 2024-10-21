@@ -3,7 +3,7 @@ const { EmbedBuilder } = require("discord.js")
 module.exports = (levSettings, globalMult, roleMults, channelMults) => {
   let embed = new EmbedBuilder()
     .setColor('Green')
-    .setTitle('Level System Multipliers')
+    .setTitle('Level System Multiplier Settings')
     .setDescription('All multipliers set in this Server are shown below.' + 
       '\nThe max stack of multipliers is `1000%`.' +
       '\n- Global + Roles Stack' +

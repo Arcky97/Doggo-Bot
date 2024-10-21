@@ -1,7 +1,8 @@
 const { getUserLevel } = require("../../database/levelSystem/setLevelSystem");
 const calculateLevelXp = require("./levels/calculateLevelXp");
 
-module.exports = async (text, guild, input) => {
+module.exports = async (text, input) => {
+  const guild = input.guild;
   const userLevelInfo = await getUserLevel(guild.id, input.user.id);
   const replacements = {
     '{user id}': input.user.id,

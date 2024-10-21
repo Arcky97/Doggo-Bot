@@ -6,6 +6,10 @@ const showMultiplierSettings = require("../../utils/levels/showMultiplierSetting
 const showLevelSystemSettings = require("../../utils/levels/showLevelSystemSettings");
 const createErrorEmbed = require("../../utils/createErrorEmbed");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
+const showAnnouncementSettings = require("../../utils/levels/showAnnouncementSettings");
+const embedPlaceholders = require("../../utils/embedPlaceholders");
+const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings");
+const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
 
 module.exports = {
   name: 'levels',
@@ -176,6 +180,23 @@ module.exports = {
               required: true 
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'settings',
+          description: 'Shows the settings set for the announcement messages'
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'show',
+          description: 'Shows the Default Level up message or from a specific level if specified',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Integer,
+              name: 'level',
+              description: 'The level the level up message belongs to.'
+            }
+          ]
         }
       ]
     },
@@ -209,6 +230,11 @@ module.exports = {
               required: true 
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'settings',
+          description: 'Shows the Settings set for the Black List Roles and Channels of the Level System.'
         }
       ]
     },
@@ -305,7 +331,7 @@ module.exports = {
       options: [
         {
           type: ApplicationCommandOptionType.Subcommand,
-          name: 'setting',
+          name: 'use',
           description: 'Enable/Disable earning XP through Voice Chat activity.',
           options: [
             {
@@ -344,6 +370,11 @@ module.exports = {
               required: true
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'settings',
+          description: 'Shows  the Settings set for the Voice xp of the Level system.'
         }
       ]
     },
@@ -353,7 +384,7 @@ module.exports = {
       description: 'Shows all Settings regarding the Level System.'
     }
   ],
-  permissionsRequired: [PermissionFlagsBits.Administrator],
+  //permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
@@ -370,7 +401,7 @@ module.exports = {
         roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
         channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
         levelRoles = createListFromArray(levSettings.levelRoles, 'lv. ${level} - <@&${roleId}>');
-        annMess = JSON.parse(levSettings.announceDefaultMessage);
+        annMess = JSON.parse(levSettings.announceLevelMessages);
         blackListRoles = createListFromArray(levSettings.blackListRoles, '- <@&${roleId}>');
         blackListChannels = createListFromArray(levSettings.blackListChannels, '- <#${channelId}>');
       }
@@ -402,23 +433,24 @@ module.exports = {
               break;
             case 'channel':
               const channel = interaction.options.getChannel('name');
-              [action, setData] = setChannelOrRoleArray(channel.id, value, data, 'channel');
+              [action, setData] = setChannelOrRoleArray('channel', data, channel.id, value);
               setting = { 'channelMultipliers': setData };
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for ${channel}.`);
               break
             case 'role':
               const role = interaction.options.getRole('name');
-              [action, setData] = setChannelOrRoleArray(role.id, value, data, 'role');
+              [action, setData] = setChannelOrRoleArray('role', data, role.id, value);
               setting = { 'roleMultipliers': setData };
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${role}>.`);
               break;
             case 'settings':
               embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults);
               await interaction.editReply({ embeds: [embed] });
+              break;
           }
           break;
         case 'announcement':
-          let level;
+          let level, embedOptions;
           switch(subCmd) {
             case 'channel':
               const channel = interaction.options.getChannel('name');
@@ -431,12 +463,11 @@ module.exports = {
               await interaction.editReply(`The ping has been turned ${value ? 'on' : 'off'} for level up announcements.`);
               break;
             case 'message':
-              let embedOptions = {
+              embedOptions = {
                 title: interaction.options.getString('title') || '{user globalName} has leveled up!',
                 description: interaction.options.getString('description') || '{Congrats you leveled up to lv. {level}!',
-                message: levSettings.announcePing ? '{user mention}' : null,
                 color: interaction.options.getString('color') || await getOrConvertColor('green'),
-                thumbnailUrl: interaction.options.getBoolean('thumbnailurl') || true,
+                thumbnailUrl: interaction.options.getBoolean('thumbnailurl') || '{user avatar}',
                 imageUrl: interaction.options.getString('imageurl') || null,
                 footer: {
                   text: interaction.options.getString('footer') || '{server name}',
@@ -446,11 +477,11 @@ module.exports = {
               }
               level = interaction.options.getInteger('level');
               if (level !== null) {
-                [action, setData] = setAnnounceLevelArray(levSettings, {lv: level, embedOptions});
+                [action, setData] = setAnnounceLevelArray(levSettings, {lv: level, options: embedOptions});
                 setting = { 'announceLevelMessages': setData};
                 await interaction.editReply(`The announcement message for lv. ${level} has been ${action}.`);
               } else {
-                setting = { 'announceDefaultMessage': embedOptions };
+                setting = { 'announceDefaultMessage': JSON.stringify(embedOptions) };
                 await interaction.editReply('The default announcement message has been updated.');
               }
               break;
@@ -463,7 +494,30 @@ module.exports = {
               } else {
                 await interaction.editReply(`The announcement message for lv. ${level} does not exist!`);
               }
-              
+              break;
+            case 'settings':
+              embed = showAnnouncementSettings(levSettings);
+              await interaction.editReply({ embeds: [embed] });
+              break;
+            case 'show':
+              level = interaction.options.getInteger('level');
+              if (level) {
+                embedOptions = JSON.parse(levSettings.announceLevelMessages).find(data => data.lv === level).options;
+              } else {
+                embedOptions = JSON.parse(levSettings.announceDefaultMessage);
+              }
+              embed = new EmbedBuilder()
+                .setColor(await embedPlaceholders(embedOptions.color, interaction))
+                .setTitle(await embedPlaceholders(embedOptions.title, interaction))
+                .setDescription(await embedPlaceholders(embedOptions.description, interaction))
+                .setFooter({
+                  text: await embedPlaceholders(embedOptions.footer.text, interaction),
+                  iconUrl: await embedPlaceholders(embedOptions.footer.iconUrl, interaction)
+                })
+              if (embedOptions.imageUrl) embed.setImage(await embedPlaceholders(embedOptions.imageUrl, interaction))
+              if (embedOptions.thumbnailUrl) embed.setThumbnail(await embedPlaceholders(embedOptions.thumbnailUrl, interaction));
+              if (embedOptions.timeStamp) embed.setTimestamp();
+              await interaction.editReply({embeds: [embed]});
               break;
           }
           break;
@@ -472,15 +526,19 @@ module.exports = {
           switch(subCmd) {
             case 'channel':
               const channel = interaction.options.getChannel('name');
-              [action, setData] = ['added', '[]'];
+              [action, setData] = setChannelOrRoleArray('channel', data, channel.id);
               setting = { 'blackListChannels' : setData };
-              await interaction.editReply(`${channel} has been added to the black list.`);
+              await interaction.editReply(`${channel} has been ${action} to the black list.`);
               break;
             case 'role':
               const role = interaction.options.getRole('name');
-              [action, setData] = ['added', '[]'];
+              [action, setData] = setChannelOrRoleArray('role', data, role.id);
               setting = { 'blackListRoles' : setData};
-              await interaction.editReply(`${role} has been added to the black list.`);
+              await interaction.editReply(`${role} has been ${action} to the black list.`);
+              break;
+            case 'settings':
+              embed = showBlacklistSettings(blackListRoles, blackListChannels);
+              await interaction.editReply({ embeds: [embed] });
               break;
           }
           break;
@@ -489,7 +547,7 @@ module.exports = {
           break;
         case 'voice':
           switch(subCmd){
-            case 'setting':
+            case 'use':
               setting = {'voiceEnable': interaction.options.getBoolean('value') };
               await interaction.editReply(`Voice XP has been ${setting ? 'Enabled' : 'Disabled'}!`);
               break;
@@ -501,6 +559,10 @@ module.exports = {
             case 'cooldown':
               setting = {'voiceCooldown': value};
               await interaction.editReply(`Voice cooldown has been set to ${value} ${value > 1 ? 'seconds' : 'second'}!`);
+              break;
+            case 'settings':
+              embed = showVoiceSettings(levSettings);
+              await interaction.editReply({ embeds: [embed]})
               break;
           }
           break;
@@ -514,7 +576,7 @@ module.exports = {
           }
           break;
       }
-      if (subCmd !== 'settings') {
+      if (subCmd !== 'settings' && subCmd !== 'show') {
         await setLevelSettings({ 
           id: guildId,
           setting

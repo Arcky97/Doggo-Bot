@@ -75,7 +75,7 @@ module.exports = (interaction, levSettings, globalMult, roleMults, channelMults,
         },
         {
           name: 'Announcement Message',
-          value: annMess.length === 0 ? 'Default' : 'Custom set.', 
+          value: annMess.length === 0 ? 'Default' : 'Custom set', 
           inline: true 
         },
         { 

@@ -36,7 +36,6 @@ async function setLevelSettings({ id, setting}) {
   } else if (typeof existingValue === 'number' && !settingKey.includes('Multiplier') && !settingKey.includes('Cooldown')) {
     existingValue = existingValue === 1;
   }
-
   try {
     if (settingValue !== existingValue) {
       await updateData('LevelSettings', { guildId: id}, setting );

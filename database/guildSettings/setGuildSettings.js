@@ -44,7 +44,6 @@ async function setGuildSettings(guildId, settingName, channelId) {
   const data = {
     [column]: channelId
   }
-  console.log(data);
 
   try {
     const dataExist = await selectData('GuildSettings', key)
