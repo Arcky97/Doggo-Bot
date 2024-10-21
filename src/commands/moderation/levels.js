@@ -384,7 +384,7 @@ module.exports = {
       description: 'Shows all Settings regarding the Level System.'
     }
   ],
-  //permissionsRequired: [PermissionFlagsBits.Administrator],
+  permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
