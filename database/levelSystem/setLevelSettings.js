@@ -26,6 +26,11 @@ async function getRoleOrChannelBlacklist({id, type}) {
   }
 }
 
+async function getLevelRoles(id) {
+  const data = await getLevelSettings(id);
+  return JSON.parse(data.levelRoles);
+}
+
 async function setLevelSettings({ id, setting}) {
   let levSettings = await getLevelSettings(id);
   const settingKey = Object.keys(setting)[0];
@@ -49,4 +54,4 @@ async function setLevelSettings({ id, setting}) {
   exportToJson('LevelSettings');
 }
 
-module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist };
+module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist, getLevelRoles };

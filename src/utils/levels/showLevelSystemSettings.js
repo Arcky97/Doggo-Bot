@@ -95,7 +95,7 @@ module.exports = (interaction, levSettings, globalMult, roleMults, channelMults,
         embed.addFields(
           {
             name: 'Voice Multiplier',
-            value: `\`${levSettings.voiceMultiplier * 100}%\``,
+            value: `\`${levSettings.voiceMultiplier}%\``,
             inline: true 
           },
           {

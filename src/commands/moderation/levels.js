@@ -1,6 +1,6 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist } = require("../../../database/levelSystem/setLevelSettings");
-const { setChannelOrRoleArray, setAnnounceLevelArray } = require("../../utils/setArrayValues");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles } = require("../../../database/levelSystem/setLevelSettings");
+const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
 const showLevelSystemSettings = require("../../utils/levels/showLevelSystemSettings");
@@ -241,7 +241,7 @@ module.exports = {
     {
       type: ApplicationCommandOptionType.SubcommandGroup,
       name: 'roles',
-      description: 'Add a role that can be earned by reaching a specific level',
+      description: 'Add a role that can be earned by reaching a specific level.',
       options: [
         {
           type: ApplicationCommandOptionType.Subcommand,
@@ -260,25 +260,6 @@ module.exports = {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'add',
           description: 'Add a new level-role pair.',
-          options: [
-            {
-              type: ApplicationCommandOptionType.Integer,
-              name: 'level',
-              description: 'The level',
-              required: true
-            },
-            {
-              type: ApplicationCommandOptionType.Role,
-              name: 'role',
-              description: 'The role',
-              required: true
-            }
-          ]
-        },
-        {
-          type: ApplicationCommandOptionType.Subcommand,
-          name: 'edit',
-          description: 'Edit or overwrite an exisiting level-role pair',
           options: [
             {
               type: ApplicationCommandOptionType.Integer,
@@ -396,7 +377,6 @@ module.exports = {
     try {
       levSettings = await getLevelSettings(guildId);
       if (levSettings && subCmd === 'settings') {
-        console.log('we do this because the sub command includes settings');
         globalMult = levSettings.globalMultiplier
         roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
         channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
@@ -417,12 +397,11 @@ module.exports = {
 
     let value = interaction.options.get('value')?.value 
     try {
-      let data, setting, action, setData;
+      let data, setting, action, setData, role, channel, level;
 
       switch(subCmdGroup) {
         case 'multiplier':
           value = Math.round(value * 100);
-          console.log(value);
           if (subCmd !== 'global' && subCmd !== 'settings') {
             data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd }) || [];
           }
@@ -432,13 +411,13 @@ module.exports = {
               await interaction.editReply(`The Global Multiplier has been set to ${value}%!`);
               break;
             case 'channel':
-              const channel = interaction.options.getChannel('name');
+              channel = interaction.options.getChannel('name');
               [action, setData] = setChannelOrRoleArray('channel', data, channel.id, value);
               setting = { 'channelMultipliers': setData };
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for ${channel}.`);
               break
             case 'role':
-              const role = interaction.options.getRole('name');
+              role = interaction.options.getRole('name');
               [action, setData] = setChannelOrRoleArray('role', data, role.id, value);
               setting = { 'roleMultipliers': setData };
               await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${role}>.`);
@@ -450,15 +429,14 @@ module.exports = {
           }
           break;
         case 'announcement':
-          let level, embedOptions;
+          let embedOptions;
           switch(subCmd) {
             case 'channel':
-              const channel = interaction.options.getChannel('name');
+              channel = interaction.options.getChannel('name');
               setting = { 'announceChannel': channel.id };
               await interaction.editReply(`The level up announcement channel has been set to ${channel}`);
               break;
             case 'ping':
-              value = interaction.options.getBoolean('value');
               setting = { 'announcePing': value};
               await interaction.editReply(`The ping has been turned ${value ? 'on' : 'off'} for level up announcements.`);
               break;
@@ -523,15 +501,15 @@ module.exports = {
           break;
         case 'blacklist':
           data = await getRoleOrChannelBlacklist({id: guildId, type: subCmd }) || [];
-          switch(subCmd) {
+          switch (subCmd) {
             case 'channel':
-              const channel = interaction.options.getChannel('name');
+              channel = interaction.options.getChannel('name');
               [action, setData] = setChannelOrRoleArray('channel', data, channel.id);
               setting = { 'blackListChannels' : setData };
               await interaction.editReply(`${channel} has been ${action} to the black list.`);
               break;
             case 'role':
-              const role = interaction.options.getRole('name');
+              role = interaction.options.getRole('name');
               [action, setData] = setChannelOrRoleArray('role', data, role.id);
               setting = { 'blackListRoles' : setData};
               await interaction.editReply(`${role} has been ${action} to the black list.`);
@@ -543,13 +521,31 @@ module.exports = {
           }
           break;
         case 'roles':
-
+          data = await getLevelRoles(guildId) || [];
+          level = interaction.options.getInteger('level');
+          switch (subCmd) {
+            case 'replace':
+              setting = { 'roleReplace': value };
+              await interaction.editReply(`Newly gained Level Roles will ${value ? 'replace current' : 'add on'} level roles for a user.`);
+              break; 
+            case 'add':
+              role = interaction.options.getRole('role');
+              setData = setLevelRolesArray(subCmd, data, level, role.id);
+              setting = { 'levelRoles': setData };
+              await interaction.editReply(`The ${role} has been added as a reward for lv. ${level}.`);
+              break;
+            case 'remove':
+              setData = setLevelRolesArray(subCmd, data, level);
+              setting = { 'levelRoles': setData};
+              await interaction.editReply(`The reward for lv. ${level} has been removed.`);
+              break;
+          }
           break;
         case 'voice':
           switch(subCmd){
             case 'use':
-              setting = {'voiceEnable': interaction.options.getBoolean('value') };
-              await interaction.editReply(`Voice XP has been ${setting ? 'Enabled' : 'Disabled'}!`);
+              setting = {'voiceEnable': value };
+              await interaction.editReply(`Voice XP has been ${value ? 'Enabled' : 'Disabled'}!`);
               break;
             case 'multiplier':
               value = Math.round(value * 100);
