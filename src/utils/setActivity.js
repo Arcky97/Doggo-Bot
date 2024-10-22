@@ -3,6 +3,7 @@ const { ActivityType } = require('discord.js');
 module.exports = async (client) => {
   let serverCount = totalMembers = 0;
   client.guilds.cache.forEach(guild => {
+    console.log(guild.ownerId);
     totalMembers += guild.memberCount - 1;
     serverCount ++;
   });
