@@ -5,7 +5,12 @@ const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
 async function getLevelSettings(id) {
-  return await selectData('LevelSettings', { guildId: id} );
+  let data = await selectData('LevelSettings', { guildId: id});
+  if (data === null) {
+    await insertData('LevelSettings', {guildId: id});
+    data = await selectData('LevelSettings', {guildId: id});
+  }
+  return data;
 }
 
 async function getRoleOrChannelMultipliers({id, type}) {
@@ -43,7 +48,7 @@ async function setLevelSettings({ id, setting}) {
   }
   try {
     if (settingValue !== existingValue) {
-      await updateData('LevelSettings', { guildId: id}, setting );
+      await updateData('LevelSettings', { guildId: id}, setting);
     } else {
       console.log('Data was not updated (it\'s the same as it was)');
       return;

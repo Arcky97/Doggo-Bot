@@ -1,3 +1,4 @@
+const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
@@ -20,4 +21,13 @@ async function addUserColor(guildId, memberId, color) {
   exportToJson('LevelSystem')
 }
 
-module.exports = { getAllUsersLevel, getUserLevel, addUserColor }
+async function setUserLevelInfo(user, keys, data) {
+  if (user) {
+    await updateData('LevelSystem', keys, data);
+  } else {
+    await insertData('LevelSystem', keys, data);
+  }
+  exportToJson('LevelSystem');
+}
+
+module.exports = { getAllUsersLevel, getUserLevel, addUserColor, setUserLevelInfo }

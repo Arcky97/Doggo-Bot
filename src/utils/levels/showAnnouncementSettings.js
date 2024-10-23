@@ -17,7 +17,7 @@ module.exports = (levSettings) => {
       },
       {
         name: 'Channel',
-        value: `<#${levSettings.announceChannel}>`,
+        value: levSettings.announceChannel !== 'not set' ? `<#${levSettings.announceChannel}>` : 'Not set',
         inline: true 
       },
       {

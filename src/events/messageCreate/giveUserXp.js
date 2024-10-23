@@ -5,7 +5,7 @@ const { exportToJson } = require('../../../database/controlData/visualDatabase/e
 const calculateLevelXp = require('../../utils/levels/calculateLevelXp');
 const { updateData } = require('../../../database/controlData/updateData');
 const cooldowns = new Set();
-const { getUserLevel } = require('../../../database/levelSystem/setLevelSystem')
+const { getUserLevel, setUserLevelInfo } = require('../../../database/levelSystem/setLevelSystem')
 
 function getRandomXp(min, max) {
   min = Math.ceil(min);
@@ -16,17 +16,17 @@ function getRandomXp(min, max) {
 module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot || cooldowns.has(message.guild.id + message.author.id)) return;
   const xpToGive = getRandomXp(15, 25);
-  const userXp = await getUserLevel(message.guild.id, message.author.id);
+  const user = await getUserLevel(message.guild.id, message.author.id);
   let newLevel = 0;
   let newXp = 0;
   try {
     const chatChannelId = await selectData('GuildSettings', {guildId: message.guild.id });
-    if (!chatChannelId || chatChannelId['chattingChannel'] && message.channel.id !== chatChannelId['chattingChannel']) return;
-    if (userXp) {
-      const userLevelXp = calculateLevelXp(userXp['level'])
-      newXp = userXp['xp'] + xpToGive;
+    if (!chatChannelId || chatChannelId.chattingChannel && message.channel.id !== chatChannelId.chattingChannel) return;
+    if (user) {
+      const userLevelXp = calculateLevelXp(user.level)
+      newXp = user.xp + xpToGive;
       if (newXp > userLevelXp) {
-        newLevel = userXp['level'] + 1
+        newLevel = user.level + 1
         const nickname = message.member.nickname || message.author.globalName; 
         const embed = new EmbedBuilder()
           .setColor(0x57F287)
@@ -41,7 +41,7 @@ module.exports = async (client, message) => {
         await message.channel.send({ embeds: [ embed ]});
         //await message.channel.send(`Hooray! ${nickname} leveled up to level ${newLevel}!`);
       } else {
-        newLevel = userXp['level']
+        newLevel = user.level
       }
       cooldowns.add(message.guild.id + message.author.id);
       setTimeout(() => {
@@ -55,12 +55,8 @@ module.exports = async (client, message) => {
         cooldowns.delete(message.guild.id + message.author.id);
       }, 15000);
     }
-    if (userXp) {
-      await updateData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id }, { level: newLevel, xp: newXp })
-    } else {
-      await insertData('LevelSystem', { guildId: message.guild.id, memberId: message.author.id }, { level: newLevel, xp: newXp })
-    }
-    exportToJson('LevelSystem');
+    await setUserLevelInfo(user, { guildId: message.guild.id, memberId: message.author.id }, { level: newLevel, xp: newXp })
+
   } catch (error) {
     console.log(`Error giving xp:`, error);
   }
