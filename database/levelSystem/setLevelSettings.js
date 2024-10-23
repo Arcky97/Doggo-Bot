@@ -36,6 +36,25 @@ async function getLevelRoles(id) {
   return JSON.parse(data.levelRoles);
 }
 
+async function getAnnounceChannel(id) {
+  const data = await getLevelSettings(id);
+  const channel = data.announceChannel;
+  if (channel !== 'not set') {
+    return channel;
+  } else {
+    return null;
+  }
+}
+
+async function getAnnounceMessage(id, level) {
+  const data = await getLevelSettings(id);
+  let message = JSON.parse(data.announceLevelMessages).find(mes => mes.lv === level);
+  if (!message) {
+    message = JSON.parse(data.announceDefaultMessage);
+  }
+  return message;
+}
+
 async function setLevelSettings({ id, setting}) {
   let levSettings = await getLevelSettings(id);
   const settingKey = Object.keys(setting)[0];
@@ -59,4 +78,4 @@ async function setLevelSettings({ id, setting}) {
   exportToJson('LevelSettings');
 }
 
-module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist, getLevelRoles };
+module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist, getLevelRoles, getAnnounceChannel, getAnnounceMessage };

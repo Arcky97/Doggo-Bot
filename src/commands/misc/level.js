@@ -41,7 +41,6 @@ module.exports = {
   ],
   callback: async (client, interaction) => {
     await interaction.deferReply();
-
     const subCommand = interaction.options.getSubcommand();
     
     if (subCommand === 'show') {

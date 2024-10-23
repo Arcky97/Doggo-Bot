@@ -1,16 +1,17 @@
 const { getUserLevel } = require("../../database/levelSystem/setLevelSystem");
 const calculateLevelXp = require("./levels/calculateLevelXp");
 
-module.exports = async (text, input) => {
+module.exports = async (text, input, userInfo) => {
   const guild = input.guild;
-  const userLevelInfo = await getUserLevel(guild.id, input.user.id);
+  const userLevelInfo = userInfo ? userInfo : await getUserLevel(guild.id, input.user.id);
+  const user = input.user ? input.user : input.author;
   const replacements = {
-    '{user id}': input.user.id,
-    '{user mention}': `<@${input.user.id}>`,
-    '{user name}': input.user.username,
-    '{user globalName}': input.user.globalName,
-    '{user nick}': input.member.nickname,
-    '{user avatar}': input.user.avatarURL(),
+    '{user id}': user.id,
+    '{user mention}': `<@${user.id}>`,
+    '{user name}': user.username,
+    '{user globalName}': user.globalName,
+    //'{user nick}': input.member.nickname,
+    '{user avatar}': user.avatarURL(),
     '{new line}': '\n',
     '{user exp}': userLevelInfo.xp,
     '{user color}': userLevelInfo.color,
