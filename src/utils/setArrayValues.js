@@ -39,7 +39,7 @@ function setLevelRolesArray(action, data, level, id) {
 function setAnnounceLevelArray(levSettings, newData) {
   existingData = JSON.parse(levSettings.announceLevelMessages);
   const level = typeof newData === 'object' ? newData.lv : newData
-  const index = existingData.findIndex(item => item['lv'] === level);
+  const index = existingData.findIndex(item => item.lv === level);
   let action;
 
   if (index === -1 && typeof newData === 'object') {

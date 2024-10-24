@@ -1,4 +1,3 @@
-const { deleteData } = require("../controlData/deleteData");
 const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
@@ -46,6 +45,16 @@ async function getAnnounceChannel(id) {
   }
 }
 
+async function getXpCoolDown(id) {
+  const data = await getLevelSettings(id);
+  return data.xpCooldown;
+}
+
+async function getAnnouncePing(id) {
+  const data = await getLevelSettings(id);
+  return data.announcePing;
+}
+
 async function getAnnounceMessage(id, level) {
   const data = await getLevelSettings(id);
   let message = JSON.parse(data.announceLevelMessages).find(mes => mes.lv === level);
@@ -53,6 +62,11 @@ async function getAnnounceMessage(id, level) {
     message = JSON.parse(data.announceDefaultMessage);
   }
   return message;
+}
+
+async function getRoleReplace(id) {
+  const data = await getLevelSettings(id);
+  return data.roleReplace;
 }
 
 async function setLevelSettings({ id, setting}) {
@@ -78,4 +92,4 @@ async function setLevelSettings({ id, setting}) {
   exportToJson('LevelSettings');
 }
 
-module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist, getLevelRoles, getAnnounceChannel, getAnnounceMessage };
+module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist, getLevelRoles, getAnnounceChannel, getAnnounceMessage, getXpCoolDown, getAnnouncePing, getRoleReplace };

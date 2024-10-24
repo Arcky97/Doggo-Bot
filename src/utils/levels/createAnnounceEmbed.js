@@ -3,19 +3,20 @@ const { getAnnounceMessage } = require("../../../database/levelSystem/setLevelSe
 const embedPlaceholders = require("../embedPlaceholders");
 
 module.exports = async (message, userLevelInfo) => {
-  const annMessage = await getAnnounceMessage(message.guild.id, userLevelInfo.level);
+  let annMessage = await getAnnounceMessage(message.guild.id, userLevelInfo.level);
+  if (annMessage.lv !== undefined) annMessage = annMessage.options;
   const user = message;
-  //console.log(await embedPlaceholders(annMessage.footer.text, user, userLevelInfo))
+  const footerUrl = await embedPlaceholders(annMessage.footer.iconUrl, user, userLevelInfo)
   let embed = new EmbedBuilder()
     .setColor(await embedPlaceholders(annMessage.color, user, userLevelInfo))
     .setTitle(await embedPlaceholders(annMessage.title, user, userLevelInfo))
-    .setDescription(await embedPlaceholders(annMessage.title, user, userLevelInfo))
-    //.setFooter(
-    //  {
-    //    name: await embedPlaceholders(annMessage.footer.text, user, userLevelInfo),
-    //    iconURL: await embedPlaceholders(annMessage.footer.iconUrl, user, userLevelInfo)
-    //  }
-    //)
+    .setDescription(await embedPlaceholders(annMessage.description, user, userLevelInfo))
+    .setFooter(
+      {
+        text: await embedPlaceholders(annMessage.footer.text, user, userLevelInfo),
+        iconURL: footerUrl !== '{server icon}' ? footerUrl : null
+      }
+    )
   if (annMessage.timeStamp) embed.setTimestamp();
   if (annMessage.thumbnailUrl) embed.setThumbnail(await embedPlaceholders(annMessage.thumbnailUrl, user, userLevelInfo))
   if (annMessage.imageUrl) embed.setImage(await embedPlaceholders(annMessage.imageUrl, user, userLevelInfo))

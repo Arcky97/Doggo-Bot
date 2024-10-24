@@ -2,6 +2,7 @@ const { getUserLevel } = require("../../database/levelSystem/setLevelSystem");
 const calculateLevelXp = require("./levels/calculateLevelXp");
 
 module.exports = async (text, input, userInfo) => {
+  if (text === undefined) return null;
   const guild = input.guild;
   const userLevelInfo = userInfo ? userInfo : await getUserLevel(guild.id, input.user.id);
   const user = input.user ? input.user : input.author;
@@ -10,7 +11,7 @@ module.exports = async (text, input, userInfo) => {
     '{user mention}': `<@${user.id}>`,
     '{user name}': user.username,
     '{user globalName}': user.globalName,
-    //'{user nick}': input.member.nickname,
+    '{user nick}': input.member.nickname,
     '{user avatar}': user.avatarURL(),
     '{new line}': '\n',
     '{user exp}': userLevelInfo.xp,
@@ -31,7 +32,6 @@ module.exports = async (text, input, userInfo) => {
     '{server member count}': guild.memberCount,
     '{server icon}': guild.iconURL(),
   };
-
   return text.replace(/\{[^}]+\}/g, match => {
     return replacements[match] || match;
   });

@@ -445,7 +445,7 @@ module.exports = {
                 title: interaction.options.getString('title') || '{user globalName} has leveled up!',
                 description: interaction.options.getString('description') || '{Congrats you leveled up to lv. {level}!',
                 color: interaction.options.getString('color') || await getOrConvertColor('green'),
-                thumbnailUrl: interaction.options.getBoolean('thumbnailurl') || '{user avatar}',
+                thumbnailUrl: interaction.options.getBoolean('thumbnailurl') ? '{user avatar}' : null,
                 imageUrl: interaction.options.getString('imageurl') || null,
                 footer: {
                   text: interaction.options.getString('footer') || '{server name}',
