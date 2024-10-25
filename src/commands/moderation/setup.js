@@ -1,5 +1,6 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
 const { setGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
+const createErrorEmbed = require("../../utils/createErrorEmbed");
 
 module.exports = {
   name: 'setup',
@@ -89,12 +90,14 @@ module.exports = {
     const subCommand = interaction.options.getSubcommand();
     const channel = interaction.options.get('channel').value;
     const guildId = interaction.guild.id;
+    await interaction.deferReply()
     try {
       let response = await setGuildSettings(guildId, subCommand, channel);
-      await interaction.reply(response);
+      interaction.editReply(response);
     } catch (error) {
       console.error('Error setting channel:', error);
-      await interaction.reply('There was an error setting the channel. Please try again later');
+      const embed = createErrorEmbed(interaction, 'There was an error setting the channel. Please try again later.');
+      interaction.editReply({embeds: [embed]});
     }
   }
 }

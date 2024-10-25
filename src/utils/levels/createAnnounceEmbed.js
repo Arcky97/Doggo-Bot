@@ -16,7 +16,7 @@ module.exports = async (message, userLevelInfo) => {
   if (annMessage.title) {
     embed.setTitle(await embedPlaceholders(annMessage.title, user, userLevelInfo));
   } else {
-    embed.setTitle(await embedPlaceholders('{user name} leveled up!', user, userLevelInfo));
+    embed.setTitle(await embedPlaceholders('{user global} leveled up!', user, userLevelInfo));
   }
   if (annMessage.description) {
     embed.setDescription(await embedPlaceholders(annMessage.description, user, userLevelInfo));

@@ -1,5 +1,6 @@
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { getGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js')
+const { getGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js');
+const createErrorEmbed = require("../../utils/createErrorEmbed.js");
 
 module.exports = {
   name: 'settings',
@@ -7,6 +8,7 @@ module.exports = {
   permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (client, interaction) => {
     try {
+      await interaction.deferReply();
       const settings = await getGuildSettings(interaction.guild.id);
       let embed;
       if (settings) {
@@ -53,9 +55,11 @@ module.exports = {
           .setDescription('No Settings available')
           .setTimestamp()
         }
-        await interaction.reply({ embeds: [embed] })
+        interaction.editReply({ embeds: [embed] })
     } catch (error) {
       console.error(`Error getting Settings for guild ${interaction.guild.id}:`, error);
+      embed = createErrorEmbed(interaction, 'Oh no, I couldn\'t retrieve the Settings for your Server. \nPlease try again later.')
+      interaction.editReply({ embeds: [embed]})
     }
   }
 }

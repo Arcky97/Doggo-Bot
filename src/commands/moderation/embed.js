@@ -2,6 +2,8 @@ const { ApplicationCommandOptionType, PermissionFlagsBits, EmbedBuilder } = requ
 const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } = require("../../../database/embeds/setEmbedData");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
 const embedPlaceholders = require("../../utils/embedPlaceholders");
+const createErrorEmbed = require("../../utils/createErrorEmbed");
+const createSuccessEmbed = require("../../utils/createSuccessEmbed");
 
 module.exports = {
   name: 'embed',
@@ -306,7 +308,8 @@ module.exports = {
       }
 
       if (!embedData) {
-        await interaction.editReply(`No embed found with the specified ${embedAction === 'edit' ? 'message ID' : 'type'}.`);
+        embed = createErrorEmbed(interaction, `No embed found with the specified ${embedAction === 'edit' ? 'message ID' : 'type'}.`);
+        interaction.editReply({embeds: [embed]}); 
         return;
       }
 
@@ -375,7 +378,8 @@ module.exports = {
             await setEventEmbed(guildId, channel.id, type, embedOptions);
           }
         }
-        await interaction.editReply(replyMessage);
+        embed = createSuccessEmbed(interaction, 'Hoorray!', replyMessage);
+        interaction.editReply({embeds: [embed]});
       } else {
         const messageId = interaction.options.getString('messageid');
         const oldEmbed = await getGeneratedEmbed(guildId, messageId);
@@ -388,11 +392,14 @@ module.exports = {
           } catch (error) {
             if (error.code === 10008) { // Discord API error code for "Unknown Message"
               await deleteGeneratedEmbed(guildId, messageId); // Optionally remove the embed from the database
+              
               replyMessage = 'The specified message has already been deleted.';
             } else {
               console.error('Error fetching the message:', error);
               replyMessage = 'An error occurred while fetching the message.';
             }
+            embed = createErrorEmbed(interaction, replyMessage);
+            
           }
         }
         if (embedAction === 'edit') {

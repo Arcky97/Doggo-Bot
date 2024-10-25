@@ -6,7 +6,6 @@ const { getLevelSettings, getAnnounceChannel, getXpCoolDown, getAnnouncePing } =
 const calculateMultiplierXp = require('../../utils/levels/calculateMultiplierXp');
 const createAnnounceEmbed = require('../../utils/levels/createAnnounceEmbed');
 const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
-const { deleteData } = require('../../../database/controlData/deleteData');
 const calculateLevelByXp = require('../../utils/levels/calculateLevelByXp');
 
 module.exports = async (client, message) => {
@@ -22,12 +21,12 @@ module.exports = async (client, message) => {
     let newXp = 0;
     const channel = client.channels.cache.get(await getAnnounceChannel(guildId)) || message.channel;
     //await deleteData('LevelSettings', { guildId: guildId});
+    let userInfo;
+    const ping = await getAnnouncePing(guildId) === 1 ? `<@${message.author.id}>` : ''
     if (user) {
       const userLevelXp = calculateXpByLevel(user.level)
       newXp = user.xp + xpToGive;
-      const ping = await getAnnouncePing(guildId) === 1 ? `<@${message.author.id}>` : ''
       newLevel = user.level;
-      let userInfo;
       if (newXp > userLevelXp) {
         newLevel = calculateLevelByXp(newXp);
         userInfo = {
@@ -44,8 +43,17 @@ module.exports = async (client, message) => {
         cooldowns.delete(guildId + message.author.id);
       }, xpCooldown);
     } else {
-      newLevel = 0;
       newXp = xpToGive;
+      newLevel = calculateLevelByXp(newXp);
+      if (newLevel > 0) {
+        userInfo = {
+          level: newLevel,
+          xp: newXp
+        }
+        let embed = await createAnnounceEmbed(message, userInfo);
+        await channel.send({content: ping, embeds: [ embed ]});
+        await giveUserLevelRole(guildId, message.member, userInfo);
+      }
       cooldowns.add(guildId + message.author.id);
       setTimeout(() => {
         cooldowns.delete(guildId + message.author.id);

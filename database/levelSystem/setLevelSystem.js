@@ -1,3 +1,4 @@
+const { deleteData } = require("../controlData/deleteData");
 const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
@@ -30,4 +31,18 @@ async function setUserLevelInfo(user, keys, data) {
   exportToJson('LevelSystem');
 }
 
-module.exports = { getAllUsersLevel, getUserLevel, addUserColor, setUserLevelInfo }
+async function resetLevelSystem(id, memberId) {
+  try {
+    if (memberId) {
+      await deleteData('LevelSystem', {guildId: id, memberId: memberId});
+    } else {
+      await deleteData('LevelSystem', {guildId: id});
+    }
+  } catch (error) {
+    console.error('Failed to Reset Level(s)', error);
+  }
+
+  exportToJson('LevelSystem');
+}
+
+module.exports = { getAllUsersLevel, getUserLevel, addUserColor, setUserLevelInfo, resetLevelSystem }

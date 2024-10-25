@@ -10,7 +10,7 @@ module.exports = async (text, input, userInfo) => {
     '{user id}': user.id,
     '{user mention}': `<@${user.id}>`,
     '{user name}': user.username,
-    '{user globalName}': user.globalName,
+    '{user global}': user.globalName,
     '{user nick}': input.member.nickname,
     '{user avatar}': user.avatarURL(),
     '{new line}': '\n',

@@ -1,3 +1,4 @@
+const { deleteData } = require("../controlData/deleteData");
 const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
 const { updateData } = require("../controlData/updateData");
@@ -92,4 +93,13 @@ async function setLevelSettings({ id, setting}) {
   exportToJson('LevelSettings');
 }
 
-module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist, getLevelRoles, getAnnounceChannel, getAnnounceMessage, getXpCoolDown, getAnnouncePing, getRoleReplace };
+async function resetLevelSettings(id) {
+  try {
+    await deleteData('LevelSettings', {guildId: id});
+  } catch (error) {
+    console.error('Failed to reset LevelSettings', error);
+  }
+  exportToJson('LevelSettings');
+}
+
+module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist, getLevelRoles, getAnnounceChannel, getAnnounceMessage, getXpCoolDown, getAnnouncePing, getRoleReplace, resetLevelSettings };

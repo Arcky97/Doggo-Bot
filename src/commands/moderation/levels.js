@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles } = require("../../../database/levelSystem/setLevelSettings");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
@@ -10,9 +10,10 @@ const showAnnouncementSettings = require("../../utils/levels/showAnnouncementSet
 const embedPlaceholders = require("../../utils/embedPlaceholders");
 const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings");
 const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
+const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
 
 module.exports = {
-  name: 'levels',
+  name: 'lvsys',
   description: 'Level System Management.',
   options: [
     {
@@ -363,6 +364,30 @@ module.exports = {
       type: ApplicationCommandOptionType.Subcommand,
       name: 'settings',
       description: 'Shows all Settings regarding the Level System.'
+    },
+    {
+      type: ApplicationCommandOptionType.SubcommandGroup,
+      name: 'reset',
+      description: 'Reset the Levels and/or all the Level System Settings.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'settings',
+          description: 'Reset all the Level System Settings. (Cannot be undone!)',
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'levels',
+          description: 'Reset all the Levels or from a User. (Cannot be undone!)',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Mentionable,
+              name: 'user',
+              description: 'The User who you want to reset the level from.'
+            }
+          ]
+        }
+      ]
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
@@ -442,7 +467,7 @@ module.exports = {
               break;
             case 'message':
               embedOptions = {
-                title: interaction.options.getString('title') || '{user globalName} has leveled up!',
+                title: interaction.options.getString('title') || '{user global} has leveled up!',
                 description: interaction.options.getString('description') || '{Congrats you leveled up to lv. {level}!',
                 color: interaction.options.getString('color') || await getOrConvertColor('green'),
                 thumbnailUrl: interaction.options.getBoolean('thumbnailurl') ? '{user avatar}' : null,
@@ -542,7 +567,7 @@ module.exports = {
           }
           break;
         case 'voice':
-          switch(subCmd){
+          switch(subCmd) {
             case 'use':
               setting = {'voiceEnable': value };
               await interaction.editReply(`Voice XP has been ${value ? 'Enabled' : 'Disabled'}!`);
@@ -562,6 +587,19 @@ module.exports = {
               break;
           }
           break;
+        case 'reset':
+          switch(subCmd) {
+            case 'settings':
+              await resetLevelSettings(guildId);
+              await interaction.editReply('The Level System Settings have been resetted.');
+              break;
+            case 'levels':
+              const user = interaction.options.getMentionable('user');
+              await resetLevelSystem(guildId, user.id);
+              await interaction.editReply(`${user ? `The Level for ${user} has`: 'All Levels have'} been resetted.`);
+              break;
+          }
+          break;
         default:
           if (subCmd === 'cooldown') {
             setting = { 'xpCooldown' : value };
@@ -572,7 +610,7 @@ module.exports = {
           }
           break;
       }
-      if (subCmd !== 'settings' && subCmd !== 'show') {
+      if (subCmd !== 'settings' && subCmd !== 'show' && subCmdGroup !== 'reset') {
         await setLevelSettings({ 
           id: guildId,
           setting

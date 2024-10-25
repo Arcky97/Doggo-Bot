@@ -3,6 +3,9 @@ const { getAllUsersLevel, getUserLevel, addUserColor } = require("../../../datab
 const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 const { Font, RankCardBuilder } = require("canvacord");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
+const calculateMultiplierXp = require("../../utils/levels/calculateMultiplierXp");
+const { getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
+const createErrorEmbed = require("../../utils/createErrorEmbed");
 
 module.exports = {
   name: 'level',
@@ -169,7 +172,8 @@ module.exports = {
         interaction.editReply({ files: [attachment] });
       } catch (error) {
         console.error("Error building rank card:", error);
-        interaction.editReply("There was an error generating the rank card.");
+        const embed = createErrorEmbed(interaction, 'Something went wrong while generating the rank card. \nPlease try again later.');
+        interaction.editReply({ embeds: [embed] });
       }
     } else if (subCommand === 'color') {
       const userLevel = await getUserLevel(interaction.guild.id, interaction.member.id);
@@ -184,7 +188,6 @@ module.exports = {
           .setThumbnail(thumbnailUrl)
           .setTimestamp()
         await interaction.editReply({ embeds: [embed] });
-        //await interaction.editReply(message);
         if (hexColor) {
           try {
             await addUserColor(interaction.guild.id, interaction.member.id, hexColor);
@@ -195,6 +198,7 @@ module.exports = {
       } else {
         await interaction.editReply("You don't have a level yet so you can't set a color just yet.");
       }
+
     } else if (subCommand === 'leaderboard') {
       await interaction.editReply("Sorry but the leaderboard isn't finished yet. Try again another time or ask <@835094939724808232> to hurry up and finish it!");
     }

@@ -16,7 +16,7 @@ module.exports = async (input, output = false) => {
       message = `The provided hex color "${input}" is not valid.`;
     }        
   } else {
-    const colorMatch = ntc.names.find(([hex, name]) => name.toLowerCase() === input.toLowerCase());
+    const colorMatch = ntc.names.find(([hex, name]) => name.toLowerCase() === input.toLowerCase() || name.toLowerCase().includes(input.toLowerCase()));
     if (colorMatch) {
       hexColor = "#" + colorMatch[0];
       message = `Your given color name is ${colorMatch[1]} with hex #${colorMatch[0]}`
@@ -24,6 +24,7 @@ module.exports = async (input, output = false) => {
       message = `The color name "${input}" was not found.`;
     }
   }
+  console.log(hexColor);
   if (output) {
     return { hexColor, message };
   } else {

@@ -1,9 +1,9 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder } = require('discord.js');
 
-module.exports = (interaction, description) => {
+module.exports = (interaction, title, description) => {
   return embed = new EmbedBuilder()
-    .setColor('Red')
-    .setTitle('Error!')
+    .setColor('#20B2AA')
+    .setTitle(title)
     .setDescription(description)
     .setFooter({
       text: interaction.guild.name,
