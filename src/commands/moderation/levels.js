@@ -13,9 +13,8 @@ const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
 const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
 
 module.exports = {
-  name: 'levels',
+  name: 'lvsys',
   description: 'Level System Management.',
-  deleted: true,
   options: [
     {
       type: ApplicationCommandOptionType.SubcommandGroup,
