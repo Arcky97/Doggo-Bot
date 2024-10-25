@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType, AttachmentBuilder, EmbedBuilder } = require("discord.js");
 const { getAllUsersLevel, getUserLevel, addUserColor } = require("../../../database/levelSystem/setLevelSystem");
-const calculateLevelXp = require("../../utils/levels/calculateLevelXp");
+const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 const { Font, RankCardBuilder } = require("canvacord");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
 
@@ -69,8 +69,8 @@ module.exports = {
   
       const targetAvatarURL = targetUserObj.user.displayAvatarURL({ size: 256 })
       const color = userLevel.color;
-      const startLevelXp = calculateLevelXp(userLevel.level - 1)
-      const endLevelXp = calculateLevelXp(userLevel.level)
+      const startLevelXp = calculateXpByLevel(userLevel.level - 1)
+      const endLevelXp = calculateXpByLevel(userLevel.level)
 
       let currentRank = guildUsers.findIndex(lvl => lvl.memberId === targetUserId) + 1;
       

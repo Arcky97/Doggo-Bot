@@ -7,13 +7,12 @@ module.exports = async (guildId, member, userInfo) => {
   const userRoles = getMemberRoles(member);
   const replaceRoles = await getRoleReplace(guildId) === 1;
   const roleToAdd = levelRoles.find(data => data.level === userInfo.level);
-  console.log(roleToAdd);
-  if (roleToAdd === null) return;
+  if (roleToAdd === null || roleToAdd === undefined) return;
   member.roles.add(roleToAdd.roleId);
   if (replaceRoles) {
-    /*const rolesToRemove = levelRoles.find(data => data.level < userInfo.level);
+    const rolesToRemove = levelRoles.filter(data => data.level < userInfo.level);
     rolesToRemove.forEach(data => {
       member.roles.remove(data.roleId)
-    });*/
+    });
   }
 }

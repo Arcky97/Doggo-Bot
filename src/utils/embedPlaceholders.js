@@ -1,5 +1,5 @@
 const { getUserLevel } = require("../../database/levelSystem/setLevelSystem");
-const calculateLevelXp = require("./levels/calculateLevelXp");
+const calculateXpByLevel = require("./levels/calculateXpByLevel");
 
 module.exports = async (text, input, userInfo) => {
   if (text === undefined) return null;
@@ -18,9 +18,9 @@ module.exports = async (text, input, userInfo) => {
     '{user color}': userLevelInfo.color,
     '{level}': userLevelInfo.level,
     '{level previous}': userLevelInfo.level -1,
-    '{level previous xp}': calculateLevelXp(userLevelInfo.level - 1),
+    '{level previous xp}': calculateXpByLevel(userLevelInfo.level - 1),
     '{level next}': userLevelInfo + 1,
-    '{level next xp}': calculateLevelXp(userLevelInfo.level + 1),
+    '{level next xp}': calculateXpByLevel(userLevelInfo.level + 1),
     '{reward}': 'n.a.y.',
     '{reward role name}': 'n.a.y.',
     '{reward rolecount}': 'n.a.y.',

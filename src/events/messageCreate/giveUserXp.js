@@ -1,11 +1,13 @@
 const { Client, Message } = require('discord.js');
-const calculateLevelXp = require('../../utils/levels/calculateLevelXp');
+const calculateXpByLevel = require('../../utils/levels/calculateXpByLevel');
 const cooldowns = new Set();
 const { getUserLevel, setUserLevelInfo } = require('../../../database/levelSystem/setLevelSystem');
 const { getLevelSettings, getAnnounceChannel, getXpCoolDown, getAnnouncePing } = require('../../../database/levelSystem/setLevelSettings');
 const calculateMultiplierXp = require('../../utils/levels/calculateMultiplierXp');
 const createAnnounceEmbed = require('../../utils/levels/createAnnounceEmbed');
 const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
+const { deleteData } = require('../../../database/controlData/deleteData');
+const calculateLevelByXp = require('../../utils/levels/calculateLevelByXp');
 
 module.exports = async (client, message) => {
   const guildId = message.guild.id;
@@ -19,13 +21,16 @@ module.exports = async (client, message) => {
     let newLevel = 0;
     let newXp = 0;
     const channel = client.channels.cache.get(await getAnnounceChannel(guildId)) || message.channel;
+    //await deleteData('LevelSettings', { guildId: guildId});
     if (user) {
-      const userLevelXp = calculateLevelXp(user.level)
+      const userLevelXp = calculateXpByLevel(user.level)
       newXp = user.xp + xpToGive;
       const ping = await getAnnouncePing(guildId) === 1 ? `<@${message.author.id}>` : ''
+      newLevel = user.level;
+      let userInfo;
       if (newXp > userLevelXp) {
-        newLevel = user.level + 1
-        const userInfo = {
+        newLevel = calculateLevelByXp(newXp);
+        userInfo = {
           level: newLevel,
           xp: newXp,
           color: user.color
@@ -33,8 +38,6 @@ module.exports = async (client, message) => {
         let embed = await createAnnounceEmbed(message, userInfo);
         await channel.send({content: ping, embeds: [ embed ]});
         await giveUserLevelRole(guildId, message.member, userInfo);
-      } else {
-        newLevel = user.level
       }
       cooldowns.add(guildId + message.author.id);
       setTimeout(() => {
