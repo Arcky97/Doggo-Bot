@@ -328,7 +328,7 @@ module.exports = {
         if (name.includes('url')) name = name.replace('url', 'Url');
         if (name.includes('stamp')) name = name.replace('stamp', 'Stamp');
 
-        if (value !== undefined) {
+        if (!value) {
           embedOptions[name] = value;
         }
       }

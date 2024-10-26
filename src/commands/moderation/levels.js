@@ -401,7 +401,7 @@ module.exports = {
     let levSettings, embed, globalMult, roleMults, channelMults, levelRoles, annMess, blackListRoles, blackListChannels;
     try {
       levSettings = await getLevelSettings(guildId);
-      if (levSettings !== null && subCmd === 'settings') {
+      if (!levSettings && subCmd === 'settings') {
         globalMult = levSettings.globalMultiplier
         roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
         channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
@@ -479,7 +479,7 @@ module.exports = {
                 timeStamp: interaction.options.getBoolean('timestamp') || true 
               }
               level = interaction.options.getInteger('level');
-              if (level !== null) {
+              if (!level) {
                 [action, setData] = setAnnounceLevelArray(levSettings, {lv: level, options: embedOptions});
                 setting = { 'announceLevelMessages': setData};
                 await interaction.editReply(`The announcement message for lv. ${level} has been ${action}.`);

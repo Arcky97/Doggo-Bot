@@ -4,7 +4,7 @@ const embedPlaceholders = require("../embedPlaceholders");
 
 module.exports = async (message, userLevelInfo) => {
   let annMessage = await getAnnounceMessage(message.guild.id, userLevelInfo.level) || [];
-  if (annMessage.lv !== undefined) annMessage = annMessage.options;
+  if (!annMessage.lv) annMessage = annMessage.options;
   const user = message;
   const footerUrl = annMessage.length > 0 ? await embedPlaceholders(annMessage.footer.iconUrl, user, userLevelInfo) : null; 
   let embed = new EmbedBuilder()
