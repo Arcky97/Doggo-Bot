@@ -11,7 +11,7 @@ module.exports = async (message, userLevelInfo) => {
   if (annMessage.color) {
     embed.setColor(await embedPlaceholders(annMessage.color, user, userLevelInfo));
   } else {
-    embed.setColor('Green');
+    embed.setColor('#f97316');
   }
   if (annMessage.title) {
     embed.setTitle(await embedPlaceholders(annMessage.title, user, userLevelInfo));
