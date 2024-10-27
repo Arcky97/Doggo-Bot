@@ -21,9 +21,9 @@ async function deleteData(table, key, data) {
 
   try {
     await query(deleteQuery, whereValues);
-    console.log("Data was successfully deleted");
+    console.log(`Data was deleted from ${table} table.`);
   } catch (error) {
-    console.error('Error deleting data from database:', error);
+    console.error(`Error deleting data from ${table} table:`, error);
   }
 }
 

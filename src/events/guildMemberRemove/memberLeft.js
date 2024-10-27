@@ -4,6 +4,8 @@ const moment = require("moment");
 const getLogChannel = require("../../utils/getLogChannel");
 const getMemberRoles = require("../../utils/getMemberRoles");
 const formatTime = require("../../utils/formatTime");
+const { getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
+const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
 
 module.exports = async (client, member) => {
   try {
@@ -12,7 +14,10 @@ module.exports = async (client, member) => {
     
     const channel = await getLogChannel(client, member.guild.id, 'joinleave');
     if(!channel) return;
-
+    
+    const levelSettings = getLevelSettings(member.guild.id);
+    if (levelSettings.clearOnLeave === 1) await resetLevelSystem(member.guild.id, member);
+    
     const joinedAt = moment(member.joinedAt).format("MMMM Do YYYY, h:mm:ss a");
     const leftAt = moment().format("MMMM Do YYYY, h:mm:ss a");
     const timeSpent = await formatTime(member.joinedAt);

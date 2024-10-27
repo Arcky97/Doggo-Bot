@@ -35,14 +35,21 @@ async function resetLevelSystem(id, member) {
   try {
     if (member) {
       await deleteData('LevelSystem', {guildId: id, memberId: member.id});
+      console.log(`Level Data has been resetted for ${member.username}.`);
     } else {
       await deleteData('LevelSystem', {guildId: id});
+      console.log(`Level System Data has been resetted for guild ${id}`);
     }
   } catch (error) {
     console.error('Failed to Reset Level(s)', error);
   }
-
   exportToJson('LevelSystem');
 }
 
-module.exports = { getAllUsersLevel, getUserLevel, addUserColor, setUserLevelInfo, resetLevelSystem }
+module.exports = { 
+  getAllUsersLevel, 
+  getUserLevel, 
+  addUserColor, 
+  setUserLevelInfo, 
+  resetLevelSystem 
+}

@@ -555,9 +555,14 @@ module.exports = {
               break; 
             case 'add':
               role = interaction.options.getRole('role');
-              setData = setLevelRolesArray(subCmd, data, level, role.id);
-              setting = { 'levelRoles': setData };
-              await interaction.editReply(`The ${role} has been added as a reward for lv. ${level}.`);
+              const match = data.find(dat => (dat.level !== level || dat.level === level) && dat.roleId === role.id)
+              if (match) {
+                await interaction.editReply(`${role} has already been asigned as a reward for lv. ${match.level}.`)
+              } else {
+                setData = setLevelRolesArray(subCmd, data, level, role.id);
+                setting = { 'levelRoles': setData };
+                await interaction.editReply(`${role} has been added as a reward for lv. ${level}.`);
+              }
               break;
             case 'remove':
               setData = setLevelRolesArray(subCmd, data, level);

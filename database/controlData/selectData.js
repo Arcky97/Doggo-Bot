@@ -15,7 +15,7 @@ async function selectData(table, keys, selectAll = false) {
       return rows;
     }
   } catch (error) {
-    console.error('Error selecting data:', error);
+    console.error(`Error selecting data from ${table} table:`, error);
     return null;
   }
 }

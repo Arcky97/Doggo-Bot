@@ -1,6 +1,6 @@
 const { Client, Guild } = require('discord.js');
 const setActivity = require('../../utils/setActivity');
-const { setDeleteDateGuildSettings } = require('../../../database/guildSettings/setGuildSettings');
+const { setDeletionDate } = require('../../handlers/dataBaseCleanUp');
 
 module.exports = async (client, guild) => {
   const deletionDate = new Date();
@@ -8,7 +8,7 @@ module.exports = async (client, guild) => {
 
   try {
     console.log(`✅ Left the guild: ${guild.name} (${guild.id}).`);
-    await setDeleteDateGuildSettings(guild.id, deletionDate);
+    await setDeletionDate(guild.id, deletionDate);
     console.log(`Data for guild ${guild.id} marked for deletion on ${deletionDate}`)
     await setActivity(client);
   } catch (error) {

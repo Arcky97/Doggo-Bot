@@ -13,9 +13,9 @@ async function insertData(table, key, data) {
 
   try {
     await query(insertQuery, Object.values(combinedData));
-    console.log('Data inserted successfully.');
+    console.log(`Data inserted in ${table} table.`);
   } catch (error) {
-    console.error('Error inserting data:', error);
+    console.error(`Error inserting data in ${table} table:`, error);
   }
 }
 

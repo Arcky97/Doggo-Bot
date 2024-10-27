@@ -103,4 +103,16 @@ async function resetLevelSettings(id) {
   exportToJson('LevelSettings');
 }
 
-module.exports = { setLevelSettings, getLevelSettings, getRoleOrChannelMultipliers, getRoleOrChannelBlacklist, getLevelRoles, getAnnounceChannel, getAnnounceMessage, getXpCoolDown, getAnnouncePing, getRoleReplace, resetLevelSettings };
+module.exports = { 
+  setLevelSettings, 
+  getLevelSettings, 
+  getRoleOrChannelMultipliers, 
+  getRoleOrChannelBlacklist, 
+  getLevelRoles, 
+  getAnnounceChannel, 
+  getAnnounceMessage, 
+  getXpCoolDown, 
+  getAnnouncePing, 
+  getRoleReplace, 
+  resetLevelSettings 
+};

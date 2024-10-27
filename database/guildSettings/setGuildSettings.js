@@ -81,20 +81,4 @@ async function resetGuildSettings(id) {
   }
 }
 
-async function setDeleteDateGuildSettings(id, data) {
-  try {
-    await updateData('GuildSettings', {guildId: id}, {deletionDate: data});
-  } catch (error) {
-    console.error(`Failed to set the deletionDate for guild ${id}.`, error);
-  }
-}
-
-async function resetDeletionDateGuildSettings(id) {
-  try {
-    await deleteData('GuildSettings', {guildId: id}, {deletionDate: null});
-  } catch (error) {
-    console.error(`Failed to reset Deletion Date for guild ${guild.id}.`, error);
-  }
-}
-
-module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings, setDeleteDateGuildSettings, resetDeletionDateGuildSettings };
+module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings };

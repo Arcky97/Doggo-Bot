@@ -22,8 +22,7 @@ function setChannelOrRoleArray(type, data, id, value) {
 }
 
 function setLevelRolesArray(action, data, level, id) {
-  const index = data.findIndex(item => item.lv === level);
-
+  const index = data.findIndex(item => item.level === level);
   if (action === 'add') {
     if (index === -1) {
       data.push({ level, roleId: id})

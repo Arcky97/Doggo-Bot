@@ -1,5 +1,9 @@
 const cron = require('node-cron');
 const { query } = require('../../database/db');
+const { deleteData } = require('../../database/controlData/deleteData');
+const { updateData } = require('../../database/controlData/updateData');
+
+const tables = ['GuildSettings', 'LevelSystem', 'LevelSettings', 'EventEmbeds', 'GeneratedEmbeds', 'ReactionRoles'];
 
 console.log('Initializing database cleanup job');
 
@@ -17,7 +21,6 @@ cron.schedule('0 0 * * *', async () => {
 });
 
 async function cleanupExpiredData(now) {
-  const tables = ['GuildSettings', 'LevelSystem', 'LevelSettings', 'EventEmbeds', 'GeneratedEmbeds', 'ReactionRoles'];
   const cleanupInfo = [];
 
   for (const table of tables) {
@@ -35,3 +38,25 @@ async function cleanupExpiredData(now) {
   }
   return cleanupInfo;
 }
+
+async function setDeletionDate(id, data) {
+  for (const table of tables) {
+    try {
+      await updateData(table, {guildId: id}, {deletionDate: data});
+    } catch (error) {
+      console.error(`Failed to set the deletionDate for guild ${id}.`, error);
+    }
+  }  
+}
+
+async function resetDeletionDate(id) {
+  for (const table of tables) {
+    try {
+      await deleteData(table, {guildId: id}, {deletionDate: null});
+    } catch (error) {
+      console.error(`Failed to reset Deletion Date of the ${table} table for guild ${guild.id}.`, error);
+    }
+  }
+}
+
+module.exports = { setDeletionDate, resetDeletionDate };
