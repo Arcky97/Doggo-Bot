@@ -401,7 +401,7 @@ module.exports = {
     let levSettings, embed, globalMult, roleMults, channelMults, levelRoles, annMess, blackListRoles, blackListChannels;
     try {
       levSettings = await getLevelSettings(guildId);
-      if (!levSettings && subCmd === 'settings') {
+      if (levSettings && subCmd === 'settings') {
         globalMult = levSettings.globalMultiplier
         roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
         channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
@@ -595,7 +595,7 @@ module.exports = {
               break;
             case 'levels':
               const user = interaction.options.getMentionable('user');
-              await resetLevelSystem(guildId, user.id);
+              await resetLevelSystem(guildId, user);
               await interaction.editReply(`${user ? `The Level for ${user} has`: 'All Levels have'} been resetted.`);
               break;
           }

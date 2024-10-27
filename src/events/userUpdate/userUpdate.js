@@ -4,7 +4,7 @@ const getLogChannel = require('../../utils/getLogChannel');
 module.exports = async (client, oldUser, newUser) => {
   try {
     // Loop through all guilds to find where the user exists
-    /*for (const guild of client.guilds.cache.values()) {
+    for (const guild of client.guilds.cache.values()) {
       const member = await guild.members.fetch(newUser.id).catch(() => null);
       if (!member) continue; // Skip guilds where the user is not a member
 
@@ -74,7 +74,7 @@ module.exports = async (client, oldUser, newUser) => {
 
       await channel.send({ embeds: [embed] });
       console.log(`${oldUser.username} updated their profile in guild ${guild.id}!`);
-    }*/
+    }
     console.log(`${newUser} updated their profile.`);
   } catch (error) {
     console.error('Failed to log Member update!', error);

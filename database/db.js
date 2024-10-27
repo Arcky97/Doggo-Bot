@@ -18,8 +18,11 @@ async function initDatabase() {
 
     console.log('Connected to the database successfully!');
 
-    //const editLevelSettingsTable = `ALTER TABLE LevelSettings MODIFY COLUMN announceLevelMessages TEXT AFTER announceDefaultMessage;`
+    //const editLevelSettingsTable = `ALTER TABLE LevelSettings CHANGE COLUMN announceLevelMessages TEXT AFTER announceDefaultMessage;`
     //await pool.query(editLevelSettingsTable);
+
+    //const editTable = `ALTER TABLE ReactionRoles ADD COLUMN deletionDate TIMESTAMP NULL;`
+    //await pool.query(editTable);
 
     //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
     //await pool.query(dropBotRepliesTable);
@@ -56,7 +59,8 @@ async function initDatabase() {
         joinLeaveLogging VARCHAR(100) DEFAULT NULL,
         reportLogging VARCHAR(100) DEFAULT NULL,
         ignoreLogging JSON DEFAULT '[]',
-        muteRole VARCHAR(100) DEFAULT NULL
+        muteRole VARCHAR(100) DEFAULT NULL,
+        deletionDate TIMESTAMP NULL
       );
     `;
 
@@ -67,6 +71,7 @@ async function initDatabase() {
         level INT DEFAULT 0,
         xp INT DEFAULT 0,
         color VARCHAR(10) DEFAULT '#f97316',
+        deletionDate TIMESTAMP NULL,
         PRIMARY KEY (guildId, memberId)
       );
     `;
@@ -98,7 +103,8 @@ async function initDatabase() {
         clearOnLeave BOOLEAN DEFAULT false,
         voiceEnable BOOLEAN DEFAULT false,
         voiceMultiplier INT DEFAULT 1,
-        voiceCooldown INT DEFAULT 2
+        voiceCooldown INT DEFAULT 2,
+        deletionDate TIMESTAMP NULL
       );
     `;
 
@@ -128,6 +134,7 @@ async function initDatabase() {
         footer VARCHAR(2048) DEFAULT NULL,
         footerIconUrl VARCHAR(512) DEFAULT NULL,
         timeStamp BOOLEAN DEFAULT true,
+        deletionDate TIMESTAMP NULL,
         PRIMARY KEY (guildId, channelId, type)
       )
     `;
@@ -151,6 +158,7 @@ async function initDatabase() {
         footer VARCHAR(2048) DEFAULT NULL,
         footerIconUrl VARCHAR(512) DEFAULT NULL,
         timeStamp BOOLEAN DEFAULT true,
+        deletionDate TIMESTAMP NULL,
         PRIMARY KEY (guildId, channelId, messageId)
       )
     `;
@@ -164,6 +172,7 @@ async function initDatabase() {
         maxRoles INT DEFAULT 0,
         maxReactions INT DEFAULT 0,
         type VARCHAR(100) DEFAULT 'normal',
+        deletionDate TIMESTAMP NULL,
         PRIMARY KEY (guildId, channelId, messageId)
       )
     `;

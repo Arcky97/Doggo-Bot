@@ -31,10 +31,10 @@ async function setUserLevelInfo(user, keys, data) {
   exportToJson('LevelSystem');
 }
 
-async function resetLevelSystem(id, memberId) {
+async function resetLevelSystem(id, member) {
   try {
-    if (memberId) {
-      await deleteData('LevelSystem', {guildId: id, memberId: memberId});
+    if (member) {
+      await deleteData('LevelSystem', {guildId: id, memberId: member.id});
     } else {
       await deleteData('LevelSystem', {guildId: id});
     }

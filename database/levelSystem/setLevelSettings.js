@@ -72,6 +72,7 @@ async function getRoleReplace(id) {
 
 async function setLevelSettings({ id, setting}) {
   let levSettings = await getLevelSettings(id);
+  if (!setting) return;
   const settingKey = Object.keys(setting)[0];
   const settingValue = Object.values(setting)[0];
   let existingValue = levSettings[settingKey];

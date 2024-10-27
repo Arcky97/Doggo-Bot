@@ -16,6 +16,7 @@ async function selectData(table, keys, selectAll = false) {
     }
   } catch (error) {
     console.error('Error selecting data:', error);
+    return null;
   }
 }
 
