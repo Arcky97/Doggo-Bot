@@ -1,6 +1,8 @@
 const cron = require('node-cron');
 const { query } = require('../../database/db');
 
+console.log('Initializing database cleanup job');
+
 cron.schedule('0 0 * * *', async () => {
   try {
     const now = new Date();

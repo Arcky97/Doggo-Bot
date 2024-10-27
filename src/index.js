@@ -1,7 +1,9 @@
 require('dotenv').config();
+require('./handlers/databaseCleanup');
 const { Client, IntentsBitField, Partials } = require('discord.js');
 const eventHandler = require('./handlers/eventHandler');
 const database = require('./../database/db.js');
+
 
 const client = new Client({
   intents: [
