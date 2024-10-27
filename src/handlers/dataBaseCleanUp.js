@@ -7,7 +7,6 @@ cron.schedule('0 0 * * *', async () => {
   try {
     const now = new Date();
     const cleanupInfo = await cleanupExpiredData(now);
-
     console.log(`Cleanup Job completed. Tables cleaned: ${cleanupInfo.length}`);
     cleanupInfo.forEach(info => {
       console.log(`Table: ${info.table}, Rows deleted: ${info.rowsDeleted}`)

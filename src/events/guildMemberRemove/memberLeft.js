@@ -8,6 +8,8 @@ const formatTime = require("../../utils/formatTime");
 module.exports = async (client, member) => {
   try {
     
+    if(member.user.id === client.user.id) return;
+    
     const channel = await getLogChannel(client, member.guild.id, 'joinleave');
     if(!channel) return;
 

@@ -4,6 +4,8 @@ const getLogChannel = require('../../utils/getLogChannel');
 
 module.exports = async (client, oldMember, newMember) => {
   try {
+    if (client.user.id === oldMember.user.id) return;
+    
     const channel = await getLogChannel(client, newMember.guild.id, 'member');
     if (!channel) return;
 
