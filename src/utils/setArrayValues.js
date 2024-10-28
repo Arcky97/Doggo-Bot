@@ -29,6 +29,7 @@ function setLevelRolesArray(action, data, level, id) {
     } else {
       data[index].roleId = id;
     }
+    data = data.sort((a, b) => a.level - b.level);
   } else {
     data.splice(index, 1);
   }

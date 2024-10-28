@@ -479,7 +479,7 @@ module.exports = {
                 timeStamp: interaction.options.getBoolean('timestamp') || true 
               }
               level = interaction.options.getInteger('level');
-              if (!level) {
+              if (level) {
                 [action, setData] = setAnnounceLevelArray(levSettings, {lv: level, options: embedOptions});
                 setting = { 'announceLevelMessages': setData};
                 await interaction.editReply(`The announcement message for lv. ${level} has been ${action}.`);

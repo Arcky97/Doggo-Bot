@@ -18,34 +18,35 @@ async function initDatabase() {
 
     console.log('Connected to the database successfully!');
 
-    //const editLevelSettingsTable = `ALTER TABLE LevelSettings CHANGE COLUMN announceLevelMessages TEXT AFTER announceDefaultMessage;`
+    //const editLevelSettingsTable = `ALTER TABLE LevelSettings CHANGE COLUMN announceLevelMessages TEXT AFTER announceDefaultMessage;`;
     //await pool.query(editLevelSettingsTable);
 
-    //const editTable = `ALTER TABLE ReactionRoles ADD COLUMN deletionDate TIMESTAMP NULL;`
+    //const editTable = `ALTER TABLE LevelSettings ADD COLUMN xpSettings JSON DEFAULT '{ "step": 40, "min": 15, "max": 25 }'`;
+    //const editTable = `ALTER TABLE LevelSettings CHANGE COLUMN xpSettings xpSettings JSON AFTER xpCooldown;`;
     //await pool.query(editTable);
 
-    //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies`;
+    //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies;`;
     //await pool.query(dropBotRepliesTable);
 
-    //const dropGuildSettingsTable = `DROP TABLE IF EXISTS GuildSettings`;
+    //const dropGuildSettingsTable = `DROP TABLE IF EXISTS GuildSettings;`;
     //await pool.query(dropGuildSettingsTable);
 
-    //const dropLevelXpRequirements = `DROP TABLE IF EXISTS LevelXpRequirements`;
+    //const dropLevelXpRequirements = `DROP TABLE IF EXISTS LevelXpRequirements;`;
     //await pool.query(dropLevelXpRequirements);
 
-    //const dropMemberLevelsTable = `DROP TABLE IF EXISTS LevelSystem`;
+    //const dropMemberLevelsTable = `DROP TABLE IF EXISTS LevelSystem;`;
     //await pool.query(dropMemberLevelsTable);
 
-    //const droplevelSettingsTable = `DROP TABLE IF EXISTS LevelSettings`;
+    //const droplevelSettingsTable = `DROP TABLE IF EXISTS LevelSettings;`;
     //await pool.query(droplevelSettingsTable);
 
-    //onst dropEventsEmbedsTable = `DROP TABLE IF EXISTS EventEmbeds`;
+    //onst dropEventsEmbedsTable = `DROP TABLE IF EXISTS EventEmbeds;`;
     //await pool.query(dropEventsEmbedsTable);
 
-    //const dropGeneratedEmbedsTable = `DROP TABLE IF EXISTS GeneratedEmbeds`;
+    //const dropGeneratedEmbedsTable = `DROP TABLE IF EXISTS GeneratedEmbeds;`;
     //await pool.query(dropGeneratedEmbedsTable);
 
-    //const dropReactionRolesTable = `DROP TABLE IF EXISTS ReactionRoles`;
+    //const dropReactionRolesTable = `DROP TABLE IF EXISTS ReactionRoles;`;
     //await pool.query(dropReactionRolesTable);
 
     const createGuildSettingsTable = `
@@ -100,6 +101,7 @@ async function initDatabase() {
         blackListRoles JSON DEFAULT '[]',
         blackListChannels JSON DEFAULT '[]',
         xpCooldown INT DEFAULT 30,
+        xpSettings JSON DEFAULT '{ "step": 40, "min": 15, "max": 25 }',
         clearOnLeave BOOLEAN DEFAULT false,
         voiceEnable BOOLEAN DEFAULT false,
         voiceMultiplier INT DEFAULT 1,
