@@ -15,10 +15,9 @@ module.exports = async (text, input, userInfo) => {
     const rewardRole = guild.roles.cache.get(reward.roleId);
     rewardName = rewardRole.name;
   }
-  const roleCount = levelRoles.findIndex(data => data.level === userLevelInfo.level) || 'no reward found';
+  const roleCount = levelRoles.findIndex(data => data.level === userLevelInfo.level) + 1 || 'no rewards';
   const roleTotal = levelRoles.length || 'no rewards set';
   const previousReward = levelRoles.filter(data => data.level < userLevelInfo.level);
-  console.log(previousReward);
   const nextReward = levelRoles.filter(data => data.level > userLevelInfo.level);
   const replacements = {
     '{user id}': user.id,
@@ -29,7 +28,7 @@ module.exports = async (text, input, userInfo) => {
     '{user avatar}': user.avatarURL(),
     '{new line}': '\n',
     '{user exp}': userLevelInfo.xp,
-    '{user color}': userLevelInfo.color,
+    '{user color}': userLevelInfo.color || '#f97316',
     '{level}': userLevelInfo.level,
     '{level previous}': userLevelInfo.level -1,
     '{level previous xp}': calculateXpByLevel(userLevelInfo.level - 1),
@@ -39,8 +38,8 @@ module.exports = async (text, input, userInfo) => {
     '{reward role name}': rewardName,
     '{reward rolecount}': roleCount,
     '{reward rolecount progress}': roleTotal !== 'no rewards set' ? `${roleCount}/${roleTotal}` : roleTotal,
-    '{reward previous}': previousReward ? `<@&${previousReward.roleId}>` : 'no previous rewards',
-    '{reward next}': nextReward ? `<@&${nextReward.roleId}>` : 'no next rewards',
+    '{reward previous}': previousReward.length > 0 ? `<@&${previousReward[previousReward.length - 1].roleId}>` : 'no previous rewards',
+    '{reward next}': nextReward.length > 0 ? `<@&${nextReward[0].roleId}>` : 'no next rewards',
     '{server id}': guild.id,
     '{server name}': guild.name,    
     '{server member count}': guild.memberCount,

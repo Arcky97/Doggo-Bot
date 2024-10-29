@@ -34,9 +34,6 @@ module.exports = async (client, message) => {
           xp: newXp,
           color: user.color
         }
-        let embed = await createAnnounceEmbed(message, userInfo);
-        await channel.send({content: ping, embeds: [ embed ]});
-        await giveUserLevelRole(guildId, message.member, userInfo);
       }
       cooldowns.add(guildId + message.author.id);
       setTimeout(() => {
@@ -48,11 +45,9 @@ module.exports = async (client, message) => {
       if (newLevel > 0) {
         userInfo = {
           level: newLevel,
-          xp: newXp
+          xp: newXp,
+          color: '#f97316'
         }
-        let embed = await createAnnounceEmbed(message, userInfo);
-        await channel.send({content: ping, embeds: [ embed ]});
-        await giveUserLevelRole(guildId, message.member, userInfo);
       }
       cooldowns.add(guildId + message.author.id);
       setTimeout(() => {
@@ -60,7 +55,11 @@ module.exports = async (client, message) => {
       }, xpCooldown);
     }
     await setUserLevelInfo(user, { guildId: guildId, memberId: message.author.id }, { level: newLevel, xp: newXp })
-
+    if (userInfo) {
+      let embed = await createAnnounceEmbed(message, userInfo);
+      await channel.send({content: ping, embeds: [ embed ]});
+      await giveUserLevelRole(guildId, message.member, userInfo);
+    }
   } catch (error) {
     console.log(`Error giving xp:`, error);
   }

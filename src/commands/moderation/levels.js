@@ -198,6 +198,11 @@ module.exports = {
               description: 'The level the level up message belongs to.'
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'placeholders',
+          description: 'Shows a list of all placeholders you can use for the level up announcement messages.',
         }
       ]
     },
@@ -505,22 +510,30 @@ module.exports = {
             case 'show':
               level = interaction.options.getInteger('level');
               if (level) {
-                embedOptions = JSON.parse(levSettings.announceLevelMessages).find(data => data.lv === level).options;
+                embedOptions = JSON.parse(levSettings.announceLevelMessages).find(data => data.lv === level)?.options;
               } else {
                 embedOptions = JSON.parse(levSettings.announceDefaultMessage);
               }
-              embed = new EmbedBuilder()
-                .setColor(await embedPlaceholders(embedOptions.color, interaction))
-                .setTitle(await embedPlaceholders(embedOptions.title, interaction))
-                .setDescription(await embedPlaceholders(embedOptions.description, interaction))
-                .setFooter({
-                  text: await embedPlaceholders(embedOptions.footer.text, interaction),
-                  iconUrl: await embedPlaceholders(embedOptions.footer.iconUrl, interaction)
-                })
-              if (embedOptions.imageUrl) embed.setImage(await embedPlaceholders(embedOptions.imageUrl, interaction))
-              if (embedOptions.thumbnailUrl) embed.setThumbnail(await embedPlaceholders(embedOptions.thumbnailUrl, interaction));
-              if (embedOptions.timeStamp) embed.setTimestamp();
+              if (embedOptions) {
+                embed = new EmbedBuilder()
+                  .setColor(await embedPlaceholders(embedOptions.color, interaction))
+                  .setTitle(await embedPlaceholders(embedOptions.title, interaction))
+                  .setDescription(await embedPlaceholders(embedOptions.description, interaction))
+                  .setFooter({
+                    text: await embedPlaceholders(embedOptions.footer.text, interaction),
+                    iconUrl: await embedPlaceholders(embedOptions.footer.iconUrl, interaction)
+                  })
+                if (embedOptions.imageUrl) embed.setImage(await embedPlaceholders(embedOptions.imageUrl, interaction))
+                if (embedOptions.thumbnailUrl) embed.setThumbnail(await embedPlaceholders(embedOptions.thumbnailUrl, interaction));
+                if (embedOptions.timeStamp) embed.setTimestamp();
+              } else {
+                embed = createErrorEmbed(interaction, `No announcement message set for lv. ${level}!`);
+              }
               await interaction.editReply({embeds: [embed]});
+              break;
+            case 'placeholders':
+              embed = new EmbedBuilder()
+
               break;
           }
           break;
