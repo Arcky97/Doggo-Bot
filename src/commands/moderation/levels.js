@@ -4,13 +4,13 @@ const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = req
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
 const showLevelSystemSettings = require("../../utils/levels/showLevelSystemSettings");
-const createErrorEmbed = require("../../utils/createErrorEmbed");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
 const showAnnouncementSettings = require("../../utils/levels/showAnnouncementSettings");
 const embedPlaceholders = require("../../utils/embedPlaceholders");
 const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings");
 const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
 const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
+const { createErrorEmbed, createSuccessEmbed } = require("../../utils/createReplyEmbed");
 
 module.exports = {
   name: 'lvsys',
@@ -438,19 +438,22 @@ module.exports = {
           switch(subCmd) {
             case 'global':
               setting = { 'globalMultiplier': value };
-              await interaction.editReply(`The Global Multiplier has been set to ${value}%!`);
+              embed = createSuccessEmbed(interaction, 'Global Multiplier Set!', `The Global Multiplier has been set to \`${value}%\`!`);
+              interaction.editReply({embeds: [embed]});
               break;
             case 'channel':
               channel = interaction.options.getChannel('name');
               [action, setData] = setChannelOrRoleArray('channel', data, channel.id, value);
               setting = { 'channelMultipliers': setData };
-              await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for ${channel}.`);
+              embed = createSuccessEmbed(interaction, `Channel Multiplier ${action}!`, `The ${subCmd} ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!`);
+              interaction.editReply({embeds: [embed]});
               break
             case 'role':
               role = interaction.options.getRole('name');
               [action, setData] = setChannelOrRoleArray('role', data, role.id, value);
               setting = { 'roleMultipliers': setData };
-              await interaction.editReply(`The ${subCmd} ${subCmdGroup} has been ${action} for <@&${role}>.`);
+              embed = createSuccessEmbed(interaction, `Role Multiplier ${action}!`, `The ${subCmd} ${subCmdGroup} for ${role} has been ${action !== 'removed' ? `set to \`${value}%\`` : action }!`);
+              interaction.editReply({embeds: [embed]});
               break;
             case 'settings':
               embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults);
@@ -532,8 +535,58 @@ module.exports = {
               await interaction.editReply({embeds: [embed]});
               break;
             case 'placeholders':
+              const fieldObject = {
+                "user": [
+                  '**{user id}** (The user\'s ID)', 
+                  '**{user mention}** (Mention the User)', 
+                  '**{user name}** (The user\'s name)', 
+                  '**{user global}** (The user\'s Global name)', 
+                  '**{user nick}** (The User\'s nickname)', 
+                  '**{user avatar}** (The user\'s Avatar Url)', 
+                  '**{user color}** (The user\'s Rank Card Color)'
+                ],
+                "level and xp": [
+                  '**{user xp}** (The user\'s current level XP)', 
+                  '**{level}** (The user\'s current level)', 
+                  '**{level previous}** (The user\'s previous level)', 
+                  '**{level previous xp}** (The user\'s previous level XP)', 
+                  '**{level next}** (The user\'s next level)', 
+                  '**{level next xp}** (The user\'s next level XP)'
+                ],
+                "level awards": [
+                  '**{reward}** (The Reward Role)', 
+                  '**{reward role name}** (The Reward Role\'s name)', 
+                  '**{reward rolecount}** (The total Reward Count)', 
+                  '**{reward rolecount progress}** (The Reward progress in **{reward rolecount progress}** format)', '**{reward previous}** (The previous Reward Role)', 
+                  '**{reward next}** (The next Reward Role)'
+                ],
+                "server": [
+                  '**{server id}** (The Server\'s ID)', 
+                  '**{server name}** (The Server\'s name)', 
+                  '**{server member count}** (The total Members in the Server)', 
+                  '**{server icon}** (The Server Icon Url)'
+                ],
+                "other" : [
+                  '{new line} (Add a new line)'
+                ]
+              }
               embed = new EmbedBuilder()
-
+                .setColor('Green')
+                .setTitle('Announce Level Up Message Placeholders')
+                .setTimestamp()
+              for (const [key, placeholders] of Object.entries(fieldObject)) {
+                const values = await Promise.all(
+                  placeholders.map(async (placeholder) => `\`${placeholder.split('}')[0] + '}'}\` = ${await embedPlaceholders(placeholder, interaction)}`)
+                );
+                const valueString = values.join('\n - ').trim();
+                embed.addFields(
+                  {
+                    name: key,
+                    value: `- ${valueString}`
+                  }
+                )
+              };
+              await interaction.editReply({ embeds: [embed] });
               break;
           }
           break;

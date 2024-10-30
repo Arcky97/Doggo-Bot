@@ -1,6 +1,6 @@
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { getGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js');
-const createErrorEmbed = require("../../utils/createErrorEmbed.js");
+const { createErrorEmbed } = require("../../utils/createReplyEmbed.js");
 
 module.exports = {
   name: 'settings',

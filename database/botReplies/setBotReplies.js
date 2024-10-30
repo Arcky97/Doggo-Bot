@@ -127,7 +127,7 @@ async function setBotReplies({ trigger, response, action, id }) {
           message = `A trigger "${trigger}" already exists!`;
         }
       } catch (error) {
-        console.error("Error inserting data:", error);
+        console.error('Error inserting data:', error);
         return `Oh no! Something went wrong while adding your new reply. Please try again.`
       }
     } else if (action === 'check') {
@@ -144,7 +144,7 @@ async function setBotReplies({ trigger, response, action, id }) {
         }
       }
       } catch (error) {
-        console.error("Error checking for similar replies:", error);
+        console.error('Error checking for similar replies:', error);
         return `Oh no! Something went wrong when checking for similar replies to "${trigger}". Please try again.`
       }
     } else {
@@ -162,7 +162,7 @@ async function setBotReplies({ trigger, response, action, id }) {
                 new: dataChange
               }
             } catch (error) {
-              console.error("Error updating data:", error);
+              console.error('Error updating data:', error);
               return `Oh no! Something went wrong when updating the reply with ID:${key.id}. Please try again.`
             }
           } else {
@@ -170,13 +170,13 @@ async function setBotReplies({ trigger, response, action, id }) {
               await deleteData('BotReplies', key);
               message = dataExist;
             } catch (error) {
-              console.error("Error deleting data:", error);
+              console.error('Error deleting data:', error);
               return `Oh no! Something went wrong when deleting the reply with ID:${key.id}. Please try again.`
             }
           }
         }
       } catch (error) {
-        console.error("Error retrieving data:", error);
+        console.error('Error retrieving data:', error);
         return `Oh no! Something went wrong when retrieving the reply with ID:${key.id} from the database. Please try again.`
       }
     }

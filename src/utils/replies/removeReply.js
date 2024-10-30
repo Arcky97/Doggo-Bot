@@ -33,7 +33,6 @@ const removeReply = async (interaction) => {
   } catch (error) {
     console.log('Error generating removeReply embed:', error);
   }
-
 };
 
 module.exports = { removeReply };

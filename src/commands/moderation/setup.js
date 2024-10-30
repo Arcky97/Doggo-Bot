@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
 const { setGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
-const createErrorEmbed = require("../../utils/createErrorEmbed");
+const { createErrorEmbed } = require("../../utils/createReplyEmbed");
 
 module.exports = {
   name: 'setup',

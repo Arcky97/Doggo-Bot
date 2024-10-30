@@ -2,8 +2,7 @@ const { ApplicationCommandOptionType, PermissionFlagsBits, EmbedBuilder } = requ
 const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } = require("../../../database/embeds/setEmbedData");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
 const embedPlaceholders = require("../../utils/embedPlaceholders");
-const createErrorEmbed = require("../../utils/createErrorEmbed");
-const createSuccessEmbed = require("../../utils/createSuccessEmbed");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/createReplyEmbed");
 
 module.exports = {
   name: 'embed',
@@ -399,7 +398,6 @@ module.exports = {
               replyMessage = 'An error occurred while fetching the message.';
             }
             embed = createErrorEmbed(interaction, replyMessage);
-            
           }
         }
         if (embedAction === 'edit') {
@@ -411,7 +409,8 @@ module.exports = {
             replyMessage = `Your ${type} message has been updated successfully. Changes will be applied the next time the message is triggered.`;
             await setEventEmbed(guildId, channel.id, type, embedOptions);
           }
-          await interaction.editReply(replyMessage);
+          embed = createSuccessEmbed(interaction, 'Embed Updated!', replyMessage);
+          interaction.editReply({embeds: [embed]});
         } else if (embedAction === 'delete') {
           if (oldEmbed) {
             if (message) await message.delete();
@@ -420,15 +419,18 @@ module.exports = {
             } else {
               await deleteEventEmbed(guildId, type);
             }
-            interaction.editReply(`The embed with message ID: ${messageId} in <#${channel.id}> was deleted successfully.`);
+            embed = createSuccessEmbed(interaction, 'Embed Deleted!', `The embed with message ID: ${messageId} in <#${channel.id}> was deleted succesfully.`);
+            interaction.editReply({embeds: [embed]})
           } else {
-            interaction.editReply(`The embed with message ID: ${messageId} does not exist.`);
+            embed = createWarningEmbed(interaction, `The embed with message ID: ${messageId} does not exist. \nPlease check the message ID again.`);
+            interaction.editReply({embeds: [embed]});
           }
         }
       }
     } catch (error) {
       console.error(`There was an error while trying to ${embedAction} the embed:`, error);
-      await interaction.editReply(`Something went wrong while trying to ${embedAction} the embed.`);
+      embed = createErrorEmbed(interaction, `Something went wrong while trying to ${embedAction} the embed. \nPlease try again later.`);
+      interaction.editReply({embeds: [embed]});
     }
   }
 };

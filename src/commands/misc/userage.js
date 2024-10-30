@@ -18,7 +18,7 @@ module.exports = {
     try {
       interaction.reply(`${member.user.username}'s account is ${age} old.`)
     } catch (error) {
-      console.error("There was an error retrieving the user's age:", error)
+      console.error('There was an error retrieving the user\'s age:', error)
     }
   }
 }

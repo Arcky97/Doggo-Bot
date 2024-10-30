@@ -18,8 +18,8 @@ module.exports = async (client, member) => {
     const levelSettings = getLevelSettings(member.guild.id);
     if (levelSettings.clearOnLeave === 1) await resetLevelSystem(member.guild.id, member);
     
-    const joinedAt = moment(member.joinedAt).format("MMMM Do YYYY, h:mm:ss a");
-    const leftAt = moment().format("MMMM Do YYYY, h:mm:ss a");
+    const joinedAt = moment(member.joinedAt).format('MMMM Do YYYY, h:mm:ss a');
+    const leftAt = moment().format('MMMM Do YYYY, h:mm:ss a');
     const timeSpent = await formatTime(member.joinedAt);
     //const timeSpent = moment.duration(moment().diff(member.joinedAt)).humanize();
     const roles = getMemberRoles(member);

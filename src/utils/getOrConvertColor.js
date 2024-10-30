@@ -24,7 +24,6 @@ module.exports = async (input, output = false) => {
       message = `The color name "${input}" was not found.`;
     }
   }
-  console.log(hexColor);
   if (output) {
     return { hexColor, message };
   } else {

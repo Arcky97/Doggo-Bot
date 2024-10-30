@@ -4,7 +4,7 @@ const { setDeletionDate } = require('../../handlers/dataBaseCleanUp');
 
 module.exports = async (client, guild) => {
   const deletionDate = new Date();
-  deletionDate.setDate(deletionDate.getDate() + 0); // 11 days from now
+  deletionDate.setDate(deletionDate.getDate() + 11); // 11 days from now
 
   try {
     console.log(`✅ Left the guild: ${guild.name} (${guild.id}).`);

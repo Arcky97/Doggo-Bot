@@ -1,3 +1,5 @@
+const { createSuccessEmbed } = require("../../utils/createReplyEmbed");
+
 module.exports = {
   name: 'ping',
   description: 'Replies with the bot ping!',
@@ -8,8 +10,7 @@ module.exports = {
 
     const ping = reply.createdTimestamp - interaction.createdTimestamp;
 
-    interaction.editReply(
-      `Pong! Client ${ping / 10}ms | Websocket: ${client.ws.ping / 10}ms`
-    );
+    embed = createSuccessEmbed(interaction, 'Pong!', `Client ${ping /10}ms \nWebsocket: ${client.ws.ping /10}ms`);
+    interaction.editReply({embeds: [embed]});
   }
 };

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('@discordjs/builders');
 const { setBotReplies } = require('../../../database/botReplies/setBotReplies');
+const { createErrorEmbed } = require('../createReplyEmbed');
 
 const addReply = async (interaction) => {
   let trigger = interaction.options.getString('trigger');
@@ -15,6 +16,7 @@ const addReply = async (interaction) => {
     response = [response.trim()];
   };
   const message = await setBotReplies({trigger: trigger, response: response, action: 'insert' });
+  let embed;
   try {
     if (typeof message === 'object') {
       let triggerArray = JSON.parse(message.triggers);
@@ -23,7 +25,7 @@ const addReply = async (interaction) => {
       let responseArray = JSON.parse(message.responses);
       let responseString = responseArray.join('\n- ');
       let resp = responseArray.length > 1 ? 'Responses:' : 'Response:'
-      const embed = new EmbedBuilder()
+      embed = new EmbedBuilder()
         .setColor(0x57F287)
         .setTitle('Reply Added')
         .setDescription(`**ID:** ${message.id}`)
@@ -37,10 +39,10 @@ const addReply = async (interaction) => {
           }
         )
         .setTimestamp();
-      await interaction.reply({ embeds: [embed] });
     } else {
-      await interaction.reply(message);
+      embed = createErrorEmbed(interaction, message);
     } 
+    await interaction.reply({ embeds: [embed] });
   } catch (error) {
     console.error('Error generating AddReply embed:', error)
   }
