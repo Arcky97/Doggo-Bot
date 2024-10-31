@@ -8,7 +8,6 @@ module.exports = async (input, output = false) => {
     message = `Your random color is ${hexColor}`;
   } else if (input.startsWith('#', 0)) {
     const hexPattern = /^#([A-Fa-f0-9]{6})$/;
-
     if (hexPattern.test(input)) {
       hexColor = input
       message = `Your given color is ${input}`;

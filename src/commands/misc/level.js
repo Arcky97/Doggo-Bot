@@ -177,7 +177,7 @@ module.exports = {
       if (userLevel) {
         const colorChoice = interaction.options.get('color').value;
         let { hexColor, message } = await getOrConvertColor(colorChoice, true);
-        if (!message.includes('not found') && hexColor) {
+        if (hexColor) {
           const thumbnailUrl = `https://singlecolorimage.com/get/${hexColor.replace('#','')}/64x64`
           embed = new EmbedBuilder()
             .setColor(hexColor)
@@ -185,14 +185,12 @@ module.exports = {
             .setDescription(message)
             .setThumbnail(thumbnailUrl)
             .setTimestamp()
-          if (hexColor) {
-            try {
-              await addUserColor(interaction.guild.id, interaction.member.id, hexColor);
-            } catch (error) {
-              console.log('Error inserting color.', error);
-              embed = createErrorEmbed(interaction, 'Something went wrong while setting you color. \nPlease try again later.');
-              if (embed) interaction.editReply({embeds: [embed]});
-            }
+          try {
+            await addUserColor(interaction.guild.id, interaction.member.id, hexColor);
+          } catch (error) {
+            console.log('Error inserting color.', error);
+            embed = createErrorEmbed(interaction, 'Something went wrong while setting you color. \nPlease try again later.');
+            if (embed) interaction.editReply({embeds: [embed]});
           }
         } else {
           embed = createErrorEmbed(interaction, message);
