@@ -68,9 +68,5 @@ module.exports = async (client, interaction) => {
     await commandObject.callback(client, interaction);
   } catch (error) {
     console.log(`There was an error running this command: ${error}.`);
-    embed = createErrorEmbed(interaction, 'Something went wrong when trying to run this command.');
-    interaction.reply({
-      embeds: [embed]
-    });
   }
 };
