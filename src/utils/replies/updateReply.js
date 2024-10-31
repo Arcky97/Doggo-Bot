@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
+const { createErrorEmbed } = require("../createReplyEmbed");
 
 const updateReply = async (interaction, type) => {
   const replyID = interaction.options.getString('id');
@@ -10,6 +11,7 @@ const updateReply = async (interaction, type) => {
     input = [input.trim()];
   };
   const message = await setBotReplies({[type]: input, action: 'update', id: replyID });
+  let embed;
   try {
     if (typeof message === 'object') {
       let triggerArrayBefore = JSON.parse(message.old.triggers);
@@ -20,7 +22,7 @@ const updateReply = async (interaction, type) => {
       let responseStringBefore = responseArrayBefore.join('\n- ');
       let responseArrayAfter = JSON.parse(message.new.responses);
       let responseStringAfter = responseArrayAfter.join('\n- ');
-      const embed = new EmbedBuilder()
+      embed = new EmbedBuilder()
         .setColor(0xE67E22)
         .setTitle('Reply Updated')
         .setDescription(`**ID:** ${message.old.id}`)
@@ -55,10 +57,10 @@ const updateReply = async (interaction, type) => {
           }
         )
         .setTimestamp()
-      await interaction.reply({ embeds: [embed]});
     } else {
-      await interaction.reply(message);
+      embed = createErrorEmbed(interaction, message);
     }
+    await interaction.reply({ embeds: [embed]});
   } catch (error) {
     console.log('Error generating UpdateReply embed:', error);
   }

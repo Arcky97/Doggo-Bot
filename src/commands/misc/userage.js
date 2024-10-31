@@ -1,5 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const formatTime = require("../../utils/formatTime");
+const { createSuccessEmbed } = require("../../utils/createReplyEmbed");
 
 module.exports = {
   name: 'userage',
@@ -16,9 +17,10 @@ module.exports = {
     const member = interaction.options.getMember('user');
     const age = await formatTime(member.user.createdAt, true);
     try {
-      interaction.reply(`${member.user.username}'s account is ${age} old.`)
+      let embed = createSuccessEmbed(interaction, 'User Age', `${member.user.username}'s account is ${age} old.`);
+      await interaction.reply({embeds: [embed]});
     } catch (error) {
-      console.error('There was an error retrieving the user\'s age:', error)
+      console.error('There was an error retrieving the user\'s age:', error);
     }
   }
 }

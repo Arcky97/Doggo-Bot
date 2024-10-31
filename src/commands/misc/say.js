@@ -12,9 +12,7 @@ module.exports = {
     }
   ],
   callback: async (client, interaction) => {
-    const message = interaction.options.get('message').value;
-
+    const message = interaction.options.getString('message');
     await interaction.reply(message);
-
   }
 };

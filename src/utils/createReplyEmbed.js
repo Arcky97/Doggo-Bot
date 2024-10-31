@@ -21,5 +21,5 @@ module.exports = {
   createSuccessEmbed: (interaction, title, description) => createReplyEmbed(interaction, 'Green', title, description, false),
   createInfoEmbed: (interaction, description) => createReplyEmbed(interaction, 'Yellow', 'Info', description),
   createWarningEmbed: (interaction, description) => createReplyEmbed(interaction, 'Orange', 'Warning', description),
-  createErrorEmbed: (interaction, descritpion) => createReplyEmbed(interaction, 'Red', 'Error', descritpion)
+  createErrorEmbed: (interaction, description) => createReplyEmbed(interaction, 'Red', 'Error', description)
 }
