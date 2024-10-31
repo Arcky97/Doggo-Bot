@@ -177,7 +177,7 @@ module.exports = {
       if (userLevel) {
         const colorChoice = interaction.options.get('color').value;
         let { hexColor, message } = await getOrConvertColor(colorChoice, true);
-        if (!message.includes('not found')) {
+        if (!message.includes('not found') && hexColor) {
           const thumbnailUrl = `https://singlecolorimage.com/get/${hexColor.replace('#','')}/64x64`
           embed = new EmbedBuilder()
             .setColor(hexColor)
