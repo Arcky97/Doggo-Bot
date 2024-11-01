@@ -17,10 +17,7 @@ const listReply = async (interaction) => {
             text: `${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, replies.length)} of ${replies.length} Replies`
           });
         let description = '';
-        let triggers;
-        let responses;
-        let resp;
-        let trig;
+        let triggers, trig, responses, resp;
         for (let j = i * pageSize; j < (i * pageSize) + pageSize && j < replies.length; j++) {
           let reply = replies[j]
           trig = (reply.triggers.length > 1) ? '**Triggers:**' : '**Trigger:**'

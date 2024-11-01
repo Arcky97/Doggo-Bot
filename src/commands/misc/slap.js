@@ -1,7 +1,8 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
 const { createSuccessEmbed, createInfoEmbed } = require("../../utils/createReplyEmbed");
 const getVowel = require("../../utils/getVowel");
-const slapAttempts = {bot: {}, self: {}};
+const { getUserAttempts, setUserAttempts } = require("../../../database/userStats/setUserStats");
+const cooldowns = new Set();
 
 module.exports = {
   name: 'slap',
@@ -21,6 +22,7 @@ module.exports = {
     }
   ],
   callback: async (client, interaction) => {
+    const guildId = interaction.guild.id;
     const userId = interaction.member.id;
     const target = interaction.options.getMentionable('target');
     const object = interaction.options.getString('object');
@@ -49,6 +51,8 @@ module.exports = {
         `You slapped youself with ${getVowel(object)}! \nHappy now?`
       ];
   
+      let userSlapAttempts = await getUserAttempts(guildId, userId);
+
       if (target.id !== client.user.id && target.id !== userId) {
         const replies = [
           `You slapped ${target} with ${getVowel(object)}!`, 
@@ -56,15 +60,37 @@ module.exports = {
         ];
         embed = createSuccessEmbed(interaction, 'A Slap-tastic Hit!', replies[Math.floor(Math.random() * replies.length)]);
       } else {
-        let slapKey = target.id === client.user.id ? 'bot' : 'self';
-        slapAttempts[slapKey][userId] = (slapAttempts[slapKey][userId] || 0) + 1;
-        let arrayToUse = slapKey === 'bot' ? botResponses : selfResponses;
-        response = arrayToUse[Math.min(slapAttempts[slapKey][userId] - 1, arrayToUse.length - 1)];
+        let slapKey = target.id === client.user.id ? 'client' : 'self';
+        userSlapAttempts.slap[slapKey] += 1
+        let arrayToUse = slapKey === 'client' ? botResponses : selfResponses;
+        response = arrayToUse[Math.min(userSlapAttempts.slap[slapKey] - 1, arrayToUse.length - 1)];
         embed = createInfoEmbed(interaction, response);
-      }    
+      }
+      let type;
+      if (target.user.bot) {
+        type = 'bots';
+      } else if (target.permissions.has(PermissionFlagsBits.Administrator)) {
+        type = 'admins';
+      } else {
+        type = 'members';
+      }
+      userSlapAttempts.slap[type][target.id] = (userSlapAttempts.slap[type][target.id] || 0) + 1;
+      await setUserAttempts(guildId, userId, JSON.stringify(userSlapAttempts));  
       await interaction.reply({embeds: [embed]});
+      const cooldownKey = `${guildId}_${userId}`;
+      if (!cooldowns.has(cooldownKey)) {
+        cooldowns.add(cooldownKey);
+        setTimeout(async () => {
+          cooldowns.delete(cooldownKey);
+          // Reset slap attempts if applicable
+          if (target.id === client.user.id || target.id === userId) {
+            userSlapAttempts.slap[target.id === client.user.id ? 'client' : 'self'] = 0;
+            await setUserAttempts(guildId, userId, JSON.stringify(userSlapAttempts));
+          }
+        }, 30000);
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Error processing slap command:', error);
     }
   }
 };

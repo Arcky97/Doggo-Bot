@@ -49,6 +49,9 @@ async function initDatabase() {
     //const dropReactionRolesTable = `DROP TABLE IF EXISTS ReactionRoles;`;
     //await pool.query(dropReactionRolesTable);
 
+    //const dropUserStatsTable = `DROP TABLE IF EXISTS UserStats;`;
+    //await pool.query(dropUserStatsTable);
+
     const createGuildSettingsTable = `
       CREATE TABLE IF NOT EXISTS GuildSettings (
         guildId VARCHAR(100) NOT NULL PRIMARY KEY,
@@ -178,6 +181,15 @@ async function initDatabase() {
         PRIMARY KEY (guildId, channelId, messageId)
       )
     `;
+
+    const createUserStatsTable = `
+      CREATE TABLE IF NOT EXISTS UserStats (
+        guildId VARCHAR(100) NOT NULL,
+        memberId VARCHAR(100) NOT NULL,
+        attempts JSON DEFAULT '{ "slap": { "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "kick": { "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "ban": { "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "mute": { "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }}',
+        PRIMARY KEY (guildId, memberId)
+      )
+    `;
     
     await pool.query(createGuildSettingsTable);
     await pool.query(createLevelSystemTable);
@@ -187,6 +199,7 @@ async function initDatabase() {
     await pool.query(createEventEmbedsTable);
     await pool.query(createGeneratedEmbedsTable);
     await pool.query(createReactionRolesTable);
+    await pool.query(createUserStatsTable);
     console.log('Tables created successfully!');
   } catch (err) {
     console.error('Error initializing the database:', err);

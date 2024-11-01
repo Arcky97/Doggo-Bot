@@ -43,30 +43,29 @@ module.exports = {
   callback: async (client, interaction) => {
     await interaction.deferReply();
     const subCommand = interaction.options.getSubcommand();
+    const mentionUserId = interaction.options.get('user')?.value;
+    const targetUserId = mentionUserId || interaction.member.id;
+    const targetUserObj = await interaction.guild.members.fetch(targetUserId);
+    const userLevel = await getUserLevel(interaction.guild.id, targetUserId);
+    const guildUsers = await getAllUsersLevel(interaction.guild.id);
+
+    guildUsers.sort((a, b) => {
+      if (a.level === b.level) {
+        return b.xp - a.xp;
+      } else {
+        return b.level - a.level;
+      }
+    });
+
     let embed; 
+
     if (subCommand === 'show') {
-      const mentionUserId = interaction.options.get('user')?.value;
-      const targetUserId = mentionUserId || interaction.member.id;
-      const targetUserObj = await interaction.guild.members.fetch(targetUserId);
-  
-      const userLevel = await getUserLevel(interaction.guild.id, targetUserId);
   
       if (!userLevel && subCommand === 'show') {
         embed = createInfoEmbed(interaction, `${mentionUserId ? `${targetUserObj.user.tag} doesn\t have a level yet.`: 'You don\t have a level yet.'}`);
         if (embed) interaction.editReply({embeds: [embed]});
         return;
       }
-  
-      const guildUsers = await getAllUsersLevel(interaction.guild.id);
-  
-      guildUsers.sort((a, b) => {
-        if (a.level === b.level) {
-          return b.xp - a.xp;
-        } else {
-          return b.level - a.level;
-        }
-      });
-  
       const targetAvatarURL = targetUserObj.user.displayAvatarURL({ size: 256 })
       const color = userLevel.color;
       const startLevelXp = calculateXpByLevel(userLevel.level - 1)
@@ -173,7 +172,6 @@ module.exports = {
         interaction.editReply({ embeds: [embed] });
       }
     } else if (subCommand === 'color') {
-      const userLevel = await getUserLevel(interaction.guild.id, interaction.member.id);
       if (userLevel) {
         const colorChoice = interaction.options.get('color').value;
         let { hexColor, message } = await getOrConvertColor(colorChoice, true);
@@ -202,6 +200,24 @@ module.exports = {
       }
     } else if (subCommand === 'leaderboard') {
       embed = createInfoEmbed(interaction, 'Sorry but the leaderboard isn\'t finished yet. \nTry again another time or ask <@835094939724808232> to hurry up and finish it!');
+      if (guildUsers.length > 0) {
+        embed = new EmbedBuilder()
+          .setColor('Green')
+          .setTitle(`${interaction.guild.name}'s Leaderboard.`)
+          .setTimestamp()
+          .setThumbnail(interaction.guild.iconURL())
+        let rank = 1;
+        let descrition = '';
+        for (const user of guildUsers) {
+          descrition += `\n\n**#${rank}**: <@${user.memberId}>` +
+                        `\n   **Lv.** \`${user.level}\`` +
+                        `\n   **Xp:** \`${user.xp}/${calculateXpByLevel(user.level)}\`` 
+          rank ++;
+        }
+        embed.setDescription(descrition);
+      } else {
+        embed = createInfoEmbed(interaction, 'Sorry but no one in this server has a level yet.');
+      }
       if (embed) interaction.editReply({embeds: [embed]});
     }
   }

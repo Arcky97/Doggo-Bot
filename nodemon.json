@@ -2,5 +2,5 @@
   "ignore": [
     "database/controlData/visualDatabase/*.json"
   ],
-  "delay": "60"
+  "delay": "120"
 }
