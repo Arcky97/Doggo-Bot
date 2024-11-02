@@ -377,7 +377,7 @@ module.exports = {
             await setEventEmbed(guildId, channel.id, type, embedOptions);
           }
         }
-        embed = createSuccessEmbed(interaction, 'Hoorray!', replyMessage);
+        embed = createSuccessEmbed({int: interaction, title: 'Hoorray!', descr: replyMessage});
         interaction.editReply({embeds: [embed]});
       } else {
         const messageId = interaction.options.getString('messageid');
@@ -409,7 +409,7 @@ module.exports = {
             replyMessage = `Your ${type} message has been updated successfully. Changes will be applied the next time the message is triggered.`;
             await setEventEmbed(guildId, channel.id, type, embedOptions);
           }
-          embed = createSuccessEmbed(interaction, 'Embed Updated!', replyMessage);
+          embed = createSuccessEmbed({int: interaction, title: 'Embed Updated!', descr: replyMessage});
           interaction.editReply({embeds: [embed]});
         } else if (embedAction === 'delete') {
           if (oldEmbed) {
@@ -419,7 +419,7 @@ module.exports = {
             } else {
               await deleteEventEmbed(guildId, type);
             }
-            embed = createSuccessEmbed(interaction, 'Embed Deleted!', `The embed with message ID: ${messageId} in <#${channel.id}> was deleted succesfully.`);
+            embed = createSuccessEmbed({int: interaction, title: 'Embed Deleted!', descr: `The embed with message ID: ${messageId} in <#${channel.id}> was deleted succesfully.`});
             interaction.editReply({embeds: [embed]})
           } else {
             embed = createWarningEmbed(interaction, `The embed with message ID: ${messageId} does not exist. \nPlease check the message ID again.`);

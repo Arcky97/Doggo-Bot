@@ -17,7 +17,7 @@ module.exports = {
     const member = interaction.options.getMember('user');
     const age = await formatTime(member.user.createdAt, true);
     try {
-      let embed = createSuccessEmbed(interaction, 'User Age', `${member.user.username}'s account is ${age} old.`);
+      let embed = createSuccessEmbed({int: interaction, title: 'User Age', descr: `${member.user.username}'s account is ${age} old.`});
       await interaction.reply({embeds: [embed]});
     } catch (error) {
       console.error('There was an error retrieving the user\'s age:', error);

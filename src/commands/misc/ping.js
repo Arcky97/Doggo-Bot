@@ -10,7 +10,7 @@ module.exports = {
 
     const ping = reply.createdTimestamp - interaction.createdTimestamp;
 
-    embed = createSuccessEmbed(interaction, 'Pong!', `Client ${ping /10}ms \nWebsocket: ${client.ws.ping /10}ms`);
+    embed = createSuccessEmbed({int: interaction, title: 'Pong!', descr: `Client ${ping /10}ms \nWebsocket: ${client.ws.ping /10}ms`});
     interaction.editReply({embeds: [embed]});
   }
 };

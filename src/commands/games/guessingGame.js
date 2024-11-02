@@ -47,11 +47,11 @@ module.exports = {
     gameData.attempts += 1;
     let embed;
     if (userGuess === gameData.magicNumber) {
-      embed = createSuccessEmbed(interaction, 'Secret Number Guessed!', `Congratulations! You guessed the magic number ${gameData.magicNumber} in ${gameData.attempts} attempts.`);
+      embed = createSuccessEmbed({int: interaction, title: 'Secret Number Guessed!', descr: `Congratulations! You guessed the magic number ${gameData.magicNumber} in ${gameData.attempts} attempts.`});
     } else if (userGuess < gameData.magicNumber) {
-      embed = createSuccessEmbed(interaction, 'Try again!', 'Too low! Give it another try.');
+      embed = createSuccessEmbed({int: interaction, title: 'Try again!', descr: 'Too low! Give it another try.'});
     } else {
-      embed = createSuccessEmbed(interaction, 'Try again!', 'Too high! Give it another try.');
+      embed = createSuccessEmbed({int: interaction, title: 'Try again!', descr: 'Too high! Give it another try.'});
     }
     interaction.editReply({embeds: [embed]});
   }

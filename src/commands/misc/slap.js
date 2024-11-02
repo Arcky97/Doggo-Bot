@@ -58,13 +58,13 @@ module.exports = {
           `You slapped ${target} with ${getVowel(object)}!`, 
           `You used ${getVowel(object)} to slap ${target}!`
         ];
-        embed = createSuccessEmbed(interaction, 'A Slap-tastic Hit!', replies[Math.floor(Math.random() * replies.length)]);
+        embed = createSuccessEmbed({int: interaction, title: 'A Slap-tastic Hit!', descr: replies[Math.floor(Math.random() * replies.length)]});
       } else {
         let slapKey = target.id === client.user.id ? 'client' : 'self';
         userSlapAttempts.slap[slapKey] += 1
         let arrayToUse = slapKey === 'client' ? botResponses : selfResponses;
         response = arrayToUse[Math.min(userSlapAttempts.slap[slapKey] - 1, arrayToUse.length - 1)];
-        embed = createInfoEmbed(interaction, response);
+        embed = createInfoEmbed({ int: interaction, descr: response });
       }
       let type;
       if (target.user.bot) {

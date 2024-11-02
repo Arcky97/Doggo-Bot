@@ -26,14 +26,17 @@ function setLevelRolesArray(action, data, level, id) {
   if (action === 'add') {
     if (index === -1) {
       data.push({ level, roleId: id})
+      action = 'set';
     } else {
       data[index].roleId = id;
+      action = 'updated';
     }
     data = data.sort((a, b) => a.level - b.level);
   } else {
     data.splice(index, 1);
+    action = 'removed';
   }
-  return JSON.stringify(data);  
+  return [action, JSON.stringify(data)];  
 }
 
 function setAnnounceLevelArray(levSettings, newData) {

@@ -12,16 +12,19 @@ module.exports = (settings, message) => {
   if (roleBlkList.some(item => userRoles.some(role => role === item.roleId))) return 0;
   const random = Math.floor(Math.random() * (25 - 15 + 1)) + 15
   let totalXp = random;
+
+  let totalMultiplier = 0;
   let findChanMult = chanMult.find(item => item.channelId === message.channel.id)
   if (findChanMult) {
-    totalXp += Math.round(totalXp * (findChanMult.value / 100));
+    totalMultiplier += findChanMult.value;
   } else {
-    totalXp += Math.round(totalXp * (globMult / 100));
+    totalMultiplier += globMult;
   }
   roleMult.forEach(item => {
     if (userRoles.includes(item.roleId)){
-      totalXp += Math.round(totalXp * (item.value / 100));
+      totalMultiplier += item.value; 
     }
   });
+  totalXp += Math.round(totalXp * (Math.min(totalMultiplier, 1100) / 100));
   return totalXp;
 }

@@ -33,7 +33,7 @@ module.exports = {
       await interaction.deferReply();
       // check if the user is trying to kick the bot itself
       if (member.id === client.user.id) {
-        embed = createInfoEmbed(interaction, 'Sorry but I cannot kick myself! Don\'t try it again!');
+        embed = createInfoEmbed({int: interaction, descr: 'Sorry but I cannot kick myself! Don\'t try it again!'});
         interaction.editReply({embeds: [embed]});
         return;
       }
@@ -60,7 +60,7 @@ module.exports = {
         return;
       } 
       //await member.kick(reason);
-      embed = createSuccessEmbed(interaction, 'It was a critical kick!', `You kicked ${member} from the Server. \nReason: ${reason}`);
+      embed = createSuccessEmbed({int: interaction, title: 'It was a critical kick!', descr: `You kicked ${member} from the Server. \nReason: ${reason}`});
       interaction.editReply({embeds: [embed]});
     } catch (error) {
       console.log('Failed to kick the member:', error);

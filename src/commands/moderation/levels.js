@@ -10,7 +10,8 @@ const embedPlaceholders = require("../../utils/embedPlaceholders");
 const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings");
 const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
 const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
-const { createErrorEmbed, createSuccessEmbed } = require("../../utils/createReplyEmbed");
+const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../utils/createReplyEmbed");
+const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 
 module.exports = {
   name: 'lvsys',
@@ -87,7 +88,7 @@ module.exports = {
     },
     {
       type: ApplicationCommandOptionType.SubcommandGroup,
-      name: 'announcement',
+      name: 'announce',
       description: 'Setup the announcement Channel and whether to Ping on each level up.',
       options: [
         {
@@ -427,7 +428,7 @@ module.exports = {
 
     let value = interaction.options.get('value')?.value 
     try {
-      let data, setting, action, setData, role, channel, level;
+      let data, setting, existingSetting, action, setData, role, channel, level;
 
       switch(subCmdGroup) {
         case 'multiplier':
@@ -438,21 +439,25 @@ module.exports = {
           switch(subCmd) {
             case 'global':
               setting = { 'globalMultiplier': value };
-              embed = createSuccessEmbed(interaction, 'Global Multiplier Set!', `The Global Multiplier has been set to \`${value}%\`!`);
+              embed = createSuccessEmbed({int: interaction, title: 'Global Multiplier Set!', descr: `The Global Multiplier has been set to \`${value}%\`!`});
               interaction.editReply({embeds: [embed]});
               break;
             case 'channel':
               channel = interaction.options.getChannel('name');
               [action, setData] = setChannelOrRoleArray('channel', data, channel.id, value);
               setting = { 'channelMultipliers': setData };
-              embed = createSuccessEmbed(interaction, `Channel Multiplier ${action}!`, `The ${subCmd} ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!`);
+              embed = createSuccessEmbed({int: interaction, title: `Channel Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!`});
               interaction.editReply({embeds: [embed]});
               break
             case 'role':
               role = interaction.options.getRole('name');
-              [action, setData] = setChannelOrRoleArray('role', data, role.id, value);
-              setting = { 'roleMultipliers': setData };
-              embed = createSuccessEmbed(interaction, `Role Multiplier ${action}!`, `The ${subCmd} ${subCmdGroup} for ${role} has been ${action !== 'removed' ? `set to \`${value}%\`` : action }!`);
+              if (role.id !== guildId) {
+                [action, setData] = setChannelOrRoleArray('role', data, role.id, value);
+                setting = { 'roleMultipliers': setData };
+                embed = createSuccessEmbed({int: interaction, title: `Role Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${role} has been ${action !== 'removed' ? `set to \`${value}%\`` : action }!`});
+              } else {
+                embed = createWarningEmbed(interaction, `A Role Multiplier can't be set for ${role}.`);
+              }
               interaction.editReply({embeds: [embed]});
               break;
             case 'settings':
@@ -461,17 +466,27 @@ module.exports = {
               break;
           }
           break;
-        case 'announcement':
+        case 'announce':
           let embedOptions;
           switch(subCmd) {
             case 'channel':
+              existingSetting = levSettings.announceChannel;
               channel = interaction.options.getChannel('name');
-              setting = { 'announceChannel': channel.id };
-              await interaction.editReply(`The level up announcement channel has been set to ${channel}`);
+              if (existingSetting !== channel.id) {
+                setting = { 'announceChannel': channel.id };
+                embed = createSuccessEmbed({int: interaction, title: `Level Up Announce Channel ${existingSetting ? 'Updated' : 'Set'}!`, descr: `The Level Up Announce Channel has been ${existingSetting ? 'updated' : 'set'} to ${channel}.`});
+              } else {
+                embed = createInfoEmbed({ int: interaction, descr: `The Level Up Announce Channel has already been set to <#${existingSetting}>.`});  
+              }
               break;
             case 'ping':
-              setting = { 'announcePing': value};
-              await interaction.editReply(`The ping has been turned ${value ? 'on' : 'off'} for level up announcements.`);
+              existingSetting = levSettings.announcePing === 1;
+              if (existingSetting !== value) {
+                setting = { 'announcePing': value};
+                embed = createSuccessEmbed({int: interaction, title: 'The Level Up Announce Ping Updated!', descr: `The ping has been ${value ? '\`enabled\`' : '\`disabled\`'}.`});
+              } else {
+                embed = createInfoEmbed({int: interaction, descr: `The Level Up Announce Ping is already ${value ? '\`enabled\`' : '\`disabled\`'}.`});
+              }
               break;
             case 'message':
               embedOptions = {
@@ -490,10 +505,10 @@ module.exports = {
               if (level) {
                 [action, setData] = setAnnounceLevelArray(levSettings, {lv: level, options: embedOptions});
                 setting = { 'announceLevelMessages': setData};
-                await interaction.editReply(`The announcement message for lv. ${level} has been ${action}.`);
+                embed = createSuccessEmbed({ int: interaction, title: `Level Up Message ${action}!`, descr: `The Level Up Message for lv. ${level} has been ${action}! \nUse \`/lvsys announce show level: ${level}\` to view it.`});
               } else {
                 setting = { 'announceDefaultMessage': JSON.stringify(embedOptions) };
-                await interaction.editReply('The default announcement message has been updated.');
+                embed = createSuccessEmbed({int: interaction, title: 'Level Up Message Updated!', descr: 'The default Level Up Message has been updated! \nUse `/lvsys announce show ` to view it.'});
               }
               break;
             case 'remove':
@@ -501,14 +516,13 @@ module.exports = {
               [action, setData] = setAnnounceLevelArray(levSettings, level);
               setting = { 'announceLevelMessages': setData};
               if (action !== 'error') {
-                await interaction.editReply(`The announcement message for lv. ${level} has been ${action}.`);
+                embed = createSuccessEmbed({int: interaction, title: 'Level Up Message Removed!', descr: `The Level Up Message for lv. ${level} has been ${action}.`});
               } else {
-                await interaction.editReply(`The announcement message for lv. ${level} does not exist!`);
+                embed = createInfoEmbed({int: interaction, title: 'Level Up Message not found!', descr: `The Level Up Message for lv. ${level} does not exist!`});
               }
               break;
             case 'settings':
               embed = showAnnouncementSettings(levSettings);
-              await interaction.editReply({ embeds: [embed] });
               break;
             case 'show':
               level = interaction.options.getInteger('level');
@@ -530,9 +544,8 @@ module.exports = {
                 if (embedOptions.thumbnailUrl) embed.setThumbnail(await embedPlaceholders(embedOptions.thumbnailUrl, interaction));
                 if (embedOptions.timeStamp) embed.setTimestamp();
               } else {
-                embed = createErrorEmbed(interaction, `No announcement message set for lv. ${level}!`);
+                embed = createInfoEmbed({int: interaction, title: 'Level Up Message not found!', descr: `No Level Up Message set for lv. ${level}!`});
               }
-              await interaction.editReply({embeds: [embed]});
               break;
             case 'placeholders':
               const fieldObject = {
@@ -586,9 +599,9 @@ module.exports = {
                   }
                 )
               };
-              await interaction.editReply({ embeds: [embed] });
               break;
           }
+          interaction.editReply({ embeds: [embed] });
           break;
         case 'blacklist':
           data = await getRoleOrChannelBlacklist({id: guildId, type: subCmd }) || [];
@@ -597,64 +610,70 @@ module.exports = {
               channel = interaction.options.getChannel('name');
               [action, setData] = setChannelOrRoleArray('channel', data, channel.id);
               setting = { 'blackListChannels' : setData };
-              await interaction.editReply(`${channel} has been ${action} to the black list.`);
+              embed = createSuccessEmbed({int: interaction, title: `Channel ${action}!`, descr: `${channel} has been ${action} to the Black List.`});
               break;
             case 'role':
               role = interaction.options.getRole('name');
               [action, setData] = setChannelOrRoleArray('role', data, role.id);
               setting = { 'blackListRoles' : setData};
-              await interaction.editReply(`${role} has been ${action} to the black list.`);
+              embed = createSuccessEmbed({int: interaction, title: `Role ${action}!`, descr: `${role} has been ${action} to the Black List.`});
               break;
             case 'settings':
               embed = showBlacklistSettings(blackListRoles, blackListChannels);
-              await interaction.editReply({ embeds: [embed] });
               break;
           }
+          await interaction.editReply({ embeds: [embed] });
           break;
         case 'roles':
           data = await getLevelRoles(guildId) || [];
           level = interaction.options.getInteger('level');
           switch (subCmd) {
             case 'replace':
-              setting = { 'roleReplace': value };
-              await interaction.editReply(`Newly gained Level Roles will ${value ? 'replace current' : 'add on'} level roles for a user.`);
+              existingSetting = levSettings.roleReplace === 1;
+              if (existingSetting !== value) {
+                setting = { 'roleReplace': value };
+                embed = createSuccessEmbed({int: interaction, title: 'Replace Roles Setting', descr: `The Role Replace Setting has been ${value ? '\`enabled\`. \nRoles will be replaced upon gaining.' : '\`disabled\`. \nRoles will not be replaced upon gaining.'}`});
+              } else {
+                embed = createInfoEmbed({int: interaction, descr:`The Replace Roles Setting is already ${value ? '\`enabled\`' : '\`disabled\`' }.`});
+              }
               break; 
             case 'add':
               role = interaction.options.getRole('role');
               const match = data.find(dat => (dat.level !== level || dat.level === level) && dat.roleId === role.id)
               if (match) {
-                await interaction.editReply(`${role} has already been asigned as a reward for lv. ${match.level}.`)
+                embed = createInfoEmbed({int: interaction, title: 'Reward Role already added!', descr: `${role} has already been asigned as a reward for lv. ${match.level}.`});
               } else {
-                setData = setLevelRolesArray(subCmd, data, level, role.id);
+                [action, setData] = setLevelRolesArray(subCmd, data, level, role.id);
                 setting = { 'levelRoles': setData };
-                await interaction.editReply(`${role} has been added as a reward for lv. ${level}.`);
+                embed = createSuccessEmbed({int: interaction, title: `Reward Role ${action === 'set' ? 'Added' : action}!`, descr: `The Reward Role for lv. ${level} has been ${action} to ${role}.`})
               }
               break;
             case 'remove':
-              setData = setLevelRolesArray(subCmd, data, level);
+              [action, setData] = setLevelRolesArray(subCmd, data, level);
               setting = { 'levelRoles': setData};
-              await interaction.editReply(`The reward for lv. ${level} has been removed.`);
+              embed = createSuccessEmbed({int: interaction, title: `Reward Role ${action}!`, descr: `The Reward Role for lv. ${level} has been ${action}.`});
               break;
           }
+          interaction.editReply({ embeds: [embed] });
           break;
         case 'voice':
           switch(subCmd) {
             case 'use':
               setting = {'voiceEnable': value };
-              await interaction.editReply(`Voice XP has been ${value ? 'Enabled' : 'Disabled'}!`);
+              interaction.editReply(`Voice XP has been ${value ? 'Enabled' : 'Disabled'}!`);
               break;
             case 'multiplier':
               value = Math.round(value * 100);
               setting = {'voiceMultiplier': value};
-              await interaction.editReply(`Voice Multiplier has been set to ${value}%`);
+              interaction.editReply(`Voice Multiplier has been set to ${value}%`);
               break;
             case 'cooldown':
               setting = {'voiceCooldown': value};
-              await interaction.editReply(`Voice cooldown has been set to ${value} ${value > 1 ? 'seconds' : 'second'}!`);
+              interaction.editReply(`Voice cooldown has been set to ${value} ${value > 1 ? 'seconds' : 'second'}!`);
               break;
             case 'settings':
               embed = showVoiceSettings(levSettings);
-              await interaction.editReply({ embeds: [embed]})
+              interaction.editReply({ embeds: [embed]})
               break;
           }
           break;
@@ -662,12 +681,12 @@ module.exports = {
           switch(subCmd) {
             case 'settings':
               await resetLevelSettings(guildId);
-              await interaction.editReply('The Level System Settings have been resetted.');
+              interaction.editReply('The Level System Settings have been resetted.');
               break;
             case 'levels':
               const user = interaction.options.getMentionable('user');
               await resetLevelSystem(guildId, user);
-              await interaction.editReply(`${user ? `The Level for ${user} has`: 'All Levels have'} been resetted.`);
+              interaction.editReply(`${user ? `The Level for ${user} has`: 'All Levels have'} been resetted.`);
               break;
           }
           break;
@@ -677,7 +696,7 @@ module.exports = {
             await interaction.editReply(`The XP cool down has been set to ${value} ${value > 1 ? 'seconds' : 'second'}!`);
           } else { // subCmd === 'settings'
             embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess)
-            await interaction.editReply({ embeds: [embed] });
+            interaction.editReply({ embeds: [embed] });
           }
           break;
       }

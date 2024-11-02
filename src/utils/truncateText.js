@@ -9,6 +9,5 @@ module.exports = async (text, maxLength = 1024) => {
 
   const finalText = lastSpaceIndex > 0 ? trimmed.slice(0, lastSpaceIndex) : trimmed;
 
-  
   return finalText + ellipsis;
 }

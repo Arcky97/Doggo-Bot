@@ -62,7 +62,7 @@ module.exports = {
     if (subCommand === 'show') {
   
       if (!userLevel && subCommand === 'show') {
-        embed = createInfoEmbed(interaction, `${mentionUserId ? `${targetUserObj.user.tag} doesn\t have a level yet.`: 'You don\t have a level yet.'}`);
+        embed = createInfoEmbed({int: interaction, title: 'Info: No level yet!', descr: `${mentionUserId ? `${targetUserObj.user.tag} doesn\'t have a level yet.`: 'You don\'t have a level yet.'}`});
         if (embed) interaction.editReply({embeds: [embed]});
         return;
       }
@@ -195,11 +195,10 @@ module.exports = {
         }
         interaction.editReply({ embeds: [embed] });
       } else {
-        embed = createInfoEmbed(interaction, 'You don\'t have a level yet so you can\'t set a color just yet.');
+        embed = createInfoEmbed({int: interaction, title: 'Info: No level Yet!', descr: 'You don\'t have a level yet so you can\'t set a color just yet.'});
         if (embed) interaction.editReply({embeds: [embed]});
       }
     } else if (subCommand === 'leaderboard') {
-      embed = createInfoEmbed(interaction, 'Sorry but the leaderboard isn\'t finished yet. \nTry again another time or ask <@835094939724808232> to hurry up and finish it!');
       if (guildUsers.length > 0) {
         embed = new EmbedBuilder()
           .setColor('Green')
@@ -216,7 +215,7 @@ module.exports = {
         }
         embed.setDescription(descrition);
       } else {
-        embed = createInfoEmbed(interaction, 'Sorry but no one in this server has a level yet.');
+        embed = createInfoEmbed({int: interaction, descr: 'Sorry but no one in this server has a level yet.'});
       }
       if (embed) interaction.editReply({embeds: [embed]});
     }

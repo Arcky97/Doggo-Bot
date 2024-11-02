@@ -17,7 +17,7 @@ module.exports = async (client, interaction) => {
 
     if (commandObject.devOnly) {
       if (!devs.includes(interaction.member.id)) {
-        embed = createInfoEmbed(interaction, 'Only **Developers** are allowed to run this command.');
+        embed = createInfoEmbed({int: interaction, descr: 'Only **Developers** are allowed to run this command.'});
         interaction.reply({
           embeds: [embed],
           ephemeral: true,
@@ -28,7 +28,7 @@ module.exports = async (client, interaction) => {
 
     if (commandObject.testOnly) {
       if (interaction.guild.id !== testServer) {
-        embed = createInfoEmbed(interaction, 'This command cannot be ran here.');
+        embed = createInfoEmbed({int: interaction, descr: 'This command cannot be ran here.'});
         interaction.reply({
           embeds: [embed],
           ephemeral: true,
