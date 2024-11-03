@@ -40,14 +40,14 @@ module.exports = {
 
       // Check if the user is trying to kick themselves
       if (member.id === interaction.member.id) {
-        embed = createWarningEmbed(interaction, 'You cannot kick yourself! Why even would you?');
+        embed = createWarningEmbed({int: interaction, descr: 'You cannot kick yourself! Why even would you?'});
         interaction.editReply({embeds: [embed]});
         return;
       } 
 
       // Check if the user is trying to kick the Guild Owner
       if (member.id == interaction.guild.ownerId) {
-        embed = createWarningEmbed(interaction, 'You cannot kick the Owner of the Server! Gain more power and try again! (or don\t)');
+        embed = createWarningEmbed({int: interaction, descr: 'You cannot kick the Owner of the Server! Gain more power and try again! (or don\t)'});
         interaction.editReply({embeds: [embed]});
         return; 
       } 
@@ -55,7 +55,7 @@ module.exports = {
       // check if the member is an Administrator
       if (member.permissions.has(PermissionFlagsBits.Administrator) &&
           interaction.guild.ownerId !== interaction.member.id) {
-        embed = createWarningEmbed(interaction, 'You cannot kick an Admin of the Server! Just don\'t!');
+        embed = createWarningEmbed({int: interaction, descr: 'You cannot kick an Admin of the Server! Just don\'t!'});
         interaction.editReply({embeds: [embed]});
         return;
       } 
@@ -64,7 +64,7 @@ module.exports = {
       interaction.editReply({embeds: [embed]});
     } catch (error) {
       console.log('Failed to kick the member:', error);
-      embed = createWarningEmbed(interaction, `There was an error kicking ${member.username}. \nThis member might not be in the Server anymore.`);
+      embed = createWarningEmbed({int: interaction, descr: `There was an error kicking ${member.username}. \nThis member might not be in the Server anymore.`});
       await interaction.editReply({embeds: [embed]});
     }
   }

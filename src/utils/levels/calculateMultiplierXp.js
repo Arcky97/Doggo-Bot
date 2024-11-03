@@ -1,6 +1,6 @@
 const getMemberRoles = require("../getMemberRoles")
 
-module.exports = (settings, message) => {
+module.exports = (settings, message, xpSettings) => {
   const member = message.guild.members.cache.get(message.author.id);
   const userRoles = getMemberRoles(member);
   const globMult = settings.globalMultiplier;
@@ -8,9 +8,11 @@ module.exports = (settings, message) => {
   const chanMult = JSON.parse(settings.channelMultipliers);
   const roleBlkList = JSON.parse(settings.blackListRoles);
   const chanBlkList = JSON.parse(settings.blackListChannels);
+  const minXp = xpSettings.min;
+  const maxXp = xpSettings.max;
   if (chanBlkList.some(item => item.channelId === message.channel.id)) return 0;
   if (roleBlkList.some(item => userRoles.some(role => role === item.roleId))) return 0;
-  const random = Math.floor(Math.random() * (25 - 15 + 1)) + 15
+  const random = Math.floor(Math.random() * (maxXp - minXp + 1)) + minXp;
   let totalXp = random;
 
   let totalMultiplier = 0;
@@ -25,6 +27,7 @@ module.exports = (settings, message) => {
       totalMultiplier += item.value; 
     }
   });
-  totalXp += Math.round(totalXp * (Math.min(totalMultiplier, 1100) / 100));
+  totalXp = Math.round(totalXp * (Math.min(totalMultiplier, 1100) / 100));
+  console.log(`The XP you've earned is ${totalXp}.`);
   return totalXp;
 }

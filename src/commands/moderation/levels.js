@@ -9,9 +9,8 @@ const showAnnouncementSettings = require("../../utils/levels/showAnnouncementSet
 const embedPlaceholders = require("../../utils/embedPlaceholders");
 const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings");
 const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
-const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
+const { resetLevelSystem, getAllUsersLevel, getUserLevel } = require("../../../database/levelSystem/setLevelSystem");
 const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../utils/createReplyEmbed");
-const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 
 module.exports = {
   name: 'lvsys',
@@ -298,17 +297,55 @@ module.exports = {
       ]
     },
     {
-      type: ApplicationCommandOptionType.Subcommand,
-      name: 'cooldown',
-      description: 'Set the time for the cooldown between messages that will give the user XP',
+      type: ApplicationCommandOptionType.SubcommandGroup,
+      name: 'xp',
+      description: 'Set various xp settings.',
       options: [
         {
-          type: ApplicationCommandOptionType.Number,
-          name: 'value',
-          description: 'Set the cooldown value',
-          required: true,
-          minValue: 1,
-          maxValue: 60
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'cooldown',
+          description: 'Set the time for the cooldown between messages that will give the user XP',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'value',
+              description: 'Set the cooldown value',
+              required: true,
+              minValue: 1,
+              maxValue: 60
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'values',
+          description: 'Set various values for calculating xp and level xp requirement.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'step',
+              description: 'The Step is used in the formula to calculate the XP requirement for each level. (default 40)',
+              required: true, 
+              minValue: 10,
+              maxValue: 200,
+            },
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'min',
+              description: 'The Minimum XP (without multipliers) that can be earned for each message giving XP.',
+              required: true, 
+              minValue: 1,
+              maxValue: 100
+            },
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'max',
+              description: 'The Maximum XP (without multipliers) that can be earned for each message giving XP.',
+              required: true, 
+              minValue: 1,
+              maxValue: 100
+            }
+          ]
         }
       ]
     },
@@ -426,7 +463,7 @@ module.exports = {
       return; 
     }
 
-    let value = interaction.options.get('value')?.value 
+    let value = interaction.options.get('value')?.value;
     try {
       let data, setting, existingSetting, action, setData, role, channel, level;
 
@@ -456,7 +493,7 @@ module.exports = {
                 setting = { 'roleMultipliers': setData };
                 embed = createSuccessEmbed({int: interaction, title: `Role Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${role} has been ${action !== 'removed' ? `set to \`${value}%\`` : action }!`});
               } else {
-                embed = createWarningEmbed(interaction, `A Role Multiplier can't be set for ${role}.`);
+                embed = createWarningEmbed({int: interaction, descr: `A Role Multiplier can't be set for ${role}.`});
               }
               interaction.editReply({embeds: [embed]});
               break;
@@ -659,45 +696,149 @@ module.exports = {
         case 'voice':
           switch(subCmd) {
             case 'use':
-              setting = {'voiceEnable': value };
-              interaction.editReply(`Voice XP has been ${value ? 'Enabled' : 'Disabled'}!`);
+              existingSetting = levSettings.voiceEnable === 1;
+              if (existingSetting !== value) {
+                setting = {'voiceEnable': value };
+                embed = createSuccessEmbed({int: interaction, title: `Voice XP ${value ? 'Enabled' : 'Disabled'}`, descr: `The Voice XP Setting has been ${value ? '\`Enabled\` \nYou can now' : '\`Disabled\` \nYou can no longer'} earn xp through Voice activity in the Server.`});
+              } else {
+                embed = createInfoEmbed({int: interaction, descr: `Voice XP is already ${value ? '\`Enabled\`' : '\`Disabled\`'}`});
+              }
               break;
             case 'multiplier':
+              existingSetting = levSettings.voiceMultiplier;
               value = Math.round(value * 100);
-              setting = {'voiceMultiplier': value};
-              interaction.editReply(`Voice Multiplier has been set to ${value}%`);
+              if (existingSetting !== value) {
+                setting = {'voiceMultiplier': value};
+                embed = createSuccessEmbed({int: interaction, title: `Voice Multiplier Updated!`, descr: `The Voice Multiplier has been updated to \`${value}%\`.`});
+              } else {
+                embed = createInfoEmbed({int: interaction, descr: `The Voice Multiplier was already set to \`${value}%\`.`});
+              }
               break;
             case 'cooldown':
-              setting = {'voiceCooldown': value};
-              interaction.editReply(`Voice cooldown has been set to ${value} ${value > 1 ? 'seconds' : 'second'}!`);
+              existingSetting = levSettings.voiceCooldown;
+              console.log(levSettings);
+              let minXp = JSON.parse(levSettings.xpSettings).min;
+              let maxXp = JSON.parse(levSettings.xpSettings).max;
+              console.log([minXp, maxXp, levSettings.voiceMultiplier]);
+              if (existingSetting !== value) {
+                setting = {'voiceCooldown': value};
+                embed = createSuccessEmbed({int: interaction, title: 'Voice Cooldown Updated!', descr: `The Voice Cooldown has been updated to \`${value}\` ${value > 1 ? 'seconds' : 'second'}. \nYou'll now earn ${minXp + Math.round((minXp * levSettings.voiceMultiplier) / 100)} - ${maxXp + Math.round((maxXp * levSettings.voiceMultiplier) / 100)}xp for every ${value > 1 ? `${value} seconds` : 'second'} spent in Voice Activity.`})
+              } else {
+                embed = createInfoEmbed({int: interaction, descr: `Voice Cooldown has already been set to ${value} seconds.`});
+              }
               break;
             case 'settings':
               embed = showVoiceSettings(levSettings);
-              interaction.editReply({ embeds: [embed]})
               break;
           }
+          interaction.editReply({ embeds: [embed] });
           break;
         case 'reset':
+          let levelData;
           switch(subCmd) {
             case 'settings':
               await resetLevelSettings(guildId);
-              interaction.editReply('The Level System Settings have been resetted.');
+              embed = createSuccessEmbed({int: interaction, title: 'Level Settings Resetted!', descr: 'All Level System Setting have been resetted.'})
               break;
             case 'levels':
-              const user = interaction.options.getMentionable('user');
-              await resetLevelSystem(guildId, user);
-              interaction.editReply(`${user ? `The Level for ${user} has`: 'All Levels have'} been resetted.`);
+              const member = interaction.options.getMentionable('user');
+              if (member) {
+                levelData = await getUserLevel(guildId, member.id);
+                if (levelData) {
+                  embed = createSuccessEmbed({int: interaction, title: 'User level resetted!', descr: `The level for ${member} has been resetted.`});
+                  await resetLevelSystem(guildId, member);
+                } else {
+                  if (!member.user.bot) {
+                    embed = createInfoEmbed({int: interaction, descr: `The level for ${member} has already been resetted.`});
+                  } else {
+                    embed = createInfoEmbed({int: interaction, descr: `You can't reset the level of ${member} (it's a bot).`});
+                  } 
+                }
+              } else {
+                levelData = await getAllUsersLevel(guildId);
+                if (levelData.length > 0) {
+                  embed = createSuccessEmbed({int: interaction, title: 'All levels resetted!', descr: 'All levels have been resetted!'});
+                  await resetLevelSystem(guildId, member);
+                } else {
+                  embed = createInfoEmbed({int: interaction, descr: 'All levels have already been resetted before.'});
+                }
+              }
               break;
           }
+          interaction.editReply({ embeds: [embed] });
           break;
-        default:
-          if (subCmd === 'cooldown') {
-            setting = { 'xpCooldown' : value };
-            await interaction.editReply(`The XP cool down has been set to ${value} ${value > 1 ? 'seconds' : 'second'}!`);
-          } else { // subCmd === 'settings'
-            embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess)
-            interaction.editReply({ embeds: [embed] });
+        case 'xp':
+          switch(subCmd) {
+            case 'cooldown':
+              existingSetting = levSettings.xpCooldown;
+              if (existingSetting !== value) {
+                setting = { 'xpCooldown' : value };
+                embed = createSuccessEmbed({int: interaction, title: 'Xp Cooldown Updated!', descr: `The XP Cooldown has been updated to \`${value} ${value > 1 ? 'seconds' : 'second'}\`!`});
+              } else {
+                embed = createInfoEmbed({int: interaction, descr: `The XP Cooldown has already been set to \`${value} ${value > 1 ? 'seconds' : 'second'}\`!`});
+              }
+              break;
+            case 'values':
+              existingSetting = JSON.parse(levSettings.xpSettings);
+              value = {
+                step: interaction.options.getNumber('step'),
+                min: interaction.options.getNumber('min'),
+                max: interaction.options.getNumber('max')
+              }
+              if (JSON.stringify(existingSetting) !== JSON.stringify(value)) {
+                const warningEmbed = createWarningEmbed({int: interaction, title: 'Warning: Level Reset Required', descr: `Changing XP values will reset all user levels to prevent XP discrepancies. \nDo you want to proceed?\n\n**New Values:**\n- Step: \`${value.step}\`\n- Min XP: \`${value.min}\`\n- Max XP: \`${value.max}\`\n\n**React with:** \n- ✅ to confirm \n- ❌ to cancel \n(You have 45 seconds to respond)`});
+
+                interaction.editReply({ embeds: [warningEmbed] });
+                const warningMessage = await interaction.fetchReply();
+
+                await warningMessage.react('✅');
+                await warningMessage.react('❌');
+
+                const filter = (reaction, user) => {
+                  return ['✅', '❌'].includes(reaction.emoji.name) && user.id === interaction.user.id;
+                };
+
+                try {
+                  const collected = await warningMessage.awaitReactions({ filter, max: 1, time: 45000, errors: ['time'] });
+                  const reaction = collected.first();
+
+                  if (reaction.emoji.name === '✅') {
+                    let levelData = await getAllUsersLevel(guildId);
+                    setting = { 'xpSettings' : JSON.stringify(value) };
+                    embed = createSuccessEmbed({
+                      int: interaction, 
+                      title: 'XP Values Updated!', 
+                      descr: `The XP Values have been updated ${levelData.length > 0 ? 'and all levels resetted' : 'but levels were not resetted \n(they have been recently)'}: \n- **Step:** \`${existingSetting.step}\` => \`${value.step}\` \n- **Min Xp:** \`${existingSetting.min}xp\` => \`${value.min}xp\` \n- **Max Xp:** \`${existingSetting.max}xp\` => \`${value.max}xp\``
+                    });
+                    if (levelData.length > 0) await resetLevelSystem(guildId);
+                  } else if (reaction.emoji.name === '❌') {
+                    embed = createInfoEmbed({
+                      int: interaction,
+                      descr: 'Operation canceled. Xp values remain unchanged.'
+                    });
+                  }
+                } catch (error) {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    descr: 'No response detected. XP values remain unchanged.'
+                  });
+                }  
+                try {
+                  await warningMessage.reactions.removeAll();
+                } catch (error) {
+                  console.error('Failed to remove reactions:', error);
+                }           
+              } else {
+                embed = createWarningEmbed({
+                  int: interaction, 
+                  descr: `The given step (\`${value.step}\`), min xp (\`${value.min}\`) and max xp (\`${value.max}\`) are the same as they were already set.`});
+              }
+              break;
           }
+          interaction.editReply({ embeds: [embed] });
+          break;
+        default: // lvsys settings
+          embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess)
           break;
       }
       if (subCmd !== 'settings' && subCmd !== 'show' && subCmdGroup !== 'reset') {

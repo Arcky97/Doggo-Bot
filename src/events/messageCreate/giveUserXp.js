@@ -2,7 +2,7 @@ const { Client, Message } = require('discord.js');
 const calculateXpByLevel = require('../../utils/levels/calculateXpByLevel');
 const cooldowns = new Set();
 const { getUserLevel, setUserLevelInfo } = require('../../../database/levelSystem/setLevelSystem');
-const { getLevelSettings, getAnnounceChannel, getXpCoolDown, getAnnouncePing } = require('../../../database/levelSystem/setLevelSettings');
+const { getLevelSettings, getAnnounceChannel, getXpCoolDown, getAnnouncePing, getXpSettings } = require('../../../database/levelSystem/setLevelSettings');
 const calculateMultiplierXp = require('../../utils/levels/calculateMultiplierXp');
 const createAnnounceEmbed = require('../../utils/levels/createAnnounceEmbed');
 const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
@@ -14,7 +14,8 @@ module.exports = async (client, message) => {
   try {
     const user = await getUserLevel(guildId, message.author.id);
     const levelSettings = await getLevelSettings(guildId);
-    const xpToGive = calculateMultiplierXp(levelSettings, message);
+    const xpSettings = await getXpSettings(guildId);
+    const xpToGive = calculateMultiplierXp(levelSettings, message, xpSettings);
     const xpCooldown = await getXpCoolDown(guildId) * 1000;
     if (xpToGive === 0) return;
     let newLevel = 0;
@@ -24,11 +25,11 @@ module.exports = async (client, message) => {
     let userInfo;
     const ping = await getAnnouncePing(guildId) === 1 ? `<@${message.author.id}>` : ''
     if (user) {
-      const userLevelXp = calculateXpByLevel(user.level)
+      const userLevelXp = calculateXpByLevel(user.level, xpSettings)
       newXp = user.xp + xpToGive;
       newLevel = user.level;
       if (newXp > userLevelXp) {
-        newLevel = calculateLevelByXp(newXp);
+        newLevel = calculateLevelByXp(newXp, xpSettings);
         userInfo = {
           level: newLevel,
           xp: newXp,
@@ -41,7 +42,7 @@ module.exports = async (client, message) => {
       }, xpCooldown);
     } else {
       newXp = xpToGive;
-      newLevel = calculateLevelByXp(newXp);
+      newLevel = calculateLevelByXp(newXp, xpSettings);
       if (newLevel > 0) {
         userInfo = {
           level: newLevel,

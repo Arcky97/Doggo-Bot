@@ -40,7 +40,7 @@ module.exports = async (client, interaction) => {
     if (commandObject.permissionsRequired?.length) {
       for (const permission of commandObject.permissionsRequired) {
         if (!interaction.member.permissions.has(permission)) {
-          embed = createWarningEmbed(interaction, 'You don\'t have enough permissions');
+          embed = createWarningEmbed({int: interaction, descr: 'You don\'t have enough permissions'});
           interaction.reply({
             embeds: [embed],
             ephemeral: true,
@@ -55,7 +55,7 @@ module.exports = async (client, interaction) => {
         const bot = interaction.guild.members.me;
 
         if (!bot.permissions.has(permission)) {
-          embed = createWarningEmbed(interaction, 'I don\'t have enough permissions.');
+          embed = createWarningEmbed({int: interaction, descr: 'I don\'t have enough permissions.'});
           interaction.reply({
             embeds: [embed],
             ephemeral: true,

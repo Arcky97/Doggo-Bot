@@ -23,6 +23,6 @@ function createReplyEmbed(interaction, color, title, description, footer = true,
 module.exports = {
   createSuccessEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Green', title, descr, footer, false),
   createInfoEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Yellow', `${title ? title : 'Info'}`, descr, footer, !title),
-  createWarningEmbed: (interaction, description) => createReplyEmbed(interaction, 'Orange', 'Warning', description),
+  createWarningEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Orange', `${title ? title : 'Warning'}`, descr, footer, !title),
   createErrorEmbed: (interaction, description) => createReplyEmbed(interaction, 'Red', 'Error', description)
 }

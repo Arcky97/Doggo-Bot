@@ -6,15 +6,24 @@ const getMemberRoles = require("../../utils/getMemberRoles");
 const formatTime = require("../../utils/formatTime");
 const { getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
+const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
+const { createEventEmbed } = require("../../utils/createEventOrGeneratedEmbed");
 
 module.exports = async (client, member) => {
   try {
     
     if(member.user.id === client.user.id) return;
     
+    /*const embedData = await getEventEmbed(member.guild.id, 'leave');
+    if (embedData) {
+      const channel = client.channels.cache.get(embedData.channelId);
+      const leave = await createEventEmbed(member, embedData);
+      await channel.send({ embeds: [leave] });
+    }*/
+
     const channel = await getLogChannel(client, member.guild.id, 'joinleave');
     if(!channel) return;
-    
+
     const levelSettings = getLevelSettings(member.guild.id);
     if (levelSettings.clearOnLeave === 1) await resetLevelSystem(member.guild.id, member);
     

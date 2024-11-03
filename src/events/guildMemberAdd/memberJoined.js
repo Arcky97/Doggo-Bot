@@ -3,11 +3,20 @@ const setActivity = require("../../utils/setActivity");
 const getLogChannel = require("../../utils/getLogChannel");
 const formatTime = require("../../utils/formatTime");
 const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
+const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
+const { createEventEmbed } = require("../../utils/createEventOrGeneratedEmbed");
 
 module.exports = async (client, member) => {
   try {
 
     if (member.user.id === client.user.id) return;
+
+    /*const embedData = await getEventEmbed(member.guild.id, 'welcome');
+    if (embedData) {
+      const channel = client.channels.cache.get(embedData.channelId);
+      const welcome = await createEventEmbed(member, embedData);
+      await channel.send({ embeds: [welcome] });
+    }*/
 
     const channel = await getLogChannel(client, member.guild.id, 'joinleave');
     if(!channel) return;
@@ -28,7 +37,7 @@ module.exports = async (client, member) => {
     }
     //const userAge = moment.duration(moment().diff(member.user.createdAt)).humanize();
     const userAge = await formatTime(member.user.createdAt);
-    const join = new EmbedBuilder()
+    const embed = new EmbedBuilder()
       .setColor('Orange')
       .setAuthor({
         name: member.user.globalName,
@@ -54,7 +63,7 @@ module.exports = async (client, member) => {
         text: `User ID: ${member.id}`
       });
 
-    await channel.send({ embeds: [join] });  
+    await channel.send({ embeds: [embed] });  
     console.log(`${member.user.username} joined ${member.guild.name}!`);
     await setActivity(client);
   } catch (error) {

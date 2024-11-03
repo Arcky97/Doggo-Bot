@@ -1,9 +1,10 @@
-const { ApplicationCommandOptionType, AttachmentBuilder, EmbedBuilder } = require("discord.js");
+const { ApplicationCommandOptionType, AttachmentBuilder, EmbedBuilder, GuildWidgetStyle } = require("discord.js");
 const { getAllUsersLevel, getUserLevel, addUserColor } = require("../../../database/levelSystem/setLevelSystem");
 const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 const { Font, RankCardBuilder } = require("canvacord");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
 const { createErrorEmbed, createInfoEmbed } = require("../../utils/createReplyEmbed");
+const { getLevelSettings, getXpSettings } = require("../../../database/levelSystem/setLevelSettings");
 
 module.exports = {
   name: 'level',
@@ -48,7 +49,7 @@ module.exports = {
     const targetUserObj = await interaction.guild.members.fetch(targetUserId);
     const userLevel = await getUserLevel(interaction.guild.id, targetUserId);
     const guildUsers = await getAllUsersLevel(interaction.guild.id);
-
+    const xpSettings = await getXpSettings(interaction.guild.id);
     guildUsers.sort((a, b) => {
       if (a.level === b.level) {
         return b.xp - a.xp;
@@ -68,8 +69,8 @@ module.exports = {
       }
       const targetAvatarURL = targetUserObj.user.displayAvatarURL({ size: 256 })
       const color = userLevel.color;
-      const startLevelXp = calculateXpByLevel(userLevel.level - 1)
-      const endLevelXp = calculateXpByLevel(userLevel.level)
+      const startLevelXp = calculateXpByLevel(userLevel.level - 1, xpSettings);
+      const endLevelXp = calculateXpByLevel(userLevel.level, xpSettings);
 
       let currentRank = guildUsers.findIndex(lvl => lvl.memberId === targetUserId) + 1;
       
@@ -210,7 +211,7 @@ module.exports = {
         for (const user of guildUsers) {
           descrition += `\n\n**#${rank}**: <@${user.memberId}>` +
                         `\n   **Lv.** \`${user.level}\`` +
-                        `\n   **Xp:** \`${user.xp}/${calculateXpByLevel(user.level)}\`` 
+                        `\n   **Xp:** \`${user.xp}/${calculateXpByLevel(user.level, xpSettings)}\`` 
           rank ++;
         }
         embed.setDescription(descrition);

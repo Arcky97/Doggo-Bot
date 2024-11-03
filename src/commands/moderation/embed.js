@@ -276,7 +276,6 @@ module.exports = {
     const channel = interaction.options.getChannel('channel');
     const type = interaction.options.getString('type');
 
-
     // Default options
     let embedOptions = {
       title: 'Embed Title',
@@ -327,7 +326,7 @@ module.exports = {
         if (name.includes('url')) name = name.replace('url', 'Url');
         if (name.includes('stamp')) name = name.replace('stamp', 'Stamp');
 
-        if (!value) {
+        if (value) {
           embedOptions[name] = value;
         }
       }
@@ -357,7 +356,7 @@ module.exports = {
           text: embedOptions.footer,
           iconURL: embedOptions.footerIconUrl,
         };
-        if (!embedOptions.footerIconUrl) delete footerObj.footerIconUrl;
+        if (!embedOptions.footerIconUrl) delete footerObj.iconURL;
         embed.setFooter(footerObj);
       }
       if (embedOptions.timeStamp) embed.setTimestamp();
@@ -422,7 +421,7 @@ module.exports = {
             embed = createSuccessEmbed({int: interaction, title: 'Embed Deleted!', descr: `The embed with message ID: ${messageId} in <#${channel.id}> was deleted succesfully.`});
             interaction.editReply({embeds: [embed]})
           } else {
-            embed = createWarningEmbed(interaction, `The embed with message ID: ${messageId} does not exist. \nPlease check the message ID again.`);
+            embed = createWarningEmbed({int: interaction, descr: `The embed with message ID: ${messageId} does not exist. \nPlease check the message ID again.`});
             interaction.editReply({embeds: [embed]});
           }
         }

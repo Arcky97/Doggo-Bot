@@ -1,3 +1,4 @@
+const { isJSONEncodable } = require("discord.js");
 const { deleteData } = require("../controlData/deleteData");
 const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
@@ -70,6 +71,11 @@ async function getRoleReplace(id) {
   return data.roleReplace;
 }
 
+async function getXpSettings(id) {
+  const data = await getLevelSettings(id);
+  return JSON.parse(data.xpSettings);
+}
+
 async function setLevelSettings({ id, setting}) {
   let levSettings = await getLevelSettings(id);
   if (!setting) return;
@@ -114,5 +120,6 @@ module.exports = {
   getXpCoolDown, 
   getAnnouncePing, 
   getRoleReplace, 
+  getXpSettings,
   resetLevelSettings 
 };

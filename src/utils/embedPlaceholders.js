@@ -1,4 +1,4 @@
-const { getLevelRoles } = require("../../database/levelSystem/setLevelSettings");
+const { getLevelRoles, getXpSettings } = require("../../database/levelSystem/setLevelSettings");
 const { getUserLevel } = require("../../database/levelSystem/setLevelSystem");
 const calculateXpByLevel = require("./levels/calculateXpByLevel");
 
@@ -6,34 +6,36 @@ const calculateXpByLevel = require("./levels/calculateXpByLevel");
 module.exports = async (text, input, userInfo) => {
   if (text === undefined) return null;
   const guild = input.guild;
+  const xpSettings = getXpSettings(guild.id);
   const userLevelInfo = userInfo ? userInfo : await getUserLevel(guild.id, input.user.id);
+  console.log(userLevelInfo);
   const user = input.user ? input.user : input.author;
   const levelRoles = await getLevelRoles(guild.id);
-  const reward = levelRoles.find(data => data.level === userLevelInfo.level) || 'no reward';
+  const reward = userLevelInfo ? levelRoles.find(data => data.level === userLevelInfo?.level) : 'no reward';
   let rewardName = 'no reward';
   if (reward !== 'no reward') {
     const rewardRole = guild.roles.cache.get(reward.roleId);
     rewardName = rewardRole.name;
   }
-  const roleCount = levelRoles.findIndex(data => data.level === userLevelInfo.level) + 1 || 'no rewards';
+  const roleCount = userLevelInfo ? levelRoles.findIndex(data => data.level === userLevelInfo?.level) + 1 : 'no rewards';
   const roleTotal = levelRoles.length || 'no rewards set';
-  const previousReward = levelRoles.filter(data => data.level < userLevelInfo.level);
-  const nextReward = levelRoles.filter(data => data.level > userLevelInfo.level);
+  const previousReward = userLevelInfo ? levelRoles.filter(data => data.level < userLevelInfo?.level) : [];
+  const nextReward = userLevelInfo ? levelRoles.filter(data => data.level > userLevelInfo?.level) : [];
   const replacements = {
     '{user id}': user.id,
     '{user mention}': `<@${user.id}>`,
     '{user name}': user.username,
     '{user global}': user.globalName,
-    '{user nick}': input.member.nickname,
+    //'{user nick}': input.member.nickname,
     '{user avatar}': user.avatarURL(),
     '{new line}': '\n',
     '{user xp}': userLevelInfo.xp,
     '{user color}': userLevelInfo.color || '#f97316',
     '{level}': userLevelInfo.level,
     '{level previous}': userLevelInfo.level -1,
-    '{level previous xp}': calculateXpByLevel(userLevelInfo.level - 1),
+    '{level previous xp}': calculateXpByLevel(userLevelInfo.level - 1, xpSettings),
     '{level next}': userLevelInfo.level + 1,
-    '{level next xp}': calculateXpByLevel(userLevelInfo.level + 1),
+    '{level next xp}': calculateXpByLevel(userLevelInfo.level + 1, xpSettings),
     '{reward}': reward !== 'no reward' ? `<@&${reward.roleId}>` : reward,
     '{reward role name}': rewardName,
     '{reward rolecount}': roleCount,
