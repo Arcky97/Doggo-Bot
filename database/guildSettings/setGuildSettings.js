@@ -3,15 +3,20 @@ const { insertData } = require("../controlData/insertData");
 const { updateData } = require("../controlData/updateData");
 const { deleteData } = require("../controlData/deleteData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+const firstLetterToUpperCase = require("../../src/utils/firstLetterToUpperCase");
+const { setChannelOrRoleArray } = require("../../src/utils/setArrayValues");
 
 const convertSetupCommand = (setting => {
   const columnMapping = {
     'bot-chat': 'chattingChannel',
-    'message-logging': 'messageLogging',
-    'member-logging': 'memberLogging',
-    'server-logging': 'serverLogging',
-    'voice-logging': 'voiceLogging',
-    'join-leave-logging': 'joinLeaveLogging'
+    'message': 'messageLogging',
+    'member': 'memberLogging',
+    'server': 'serverLogging',
+    'voice': 'voiceLogging',
+    'join-leave': 'joinLeaveLogging',
+    'report': 'reportLogging',
+    'ignore': 'ignoreLogging',
+    'mute-role': 'muteRole'
   };
 
   const column = columnMapping[setting];
@@ -33,7 +38,17 @@ async function getGuildSettings(guildId) {
   }
 }
 
-async function setGuildSettings(guildId, settingName, channelId) {
+async function getIgnoreLoggingChannels(guildId) {
+  try {
+    let data = await selectData('GuildSettings', {guildId: guildId });
+    return JSON.parse(data.ignoreLogging);
+  } catch (error) {
+    console.error('Error fetching ignore Logging data from guildSettings:', error);
+    return [];
+  }
+}
+
+async function setGuildSettings(guildId, settingName, value) {
   const column = convertSetupCommand(settingName);
   if (!column) return;
 
@@ -41,28 +56,67 @@ async function setGuildSettings(guildId, settingName, channelId) {
     guildId: guildId
   }
 
-  const data = {
-    [column]: channelId
+  let data, action, setData;
+
+  if (settingName !== 'ignore') {
+    data = {
+      [column]: value.id
+    }
+  } else {
+    const existingData = await getIgnoreLoggingChannels(guildId);
+    [action, setData] = setChannelOrRoleArray('channel', existingData, value.id)
+    data = {
+      [column]: setData
+    }
   }
 
   try {
     const dataExist = await selectData('GuildSettings', key)
-    let message;
+    let title, descr;
+    settingName = firstLetterToUpperCase(settingName);
     try {
-      if (dataExist) {
+      if (dataExist[column] && settingName !== 'Ignore') {
         if (dataExist[column] === data[column]) {
           await deleteData('GuildSettings', key, data);
-          message = `The channel for ${settingName} has been resetted!`;
+          if (settingName !== 'Mute-role') {
+            title = `${settingName} Logging Resetted!`;
+            descr = `The channel for **${settingName} Logging** has been resetted!`;
+          } else {
+            title= 'Mute Role Removed!';
+            descr = `The Mute Role has been removed.`;
+          }
         } else {
           await updateData('GuildSettings', key, data);
-          message = `The channel for ${settingName} has been updated to <#${channelId}> successfully!`;
+          if (settingName !== 'Mute-role') {
+            title = `${settingName} Logging Updated!`;
+            descr = `The channel for **${settingName} Logging** has been updated to ${value}!`;
+          } else {
+            title = 'Mute Role Updated!';
+            descr = `The Mute Role has been updated to ${value}`;
+          }
         }
       } else {
-        await insertData('GuildSettings', key, data);
-        message = `The channel for ${settingName} has been set to <#${channelId}> successfully!`;
+        if (settingName !== 'Ignore') {
+          if (dataExist) {
+            await updateData('GuildSettings', key, data);
+          } else {
+            await insertData('GuildSettings', key, data);
+          }
+          if (settingName !== 'Mute-role') {
+            title = `${settingName} Logging Set!`;
+            descr = `The channel for **${settingName} Logging** has been set to ${value}!`;
+          } else {
+            title = 'Mute Role Set!';
+            descr = `The Mute Role has been set to ${value}`;
+          }
+        } else {
+          await updateData('GuildSettings', key, data);
+          title = `Ignore Channel ${action}!`;
+          descr = `${value} has been ${action} ${action === 'added' ? 'to' : 'from'} the **${settingName}** Logging Channel List.`;
+        }        
       }
       exportToJson('GuildSettings');
-      return message;
+      return [title, descr];
     } catch (error) {
       console.error('Error setting channel:', error);
       return 'There was an error setting the channel. Please try again later.';
@@ -81,4 +135,4 @@ async function resetGuildSettings(id) {
   }
 }
 
-module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings };
+module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings, getIgnoreLoggingChannels };

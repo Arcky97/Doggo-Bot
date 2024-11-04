@@ -526,17 +526,18 @@ module.exports = {
               }
               break;
             case 'message':
+              console.log(interaction.options.getBoolean('timestamp'));
               embedOptions = {
                 title: interaction.options.getString('title') || '{user global} has leveled up!',
                 description: interaction.options.getString('description') || '{Congrats you leveled up to lv. {level}!',
                 color: interaction.options.getString('color') || await getOrConvertColor('green'),
                 thumbnailUrl: interaction.options.getBoolean('thumbnailurl') ? '{user avatar}' : null,
-                imageUrl: interaction.options.getString('imageurl') || null,
+                imageUrl: interaction.options.getString('imageurl'),
                 footer: {
                   text: interaction.options.getString('footer') || '{server name}',
                   iconUrl: interaction.options.getString('footericonurl') || '{server icon}'
                 },
-                timeStamp: interaction.options.getBoolean('timestamp') || true 
+                timeStamp: interaction.options.getBoolean('timestamp')
               }
               level = interaction.options.getInteger('level');
               if (level) {

@@ -1,6 +1,7 @@
-const { Client, Message, EmbedBuilder } = require("discord.js");
+const { Client, Message, EmbedBuilder, GuildWidgetStyle } = require("discord.js");
 const getLogChannel = require("../../utils/getLogChannel");
 const truncateText = require("../../utils/truncateText");
+const ignoreLogging = require("../../utils/ignoreLogging");
 
 module.exports = async (client, message) => {
   if (!message.inGuild() || !message.author || message.author.bot) return;
@@ -8,6 +9,8 @@ module.exports = async (client, message) => {
   try {
     const channel = await getLogChannel(client, message.guild.id, 'message');
     if (!channel) return;
+
+    if (await ignoreLogging(message.guild.id, channel.id)) return;
 
     const embed = new EmbedBuilder()
       .setColor('DarkOrange')

@@ -1,10 +1,13 @@
 const { Client, Message, EmbedBuilder } = require("discord.js");
 const getLogChannel = require("../../utils/getLogChannel");
+const ignoreLogging = require("../../utils/ignoreLogging");
 
 module.exports = async (client, bulk) => {
   try {
     const channel = await getLogChannel(client, bulk.first().guild.id, 'message');
     if (!channel) return;
+
+    if (await ignoreLogging(bulk.guild.id, channel.id)) return;
 
     let bulkContent = [];
 
