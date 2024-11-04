@@ -4,16 +4,24 @@ const calculateXpByLevel = require("./levels/calculateXpByLevel");
 
 
 module.exports = async (text, input, userInfo) => {
-  if (text === undefined) return null;
+  if (!text) return null;
   const guild = input.guild;
   const xpSettings = getXpSettings(guild.id);
-  const userLevelInfo = userInfo ? userInfo : await getUserLevel(guild.id, input.user.id);
-  console.log(userLevelInfo);
+  let userLevelInfo = userInfo ? userInfo : await getUserLevel(guild.id, input.user.id);
   const user = input.user ? input.user : input.author;
+  if (!userLevelInfo) {
+    userLevelInfo = {
+      "guildId": input.guild.id,
+      "memberId": user.id,
+      "level": 0,
+      "xp": 0,
+      "color": "#f97316"
+    };
+  }
   const levelRoles = await getLevelRoles(guild.id);
   const reward = userLevelInfo ? levelRoles.find(data => data.level === userLevelInfo?.level) : 'no reward';
   let rewardName = 'no reward';
-  if (reward !== 'no reward') {
+  if (reward && reward !== 'no reward') {
     const rewardRole = guild.roles.cache.get(reward.roleId);
     rewardName = rewardRole.name;
   }
@@ -36,12 +44,12 @@ module.exports = async (text, input, userInfo) => {
     '{level previous xp}': calculateXpByLevel(userLevelInfo.level - 1, xpSettings),
     '{level next}': userLevelInfo.level + 1,
     '{level next xp}': calculateXpByLevel(userLevelInfo.level + 1, xpSettings),
-    '{reward}': reward !== 'no reward' ? `<@&${reward.roleId}>` : reward,
+    '{reward}': reward && reward !== 'no reward' ? `<@&${reward.roleId}>` : reward,
     '{reward role name}': rewardName,
     '{reward rolecount}': roleCount,
     '{reward rolecount progress}': roleTotal !== 'no rewards set' ? `${roleCount}/${roleTotal}` : roleTotal,
-    '{reward previous}': previousReward.length > 0 ? `<@&${previousReward[previousReward.length - 1].roleId}>` : 'no previous rewards',
-    '{reward next}': nextReward.length > 0 ? `<@&${nextReward[0].roleId}>` : 'no next rewards',
+    '{reward previous}': previousReward && previousReward.length > 0 ? `<@&${previousReward[previousReward.length - 1].roleId}>` : 'no previous rewards',
+    '{reward next}': nextReward && nextReward.length > 0 ? `<@&${nextReward[0].roleId}>` : 'no next rewards',
     '{server id}': guild.id,
     '{server name}': guild.name,    
     '{server member count}': guild.memberCount,

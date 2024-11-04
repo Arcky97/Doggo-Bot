@@ -13,7 +13,7 @@ async function createEmbed(input, embedData) {
     let authorObj = {
       name: await embedPlaceholders(embedData.author, input),
       url: embedData.authorUrl,
-      iconURL: await embedPlaceholders(embedData, input)
+      iconURL: await embedPlaceholders(embedData.authorIconUrl, input)
     };
     if (!embedData.authorUrl) delete authorObj.url;
     if (!embedData.authorIconUrl) delete authorObj.iconURL;

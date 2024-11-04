@@ -14,12 +14,12 @@ module.exports = async (client, member) => {
     
     if(member.user.id === client.user.id) return;
     
-    /*const embedData = await getEventEmbed(member.guild.id, 'leave');
+    const embedData = await getEventEmbed(member.guild.id, 'leave');
     if (embedData) {
       const channel = client.channels.cache.get(embedData.channelId);
       const leave = await createEventEmbed(member, embedData);
       await channel.send({ embeds: [leave] });
-    }*/
+    }
 
     const channel = await getLogChannel(client, member.guild.id, 'joinleave');
     if(!channel) return;

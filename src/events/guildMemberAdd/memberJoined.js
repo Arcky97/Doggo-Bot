@@ -11,17 +11,17 @@ module.exports = async (client, member) => {
 
     if (member.user.id === client.user.id) return;
 
-    /*const embedData = await getEventEmbed(member.guild.id, 'welcome');
+    const embedData = await getEventEmbed(member.guild.id, 'welcome');
     if (embedData) {
       const channel = client.channels.cache.get(embedData.channelId);
       const welcome = await createEventEmbed(member, embedData);
       await channel.send({ embeds: [welcome] });
-    }*/
+    }
 
     const channel = await getLogChannel(client, member.guild.id, 'joinleave');
     if(!channel) return;
 
-    if (member.guild.id === '925765418545741854') {
+    /*if (member.guild.id === '925765418545741854') {
       const channelId = client.channels.cache.get('934536340022890517');
       const welcome = new EmbedBuilder()
         .setTitle(`Welcome to the ${member.guild.name} Server!`)
@@ -34,7 +34,7 @@ module.exports = async (client, member) => {
           text: 'The Admin Team'
         })
       await channelId.send({ embeds: [welcome] })
-    }
+    }*/
     //const userAge = moment.duration(moment().diff(member.user.createdAt)).humanize();
     const userAge = await formatTime(member.user.createdAt);
     const embed = new EmbedBuilder()

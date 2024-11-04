@@ -331,35 +331,39 @@ module.exports = {
         }
       }
       // Build the embed object
-      embed = new EmbedBuilder()
+      try {
+        embed = new EmbedBuilder()
         .setTitle(await embedPlaceholders(embedOptions.title, interaction))
         .setDescription(await embedPlaceholders(embedOptions.description, interaction));
 
-      if (embedOptions.color) embed.setColor(await getOrConvertColor(embedOptions.color));
-      if (embedOptions.titleUrl) embed.setURL(embedOptions.titleUrl);
-      if (embedOptions.author) {
-        const author = interaction.options.getMember('author');
-        let authorObj = {
-          name: author.user.username,
-          url: embedOptions.authorUrl,
-          iconURL: author.user.avatarURL(),
-        };
-        if (!embedOptions.authorUrl) delete authorObj.url;
-        if (!embedOptions.authorIconUrl) delete authorObj.iconURL;
-        embed.setAuthor(authorObj);
-      }
+        if (embedOptions.color) embed.setColor(await getOrConvertColor(embedOptions.color));
+        if (embedOptions.titleUrl) embed.setURL(embedOptions.titleUrl);
+        if (embedOptions.author) {
+          const author = interaction.options.getMember('author');
+          let authorObj = {
+            name: author.user.username,
+            url: embedOptions.authorUrl,
+            iconURL: author.user.avatarURL(),
+          };
+          if (!embedOptions.authorUrl) delete authorObj.url;
+          if (!embedOptions.authorIconUrl) delete authorObj.iconURL;
+          embed.setAuthor(authorObj);
+        }
 
-      if (embedOptions.imageUrl) embed.setImage(embedOptions.imageUrl);
-      if (embedOptions.thumbnailUrl) embed.setThumbnail(embedOptions.thumbnailUrl);
-      if (embedOptions.footer) {
-        let footerObj = {
-          text: embedOptions.footer,
-          iconURL: embedOptions.footerIconUrl,
-        };
-        if (!embedOptions.footerIconUrl) delete footerObj.iconURL;
-        embed.setFooter(footerObj);
+        if (embedOptions.imageUrl) embed.setImage(embedOptions.imageUrl);
+        if (embedOptions.thumbnailUrl) embed.setThumbnail(embedOptions.thumbnailUrl);
+        if (embedOptions.footer) {
+          let footerObj = {
+            text: await embedPlaceholders(embedOptions.footer, interaction),
+            iconURL: await embedPlaceholders(embedOptions.footerIconUrl, interaction),
+          };
+          if (!embedOptions.footerIconUrl) delete footerObj.iconURL;
+          embed.setFooter(footerObj);
+        }
+        if (embedOptions.timeStamp) embed.setTimestamp();
+      } catch (error) {
+        console.error(error);
       }
-      if (embedOptions.timeStamp) embed.setTimestamp();
     }
     let replyMessage;
     try {
