@@ -28,6 +28,5 @@ module.exports = (settings, message, xpSettings) => {
     }
   });
   totalXp = Math.round(totalXp * (Math.min(totalMultiplier, 1100) / 100));
-  console.log(`The XP you've earned is ${totalXp}.`);
   return totalXp;
 }

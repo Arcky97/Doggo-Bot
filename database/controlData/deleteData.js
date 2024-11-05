@@ -1,3 +1,4 @@
+const exportToDatabaseLogging = require("../../src/handlers/exportToDatabaseLogging");
 const { query } = require("../db");
 
 async function deleteData(table, key, data) {
@@ -21,9 +22,10 @@ async function deleteData(table, key, data) {
 
   try {
     await query(deleteQuery, whereValues);
-    console.log(`Data was deleted from ${table} table.`);
+    exportToDatabaseLogging(`Data Deleted from ${table} table.`);
   } catch (error) {
-    console.error(`Error deleting data from ${table} table:`, error);
+    console.error(`Error Deleting data in ${table} table:`, error);
+    exportToDatabaseLogging(`Error Deleting data from ${table} table.`);
   }
 }
 

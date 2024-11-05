@@ -77,7 +77,7 @@ module.exports = {
       userSlapAttempts.slap[type][target.id] = (userSlapAttempts.slap[type][target.id] || 0) + 1;
       await setUserAttempts(guildId, userId, JSON.stringify(userSlapAttempts));  
       await interaction.reply({embeds: [embed]});
-      const cooldownKey = `${guildId}_${userId}`;
+      const cooldownKey = `SCD${guildId + userId}`;
       if (!cooldowns.has(cooldownKey)) {
         cooldowns.add(cooldownKey);
         setTimeout(async () => {

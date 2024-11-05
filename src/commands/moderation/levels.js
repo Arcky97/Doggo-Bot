@@ -836,10 +836,11 @@ module.exports = {
               }
               break;
           }
-          interaction.editReply({ embeds: [embed] });
+          
           break;
         default: // lvsys settings
           embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess)
+          interaction.editReply({ embeds: [embed] });
           break;
       }
       if (subCmd !== 'settings' && subCmd !== 'show' && subCmdGroup !== 'reset') {

@@ -1,3 +1,4 @@
+const exportToDatabaseLogging = require("../../src/handlers/exportToDatabaseLogging");
 const { query } = require("../db");
 
 async function updateData(table, key, data) {
@@ -19,9 +20,10 @@ async function updateData(table, key, data) {
 
   try {
     await query(updateQuery, values);
-    console.log(`Data updated in ${table} table.`);
+    exportToDatabaseLogging(`Data Updated in ${table} table.`);
   } catch (error) {
     console.error(`Error updating data in ${table} table:`, error);
+    exportToDatabaseLogging(`Error Updating data in ${table} table.`)
   }
 }
 

@@ -1,3 +1,4 @@
+const exportToDatabaseLogging = require("../../src/handlers/exportToDatabaseLogging");
 const { query } = require("../db");
 
 async function insertData(table, key, data) {
@@ -13,9 +14,10 @@ async function insertData(table, key, data) {
 
   try {
     await query(insertQuery, Object.values(combinedData));
-    console.log(`Data inserted in ${table} table.`);
+    exportToDatabaseLogging(`Data Inserted in ${table} table.`);
   } catch (error) {
     console.error(`Error inserting data in ${table} table:`, error);
+    exportToDatabaseLogging(`Error Inserting data in ${table} table.`)
   }
 }
 

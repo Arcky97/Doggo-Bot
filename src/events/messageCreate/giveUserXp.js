@@ -24,6 +24,7 @@ module.exports = async (client, message) => {
     //await deleteData('LevelSettings', { guildId: guildId});
     let userInfo;
     const ping = await getAnnouncePing(guildId) === 1 ? `<@${message.author.id}>` : ''
+    const cooldownKey = `XPCD${guildId + message.author.id}`
     if (user) {
       const userLevelXp = calculateXpByLevel(user.level, xpSettings)
       newXp = user.xp + xpToGive;
@@ -36,10 +37,6 @@ module.exports = async (client, message) => {
           color: user.color
         }
       }
-      cooldowns.add(guildId + message.author.id);
-      setTimeout(() => {
-        cooldowns.delete(guildId + message.author.id);
-      }, xpCooldown);
     } else {
       newXp = xpToGive;
       newLevel = calculateLevelByXp(newXp, xpSettings);
@@ -50,10 +47,14 @@ module.exports = async (client, message) => {
           color: '#f97316'
         }
       }
-      cooldowns.add(guildId + message.author.id);
+    }
+    if (!cooldowns.has(cooldownKey)) {
+      cooldowns.add(cooldownKey);
       setTimeout(() => {
-        cooldowns.delete(guildId + message.author.id);
+        cooldowns.delete(cooldownKey);
       }, xpCooldown);
+    } else {
+      return;
     }
     await setUserLevelInfo(user, { guildId: guildId, memberId: message.author.id }, { level: newLevel, xp: newXp })
     if (userInfo) {

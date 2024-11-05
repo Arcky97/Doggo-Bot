@@ -12,7 +12,9 @@ const client = new Client({
     IntentsBitField.Flags.GuildMembers,
     IntentsBitField.Flags.GuildPresences,
     IntentsBitField.Flags.MessageContent,
-    IntentsBitField.Flags.GuildMessageReactions
+    IntentsBitField.Flags.GuildMessageReactions,
+    IntentsBitField.Flags.GuildVoiceStates,
+    IntentsBitField.Flags.GuildVoiceStates
   ],
   partials: [
     Partials.Message,

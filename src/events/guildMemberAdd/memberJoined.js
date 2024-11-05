@@ -6,6 +6,8 @@ const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
 const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
 const { createEventEmbed } = require("../../utils/createEventOrGeneratedEmbed");
 
+const embedQueue = new Map();
+
 module.exports = async (client, member) => {
   try {
 
@@ -35,7 +37,6 @@ module.exports = async (client, member) => {
         })
       await channelId.send({ embeds: [welcome] })
     }*/
-    //const userAge = moment.duration(moment().diff(member.user.createdAt)).humanize();
     const userAge = await formatTime(member.user.createdAt);
     const embed = new EmbedBuilder()
       .setColor('Orange')
@@ -63,7 +64,20 @@ module.exports = async (client, member) => {
         text: `User ID: ${member.id}`
       });
 
-    await channel.send({ embeds: [embed] });  
+    if (!embedQueue.has(member.id)) {
+      embedQueue.set(member.id, { embeds: [embed], timeout: null });
+    } else {
+      const memberData = embedQueue.get(member.id);
+      memberData.embeds.push(embed);
+      clearTimeout(memberData.timeout);
+    }
+
+    embedQueue.get(member.id).timeout = setTimeout(async () => {
+      const { embeds } = embedQueue.get(member.id);
+      await channel.send({ embeds });
+      embedQueue.delete(member.id);
+    }, 5000);
+ 
     console.log(`${member.user.username} joined ${member.guild.name}!`);
     await setActivity(client);
   } catch (error) {

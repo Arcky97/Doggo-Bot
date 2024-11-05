@@ -5,7 +5,7 @@ const { getReplies, findClosestMatch, getTriggers } = require('../../../database
 module.exports = async (client, message) => {
   if (!message.inGuild() || message.author.bot) return;
   try {
-    const chatChannelId = await selectData('GuildSettings', {guildId: message.guild.id });
+    const chatChannelId = await selectData('GuildSettings', {guildId: message.guildId });
     if (!chatChannelId) return;
 
     if (chatChannelId['chattingChannel'] && message.channel.id === chatChannelId['chattingChannel']) {

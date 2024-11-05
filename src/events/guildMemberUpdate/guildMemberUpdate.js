@@ -1,11 +1,14 @@
 const { Client, GuildMember, EmbedBuilder } = require('discord.js');
 const getMemberRoles = require('../../utils/getMemberRoles');
 const getLogChannel = require('../../utils/getLogChannel');
+const { setEventTimeOut, getEventTimeOut } = require('../../handlers/setEventTimeOut');
+
+const embedQueue = new Map();
 
 module.exports = async (client, oldMember, newMember) => {
   try {
     if (client.user.id === oldMember.user.id) return;
-    
+
     const channel = await getLogChannel(client, newMember.guild.id, 'member');
     if (!channel) return;
 
@@ -17,48 +20,38 @@ module.exports = async (client, oldMember, newMember) => {
     const newServerIcon = newMember.avatarURL();
     let action, title, description, roles, thumbnail;
     let fields = [];
+
+    // Check for role changes
     if (oldRoles.length !== newRoles.length) {
-      // role has changed
       if (oldRoles.length < newRoles.length) {
-        // role added
         roles = newRoles.filter(role => !oldRoles.includes(role));
-        action = 'added'
+        action = 'added';
       } else {
-        // role removed 
         roles = oldRoles.filter(role => !newRoles.includes(role));
-        action = 'removed'
+        action = 'removed';
       }
       const roleMentions = roles.map(roleId => `<@&${roleId}>`);
-      title = `${roles.length > 1 ? 'Roles' : 'Role'} ${action}`
-      description = roleMentions.join(', ')
-    } else if (oldNickName !== newNickName) {
-      if (oldNickName === 'no Nickname') {
-        action = 'added';
-      } else if (newNickName === 'no Nickname') {
-        action = 'removed';
-      } else {
-        action = 'changed';
-      }
+      title = `${roles.length > 1 ? 'Roles' : 'Role'} ${action}`;
+      description = roleMentions.join(', ');
+    } 
+    // Check for nickname change
+    else if (oldNickName !== newNickName) {
+      action = oldNickName === 'no Nickname' ? 'added' : (newNickName === 'no Nickname' ? 'removed' : 'changed');
       title = `Nickname ${action}`;
-      fields.push({name: 'Before', value: oldNickName});
-      fields.push({name: 'After', value: newNickName});
-    } else if (oldServerIcon !== newServerIcon) {
+      fields.push({ name: 'Before', value: oldNickName });
+      fields.push({ name: 'After', value: newNickName });
+    } 
+    // Check for server icon change
+    else if (oldServerIcon !== newServerIcon) {
       thumbnail = newServerIcon;
-      if (!oldServerIcon) {
-        action = 'added';
-      } else if (!newServerIcon) {
-        action = 'removed';
-        thumbnail = null;
-      } else {
-        action = 'changed';
-      }
-      console.log(action);
+      action = !oldServerIcon ? 'added' : (!newServerIcon ? 'removed' : 'changed');
       title = `Server Icon ${action}`;
-      console.log(title);
     }
+
     if (!title) return;
-    
-    let embed = new EmbedBuilder()
+
+    // Create the embed
+    const embed = new EmbedBuilder()
       .setColor('Blue')
       .setAuthor({
         name: newMember.user.globalName,
@@ -66,24 +59,22 @@ module.exports = async (client, oldMember, newMember) => {
       })
       .setTitle(title)
       .setTimestamp()
-      .setFooter({
-        text: `User ID: ${newMember.user.id}`
-      });
+      .setFooter({ text: `User ID: ${newMember.user.id}` });
+
     if (roles) {
       embed.setDescription(description);
     } else if (fields.length > 0) {
-      fields.forEach(field => {
-        embed.addFields({
-          name: field.name,
-          value: field.value
-        })
-      });
+      fields.forEach(field => embed.addFields(field));
     } else {
       embed.setThumbnail(thumbnail);
       embed.setDescription(`${newMember}`);
     }
-    await channel.send({ embeds: [embed] })
+
+    await setEventTimeOut('member', newMember.id, embed);
+    await getEventTimeOut('member', newMember.id, channel);
+ 
+
   } catch (error) {
-    console.error('Failed to log Member update!', error)
+    console.error('Failed to log Member update!', error);
   }
-}
+};

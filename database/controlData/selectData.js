@@ -1,3 +1,4 @@
+const exportToDatabaseLogging = require("../../src/handlers/exportToDatabaseLogging");
 const { query } = require("../db");
 
 async function selectData(table, keys, selectAll = false) {
@@ -16,6 +17,7 @@ async function selectData(table, keys, selectAll = false) {
     }
   } catch (error) {
     console.error(`Error selecting data from ${table} table:`, error);
+    exportToDatabaseLogging(`Error Selecting data from ${table} table.`)
     return null;
   }
 }
