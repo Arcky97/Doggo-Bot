@@ -1,7 +1,7 @@
 const { Client, GuildMember, EmbedBuilder } = require('discord.js');
 const getMemberRoles = require('../../utils/getMemberRoles');
 const getLogChannel = require('../../utils/getLogChannel');
-const { setEventTimeOut, getEventTimeOut } = require('../../handlers/setEventTimeOut');
+const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
 const embedQueue = new Map();
 
@@ -70,9 +70,7 @@ module.exports = async (client, oldMember, newMember) => {
       embed.setDescription(`${newMember}`);
     }
 
-    await setEventTimeOut('member', newMember.id, embed);
-    await getEventTimeOut('member', newMember.id, channel);
- 
+    await setEventTimeOut('member', newMember.id, embed, channel);
 
   } catch (error) {
     console.error('Failed to log Member update!', error);

@@ -1,5 +1,6 @@
 const { Client, User, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/getLogChannel');
+const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
 module.exports = async (client, oldUser, newUser) => {
   try {
@@ -72,7 +73,9 @@ module.exports = async (client, oldUser, newUser) => {
         embed.setDescription(`${newUser}`);
       }
 
-      await channel.send({ embeds: [embed] });
+      //await channel.send({ embeds: [embed] });
+
+      await setEventTimeOut('member', `${newUser.id + guild.id}`, embed, channel);
       console.log(`${oldUser.username} updated their profile in guild ${guild.id}!`);
     }
     console.log(`${newUser} updated their profile.`);
