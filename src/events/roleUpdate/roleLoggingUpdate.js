@@ -67,13 +67,11 @@ module.exports = async (client, oldRole, newRole) => {
       embed.addFields(
         {
           name: 'Permissions Removed',
-          value: beforePerms || 'No changes',
-          inline: true
+          value: beforePerms || 'No changes'
         },
         {
           name: 'Permissions Added',
-          value: afterPerms || 'No changes',
-          inline: true 
+          value: afterPerms || 'No changes'
         }
       )
     }
