@@ -1,0 +1,67 @@
+{
+  "General Server Permissions": [
+    { "ViewChannel": "View Channels" },
+    { "ManageChannels": "Manage Channels" },
+    { "ManageRoles": "Manage Roles" },
+    { "CreateGuildExpressions": "Create Expressions" },
+    { "ManageGuildExpressions": "Manage Expressions" },
+    { "ViewAuditLog": "View Audit Log" },
+    { "ManageWebhooks": "Manage Webhooks"},
+    { "ManageGuild": "Manage Server" }
+  ],
+  "Membership Permissions": [
+    { "CreateInstantInvite": "Create Invite" },
+    { "ChangeNickname": "Change Nickname" },
+    { "ManageNicknames": "Manage Nicknames" },
+    { "KickMembers": "Kick Members" },
+    { "BanMembers": "Ban Members" },
+    { "ModerateMembers": "Timeout Members" }
+  ],
+  "Text Channel Permissions": [
+    { "SendMessages": "Send Messages" },
+    { "SendMessagesInThreads": "Send Messages in Threads" },
+    { "CreatePublicThreads": "Create Public Threads" },
+    { "CreatePrivateThreads": "Create Private Threads" },
+    { "EmbedLinks": "Embed Links" },
+    { "AttachFiles": "Attach Files" },
+    { "AddReactions": "Add Reactions" },
+    { "UseExternalEmojis": "Use External Emoji" },
+    { "UseExternalStickers": "Use External Stickers" },
+    { "MentionEveryone": "Mention @everyone, @here, and All Roles" },
+    { "ManageMessages": "Manage Messages" },
+    { "ManageThreads": "Manage Threads" },
+    { "ReadMessageHistory": "Read Message History" },
+    { "SendTTSMessages": "Send Text-to-Speech Messages" },
+    { "SendVoiceMessages": "Send Voice Messages" },
+    { "SendPolls": "Create Polls" }
+  ],
+  "Voice Channel Permissions": [
+    { "Connect": "Connect" },
+    { "Speak": "Speak" },
+    { "Stream": "Video" },
+    { "UseSoundboard": "Use Soundboard" },
+    { "UseExternalSounds": "Use External Sounds" },
+    { "UseVAD": "Use Voice Activity" },
+    { "PrioritySpeaker": "Priority Speaker" },
+    { "MuteMembers": "Mute Members" },
+    { "DeafenMembers": "Deafen Members" },
+    { "MoveMembers": "Move Members" },
+    { "RequestToSpeak": "Request to Speak" }
+  ],
+  "App Permissions": [
+    { "UseApplicationCommands": "Use Application Commands" },
+    { "UseEmbeddedActivities": "Use Activities" },
+    { "UseExternalApps": "Use External Apps" }
+  ],
+  "Events Permissions": [
+    { "CreateEvents": "Create Events" },
+    { "ManageEvents": "Manage Events" }
+  ],
+  "Advanced Permissions": [
+    { "Administrator": "Administrator" }
+  ],
+  "Other Permissions": [
+    { "ViewCreatorMonetizationAnalytics": "View Creator Monetization Analytics" },
+    { "ViewGuildInsights": "View Server Insights" }
+  ]
+}

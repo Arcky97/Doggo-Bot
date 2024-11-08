@@ -1,6 +1,7 @@
 const { Client, Role, EmbedBuilder, PermissionsBitField } = require('discord.js');
 const getLogChannel = require('../../utils/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const categorizedPermissions = require('./../../../data/loggingPermissions.json');
 
 module.exports = async (client, oldRole, newRole) => {
   try {
@@ -12,7 +13,7 @@ module.exports = async (client, oldRole, newRole) => {
       .setColor('Orange')  
       .setTitle(`Role Updated: ${oldRole.name}`)
 
-    let beforeSettings = afterSettings = beforePerms = afterPerms = '';
+    let beforeSettings = afterSettings = '';
     if (oldRole.name !== newRole.name) {
       beforeSettings += `**Name:** ${oldRole.name}\n`;
       afterSettings += `**Name:** ${newRole.name}\n`;
@@ -33,52 +34,67 @@ module.exports = async (client, oldRole, newRole) => {
       afterSettings += `**Separated:** ${newRole.hoist}\n`;
     }
 
+    const addedPermsByCategory = {};
+    const removedPermsByCategory = {};
+
     const addedPermissions = newRole.permissions.bitfield & ~oldRole.permissions.bitfield;
     const removedPermissions = oldRole.permissions.bitfield & ~newRole.permissions.bitfield;
 
-    const permissionFlags = Object.keys(PermissionsBitField.Flags);
-    permissionFlags.forEach(flag => {
-      const permission = PermissionsBitField.Flags[flag];
+    for (const [category, permissions] of Object.entries(categorizedPermissions)) {
+      addedPermsByCategory[category] = [];
+      removedPermsByCategory[category] = [];
 
-      if (addedPermissions & permission) {
-        afterPerms += `+ **${flag}**\n`;
-      }
-      
-      if (removedPermissions & permission) {
-        beforePerms += `+ **${flag}**\n`;
-      }
-    });
+      permissions.forEach(permissionObj => {
+        const [permissionCode, description] = Object.entries(permissionObj)[0];
+        const permissionFlag = PermissionsBitField.Flags[permissionCode];
 
+        if (permissionFlag) {
+          if (addedPermissions & BigInt(permissionFlag)) {
+            addedPermsByCategory[category].push(`- **${description}**`);
+          }
+  
+          if (removedPermissions & BigInt(permissionFlag)) {
+            removedPermsByCategory[category].push(`- **${description}**`);
+          }
+        }
+      });
+    }
 
-    embed.addFields(
-      {
-        name: 'Before',
-        value: beforeSettings || 'nothing',
-        inline: true 
-      },
-      {
-        name: 'After',
-        value: afterSettings || 'who knows what',
-        inline: true 
-      }
-    )
-
-    if (beforePerms || afterPerms) {
+    if (beforeSettings !== '' || afterSettings !== '') {
       embed.addFields(
         {
-          name: 'Permissions Removed',
-          value: beforePerms || 'No changes'
+          name: 'Before',
+          value: beforeSettings || 'nothing',
+          inline: true 
         },
         {
-          name: 'Permissions Added',
-          value: afterPerms || 'No changes'
+          name: 'After',
+          value: afterSettings || 'who knows what',
+          inline: true 
         }
-      )
+      );
+    }
+
+    for (const category in categorizedPermissions) {
+      const added = addedPermsByCategory[category].join('\n');
+      const removed = removedPermsByCategory[category].join('\n');
+
+      if (added || removed) {
+        embed.addFields(
+          {
+            name: `${category}`,
+            value: `${added ? '**Added:**\n' + added : ''}\n${removed ? '**Removed:**\n' + removed : ''}`
+          }
+        );
+      }
     }
     embed.setFooter({
       text: `Role ID: ${newRole.id}`
     })
     .setTimestamp()
+
+    if (oldRole.position !== newRole.position && embed.addFields.length < 1) return;
+    
     await setEventTimeOut('role', newRole.id, embed, logChannel);
 
     console.log(`The role ${newRole.name} with ID: ${oldRole.id} was updated in Server ${oldRole.guild.id}.`)
