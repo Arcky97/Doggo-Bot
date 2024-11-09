@@ -4,10 +4,10 @@ const ignoreLogging = require("../../utils/ignoreLogging");
 
 module.exports = async (client, bulk) => {
   try {
-    const channel = await getLogChannel(client, bulk.first().guild.id, 'message');
-    if (!channel) return;
+    const logChannel = await getLogChannel(client, bulk.first().guild.id, 'message');
+    if (!logChannel) return;
 
-    if (await ignoreLogging(bulk.guild.id, channel.id)) return;
+    if (await ignoreLogging(bulk.guild.id, logChannel.id)) return;
 
     let bulkContent = [];
 
@@ -24,7 +24,7 @@ module.exports = async (client, bulk) => {
         text: `${bulkContent.length} latest shown`
       });
 
-      await channel.send({ embeds: [embed] })
+      await logChannel.send({ embeds: [embed] })
   } catch (error) {
     console.error('There was an error sending the embed:', error);
   }

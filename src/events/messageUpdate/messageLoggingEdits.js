@@ -15,10 +15,10 @@ module.exports = async (client, oldMessage, newMessage) => {
     ) return;
 
   try {
-    const channel = await getLogChannel(client, oldMessage.guild.id, 'message');
-    if (!channel) return;
+    const logChannel = await getLogChannel(client, oldMessage.guild.id, 'message');
+    if (!logChannel) return;
 
-    if (await ignoreLogging(oldMessage.guild.id, channel.id)) return;
+    if (await ignoreLogging(oldMessage.guild.id, logChannel.id)) return;
     
     const oldContent = await truncateText(oldMessage.content, 1024) || '*No content*';
     const newContent = await truncateText(newMessage.content, 1024) || '*No content*';
@@ -45,7 +45,7 @@ module.exports = async (client, oldMessage, newMessage) => {
         text: `User ID: ${oldMessage.author.id}`
       });
 
-    await setEventTimeOut('message', 'edit', embed, channel);
+    await setEventTimeOut('message', 'edit', embed, logChannel);
     
   } catch (error) {
     console.error('There was an error sending the embed:', error);

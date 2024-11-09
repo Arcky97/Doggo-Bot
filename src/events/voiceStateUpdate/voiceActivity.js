@@ -5,8 +5,8 @@ const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
 module.exports = async (client, oldState, newState) => {
   try {
-    const channel = await getLogChannel(client, oldState.guild.id, 'voice');
-    if (!channel) return;
+    const logChannel = await getLogChannel(client, oldState.guild.id, 'voice');
+    if (!logChannel) return;
 
     if (await ignoreLogging(oldState.guild.id, channel.id)) return;
 
@@ -80,7 +80,7 @@ module.exports = async (client, oldState, newState) => {
       )
     }
 
-    await setEventTimeOut('voice', newState.member.user.id, embed, channel);
+    await setEventTimeOut('voice', newState.member.user.id, embed, logChannel);
   } catch (error) {
     console.error('Failed to log Voice Activity', error);
   }

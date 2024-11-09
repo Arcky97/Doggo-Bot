@@ -1,18 +1,20 @@
 const embedQueue = new Map()
 
 module.exports = async (type, id, embed, channel) => {
-  
-  if (!embedQueue.has(type + id)) {
-    embedQueue.set(type + id, { embeds: [embed], timeout: null });
+  const queueKey = type + id
+  if (!embedQueue.has(queueKey)) {
+    embedQueue.set(queueKey, { embeds: [embed], timeout: null });
   } else {
-    const data = embedQueue.get(type + id);
+    const data = embedQueue.get(queueKey);
     data.embeds.push(embed);
     clearTimeout(data.timeout);
   }
 
-  embedQueue.get(type + id).timeout = setTimeout(async () => {
-    const { embeds } = embedQueue.get(type + id);
+  embedQueue.get(queueKey).timeout = setTimeout(async () => {
+    const data = embedQueue.get(queueKey);
+    if (!data) return;
+    const { embeds } = data;
     await channel.send({ embeds });
-    embedQueue.delete(type + id);
+    embedQueue.delete(queueKey);
   }, 5000);
 }

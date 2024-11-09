@@ -3,14 +3,12 @@ const getMemberRoles = require('../../utils/getMemberRoles');
 const getLogChannel = require('../../utils/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
-const embedQueue = new Map();
-
 module.exports = async (client, oldMember, newMember) => {
   try {
     if (client.user.id === oldMember.user.id) return;
 
-    const channel = await getLogChannel(client, newMember.guild.id, 'member');
-    if (!channel) return;
+    const logChannel = await getLogChannel(client, newMember.guild.id, 'member');
+    if (!logChannel) return;
 
     const oldRoles = getMemberRoles(oldMember);
     const newRoles = getMemberRoles(newMember);
@@ -70,7 +68,7 @@ module.exports = async (client, oldMember, newMember) => {
       embed.setDescription(`${newMember}`);
     }
 
-    await setEventTimeOut('member', newMember.id, embed, channel);
+    await setEventTimeOut('member', newMember.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Member update!', error);

@@ -21,8 +21,8 @@ module.exports = async (client, member) => {
       await channel.send({ embeds: [welcome] });
     }
 
-    const channel = await getLogChannel(client, member.guild.id, 'joinleave');
-    if(!channel) return;
+    const logChannel = await getLogChannel(client, member.guild.id, 'joinleave');
+    if(!logChannel) return;
 
     /*if (member.guild.id === '925765418545741854') {
       const channelId = client.channels.cache.get('934536340022890517');
@@ -65,7 +65,7 @@ module.exports = async (client, member) => {
         text: `User ID: ${member.id}`
       });
 
-    await setEventTimeOut('joinleave', member.id, embed, channel);
+    await setEventTimeOut('joinleave', member.id, embed, logChannel);
  
     console.log(`${member.user.username} joined ${member.guild.name}!`);
     await setActivity(client);

@@ -22,8 +22,8 @@ module.exports = async (client, member) => {
       await channel.send({ embeds: [leave] });
     }
 
-    const channel = await getLogChannel(client, member.guild.id, 'joinleave');
-    if(!channel) return;
+    const logChannel = await getLogChannel(client, member.guild.id, 'joinleave');
+    if(!logChannel) return;
 
     const levelSettings = getLevelSettings(member.guild.id);
     if (levelSettings.clearOnLeave === 1) await resetLevelSystem(member.guild.id, member);
@@ -73,7 +73,7 @@ module.exports = async (client, member) => {
         text: `User ID: ${member.id}`
       });
 
-    await setEventTimeOut('joinleave', member.id, embed, channel);
+    await setEventTimeOut('joinleave', member.id, embed, logChannel);
 
     console.log(`${member.user.username} left ${member.guild.name}!`);
     await setActivity(client);

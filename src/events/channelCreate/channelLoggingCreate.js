@@ -1,8 +1,7 @@
-const { EmbedBuilder } = require('discord.js');
+const { Client, GuildChannel, EmbedBuilder } = require('discord.js');
 const getLogChannel = require("../../utils/getLogChannel");
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const getChannelTypeName = require('../../utils/getChannelTypeName');
-
 
 module.exports = async (client, channel) => {
   try {
@@ -12,15 +11,11 @@ module.exports = async (client, channel) => {
 
     const embed = new EmbedBuilder()
       .setColor('Green')
-      .setTitle(`Channel Created: ${channel}`)
+      .setTitle(`${getChannelTypeName(channel)} Created: ${channel}`)
       .setFields(
         {
           name: 'Name',
           value: channel.name 
-        },
-        {
-          name: 'Type',
-          value: `${getChannelTypeName(channel)}`
         },
         {
           name: 'Category',

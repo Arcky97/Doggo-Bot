@@ -8,10 +8,10 @@ module.exports = async (client, message) => {
   if (!message.inGuild() || !message.author || message.author.bot) return;
   
   try {
-    const channel = await getLogChannel(client, message.guild.id, 'message');
-    if (!channel) return;
+    const logChannel = await getLogChannel(client, message.guild.id, 'message');
+    if (!logChannel) return;
 
-    if (await ignoreLogging(message.guild.id, channel.id)) return;
+    if (await ignoreLogging(message.guild.id, logChannel.id)) return;
 
     const embed = new EmbedBuilder()
       .setColor('DarkOrange')
@@ -35,7 +35,7 @@ module.exports = async (client, message) => {
         text: `User ID: ${message.author.id}`
       });
 
-    await setEventTimeOut('message', 'delete', embed, channel);
+    await setEventTimeOut('message', 'delete', embed, logChannel);
 
   } catch (error) {
     console.error('There was an error sending the embed:', error);

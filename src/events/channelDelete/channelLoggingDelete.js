@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { Client, GuildChannel, EmbedBuilder } = require("discord.js");
 const getLogChannel = require("../../utils/getLogChannel");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const getChannelTypeName = require("../../utils/getChannelTypeName");
@@ -12,7 +12,7 @@ module.exports = async (client, channel) => {
 
     const embed = new EmbedBuilder()
       .setColor('Red')
-      .setTitle(`Channel Deleted: ${channel.name}`)
+      .setTitle(`${getChannelTypeName(channel)} Deleted`)
       .setFields(
         {
           name: 'Name',
