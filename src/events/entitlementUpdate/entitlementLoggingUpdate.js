@@ -1,3 +1,4 @@
+//Premium Access
 const { Client, Entitlement, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/getLogChannel');
 

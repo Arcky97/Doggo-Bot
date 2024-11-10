@@ -47,67 +47,6 @@ module.exports = async (client, oldChannel, newChannel) => {
       afterSettings += `**Hide After Inactivity:** ${convertNumberInTime(newChannel.defaultAutoArchiveDuration, 'Minutes')}\n`;
     }
 
-    const addedOverwrites = [];
-    const removedOverwrites = [];
-    const changedOverwrites = [];
-
-    newChannel.permissionOverwrites.cache.forEach(newOverwrite => {
-      const oldOverwrite = oldChannel.permissionOverwrites.cache.get(newOverwrite.id);
-
-      if (!oldOverwrite) {
-        // New Overwrite added
-        addedOverwrites.push(formatOverwrite(newOverwrite, 'Added'));
-      } else {
-        const changes = comparePermissions(oldOverwrite, newOverwrite);
-        if (changes) {
-          changedOverwrites.push({
-            id: newOverwrite.id,
-            type: newOverwrite.type,
-            changes 
-          });
-        }
-      }
-    });
-
-    oldChannel.permissionOverwrites.cache.forEach(oldOverwrite => {
-      if (!newChannel.permissionOverwrites.cache.has(oldOverwrite.id)) {
-        removedOverwrites.push(formatOverwrite(oldOverwrite, 'Removed'));
-      }
-    });
-
-    if (addedOverwrites.length > 0) {
-      embed.addFields({
-        name: 'Added Overwrites',
-        value: addedOverwrites.join('\n') || 'None',
-        inline: true 
-      });
-    }
-
-    if (removedOverwrites.length > 0) {
-      embed.addFields({
-        name: 'Removed Overwrites',
-        value: removedOverwrites.join('\n') || 'None',
-        inline: true 
-      });
-    }
-
-    if (changedOverwrites.length > 0) {
-      changedOverwrites.forEach(change => {
-        const hasChanges = Object.values(change.changes).some(permissions => permissions.length > 0);
-        if (!hasChanges) return; 
-        embed.setDescription(`Overwrite Change - ${change.type === 'role' || change.id === oldChannel.guild.id ? `<@&${change.id}>` : `<@${change.id}>`}`);
-        for (const [category, permissions] of Object.entries(change.changes)) {
-          if (permissions.length > 0) {
-            embed.addFields({
-              name: category,
-              value: permissions.join('\n'),
-            });
-          }
-        }
-      });
-    }
-    
-
     if (beforeSettings !== '' || afterSettings !== '') {
       embed.addFields(
         {
@@ -122,11 +61,96 @@ module.exports = async (client, oldChannel, newChannel) => {
         }
       );
     }
-    
+
+    const addedOverwrites = [];
+    const removedOverwrites = [];
+    const changedOverwrites = [];
+
+    newChannel.permissionOverwrites.cache.forEach(newOverwrite => {
+      const oldOverwrite = oldChannel.permissionOverwrites.cache.get(newOverwrite.id);
+
+      if (!oldOverwrite) {
+        addedOverwrites.push(`- ${formatOverwrite(newOverwrite, oldChannel.guild.id)}`);
+      }
+
+      const changes = comparePermissions(oldOverwrite, newOverwrite);
+      if (changes) {
+        changedOverwrites.push({
+          id: newOverwrite.id,
+          type: newOverwrite.type,
+          changes 
+        });
+      }
+    });
+
+    oldChannel.permissionOverwrites.cache.forEach(oldOverwrite => {
+      if (!newChannel.permissionOverwrites.cache.has(oldOverwrite.id)) {
+        removedOverwrites.push(`- ${formatOverwrite(oldOverwrite, oldChannel.guild.id)}`);
+      }
+    });
+
+    if (addedOverwrites.length > 0) {
+      embed.addFields({
+        name: 'Added Overwrites',
+        value: addedOverwrites.join('\n') || 'None',
+      });
+    }
+
+    if (removedOverwrites.length > 0) {
+      embed.addFields({
+        name: 'Removed Overwrites',
+        value: removedOverwrites.join('\n') || 'None',
+      });
+    }
+
+    const permissionFields = {};
+    if (changedOverwrites.length > 0) {
+      const filteredOverwrites = changedOverwrites.filter(change => 
+        !Object.values(change.changes).every(perms => 
+          perms.length === 0
+        )
+      );
+      if (filteredOverwrites.length === 1) {
+        const singleChange = filteredOverwrites[0];
+        embed.setDescription(`Permission Overwrite${Object.values(singleChange.changes).some(value => value.length > 1) ? 's' : ''} Updated for ${formatOverwrite(singleChange, oldChannel.guild.id)}`);
+      } else {
+        embed.setDescription(`Permission Overwrites Updated`);
+      }
+      filteredOverwrites.forEach(change => {
+        for (const [category, permissions] of Object.entries(change.changes)) {
+          if (!permissionFields[category]) permissionFields[category] = [];
+          permissionFields[category].push(`${formatOverwrite(change, oldChannel.guild.id)}`)
+          permissionFields[category].push(permissions);
+        }
+      });
+      for (const [category, rolePermissions] of Object.entries(permissionFields)) {
+        let fieldValue = '';
+        for (let i = 0; i < rolePermissions.length; i += 2) {
+          const role = rolePermissions[i];
+          const changes = rolePermissions[i + 1];
+
+          if (changes.length > 0) {
+            if (filteredOverwrites.length !== 1) fieldValue += `${role}\n`;
+            changes.forEach(change => {
+              fieldValue += `${change}\n`;
+            });
+          }
+        }
+        if (fieldValue !== '') {
+          embed.addFields({
+            name: category,
+            value: fieldValue.trim() 
+          });
+        }
+      }
+    }
+
     embed.setFooter({
       text: `Channel ID: ${newChannel.id}`
     })
     .setTimestamp()
+
+    if (!embed.data.fields) return;
     await setEventTimeOut('channel', newChannel.id, embed, logChannel);
 
     console.log(`The Channel ${newChannel} with ID: ${newChannel.id} was updated in Server ${newChannel.guild.id}.`);

@@ -1,16 +1,12 @@
-const { PermissionsBitField } = require("discord.js");
-
-module.exports = (overwrite, action) => {
-  const type = overwrite.type === 0 ? 'Role' : 'Member';
-  const permissions = [];
-
-  if (overwrite.allow.bitfield !== 0n ) {
-    permissions.push(`Allowed: ${new PermissionsBitField(overwrite.allow.bitfield).toArray().join(', ')}`);
+module.exports = (overwrite, guildId) => {
+  if (overwrite.type === 0) {
+    if (overwrite.id === guildId) {
+      return '@everyone';
+    } else {
+      return `<@&${overwrite.id}>`;
+    }
+  } else {
+    return `<@${overwrite.id}>`;
   }
-
-  if (overwrite.deny.bitfield !== 0n) {
-    permissions.push(`Denied: ${new PermissionsBitField(overwrite.deny.bitfield).toArray().join(', ')}`);
-  }
-
-  return `**${action} ${type}** <@&${overwrite.id}>\n${permissions.join('\n')}`;
+  //return `- <${overwrite.type === 0 && overwrite.type !== guildId ? '@&' : '@'}${overwrite.id}>`;
 }

@@ -11,23 +11,23 @@ module.exports = (oldOverwrite, newOverwrite) => {
       const permission = PermissionsBitField.Flags[flag];
 
       if (permission) {
-        const wasAllowed = oldOverwrite.allow.has(permission);
-        const wasDenied = oldOverwrite.deny.has(permission);
-        const isNowAllowed = newOverwrite.allow.has(permission);
-        const isNowDenied = newOverwrite.deny.has(permission);
+        const wasAllowed = oldOverwrite?.allow.has(permission);
+        const wasDenied = oldOverwrite?.deny.has(permission);
+        const isNowAllowed = newOverwrite?.allow.has(permission);
+        const isNowDenied = newOverwrite?.deny.has(permission);
     
         if (wasAllowed && !isNowAllowed && !isNowDenied) {
-          changes[category].push(`- **${description}:** 🟢 to 🟠`);
+          changes[category].push(`- **${description}:** ✅  =>  ⬜`);
         } else if (wasDenied && !isNowAllowed && !isNowDenied) {
-          changes[category].push(`- **${description}:** 🔴 to 🟠`);
+          changes[category].push(`- **${description}:** ❌  =>  ⬜`);
         } else if (!wasAllowed && isNowAllowed) {
-          changes[category].push(`- **${description}:** 🟠 to 🟢`);
+          changes[category].push(`- **${description}:** ⬜  =>  ✅`);
         } else if (!wasDenied && isNowDenied) {
-          changes[category].push(`- **${description}:** 🟠 to 🔴`);
+          changes[category].push(`- **${description}:** ⬜  =>  ❌`);
         } else if (wasAllowed && isNowDenied) {
-          changes[category].push(`- **${description}:** 🟢 to 🔴`);
+          changes[category].push(`- **${description}:** ✅  =>  ❌`);
         } else if (wasDenied && isNowAllowed) {
-          changes[category].push(`- **${description}:** 🔴 to 🟢`);
+          changes[category].push(`- **${description}:** ❌  =>  ✅`);
         }
       }
     });
