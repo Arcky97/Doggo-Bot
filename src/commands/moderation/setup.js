@@ -141,7 +141,7 @@ module.exports = {
     await interaction.deferReply()
     try {
       if (subCmd !== 'mute-role') {
-        [title, description] = await setGuildSettings(guildId, subCmd, channel);       
+        [title, description] = await setGuildSettings(guildId, subCmd, channel);    
       } else {
         // add mute role
         [title, description] = await setGuildSettings(guildId, subCmd, role);

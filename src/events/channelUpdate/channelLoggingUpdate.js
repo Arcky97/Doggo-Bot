@@ -113,7 +113,7 @@ module.exports = async (client, oldChannel, newChannel) => {
       if (filteredOverwrites.length === 1) {
         const singleChange = filteredOverwrites[0];
         embed.setDescription(`Permission Overwrite${Object.values(singleChange.changes).some(value => value.length > 1) ? 's' : ''} Updated for ${formatOverwrite(singleChange, oldChannel.guild.id)}`);
-      } else {
+      } else if (filteredOverwrites.length > 1) {
         embed.setDescription(`Permission Overwrites Updated`);
       }
       filteredOverwrites.forEach(change => {

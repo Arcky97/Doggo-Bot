@@ -1,0 +1,210 @@
+{
+  "slap": {
+    "dev": [
+
+    ],
+    "bot": [
+
+    ],
+    "self": [
+
+    ],
+    "owner": [
+
+    ],
+    "admin": [
+
+    ]
+  },
+  "kick": {
+    "dev": [
+
+    ],
+    "bot": [
+
+    ],
+    "self": [
+
+    ],
+    "owner": [
+
+    ],
+    "admin": [
+
+    ]
+  },
+  "ban": {
+    "regular": {
+      "dev": [
+
+      ],
+      "bot": [
+
+      ],
+      "self": [
+
+      ],
+      "owner": [
+
+      ],
+      "admin": [
+
+      ]
+    },
+    "soft": {
+      "dev": [
+
+      ],
+      "bot": [
+
+      ],
+      "self": [
+
+      ],
+      "owner": [
+
+      ],
+      "admin": [
+
+      ]
+    },
+    "temp": {
+      "dev": [
+
+      ],
+      "bot": [
+
+      ],
+      "self": [
+
+      ],
+      "owner": [
+
+      ],
+      "admin": [
+
+      ]
+    }
+  },
+  "unban": {
+    "dev": [
+
+    ],
+    "bot": [
+
+    ],
+    "self": [
+
+    ],
+    "owner": [
+
+    ],
+    "admin": [
+
+    ]
+  },
+  "mute": {
+    "dev": [
+
+    ],
+    "bot": [
+
+    ],
+    "self": [
+
+    ],
+    "owner": [
+
+    ],
+    "admin": [
+
+    ]
+  },
+  "unmute": {
+    "dev": [
+
+    ],
+    "bot": [
+
+    ],
+    "self": [
+
+    ],
+    "owner": [
+
+    ],
+    "admin": [
+
+    ]
+  },
+  "warn": {
+    "show": {
+      "dev": [
+
+      ],
+      "bot": [
+
+      ],
+      "self": [
+
+      ],
+      "owner": [
+
+      ],
+      "admin": [
+
+      ]
+    },
+    "add": {
+      "dev": [
+
+      ],
+      "bot": [
+
+      ],
+      "self": [
+
+      ],
+      "owner": [
+
+      ], 
+      "admin": [
+
+      ]
+    },
+    "remove": {
+      "dev": [
+
+      ],
+      "bot": [
+
+      ],
+      "self": [
+
+      ],
+      "owner": [
+
+      ],
+      "admin": [
+
+      ]
+    },
+    "clear": {
+      "dev": [
+
+      ],
+      "bot": [
+
+      ],
+      "self": [
+
+      ],
+      "owner": [
+
+      ],
+      "admin": [
+
+      ]
+    }
+  }
+}

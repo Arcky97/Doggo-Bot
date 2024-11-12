@@ -6,7 +6,6 @@ const getChannelTypeName = require("../../utils/getChannelTypeName");
 
 module.exports = async (client, channel) => {
   try {
-    
     const logChannel = await getLogChannel(client, channel.guild.id, 'server');
     if (!logChannel) return;
 
@@ -17,10 +16,6 @@ module.exports = async (client, channel) => {
         {
           name: 'Name',
           value: channel.name 
-        },
-        {
-          name: 'Type',
-          value: `${getChannelTypeName(channel)}`
         },
         {
           name: 'Category',

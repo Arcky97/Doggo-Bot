@@ -8,7 +8,7 @@ module.exports = async (client, oldState, newState) => {
     const logChannel = await getLogChannel(client, oldState.guild.id, 'voice');
     if (!logChannel) return;
 
-    if (await ignoreLogging(oldState.guild.id, channel.id)) return;
+    if (await ignoreLogging(oldState.guild.id, logChannel.id)) return;
 
     let embed = new EmbedBuilder()
       .setAuthor({
