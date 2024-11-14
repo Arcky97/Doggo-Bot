@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
-const { createInfoEmbed, createWarningEmbed, createSuccessEmbed } = require("../../utils/createReplyEmbed");
+const { createInfoEmbed, createWarningEmbed, createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'kick',

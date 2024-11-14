@@ -1,4 +1,4 @@
-const { createSuccessEmbed } = require("../../utils/createReplyEmbed");
+const { createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'ping',

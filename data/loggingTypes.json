@@ -1,0 +1,210 @@
+{
+  "message": {
+    "all": {
+      "name": "Message Events",
+      "description": "Log all Message Events in the Server.",
+      "value": "messageAll"
+    },
+    "edits": {
+      "name": "Message Edits",
+      "description": "Log when a Message gets Edited in the Server.",
+      "value": "messageUpdate"
+    },
+    "deletes": {
+      "name": "Message Deletes",
+      "description": "Log when a Message gets Deleted in the Server.",
+      "value": "messageDelete"
+    },
+    "bulks": {
+      "name": "Message Bulk Deletes",
+      "description": "Log when a Bulk of Messages get Deleted in the Server.",
+      "value": "messageDeleteBulk"
+    }
+  },
+  "member": {
+    "roles": {
+      "all": {
+        "name": "Member Role Events",
+        "description": "Log when a Role Events from a Member in the Server."
+      },
+      "adds": {
+        "name": "Member Role Adds",
+        "description": "Log when a role is Added to a Member in the Server."
+      },
+      "removes": {
+        "name": "Member Role Removes",
+        "description": "Log when a Role is Removed from a Member in the Server."
+      }
+    },
+    "names": {
+      "all": {
+        "name": "Member Name Change Events",
+        "description": "Log when a Member changes their user or global name on discord or nickname in the Server."
+      },
+      "users": {
+        "name": "Member User Name Changes",
+        "description": "Log when a Member changes their User Name on Discord."
+      },
+      "globals": {
+        "name": "Member Global Name Changes",
+        "description": "Log when a Member changes their Global Name on Discord."
+      },
+      "nicks": {
+        "name": "Member Nick Name Changes",
+        "description": "Log when a Member changes their Nick (Server) Name in the Server."
+      }
+    },
+    "avatars": {
+      "all": {
+        "name": "Member Avatar Change Events",
+        "description": "Log when a Member changes their Global Avatar on Discord or Server Avatar in the Server."
+      },
+      "gloabl": {
+        "name": "Member Global Avatar Changes",
+        "description": "Log when a Member changes their Global Avatar on Discord."
+      },
+      "server": {
+        "name": "Member Server Avatar Changes",
+        "description": "Log when a Member changes their Server Avatar in the Server."
+      }
+    },
+    "bans": {
+      "all": {
+        "name": "Member Ban and Unban Events",
+        "description": "Log when a Member gets Banned or Unbanned from the Server."
+      },
+      "adds": {
+        "name": "Member Bans",
+        "description": "Log when a Member gets Banned from the Server."
+      },
+      "deletes": {
+        "name": "Member Unbans",
+        "description": "Log when a Member gets Unbanned from the Server."
+      }
+    },
+    "timeouts": {
+      "all": {
+        "name": "Member Timeout Events",
+        "description": "Log when a Member gets a Timeout Added or Removed in the Server."
+      },
+      "adds": {
+        "name": "Member Timeouts",
+        "description": "Log when a Member gets a Timeout in the Server."
+      },
+      "deletes": {
+        "name": "Member Timeout Removes",
+        "description": "Log when a Member gets the Timeout Removed in the Server."
+      }
+    }
+  },
+  "server": {
+    "channels": {
+      "all": {
+        "name": "Server Channel Events",
+        "description": "Log when a Channel has been Created, Updated or Deleted in the Server."
+      },
+      "creates": {
+        "name": "Server Channel Creates",
+        "description": "Log when a Channel has been Created in the Server."
+      },
+      "updates": {
+        "name": "Server Channel Updates",
+        "description": "Log when a Channel has been Updated in the Server."
+      },
+      "deletes": {
+        "name": "Server Channel Deletes",
+        "description": "Log when a Channel has been Removed in the Server."
+      }
+    },
+    "roles": {
+      "all": {
+        "name": "Server Role Events",
+        "description": "Log when a Role has been Created, Updated or Deleted in the Server."
+      },
+      "creates": {
+        "name": "Server Role Creates",
+        "description": "Log when a Role has been Created in the Server."
+      },
+      "updates": {
+        "name": "Server Role Updates",
+        "description": "Log when a Role has been Updated in the Server."
+      },
+      "deletes": {
+        "name": "Server Role Deletes",
+        "description": "Log when a Role has been Deleted in the Server."
+      }
+    },
+    "updates": {
+      "name": "Server Update Events",
+      "description": "Log when the Server gets updated."
+    },
+    "emojis": {
+      "all": {
+        "name": "Server Emoji Events",
+        "description": "Log when an Emoji has been Created, Updated or Deleted in the Server."
+      },
+      "creates": {
+        "name": "Server Emoji Creates",
+        "description": "Log when an Emoji has been Created in the Server."
+      },
+      "updates": {
+        "name": "Server Emoji Updates",
+        "description": "Log when an Emoji has been Updated in the Server."
+      },
+      "deletes": {
+        "name": "Server Emoji Deletes",
+        "description": "Log when an Emoji has been Deleted in the Server."
+      }
+    },
+    "stickers": {
+      "all": {
+        "name": "Server Sticker Events",
+        "description": "Log when a Sticker has been Created, Updated or Deleted in the Server."
+      },
+      "creates": {
+        "name": "Server Sticker Creates",
+        "description": "Log when a Sticker has been Created in the Server."
+      },
+      "updates": {
+        "name": "Server Sticker Updates",
+        "description": "Log when a Sticker has been Updated in the Server."
+      },
+      "deletes": {
+        "name": "Server Sticker Deletes",
+        "description": "Log when a Sticker has been Deleted in the Server."
+      }
+    }
+  },
+  "voice": {
+    "all": {
+      "name": "Voice Channel Events",
+      "description": "Log when a Member has Joined, Moved between or Left a Voice Channel(s) in the Server."
+    },
+    "joins": {
+      "name": "Voice Channel Joins",
+      "description": "Log when a Member has Joined a Voice Channel in the Server."
+    },
+    "moves": {
+      "name": "Voice Channel Moves",
+      "description": "Log when a Member has Moved between Voice Channels in the Server."
+    },
+    "leaves": {
+      "name": "Voice Channel Leaves",
+      "description": "Log when a Member has left a Voice Channel in the Server."
+    }
+  },
+  "joinleave": {
+    "all": {
+      "name": "Member Join-Leave Events",
+      "description": "Log when a Member has Joined or Left the Server."
+    },
+    "joins": {
+      "name": "Member Joins",
+      "description": "Log when a Member has Joined the Server."
+    },
+    "leaves": {
+      "name": "Member Leaves",
+      "description": "Log when a Member has Left the Server."
+    }
+  }
+}

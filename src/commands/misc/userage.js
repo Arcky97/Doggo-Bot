@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const formatTime = require("../../utils/formatTime");
-const { createSuccessEmbed } = require("../../utils/createReplyEmbed");
+const { createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'userage',

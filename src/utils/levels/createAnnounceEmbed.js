@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { getAnnounceMessage } = require("../../../database/levelSystem/setLevelSettings");
-const embedPlaceholders = require("../embedPlaceholders");
+const embedPlaceholders = require("../embeds/embedPlaceholders");
 
 module.exports = async (message, userLevelInfo) => {
   let annMessage = await getAnnounceMessage(message.guild.id, userLevelInfo.level) || [];

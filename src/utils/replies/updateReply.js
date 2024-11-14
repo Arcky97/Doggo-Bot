@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
-const { createErrorEmbed } = require("../createReplyEmbed");
+const { createErrorEmbed } = require("../embeds/createReplyEmbed");
 
 const updateReply = async (interaction, type) => {
   const replyID = interaction.options.getString('id');

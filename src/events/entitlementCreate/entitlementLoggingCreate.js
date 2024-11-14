@@ -1,6 +1,6 @@
 // Premium Access 
 const { Client, Entitlement, EmbedBuilder } = require('discord.js');
-const getEntitlementTypeName = require('../../utils/getEntitlementTypeName');
+const getEntitlementTypeName = require('../../utils/logging/getEntitlementTypeName');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
 module.exports = async (client, entitlement) => {

@@ -1,8 +1,9 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } = require("../../../database/embeds/setEmbedData");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
-const embedPlaceholders = require("../../utils/embedPlaceholders");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/createReplyEmbed");
+const embedPlaceholders = require("../../utils/embeds/embedPlaceholders");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { createGeneratedEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
 
 module.exports = {
   name: 'embed',
@@ -332,35 +333,7 @@ module.exports = {
       }
       // Build the embed object
       try {
-        embed = new EmbedBuilder()
-        .setTitle(await embedPlaceholders(embedOptions.title, interaction))
-        .setDescription(await embedPlaceholders(embedOptions.description, interaction));
-
-        if (embedOptions.color) embed.setColor(await getOrConvertColor(embedOptions.color));
-        if (embedOptions.titleUrl) embed.setURL(embedOptions.titleUrl);
-        if (embedOptions.author) {
-          const author = interaction.options.getMember('author');
-          let authorObj = {
-            name: author.user.username,
-            url: embedOptions.authorUrl,
-            iconURL: author.user.avatarURL(),
-          };
-          if (!embedOptions.authorUrl) delete authorObj.url;
-          if (!embedOptions.authorIconUrl) delete authorObj.iconURL;
-          embed.setAuthor(authorObj);
-        }
-
-        if (embedOptions.imageUrl) embed.setImage(embedOptions.imageUrl);
-        if (embedOptions.thumbnailUrl) embed.setThumbnail(embedOptions.thumbnailUrl);
-        if (embedOptions.footer) {
-          let footerObj = {
-            text: await embedPlaceholders(embedOptions.footer, interaction),
-            iconURL: await embedPlaceholders(embedOptions.footerIconUrl, interaction),
-          };
-          if (!embedOptions.footerIconUrl) delete footerObj.iconURL;
-          embed.setFooter(footerObj);
-        }
-        if (embedOptions.timeStamp) embed.setTimestamp();
+        embed = await createGeneratedEmbed(interaction, embedOptions); 
       } catch (error) {
         console.error(error);
       }
@@ -384,24 +357,29 @@ module.exports = {
         interaction.editReply({embeds: [embed]});
       } else {
         const messageId = interaction.options.getString('messageid');
-        const oldEmbed = await getGeneratedEmbed(guildId, messageId);
-        
-        const channel = client.channels.cache.get(oldEmbed.channelId);
         let message;
-        if (messageId && channel) {
-          try {
-            message = await channel.messages.fetch(messageId);
-          } catch (error) {
-            if (error.code === 10008) { // Discord API error code for "Unknown Message"
-              await deleteGeneratedEmbed(guildId, messageId); // Optionally remove the embed from the database
-              
-              replyMessage = 'The specified message has already been deleted.';
-            } else {
-              console.error('Error fetching the message:', error);
-              replyMessage = 'An error occurred while fetching the message.';
+        try {
+          const oldEmbed = await getGeneratedEmbed(guildId, messageId);
+          const channel = client.channels.cache.get(oldEmbed.channelId);
+          if (messageId && channel) {
+            try {
+              message = await channel.messages.fetch(messageId);
+            } catch (error) {
+              if (error.code === 10008) { // Discord API error code for "Unknown Message"
+                await deleteGeneratedEmbed(guildId, messageId); // Optionally remove the embed from the database
+                
+                replyMessage = 'The specified message has already been deleted.';
+              } else {
+                console.error('Error fetching the message:', error);
+                replyMessage = 'An error occurred while fetching the message.';
+              }
+              embed = createErrorEmbed(interaction, replyMessage);
             }
-            embed = createErrorEmbed(interaction, replyMessage);
           }
+        } catch (error) {
+          embed = createErrorEmbed(interaction, `The Embed Message with ID: ${messageId} was not found. \nPlease check if this Message hasn't been deleted already or is from this Server.`);
+          interaction.editReply({embeds: [embed]});
+          return
         }
         if (embedAction === 'edit') {
           if (type === 'regular') {

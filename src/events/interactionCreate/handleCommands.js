@@ -1,6 +1,6 @@
 const { devs, testServer } = require('../../../config.json');
 const getLocalCommands = require('../../utils/commands/getLocalCommands');
-const { createInfoEmbed, createWarningEmbed } = require('../../utils/createReplyEmbed');
+const { createInfoEmbed, createWarningEmbed } = require('../../utils/embeds/createReplyEmbed');
 
 module.exports = async (client, interaction) => {
   if (!interaction.isChatInputCommand()) return;

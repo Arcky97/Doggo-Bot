@@ -1,4 +1,4 @@
-const { selectData } = require("../../database/controlData/selectData");
+const { selectData } = require("../../../database/controlData/selectData");
 
 module.exports = async (client, guild, log) => {
   const logChannels = await selectData('GuildSettings', { guildId: guild });

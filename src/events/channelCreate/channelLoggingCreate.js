@@ -1,7 +1,7 @@
 const { Client, GuildChannel, EmbedBuilder } = require('discord.js');
-const getLogChannel = require("../../utils/getLogChannel");
+const getLogChannel = require("../../utils//logging/getLogChannel");
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const getChannelTypeName = require('../../utils/getChannelTypeName');
+const getChannelTypeName = require('../../utils/logging/getChannelTypeName');
 
 module.exports = async (client, channel) => {
   try {

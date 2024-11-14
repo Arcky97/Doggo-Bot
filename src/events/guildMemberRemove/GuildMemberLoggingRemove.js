@@ -2,12 +2,12 @@ const { EmbedBuilder } = require("discord.js");
 const setActivity = require("../../utils/setActivity");
 const moment = require("moment");
 const getLogChannel = require("../../utils/getLogChannel");
-const getMemberRoles = require("../../utils/getMemberRoles");
+const getMemberRoles = require("../../utils/logging/getMemberRoles");
 const formatTime = require("../../utils/formatTime");
 const { getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
 const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
-const { createEventEmbed } = require("../../utils/createEventOrGeneratedEmbed");
+const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 
 module.exports = async (client, member) => {

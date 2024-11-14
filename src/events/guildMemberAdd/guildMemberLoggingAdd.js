@@ -4,7 +4,7 @@ const getLogChannel = require("../../utils/getLogChannel");
 const formatTime = require("../../utils/formatTime");
 const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
 const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
-const { createEventEmbed } = require("../../utils/createEventOrGeneratedEmbed");
+const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 
 const embedQueue = new Map();

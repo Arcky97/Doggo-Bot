@@ -1,6 +1,8 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
+const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandSubcommandBuilder } = require("discord.js");
 const { setGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
-const { createErrorEmbed, createSuccessEmbed } = require("../../utils/createReplyEmbed");
+const { createErrorEmbed, createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
+const createLoggingMenu = require("../../utils/menus/createLoggingMenu");
+const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 
 module.exports = {
   name: 'setup',
@@ -114,6 +116,41 @@ module.exports = {
               required: true
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'events',
+          description: 'Choose which events for each Log Type to enable/disable.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'type',
+              description: 'Choose the Event Type.',
+              required: true,
+              choices: [
+                {
+                  name: 'message events',
+                  value: 'message'
+                },
+                {
+                  name: 'member events',
+                  value: 'member',
+                },
+                {
+                  name: 'server events',
+                  value: 'server'
+                },
+                {
+                  name: 'voice events',
+                  value: 'voice'
+                },
+                {
+                  name: 'join leave events',
+                  value: 'joinleave'
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -137,21 +174,68 @@ module.exports = {
     const channel = interaction.options.getChannel('channel');
     const role = interaction.options.getRole('role');
     const guildId = interaction.guild.id;
-    let embed, title, description;
-    await interaction.deferReply()
+    let embed, title, description, choice;
+    await interaction.deferReply();
+  
     try {
-      if (subCmd !== 'mute-role') {
-        [title, description] = await setGuildSettings(guildId, subCmd, channel);    
-      } else {
-        // add mute role
-        [title, description] = await setGuildSettings(guildId, subCmd, role);
+      switch (subCmd) {
+        case 'mute-role':
+          [title, description] = await setGuildSettings(guildId, subCmd, role);
+          break;
+        case 'events':
+          choice = interaction.options.getString('type');
+          break;
+        default:
+          [title, description] = await setGuildSettings(guildId, subCmd, channel);
+          break;
       }
-      embed = createSuccessEmbed({int: interaction, title: title, descr: description});
-      interaction.editReply({ embeds: [embed] });
+  
+      if (subCmd === 'events') {
+        await interaction.editReply({ components: createLoggingMenu(choice) });
+  
+        const filter = (i) =>
+          (i.customId === `${firstLetterToUpperCase(choice)} Logging Menu` ||
+           i.customId === 'confirm' || i.customId === 'cancel') &&
+          i.user.id === interaction.user.id;
+  
+        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+        let selectedOptions = [];
+  
+        collector.on('collect', async (i) => {
+          if (i.customId === `${firstLetterToUpperCase(choice)} Logging Menu`) {
+            selectedOptions = i.values;
+            await i.deferUpdate(); // Acknowledge menu selection
+          } else if (i.customId === 'confirm') {
+            if (selectedOptions.length === 0) {
+              await i.reply({ content: 'Please make a selection before confirming.', ephemeral: true });
+              return;
+            }
+            console.log('Confirmed options:', selectedOptions);
+            await i.update({ content: 'Logging preferences updated!', components: [] });
+            collector.stop();
+          } else if (i.customId === 'cancel') {
+            console.log('Canceled');
+            await i.update({ content: 'Logging preferences were not updated.', components: [] });
+            collector.stop();
+          }
+        });
+  
+        collector.on('end', async (collected, reason) => {
+          if (reason === 'time') {
+            await interaction.editReply({
+              content: 'Time ran out! No changes were made.',
+              components: []
+            });
+          }
+        });
+      } else {
+        embed = createSuccessEmbed({ int: interaction, title: title, descr: description });
+        await interaction.editReply({ embeds: [embed] });
+      }
     } catch (error) {
       console.error('Error setting channel:', error);
       embed = createErrorEmbed(interaction, 'There was an error setting the channel. Please try again later.');
-      interaction.editReply({embeds: [embed]});
+      interaction.editReply({ embeds: [embed] });
     }
   }
 }

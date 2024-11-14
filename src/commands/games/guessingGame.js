@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { createSuccessEmbed } = require("../../utils/createReplyEmbed");
+const { createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
 const attempts = {}
 module.exports = {
   name: 'games',

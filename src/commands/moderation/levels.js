@@ -6,11 +6,11 @@ const showMultiplierSettings = require("../../utils/levels/showMultiplierSetting
 const showLevelSystemSettings = require("../../utils/levels/showLevelSystemSettings");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
 const showAnnouncementSettings = require("../../utils/levels/showAnnouncementSettings");
-const embedPlaceholders = require("../../utils/embedPlaceholders");
+const embedPlaceholders = require("../../utils/embeds/embedPlaceholders");
 const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings");
 const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
 const { resetLevelSystem, getAllUsersLevel, getUserLevel } = require("../../../database/levelSystem/setLevelSystem");
-const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../utils/createReplyEmbed");
+const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'lvsys',

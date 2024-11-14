@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js")
-const embedPlaceholders = require("./embedPlaceholders")
-const getOrConvertColor = require("./getOrConvertColor")
+const embedPlaceholders = require("../embeds/embedPlaceholders")
+const getOrConvertColor = require("../getOrConvertColor")
 
 async function createEmbed(input, embedData) {
   let embed = new EmbedBuilder()

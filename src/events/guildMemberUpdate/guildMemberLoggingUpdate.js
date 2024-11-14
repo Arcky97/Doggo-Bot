@@ -1,5 +1,5 @@
 const { Client, GuildMember, EmbedBuilder } = require('discord.js');
-const getMemberRoles = require('../../utils/getMemberRoles');
+const getMemberRoles = require('../../utils/logging/getMemberRoles');
 const getLogChannel = require('../../utils/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 

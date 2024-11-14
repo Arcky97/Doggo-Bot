@@ -1,5 +1,5 @@
 const { getLevelRoles, getRoleReplace } = require("../../../database/levelSystem/setLevelSettings");
-const getMemberRoles = require("../getMemberRoles");
+const getMemberRoles = require("../logging/getMemberRoles");
 
 module.exports = async (guildId, member, userInfo) => {
   const levelRoles = await getLevelRoles(guildId);

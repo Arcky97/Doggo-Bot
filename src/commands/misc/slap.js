@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
-const { createSuccessEmbed, createInfoEmbed } = require("../../utils/createReplyEmbed");
+const { createSuccessEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
 const getVowel = require("../../utils/getVowel");
 const { getUserAttempts, setUserAttempts } = require("../../../database/userStats/setUserStats");
 const cooldowns = new Set();

@@ -1,4 +1,4 @@
-const getMemberRoles = require("../getMemberRoles")
+const getMemberRoles = require("../logging/getMemberRoles")
 
 module.exports = (settings, message, xpSettings) => {
   const member = message.guild.members.cache.get(message.author.id);

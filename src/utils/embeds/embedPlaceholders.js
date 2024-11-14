@@ -1,6 +1,6 @@
-const { getLevelRoles, getXpSettings } = require("../../database/levelSystem/setLevelSettings");
-const { getUserLevel } = require("../../database/levelSystem/setLevelSystem");
-const calculateXpByLevel = require("./levels/calculateXpByLevel");
+const { getLevelRoles, getXpSettings } = require("../../../database/levelSystem/setLevelSettings");
+const { getUserLevel } = require("../../../database/levelSystem/setLevelSystem");
+const calculateXpByLevel = require("../levels/calculateXpByLevel");
 
 
 module.exports = async (text, input, userInfo) => {

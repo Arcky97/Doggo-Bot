@@ -3,7 +3,7 @@ const { getAllUsersLevel, getUserLevel, addUserColor } = require("../../../datab
 const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 const { Font, RankCardBuilder } = require("canvacord");
 const getOrConvertColor = require("../../utils/getOrConvertColor");
-const { createErrorEmbed, createInfoEmbed } = require("../../utils/createReplyEmbed");
+const { createErrorEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
 const { getLevelSettings, getXpSettings } = require("../../../database/levelSystem/setLevelSettings");
 
 module.exports = {

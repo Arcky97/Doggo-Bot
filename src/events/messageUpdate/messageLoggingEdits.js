@@ -1,7 +1,7 @@
 const { Client, Message, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/getLogChannel');
+const getLogChannel = require('../../utils/logging/getLogChannel');
 const truncateText = require('../../utils/truncateText');
-const ignoreLogging = require('../../utils/ignoreLogging');
+const ignoreLogging = require('../../utils/logging/ignoreLogging');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
 module.exports = async (client, oldMessage, newMessage) => {
