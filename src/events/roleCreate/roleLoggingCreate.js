@@ -1,5 +1,5 @@
 const { Client, Role, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/getLogChannel');
+const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
 module.exports = async (client, role) => {

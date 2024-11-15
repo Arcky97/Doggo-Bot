@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
 const setActivity = require("../../utils/setActivity");
 const moment = require("moment");
-const getLogChannel = require("../../utils/getLogChannel");
+const getLogChannel = require("../../utils/logging/getLogChannel");
 const getMemberRoles = require("../../utils/logging/getMemberRoles");
 const formatTime = require("../../utils/formatTime");
 const { getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");

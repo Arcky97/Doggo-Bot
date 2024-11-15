@@ -1,5 +1,5 @@
 const { Client, StageInstance, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/getLogChannel');
+const getLogChannel = require('../../utils/logging/getLogChannel');
 
 module.exports = async (client, oldStageInstance, newStageInstance) => {
   try {

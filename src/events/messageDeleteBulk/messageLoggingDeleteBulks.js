@@ -1,5 +1,5 @@
 const { Client, Message, EmbedBuilder } = require("discord.js");
-const getLogChannel = require("../../utils/getLogChannel");
+const getLogChannel = require("../../utils/logging/getLogChannel");
 const ignoreLogging = require("../../utils/logging/ignoreLogging");
 
 module.exports = async (client, bulk) => {

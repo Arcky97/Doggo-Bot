@@ -1,5 +1,5 @@
 const { Client, Role, EmbedBuilder, PermissionsBitField } = require('discord.js');
-const getLogChannel = require('../../utils/getLogChannel');
+const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const categorizedPermissions = require('./../../../data/loggingPermissions.json');
 
