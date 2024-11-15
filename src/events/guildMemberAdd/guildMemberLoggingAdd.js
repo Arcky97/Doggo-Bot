@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const setActivity = require("../../utils/setActivity");
-const getLogChannel = require("../../utils/getLogChannel");
+const getLogChannel = require("../../utils/logging/getLogChannel");
 const formatTime = require("../../utils/formatTime");
 const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
 const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
