@@ -15,13 +15,14 @@ module.exports = async (client, message) => {
     const user = await getUserLevel(guildId, message.author.id);
     const levelSettings = await getLevelSettings(guildId);
     const xpSettings = await getXpSettings(guildId);
+    console.log(xpSettings);
     const xpToGive = calculateMultiplierXp(levelSettings, message, xpSettings);
+    console.log(xpToGive);
     const xpCooldown = await getXpCoolDown(guildId) * 1000;
     if (xpToGive === 0) return;
     let newLevel = 0;
     let newXp = 0;
     const channel = client.channels.cache.get(await getAnnounceChannel(guildId)) || message.channel;
-    //await deleteData('LevelSettings', { guildId: guildId});
     let userInfo;
     const ping = await getAnnouncePing(guildId) === 1 ? `<@${message.author.id}>` : ''
     const cooldownKey = `XPCD${guildId + message.author.id}`

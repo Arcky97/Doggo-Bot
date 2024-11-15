@@ -1,9 +1,16 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const loggingTypes = require('../../../data/loggingTypes.json');
 const firstLetterToUpperCase = require('../firstLetterToUpperCase');
+const { flattenObject } = require('../flattenObject');
+
 
 module.exports = (type) => {
-  const logObject = loggingTypes[type];
+  let logObject = loggingTypes[type];
+
+  if (!logObject) throw new Error(`No logging configuration found for type: ${type}`);
+
+  logObject = flattenObject(logObject);
+
   const menu = new StringSelectMenuBuilder()
     .setCustomId(`${firstLetterToUpperCase(type)} Logging Menu`)
     .setPlaceholder(`Select Log Events for ${firstLetterToUpperCase(type)} Logs`)
@@ -17,7 +24,7 @@ module.exports = (type) => {
       menu.addOptions({
         label: option.name,
         value: String(value),
-        description: option.description
+        description: option.description,
       });
     }
   }

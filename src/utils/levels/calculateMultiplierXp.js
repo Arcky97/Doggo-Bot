@@ -22,6 +22,7 @@ module.exports = (settings, message, xpSettings) => {
   } else {
     totalMultiplier += globMult;
   }
+  console.log(totalMultiplier);
   roleMult.forEach(item => {
     if (userRoles.includes(item.roleId)){
       totalMultiplier += item.value; 

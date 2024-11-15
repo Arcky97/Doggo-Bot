@@ -198,7 +198,7 @@ module.exports = {
            i.customId === 'confirm' || i.customId === 'cancel') &&
           i.user.id === interaction.user.id;
   
-        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
+        const collector = interaction.channel.createMessageComponentCollector({ filter, time: 150000 });
         let selectedOptions = [];
   
         collector.on('collect', async (i) => {

@@ -2,22 +2,22 @@
   "message": {
     "all": {
       "name": "Message Events",
-      "description": "Log all Message Events in the Server.",
+      "description": "All Message Events in the Server.",
       "value": "messageAll"
     },
     "edits": {
       "name": "Message Edits",
-      "description": "Log when a Message gets Edited in the Server.",
+      "description": "Message Edit Events in the Server.",
       "value": "messageUpdate"
     },
     "deletes": {
       "name": "Message Deletes",
-      "description": "Log when a Message gets Deleted in the Server.",
+      "description": "Message Delete Events in the Server.",
       "value": "messageDelete"
     },
     "bulks": {
       "name": "Message Bulk Deletes",
-      "description": "Log when a Bulk of Messages get Deleted in the Server.",
+      "description": "Bulk of Messages Delete Events in the Server.",
       "value": "messageDeleteBulk"
     }
   },
@@ -25,33 +25,33 @@
     "roles": {
       "all": {
         "name": "Member Role Events",
-        "description": "Log when a Role Events from a Member in the Server."
+        "description": "All Role Events of Members in the Server."
       },
       "adds": {
         "name": "Member Role Adds",
-        "description": "Log when a role is Added to a Member in the Server."
+        "description": "Role Add Events of Members in the Server."
       },
       "removes": {
         "name": "Member Role Removes",
-        "description": "Log when a Role is Removed from a Member in the Server."
+        "description": "Role Remove Events of Members in the Server."
       }
     },
     "names": {
       "all": {
         "name": "Member Name Change Events",
-        "description": "Log when a Member changes their user or global name on discord or nickname in the Server."
+        "description": "All Name Changes of Members in the Server."
       },
       "users": {
         "name": "Member User Name Changes",
-        "description": "Log when a Member changes their User Name on Discord."
+        "description": "User Name Changes of Members in the Server."
       },
       "globals": {
         "name": "Member Global Name Changes",
-        "description": "Log when a Member changes their Global Name on Discord."
+        "description": "Global Name Changes of Members in the Server."
       },
       "nicks": {
         "name": "Member Nick Name Changes",
-        "description": "Log when a Member changes their Nick (Server) Name in the Server."
+        "description": "Nick (or Server) Name Changes of Members in the Server."
       }
     },
     "avatars": {
