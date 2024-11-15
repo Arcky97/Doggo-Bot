@@ -15,9 +15,7 @@ module.exports = async (client, message) => {
     const user = await getUserLevel(guildId, message.author.id);
     const levelSettings = await getLevelSettings(guildId);
     const xpSettings = await getXpSettings(guildId);
-    console.log(xpSettings);
     const xpToGive = calculateMultiplierXp(levelSettings, message, xpSettings);
-    console.log(xpToGive);
     const xpCooldown = await getXpCoolDown(guildId) * 1000;
     if (xpToGive === 0) return;
     let newLevel = 0;
