@@ -2,7 +2,6 @@ const moment = require("moment");
 
 module.exports = async (time, full = false) => {
   const duration = moment.duration(moment().diff(time));
-
   const years = duration.years();
   const months = duration.months();
   const days = duration.days();
@@ -34,5 +33,6 @@ module.exports = async (time, full = false) => {
     timeSpent = timeParts[0];
   }
 
+  console.log(timeSpent);
   return timeSpent;
 };

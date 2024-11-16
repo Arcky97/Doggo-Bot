@@ -1,10 +1,8 @@
 const { getLevelRoles, getRoleReplace } = require("../../../database/levelSystem/setLevelSettings");
-const getMemberRoles = require("../logging/getMemberRoles");
 
 module.exports = async (guildId, member, userInfo) => {
   const levelRoles = await getLevelRoles(guildId);
   if (levelRoles.length === 0) return;
-  const userRoles = getMemberRoles(member);
   const replaceRoles = await getRoleReplace(guildId) === 1;
   const roleToAdd = levelRoles.find(data => data.level === userInfo.level);
   if (roleToAdd === null || roleToAdd === undefined) return;

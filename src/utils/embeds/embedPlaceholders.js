@@ -8,7 +8,7 @@ module.exports = async (text, input, userInfo) => {
   const guild = input.guild;
   const xpSettings = getXpSettings(guild.id);
   let userLevelInfo = userInfo ? userInfo : await getUserLevel(guild.id, input.user.id);
-  const user = input.user ? input.user : input.author;
+  const user = input.user ? input.user : input.author ? input.author : input.member.user;
   if (!userLevelInfo) {
     userLevelInfo = {
       "guildId": input.guild.id,

@@ -18,14 +18,22 @@ module.exports = async (client, message) => {
     const xpToGive = calculateMultiplierXp(levelSettings, message, xpSettings);
     const xpCooldown = await getXpCoolDown(guildId) * 1000;
     if (xpToGive === 0) return;
+    const cooldownKey = `XPCD${guildId + message.author.id}`
+    if (!cooldowns.has(cooldownKey)) {
+      cooldowns.add(cooldownKey);
+      setTimeout(() => {
+        cooldowns.delete(cooldownKey);
+      }, xpCooldown);
+    } else {
+      return;
+    }
     let newLevel = 0;
     let newXp = 0;
     const channel = client.channels.cache.get(await getAnnounceChannel(guildId)) || message.channel;
     let userInfo;
-    const ping = await getAnnouncePing(guildId) === 1 ? `<@${message.author.id}>` : ''
-    const cooldownKey = `XPCD${guildId + message.author.id}`
+    const ping = await getAnnouncePing(guildId) === 1 ? `<@${message.author.id}>` : '';
     if (user) {
-      const userLevelXp = calculateXpByLevel(user.level, xpSettings)
+      const userLevelXp = calculateXpByLevel(user.level, xpSettings);
       newXp = user.xp + xpToGive;
       newLevel = user.level;
       if (newXp > userLevelXp) {
@@ -47,17 +55,10 @@ module.exports = async (client, message) => {
         }
       }
     }
-    if (!cooldowns.has(cooldownKey)) {
-      cooldowns.add(cooldownKey);
-      setTimeout(() => {
-        cooldowns.delete(cooldownKey);
-      }, xpCooldown);
-    } else {
-      return;
-    }
-    await setUserLevelInfo(user, { guildId: guildId, memberId: message.author.id }, { level: newLevel, xp: newXp })
+
+    await setUserLevelInfo(user, { guildId: guildId, memberId: message.author.id }, { level: newLevel, xp: newXp });
     if (userInfo) {
-      let embed = await createAnnounceEmbed(message, userInfo);
+      let embed = await createAnnounceEmbed(guildId, message, userInfo);
       await channel.send({content: ping, embeds: [ embed ]});
       await giveUserLevelRole(guildId, message.member, userInfo);
     }

@@ -2,8 +2,8 @@ const { EmbedBuilder } = require("discord.js");
 const { getAnnounceMessage } = require("../../../database/levelSystem/setLevelSettings");
 const embedPlaceholders = require("../embeds/embedPlaceholders");
 
-module.exports = async (message, userLevelInfo) => {
-  let annMessage = await getAnnounceMessage(message.guild.id, userLevelInfo.level) || [];
+module.exports = async (guildId, message, userLevelInfo) => {
+  let annMessage = await getAnnounceMessage(guildId, userLevelInfo.level) || [];
   if (annMessage.length > 0 && !annMessage.lv) annMessage = annMessage.options;
   const user = message;
   const footerUrl = annMessage.length > 0 ? await embedPlaceholders(annMessage.footer.iconUrl, user, userLevelInfo) : null; 

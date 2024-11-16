@@ -377,7 +377,7 @@ module.exports = {
               name: 'value',
               description: 'the amount of XP.',
               minValue: 1,
-              maxValue: 100,
+              maxValue: 500,
               required: true 
             }
           ]
@@ -391,7 +391,8 @@ module.exports = {
               type: ApplicationCommandOptionType.Number,
               name: 'value',
               description: 'The cooldown value.',
-              minValue: 1,
+              minValue: 10,
+              maxValue: 300,
               required: true
             }
           ]
@@ -707,7 +708,7 @@ module.exports = {
               break;
             case 'multiplier':
               existingSetting = levSettings.voiceMultiplier;
-              value = Math.round(value * 100);
+              value = Math.round(value);
               if (existingSetting !== value) {
                 setting = {'voiceMultiplier': value};
                 embed = createSuccessEmbed({int: interaction, title: `Voice Multiplier Updated!`, descr: `The Voice Multiplier has been updated to \`${value}%\`.`});
@@ -717,10 +718,8 @@ module.exports = {
               break;
             case 'cooldown':
               existingSetting = levSettings.voiceCooldown;
-              console.log(levSettings);
               let minXp = JSON.parse(levSettings.xpSettings).min;
               let maxXp = JSON.parse(levSettings.xpSettings).max;
-              console.log([minXp, maxXp, levSettings.voiceMultiplier]);
               if (existingSetting !== value) {
                 setting = {'voiceCooldown': value};
                 embed = createSuccessEmbed({int: interaction, title: 'Voice Cooldown Updated!', descr: `The Voice Cooldown has been updated to \`${value}\` ${value > 1 ? 'seconds' : 'second'}. \nYou'll now earn ${minXp + Math.round((minXp * levSettings.voiceMultiplier) / 100)} - ${maxXp + Math.round((maxXp * levSettings.voiceMultiplier) / 100)}xp for every ${value > 1 ? `${value} seconds` : 'second'} spent in Voice Activity.`})
@@ -836,7 +835,7 @@ module.exports = {
               }
               break;
           }
-          
+          interaction.editReply({ embeds: [embed] });
           break;
         default: // lvsys settings
           embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess)
