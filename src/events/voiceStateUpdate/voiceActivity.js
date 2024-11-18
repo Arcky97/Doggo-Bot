@@ -1,15 +1,13 @@
-const { Client, VoiceState, EmbedBuilder, GuildWidgetStyle } = require('discord.js');
+const { Client, VoiceState, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const ignoreLogging = require('../../utils/logging/ignoreLogging');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const { getLevelSettings, getXpSettings, getAnnounceChannel, getAnnouncePing } = require('../../../database/levelSystem/setLevelSettings');
+const { getLevelSettings, getXpSettings } = require('../../../database/levelSystem/setLevelSettings');
 const calculateVoiceXp = require('../../utils/levels/calculateVoiceXp');
 const formatTime = require('../../utils/formatTime');
-const { getUserLevel, setUserLevelInfo } = require('../../../database/levelSystem/setLevelSystem');
-const calculateXpByLevel = require('../../utils/levels/calculateXpByLevel');
-const calculateLevelByXp = require('../../utils/levels/calculateLevelByXp');
-const createAnnounceEmbed = require('../../utils/levels/createAnnounceEmbed');
 const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
+const sendAnnounceMessage = require('../../utils/levels/sendAnnounceMessage');
+const generateUserInfo = require('../../utils/levels/generateUserInfo');
 const voiceActivity = new Map();
 
 module.exports = async (client, oldState, newState) => {
@@ -49,25 +47,12 @@ module.exports = async (client, oldState, newState) => {
         voiceActivity.delete(newState.guild.id + newState.member.id);
         const secondsSpent = Math.floor(timeSpent / 1000); // convert to seconds
         if (levelSettings.voiceEnable && newState.guild.afkChannelId !== oldState.channel.id) {
-          const totalXp = await calculateVoiceXp(newState.guild.id, secondsSpent);
+          const xpToGive = await calculateVoiceXp(newState.guild.id, oldState.channel.id, secondsSpent);
           const xpSettings = await getXpSettings(newState.guild.id);
-          const userLevelInfo = await getUserLevel(newState.guild.id, newState.member.id);
-          if (userLevelInfo) {
-            const newXp = userLevelInfo.xp + totalXp;
-            const newLevel = calculateLevelByXp(newXp, xpSettings);
-            const userInfo = {
-              level: newLevel,
-              xp: newXp,
-              color: userLevelInfo.color 
-            }
-            await setUserLevelInfo(userLevelInfo, { guildId: newState.guild.id, memberId: newState.member.id }, { level: newLevel, xp: newXp });
-            let levelEmbed = await createAnnounceEmbed(newState.guild.id, newState, userInfo);
-            if (userLevelInfo.level !== userInfo.level) {
-              const channel = client.channels.cache.get(await getAnnounceChannel(newState.guild.id));
-              const ping = await getAnnouncePing(newState.guild.id) === 1 ? `<@${newState.member.id}>` : '';
-              await channel.send({content: ping, embeds: [levelEmbed] });
-              await giveUserLevelRole(newState.guild.id, newState.member, userInfo);
-            }
+          const userInfo = await generateUserInfo(newState.guild.id, newState.member, xpToGive, xpSettings);
+          if (userInfo) {
+            await sendAnnounceMessage(client, newState, newState.member, userInfo);
+            await giveUserLevelRole(newState.guild.id, newState.member, userInfo);
           }
         } else {
           console.log('Was in AFK channel so no xp will be earned.');

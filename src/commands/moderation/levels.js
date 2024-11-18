@@ -11,6 +11,7 @@ const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings"
 const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
 const { resetLevelSystem, getAllUsersLevel, getUserLevel } = require("../../../database/levelSystem/setLevelSystem");
 const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
+const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
 
 module.exports = {
   name: 'lvsys',
@@ -482,9 +483,26 @@ module.exports = {
               break;
             case 'channel':
               channel = interaction.options.getChannel('name');
-              [action, setData] = setChannelOrRoleArray('channel', data, channel.id, value);
-              setting = { 'channelMultipliers': setData };
-              embed = createSuccessEmbed({int: interaction, title: `Channel Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!`});
+              const channelTypeName = getChannelTypeName(channel);
+              if ([0, 2, 4].some(type => type === channel.type)) {
+                if (interaction.guild.afkChannelId !== channel.id) {
+                  if (channel.type !== 4) { // Text or Voice Channel
+                    [action, setData] = setChannelOrRoleArray('channel', data, channel.id, value);
+                    setting = { 'channelMultipliers': setData };
+                    embed = createSuccessEmbed({int: interaction, title: `Channel Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!`});
+                  } else {
+                    data = await getRoleOrChannelMultipliers({ id: guildId, type: 'category' }) || [];
+                    [action, setData] = setChannelOrRoleArray('category', data, channel.id, value);
+                    setting = { 'categoryMultipliers': setData};
+                    embed = createSuccessEmbed({int: interaction, title: `Category Multiplier ${action}!`, descr: `The Category ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\``: action}!`});
+                  }
+                } else {
+                  embed = createWarningEmbed({int: interaction, title: 'Multiplier not Set!', descr: `${channel} is set as AFK Voice Channel for this Server and can't have a multiplier. \n(You can't earn XP there anyway.)`});
+                }
+              } else {
+                embed = createWarningEmbed({int: interaction, title: 'Channel Type not supported!', descr: `Setting a Channel Multiplier for ${channelTypeName} is not supported!`});
+              }
+
               interaction.editReply({embeds: [embed]});
               break
             case 'role':

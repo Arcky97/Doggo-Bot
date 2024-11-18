@@ -1,5 +1,7 @@
 function setChannelOrRoleArray(type, data, id, value) {
+  
   const index = data.findIndex(item => item[`${type}Id`] === id);
+  console.log(index)
   let action; 
 
   if (index === -1) { // data doesn't exist

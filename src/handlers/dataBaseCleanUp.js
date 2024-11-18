@@ -2,10 +2,16 @@ const cron = require('node-cron');
 const { query } = require('../../database/db');
 const { deleteData } = require('../../database/controlData/deleteData');
 const { updateData } = require('../../database/controlData/updateData');
+const moment = require("moment");
 
 const tables = ['GuildSettings', 'LevelSystem', 'LevelSettings', 'EventEmbeds', 'GeneratedEmbeds', 'ReactionRoles'];
 
-console.log('Initializing database cleanup job');
+console.log(
+  '-----------------------------------\n' + 
+  `${moment().local().format('YYYY-MM-DD HH:mm:ss')}\n` +
+  'Initializing database cleanup job\n' + 
+  '-----------------------------------'
+);
 
 cron.schedule('0 0 * * *', async () => {
   try {

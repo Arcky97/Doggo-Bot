@@ -16,12 +16,12 @@ async function initDatabase() {
       queueLimit: 0
     });
 
-    console.log('Connected to the database successfully!');
+    console.log('Connected to the database!');
 
     //const editLevelSettingsTable = `ALTER TABLE LevelSettings CHANGE COLUMN announceLevelMessages TEXT AFTER announceDefaultMessage;`;
     //await pool.query(editLevelSettingsTable);
 
-    //const editTable = `ALTER TABLE LevelSettings ADD COLUMN xpSettings JSON DEFAULT '{ "step": 40, "min": 15, "max": 25 }'`;
+    //const editTable = `ALTER TABLE LevelSettings MODIFY COLUMN blackListCategories JSON AFTER blackListChannels`;
     //const editTable = `ALTER TABLE LevelSettings CHANGE COLUMN xpSettings xpSettings JSON AFTER xpCooldown;`;
     //await pool.query(editTable);
 
@@ -200,10 +200,11 @@ async function initDatabase() {
     await pool.query(createGeneratedEmbedsTable);
     await pool.query(createReactionRolesTable);
     await pool.query(createUserStatsTable);
-    console.log('Tables created successfully!');
+    console.log('Tables Created!');
   } catch (err) {
     console.error('Error initializing the database:', err);
   }
+  console.log('-----------------------------------');
 }
 
 // Function to execute queries

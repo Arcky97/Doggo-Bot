@@ -23,6 +23,8 @@ module.exports = async (client) => {
       console.error(`Failed to send message to channel ${channelId}:`, error);
     }
   } else {
-    console.error(`Channel with ID ${channelId} not found!`);
+    console.error(`Channel with ID '${channelId}' not found!`);
+    console.log('-----------------------------------');
   }
+  
 }

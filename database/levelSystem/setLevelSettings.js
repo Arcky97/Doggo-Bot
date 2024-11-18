@@ -23,6 +23,8 @@ async function getRoleOrChannelMultipliers({id, type}) {
     return JSON.parse(data.roleMultipliers);
   } else if (type === 'channel') {
     return JSON.parse(data.channelMultipliers);
+  } else if (type === 'category') {
+    return JSON.parse(data.categoryMultipliers);
   }
 }
 

@@ -14,7 +14,8 @@ async function getAllUsersLevel(guildId) {
 }
 
 async function getUserLevel(guildId, memberId) {
-  return await selectData('LevelSystem', { guildId: guildId, memberId: memberId });
+  const data = await selectData('LevelSystem', { guildId: guildId, memberId: memberId });
+  return data || { level: 0, xp: 0, color: '#f97316'};
 }
 
 async function addUserColor(guildId, memberId, color) {
