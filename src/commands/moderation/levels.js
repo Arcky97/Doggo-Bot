@@ -12,6 +12,8 @@ const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
 const { resetLevelSystem, getAllUsersLevel, getUserLevel } = require("../../../database/levelSystem/setLevelSystem");
 const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
 const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
+const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
+const getVowel = require("../../utils/getVowel");
 
 module.exports = {
   name: 'lvsys',
@@ -40,7 +42,7 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'channel',
-          description: 'add/remove the XP Multiplier for 1 or more Channels.',
+          description: 'Add/Remove the XP Multiplier for 1 or more Channels.',
           options: [
             {
               type: ApplicationCommandOptionType.Channel,
@@ -54,14 +56,35 @@ module.exports = {
               description: 'The Channel Multiplier.',
               minValue: 0.01,
               maxValue: 5.0,
-              required: true,
+              required: true
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'category',
+          description: 'Add/Remove the XP Multiplier for 1 or more Categories.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'name',
+              description: 'The Category name.',
+              required: true 
+            },
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'value',
+              description: 'The Category Multiplier.',
+              minValue: 0.01,
+              maxValue: 5.0,
+              required: true
             }
           ]
         },
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'role',
-          description: 'Add/remove the XP Multiplier for 1 or more Roles.',
+          description: 'Add/Remove the XP Multiplier for 1 or more Roles.',
           options: [
             {
               type: ApplicationCommandOptionType.Role,
@@ -215,7 +238,7 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'channel',
-          description: "Add/remove a Channel to the black list that won't give XP.",
+          description: 'Add a Channel to the black list that won\'t give XP.',
           options: [
             {
               type: ApplicationCommandOptionType.Channel,
@@ -227,8 +250,21 @@ module.exports = {
         },
         {
           type: ApplicationCommandOptionType.Subcommand,
+          name: 'category',
+          description: 'Add a Category to the black list that won\'t give XP.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'name',
+              description: 'The Category name.',
+              required: true
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
           name: 'role',
-          description: "Add a Role to the black list that won't give XP (mention the same channel to remove it.)",
+          description: 'Add a Role to the black list that won\'t give XP (mention the same channel to remove it.)',
           options: [
             {
               type: ApplicationCommandOptionType.Role,
@@ -479,31 +515,24 @@ module.exports = {
             case 'global':
               setting = { 'globalMultiplier': value };
               embed = createSuccessEmbed({int: interaction, title: 'Global Multiplier Set!', descr: `The Global Multiplier has been set to \`${value}%\`!`});
-              interaction.editReply({embeds: [embed]});
               break;
-            case 'channel':
+            case 'channel': // check if subCmd is 'channel'
+            case 'category': // check if subCmd is 'category'
               channel = interaction.options.getChannel('name');
               const channelTypeName = getChannelTypeName(channel);
               if ([0, 2, 4].some(type => type === channel.type)) {
-                if (interaction.guild.afkChannelId !== channel.id) {
-                  if (channel.type !== 4) { // Text or Voice Channel
-                    [action, setData] = setChannelOrRoleArray('channel', data, channel.id, value);
-                    setting = { 'channelMultipliers': setData };
-                    embed = createSuccessEmbed({int: interaction, title: `Channel Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!`});
-                  } else {
-                    data = await getRoleOrChannelMultipliers({ id: guildId, type: 'category' }) || [];
-                    [action, setData] = setChannelOrRoleArray('category', data, channel.id, value);
-                    setting = { 'categoryMultipliers': setData};
-                    embed = createSuccessEmbed({int: interaction, title: `Category Multiplier ${action}!`, descr: `The Category ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\``: action}!`});
-                  }
+                if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 0))) {
+                  embed = createWarningEmbed({int: interaction, title: 'Multiplier not Set!', descr: `${channel} is not a ${firstLetterToUpperCase(subCmd)}.\n Please use \`/lvsys ${subCmdGroup} ${subCmd === 'channel' ? 'category' : 'channel'}\` instead.`});
+                } else if (interaction.guild.afkChannelId !== channel.id) {
+                  [action, setData] = setChannelOrRoleArray(subCmd, data, channel.id, value);
+                  setting = { [`${subCmd}Multipliers`]: setData };
+                  embed = createSuccessEmbed({int: interaction, title: `${firstLetterToUpperCase(subCmd)} Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!`});
                 } else {
                   embed = createWarningEmbed({int: interaction, title: 'Multiplier not Set!', descr: `${channel} is set as AFK Voice Channel for this Server and can't have a multiplier. \n(You can't earn XP there anyway.)`});
                 }
               } else {
                 embed = createWarningEmbed({int: interaction, title: 'Channel Type not supported!', descr: `Setting a Channel Multiplier for ${channelTypeName} is not supported!`});
               }
-
-              interaction.editReply({embeds: [embed]});
               break
             case 'role':
               role = interaction.options.getRole('name');
@@ -514,13 +543,13 @@ module.exports = {
               } else {
                 embed = createWarningEmbed({int: interaction, descr: `A Role Multiplier can't be set for ${role}.`});
               }
-              interaction.editReply({embeds: [embed]});
               break;
             case 'settings':
               embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults);
-              await interaction.editReply({ embeds: [embed] });
+              
               break;
           }
+          interaction.editReply({ embeds: [embed] });
           break;
         case 'announce':
           let embedOptions;
@@ -664,10 +693,22 @@ module.exports = {
           data = await getRoleOrChannelBlacklist({id: guildId, type: subCmd }) || [];
           switch (subCmd) {
             case 'channel':
+            case 'category':
               channel = interaction.options.getChannel('name');
-              [action, setData] = setChannelOrRoleArray('channel', data, channel.id);
-              setting = { 'blackListChannels' : setData };
-              embed = createSuccessEmbed({int: interaction, title: `Channel ${action}!`, descr: `${channel} has been ${action} to the Black List.`});
+              const channelTypeName = getChannelTypeName(channel);
+              if ([0, 2, 4].some(type => type === channel.type)) {
+                if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 4))) {
+                  embed = createWarningEmbed({int: interaction, title: 'Black List not Updated', descr: `${channel} is not a ${firstLetterToUpperCase(subCmd)}.\n Please use \`lvsys ${subCmdGroup} ${subCmd === 'channel' ? 'category' : 'channel'}\` instead.`});
+                } else if (interaction.guild.afkChannelId !== channel.id) {
+                  [action, setData] = setChannelOrRoleArray(subCmd, data, channel.id);
+                  setting = { [`blackList${subCmd === 'channel' ? `${firstLetterToUpperCase(subCmd)}s` : `${subCmd.replace(/y$/, 'ies')}`}`] : setData };
+                  embed = createSuccessEmbed({int: interaction, title: `${firstLetterToUpperCase(subCmd)} ${action}!`, descr: `${channel} has been ${action} to the Black List.`});
+                } else {
+                  embed = createWarningEmbed({int: interaction, title: 'Black List not Updated', descr: `Adding ${channel} to the Black List will have no effect as this Voice Channel is set as the AFK Channel. You can't earn XP in the AFK Voice Channel anyways.`});
+                }
+              } else {
+                embed = createWarningEmbed({int: interaction, title: 'Channel Type not supported!', descr: `You can't add ${getVowel(channelTypeName)} to the ${firstLetterToUpperCase(subCmd)} Black List.`});
+              }
               break;
             case 'role':
               role = interaction.options.getRole('name');
@@ -679,7 +720,7 @@ module.exports = {
               embed = showBlacklistSettings(blackListRoles, blackListChannels);
               break;
           }
-          await interaction.editReply({ embeds: [embed] });
+          interaction.editReply({ embeds: [embed] });
           break;
         case 'roles':
           data = await getLevelRoles(guildId) || [];
@@ -860,7 +901,8 @@ module.exports = {
           interaction.editReply({ embeds: [embed] });
           break;
       }
-      if (subCmd !== 'settings' && subCmd !== 'show' && subCmdGroup !== 'reset') {
+      if (setting && subCmd !== 'settings' && subCmd !== 'show' && subCmdGroup !== 'reset') {
+        console.log(setting);
         await setLevelSettings({ 
           id: guildId,
           setting

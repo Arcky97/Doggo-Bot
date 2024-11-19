@@ -16,10 +16,18 @@ console.log(
 cron.schedule('0 0 * * *', async () => {
   try {
     const now = new Date();
+    console.log(
+      '-----------------------------------\n' +
+      `${moment().local().format('YYYY-MM-DD HH:mm:ss')}\n` +
+      'Cleanup Job Started. Tables Checked:'
+    )
     const cleanupInfo = await cleanupExpiredData(now);
-    console.log(`Cleanup Job completed. Tables cleaned: ${cleanupInfo.length}`);
+    console.log(
+      '-----------------------------------\n' +
+      `Cleanup Job completed. Tables Cleaned: ${cleanupInfo.length}`
+    );
     cleanupInfo.forEach(info => {
-      console.log(`Table: ${info.table}, Rows deleted: ${info.rowsDeleted}`)
+      console.log(`Table: ${info.table}, Rows deleted: ${info.rowsDeleted}`);
     });
   } catch (error) {
     console.error('Error running cleanup job:', error);
@@ -31,8 +39,10 @@ async function cleanupExpiredData(now) {
 
   for (const table of tables) {
     const [rowsToDelete] = await query(`SELECT COUNT(*) AS count FROM ${table} WHERE deletionDate IS NOT NULL AND deletionDate < ?`, [now]);
+    const [rowsToCount] = await query(`SELECT COUNT(*) AS count FROM ${table}`);
     const rowsDeleted = rowsToDelete[0]?.count || 0;
-
+    const rowsCounted = rowsToCount[0]?.count || 0;
+    console.log(`Table: ${table}, Rows checked: ${rowsCounted}`);
     if (rowsDeleted > 0) {
       await query(`DELETE FROM ${table} WHERE deletionDate IS NOT NULL AND deletionDate < ?`, [now]);
     }
