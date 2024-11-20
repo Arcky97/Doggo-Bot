@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js")
 
-module.exports = (levSettings, globalMult, roleMults, channelMults) => {
+module.exports = (levSettings, globalMult, roleMults, channelMults, categoryMults) => {
   let embed = new EmbedBuilder()
     .setColor('Green')
     .setTitle('Level System Multiplier Settings')
@@ -13,12 +13,16 @@ module.exports = (levSettings, globalMult, roleMults, channelMults) => {
       {
         name: 'Global Multiplier',
         value: levSettings.globalMultiplier ? `\`${globalMult}%\`` : 'not set',
-        inline: true 
       },
       {
         name: 'Role Multipliers',
         value: roleMults,
         inline: true 
+      },
+      {
+        name: 'Category Multipliers',
+        value: categoryMults,
+        inline: true
       },
       {
         name: 'Channel Multipliers',

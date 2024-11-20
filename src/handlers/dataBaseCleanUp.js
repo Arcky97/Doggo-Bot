@@ -19,6 +19,7 @@ cron.schedule('0 0 * * *', async () => {
     console.log(
       '-----------------------------------\n' +
       `${moment().local().format('YYYY-MM-DD HH:mm:ss')}\n` +
+      '-----------------------------------\n' +
       'Cleanup Job Started. Tables Checked:'
     )
     const cleanupInfo = await cleanupExpiredData(now);

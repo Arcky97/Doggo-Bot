@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js")
 
-module.exports = (blackListRoles, blackListChannels) => {
+module.exports = (blackListRoles, blackListChannels, blackListCategories) => {
   let embed = new EmbedBuilder()
     .setColor('Green')
     .setTitle('Level System Black List Settings')
@@ -9,6 +9,11 @@ module.exports = (blackListRoles, blackListChannels) => {
       {
         name: 'Black Listed Roles',
         value: blackListRoles,
+        inline: true
+      },
+      {
+        name: 'Black Listed Categories',
+        value: blackListCategories,
         inline: true
       },
       {

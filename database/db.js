@@ -21,7 +21,8 @@ async function initDatabase() {
     //const editLevelSettingsTable = `ALTER TABLE LevelSettings CHANGE COLUMN announceLevelMessages TEXT AFTER announceDefaultMessage;`;
     //await pool.query(editLevelSettingsTable);
 
-    //const editTable = `ALTER TABLE LevelSettings MODIFY COLUMN blackListCategories JSON AFTER blackListChannels`;
+    //const editTable = `ALTER TABLE LevelSettings MODIFY announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!}", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }'`;
+    //const editTable = `ALTER TABLE LevelSettings MODIFY categoryMultipliers JSON DEFAULT '[]'`;
     //const editTable = `ALTER TABLE LevelSettings CHANGE COLUMN xpSettings xpSettings JSON AFTER xpCooldown;`;
     //await pool.query(editTable);
 
@@ -97,12 +98,14 @@ async function initDatabase() {
         roleReplace BOOLEAN DEFAULT false,
         announceChannel VARCHAR(100) DEFAULT 'not set',
         announcePing BOOLEAN DEFAULT false,
-        announceDefaultMessage JSON DEFAULT '[]',
+        announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!}", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }',
         announceLevelMessages JSON DEFAULT '[]',
         roleMultipliers JSON DEFAULT '[]',
         channelMultipliers JSON DEFAULT '[]',
+        categoryMultipliers JSON DEFAULT '[]',
         blackListRoles JSON DEFAULT '[]',
         blackListChannels JSON DEFAULT '[]',
+        blackListCategories JSON DEFAULT '[]',
         xpCooldown INT DEFAULT 30,
         xpSettings JSON DEFAULT '{ "step": 40, "min": 15, "max": 25 }',
         clearOnLeave BOOLEAN DEFAULT false,

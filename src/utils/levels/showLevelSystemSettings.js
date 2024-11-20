@@ -1,12 +1,14 @@
 const { EmbedBuilder } = require("discord.js");
 
-module.exports = (interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess) => {
+module.exports = (interaction, levSettings, globalMult, roleMults, categoryMults, channelMults, levelRoles, blackListRoles, blackListCategories, blackListChannels, annMess) => {
   let embed;
 
   if(levSettings) {
     let roleMultLength = JSON.parse(levSettings.roleMultipliers).length;
+    let categoryMultLength = JSON.parse(levSettings.categoryMultipliers).length;
     let channelMultLength = JSON.parse(levSettings.channelMultipliers).length;
     let roleBlackListLength = JSON.parse(levSettings.blackListRoles).length;
+    let categoryBlackListLength = JSON.parse(levSettings.blackListCategories).length;
     let channelBlackListLength = JSON.parse(levSettings.blackListChannels).length; 
     embed = new EmbedBuilder()
       .setColor('Orange')
@@ -20,11 +22,15 @@ module.exports = (interaction, levSettings, globalMult, roleMults, channelMults,
         {
           name: 'Global Multiplier',
           value: levSettings.globalMultiplier ? `\`${globalMult}%\`` : 'not set',
-          inline: true
         },
         {
           name: 'Role Multipliers',
           value: roleMults !== 'none' ? `${roleMultLength} ${roleMultLength > 1 ? 'Roles' : 'Role'}` : roleMults,
+          inline: true
+        },
+        {
+          name: 'Category Multipliers',
+          value: categoryMults !== 'none' ? `${categoryMultLength} ${categoryMultLength > 1 ? 'categories' : 'category'}` : categoryMults,
           inline: true
         },
         {
@@ -49,12 +55,16 @@ module.exports = (interaction, levSettings, globalMult, roleMults, channelMults,
         },
         {
           name: 'Clear on Leave',
-          value: levSettings.clearOnLeave ? 'Enabled' : 'Disabled',
-          inline: true
+          value: levSettings.clearOnLeave ? 'Enabled' : 'Disabled'
         },
         {
           name: 'Black Listed Roles',
           value: blackListRoles !== 'none' ? `${roleBlackListLength} ${roleBlackListLength > 1 ? 'Roles' : 'Role'}` : blackListRoles,
+          inline: true 
+        },
+        {
+          name: 'Black Listed Categories',
+          value: blackListCategories !== 'none' ? `${categoryBlackListLength} ${categoryBlackListLength > 1 ? 'Categories' : 'Category'}` : blackListCategories,
           inline: true 
         },
         {

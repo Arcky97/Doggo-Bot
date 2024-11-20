@@ -486,10 +486,12 @@ module.exports = {
         globalMult = levSettings.globalMultiplier
         roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
         channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
+        categoryMults = createListFromArray(levSettings.categoryMultipliers, '- `${value}%` - <#${categoryId}>');
         levelRoles = createListFromArray(levSettings.levelRoles, 'lv. ${level} - <@&${roleId}>');
         annMess = JSON.parse(levSettings.announceLevelMessages);
         blackListRoles = createListFromArray(levSettings.blackListRoles, '- <@&${roleId}>');
         blackListChannels = createListFromArray(levSettings.blackListChannels, '- <#${channelId}>');
+        blackListCategories = createListFromArray(levSettings.blackListCategories, '- <#${categoryId}>');
       }
     } catch (error) {
       console.log('Error retrieving level system settings', error);
@@ -545,7 +547,7 @@ module.exports = {
               }
               break;
             case 'settings':
-              embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults);
+              embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults, categoryMults);
               
               break;
           }
@@ -617,6 +619,7 @@ module.exports = {
               } else {
                 embedOptions = JSON.parse(levSettings.announceDefaultMessage);
               }
+              console.log(embedOptions)
               if (embedOptions) {
                 embed = new EmbedBuilder()
                   .setColor(await embedPlaceholders(embedOptions.color, interaction))
@@ -636,37 +639,37 @@ module.exports = {
             case 'placeholders':
               const fieldObject = {
                 "user": [
-                  '**{user id}** (The user\'s ID)', 
-                  '**{user mention}** (Mention the User)', 
-                  '**{user name}** (The user\'s name)', 
-                  '**{user global}** (The user\'s Global name)', 
-                  '**{user nick}** (The User\'s nickname)', 
-                  '**{user avatar}** (The user\'s Avatar Url)', 
-                  '**{user color}** (The user\'s Rank Card Color)'
+                  '{user id}** (The user\'s ID)', 
+                  '{user mention}** (Mention the User)', 
+                  '{user name}** (The user\'s name)', 
+                  '{user global}** (The user\'s Global name)', 
+                  '{user nick}** (The User\'s nickname)', 
+                  '{user avatar}** (The user\'s Avatar Url)', 
+                  '{user color}** (The user\'s Rank Card Color)'
                 ],
                 "level and xp": [
-                  '**{user xp}** (The user\'s current level XP)', 
-                  '**{level}** (The user\'s current level)', 
-                  '**{level previous}** (The user\'s previous level)', 
-                  '**{level previous xp}** (The user\'s previous level XP)', 
-                  '**{level next}** (The user\'s next level)', 
-                  '**{level next xp}** (The user\'s next level XP)'
+                  '{user xp}** (The user\'s current level XP)', 
+                  '{level}** (The user\'s current level)', 
+                  '{level previous}** (The user\'s previous level)', 
+                  '{level previous xp}** (The user\'s previous level XP)', 
+                  '{level next}** (The user\'s next level)', 
+                  '{level next xp}** (The user\'s next level XP)'
                 ],
                 "level awards": [
-                  '**{reward}** (The Reward Role)', 
-                  '**{reward role name}** (The Reward Role\'s name)', 
-                  '**{reward rolecount}** (The total Reward Count)', 
-                  '**{reward rolecount progress}** (The Reward progress in **{reward rolecount progress}** format)', '**{reward previous}** (The previous Reward Role)', 
-                  '**{reward next}** (The next Reward Role)'
+                  '{reward}** (The Reward Role)', 
+                  '{reward role name}** (The Reward Role\'s name)', 
+                  '{reward rolecount}** (The total Reward Count)', 
+                  '{reward rolecount progress}** (The Reward progress in {reward rolecount progress} format)', '{reward previous} (The previous Reward Role)', 
+                  '{reward next}** (The next Reward Role)'
                 ],
                 "server": [
-                  '**{server id}** (The Server\'s ID)', 
-                  '**{server name}** (The Server\'s name)', 
-                  '**{server member count}** (The total Members in the Server)', 
-                  '**{server icon}** (The Server Icon Url)'
+                  '{server id}** (The Server\'s ID)', 
+                  '{server name}** (The Server\'s name)', 
+                  '{server member count}** (The total Members in the Server)', 
+                  '{server icon}** (The Server Icon Url)'
                 ],
                 "other" : [
-                  '{new line} (Add a new line)'
+                  '{new line} (Add a new line)**'
                 ]
               }
               embed = new EmbedBuilder()
@@ -675,7 +678,7 @@ module.exports = {
                 .setTimestamp()
               for (const [key, placeholders] of Object.entries(fieldObject)) {
                 const values = await Promise.all(
-                  placeholders.map(async (placeholder) => `\`${placeholder.split('}')[0] + '}'}\` = ${await embedPlaceholders(placeholder, interaction)}`)
+                  placeholders.map(async (placeholder) => `\`${placeholder.split('}')[0] + '}'}\` = **${await embedPlaceholders(placeholder, interaction)}`)
                 );
                 const valueString = values.join('\n - ').trim();
                 embed.addFields(
@@ -697,7 +700,7 @@ module.exports = {
               channel = interaction.options.getChannel('name');
               const channelTypeName = getChannelTypeName(channel);
               if ([0, 2, 4].some(type => type === channel.type)) {
-                if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 4))) {
+                if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 0))) {
                   embed = createWarningEmbed({int: interaction, title: 'Black List not Updated', descr: `${channel} is not a ${firstLetterToUpperCase(subCmd)}.\n Please use \`lvsys ${subCmdGroup} ${subCmd === 'channel' ? 'category' : 'channel'}\` instead.`});
                 } else if (interaction.guild.afkChannelId !== channel.id) {
                   [action, setData] = setChannelOrRoleArray(subCmd, data, channel.id);
@@ -717,7 +720,7 @@ module.exports = {
               embed = createSuccessEmbed({int: interaction, title: `Role ${action}!`, descr: `${role} has been ${action} to the Black List.`});
               break;
             case 'settings':
-              embed = showBlacklistSettings(blackListRoles, blackListChannels);
+              embed = showBlacklistSettings(blackListRoles, blackListChannels, blackListCategories);
               break;
           }
           interaction.editReply({ embeds: [embed] });
@@ -797,6 +800,7 @@ module.exports = {
           switch(subCmd) {
             case 'settings':
               await resetLevelSettings(guildId);
+              interaction.editReply({ embeds: [embed] });
               embed = createSuccessEmbed({int: interaction, title: 'Level Settings Resetted!', descr: 'All Level System Setting have been resetted.'})
               break;
             case 'levels':
@@ -897,12 +901,11 @@ module.exports = {
           interaction.editReply({ embeds: [embed] });
           break;
         default: // lvsys settings
-          embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, channelMults, levelRoles, blackListRoles, blackListChannels, annMess)
+          embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, categoryMults, channelMults,  levelRoles, blackListRoles, blackListCategories, blackListChannels, annMess)
           interaction.editReply({ embeds: [embed] });
           break;
       }
       if (setting && subCmd !== 'settings' && subCmd !== 'show' && subCmdGroup !== 'reset') {
-        console.log(setting);
         await setLevelSettings({ 
           id: guildId,
           setting

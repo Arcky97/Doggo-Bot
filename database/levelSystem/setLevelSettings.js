@@ -34,6 +34,8 @@ async function getRoleOrChannelBlacklist({id, type}) {
     return JSON.parse(data.blackListRoles);
   } else if (type === 'channel') {
     return JSON.parse(data.blackListChannels);
+  } else if (type === 'category') {
+    return JSON.parse(data.blackListCategories);
   }
 }
 
