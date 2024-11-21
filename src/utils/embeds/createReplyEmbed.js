@@ -7,7 +7,7 @@ function createReplyEmbed(interaction, color, title, description, footer = true,
     .setColor(color)
     .setTitle(embedTitle)
     .setDescription(description)
-    .setImage("https://cdn.discordapp.com/attachments/934542823724818452/1309048224824430643/Doggo_Bot_Icon_Profile3_20241121144556.png?ex=674029a9&is=673ed829&hm=701dda210a5dbf5989ab7c7aae453e1b96ff4e120cb81276f10eabfb0e8eef0e&")
+    .setThumbnail("https://cdn.discordapp.com/attachments/934542823724818452/1309048224824430643/Doggo_Bot_Icon_Profile3_20241121144556.png?ex=674029a9&is=673ed829&hm=701dda210a5dbf5989ab7c7aae453e1b96ff4e120cb81276f10eabfb0e8eef0e&")
     if (footer) {
       embed.setFooter({
         text: interaction.guild.name,
