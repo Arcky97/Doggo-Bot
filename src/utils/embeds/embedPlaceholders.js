@@ -6,18 +6,9 @@ const calculateXpByLevel = require("../levels/calculateXpByLevel");
 module.exports = async (text, input, userInfo) => {
   if (!text) return null;
   const guild = input.guild;
-  const xpSettings = getXpSettings(guild.id);
+  const xpSettings = await getXpSettings(guild.id);
   let userLevelInfo = userInfo ? userInfo : await getUserLevel(guild.id, input.user.id);
   const user = input.user ? input.user : input.author ? input.author : input.member.user;
-  if (!userLevelInfo) {
-    userLevelInfo = {
-      "guildId": input.guild.id,
-      "memberId": user.id,
-      "level": 0,
-      "xp": 0,
-      "color": "#f97316"
-    };
-  }
   const levelRoles = await getLevelRoles(guild.id);
   const reward = userLevelInfo ? levelRoles.find(data => data.level === userLevelInfo?.level) : 'no reward';
   let rewardName = 'no reward';

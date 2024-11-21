@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings, getXpSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
@@ -14,6 +14,8 @@ const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbe
 const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 const getVowel = require("../../utils/getVowel");
+const createAnnounceEmbed = require("../../utils/levels/createAnnounceEmbed");
+const calculateLevelByXp = require("../../utils/levels/calculateLevelByXp");
 
 module.exports = {
   name: 'lvsys',
@@ -576,11 +578,11 @@ module.exports = {
               }
               break;
             case 'message':
-              console.log(interaction.options.getBoolean('timestamp'));
+              const color = interaction.options.getString('color');
               embedOptions = {
                 title: interaction.options.getString('title') || '{user global} has leveled up!',
                 description: interaction.options.getString('description') || '{Congrats you leveled up to lv. {level}!',
-                color: interaction.options.getString('color') || await getOrConvertColor('green'),
+                color: color.startsWith('{') ? color : await getOrConvertColor(color) || '{user color}',
                 thumbnailUrl: interaction.options.getBoolean('thumbnailurl') ? '{user avatar}' : null,
                 imageUrl: interaction.options.getString('imageurl'),
                 footer: {
@@ -619,19 +621,17 @@ module.exports = {
               } else {
                 embedOptions = JSON.parse(levSettings.announceDefaultMessage);
               }
-              console.log(embedOptions)
               if (embedOptions) {
-                embed = new EmbedBuilder()
-                  .setColor(await embedPlaceholders(embedOptions.color, interaction))
-                  .setTitle(await embedPlaceholders(embedOptions.title, interaction))
-                  .setDescription(await embedPlaceholders(embedOptions.description, interaction))
-                  .setFooter({
-                    text: await embedPlaceholders(embedOptions.footer.text, interaction),
-                    iconUrl: await embedPlaceholders(embedOptions.footer.iconUrl, interaction)
-                  })
-                if (embedOptions.imageUrl) embed.setImage(await embedPlaceholders(embedOptions.imageUrl, interaction))
-                if (embedOptions.thumbnailUrl) embed.setThumbnail(await embedPlaceholders(embedOptions.thumbnailUrl, interaction));
-                if (embedOptions.timeStamp) embed.setTimestamp();
+                const xpSettings = await getXpSettings(guildId);
+                const userInfo = await getUserLevel(guildId, interaction.user.id);
+                const userLevelInfo = {
+                  "guildId": guildId,
+                  "memberId": interaction.user.id,
+                  "level": level,
+                  "xp": calculateLevelByXp(level, xpSettings),
+                  "color": userInfo.color 
+                };
+                embed = await createAnnounceEmbed(guildId, interaction, userLevelInfo);
               } else {
                 embed = createInfoEmbed({int: interaction, title: 'Level Up Message not found!', descr: `No Level Up Message set for lv. ${level}!`});
               }
