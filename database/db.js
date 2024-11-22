@@ -21,6 +21,8 @@ async function initDatabase() {
     //const editLevelSettingsTable = `ALTER TABLE LevelSettings CHANGE COLUMN announceLevelMessages TEXT AFTER announceDefaultMessage;`;
     //await pool.query(editLevelSettingsTable);
 
+    //const editTable = `ALTER TABLE LevelSettings ADD multiplierReplace JSON DEFAULT '{ "category": true, "channel": true }'`
+    //const editTable = `ALTER TABLE LevelSettings CHANGE COLUMN multiplierReplace multiplierReplace JSON DEFAULT '{ "category": true, "channel": true }' AFTER categoryMultipliers`;
     //const editTable = `ALTER TABLE LevelSettings MODIFY announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!}", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }'`;
     //const editTable = `ALTER TABLE LevelSettings MODIFY categoryMultipliers JSON DEFAULT '[]'`;
     //const editTable = `ALTER TABLE LevelSettings CHANGE COLUMN xpSettings xpSettings JSON AFTER xpCooldown;`;
@@ -103,6 +105,7 @@ async function initDatabase() {
         roleMultipliers JSON DEFAULT '[]',
         channelMultipliers JSON DEFAULT '[]',
         categoryMultipliers JSON DEFAULT '[]',
+        multiplierReplace JSON DEFAULT '{ "category": true, "channel": true }',
         blackListRoles JSON DEFAULT '[]',
         blackListChannels JSON DEFAULT '[]',
         blackListCategories JSON DEFAULT '[]',

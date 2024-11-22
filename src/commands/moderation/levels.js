@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings, getXpSettings } = require("../../../database/levelSystem/setLevelSettings");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings, getXpSettings, getMultiplierReplace } = require("../../../database/levelSystem/setLevelSettings");
 const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
@@ -59,6 +59,11 @@ module.exports = {
               minValue: 0.01,
               maxValue: 5.0,
               required: true
+            },
+            {
+              type: ApplicationCommandOptionType.Boolean,
+              name: 'replace',
+              description: 'Whether the Channel Multiplier should replace the Category/Global.'
             }
           ]
         },
@@ -101,6 +106,25 @@ module.exports = {
               minValue: 0.01,
               maxValue: 5.0,
               required: true
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'replace',
+          description: 'Whether Channel and or Category Multipliers replace other Multipliers. (Except Role Multipliers.)',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Boolean,
+              name: 'category',
+              description: 'Category Multipliers replace or stack with Global Multipliers.',
+              required: true 
+            },
+            {
+              type: ApplicationCommandOptionType.Boolean,
+              name: 'channel',
+              description: 'Channel Multipliers replace or stack with Category/Global Multipliers.',
+              required: true 
             }
           ]
         },
@@ -512,6 +536,7 @@ module.exports = {
       switch(subCmdGroup) {
         case 'multiplier':
           value = Math.round(value * 100);
+          const replace = interaction.options.getBoolean('replace') || false;
           if (subCmd !== 'global' && subCmd !== 'settings') {
             data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd }) || [];
           }
@@ -528,9 +553,9 @@ module.exports = {
                 if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 0))) {
                   embed = createWarningEmbed({int: interaction, title: 'Multiplier not Set!', descr: `${channel} is not a ${firstLetterToUpperCase(subCmd)}.\n Please use \`/lvsys ${subCmdGroup} ${subCmd === 'channel' ? 'category' : 'channel'}\` instead.`});
                 } else if (interaction.guild.afkChannelId !== channel.id) {
-                  [action, setData] = setChannelOrRoleArray(subCmd, data, channel.id, value);
+                  [action, setData] = setChannelOrRoleArray(subCmd, data, channel.id, value, replace);
                   setting = { [`${subCmd}Multipliers`]: setData };
-                  embed = createSuccessEmbed({int: interaction, title: `${firstLetterToUpperCase(subCmd)} Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!`});
+                  embed = createSuccessEmbed({int: interaction, title: `${firstLetterToUpperCase(subCmd)} Multiplier ${action}!`, descr: `The ${firstLetterToUpperCase(subCmd)} Multiplier for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!\nThe ${firstLetterToUpperCase(subCmd)} Multiplier will ${replace ? 'now replace' : 'stack up with'} the ${subCmd === 'channel' ? 'Category/Global' : 'Global'} Multiplier.`});
                 } else {
                   embed = createWarningEmbed({int: interaction, title: 'Multiplier not Set!', descr: `${channel} is set as AFK Voice Channel for this Server and can't have a multiplier. \n(You can't earn XP there anyway.)`});
                 }
@@ -546,6 +571,19 @@ module.exports = {
                 embed = createSuccessEmbed({int: interaction, title: `Role Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${role} has been ${action !== 'removed' ? `set to \`${value}%\`` : action }!`});
               } else {
                 embed = createWarningEmbed({int: interaction, descr: `A Role Multiplier can't be set for ${role}.`});
+              }
+              break;
+            case 'replace':
+              const catRepl = interaction.options.getBoolean('category');
+              const chanRepl = interaction.options.getBoolean('channel');
+              const multRepl = await getMultiplierReplace(guildId);
+              if (catRepl !== multRepl.category || chanRepl !== multRepl.channel) {
+                setData = JSON.stringify({
+                  'category': catRepl,
+                  'channel': chanRepl
+                });
+                setting = { 'multiplierReplace': setData };
+                embed = createSuccessEmbed({int: interaction, title: 'Multiplier Settings Updated', descr: `The Category and Channel Multiplier Replace Settings have been updated!`});
               }
               break;
             case 'settings':

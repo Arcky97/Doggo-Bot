@@ -47,7 +47,7 @@ module.exports = async (client, oldState, newState) => {
         voiceActivity.delete(newState.guild.id + newState.member.id);
         const secondsSpent = Math.floor(timeSpent / 1000); // convert to seconds
         if (levelSettings.voiceEnable && newState.guild.afkChannelId !== oldState.channel.id) {
-          const xpToGive = await calculateVoiceXp(newState.guild.id, oldState.channel.id, secondsSpent);
+          const xpToGive = await calculateVoiceXp(newState.guild.id, oldState.channel, secondsSpent);
           const xpSettings = await getXpSettings(newState.guild.id);
           const userInfo = await generateUserInfo(newState.guild.id, newState.member, xpToGive, xpSettings);
           if (userInfo) {

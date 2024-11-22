@@ -1,0 +1,13 @@
+{
+  "online": "https://cdn.discordapp.com/attachments/922569836335358043/1309588405696462858/DoggoBotOnline.png?ex=674220be&is=6740cf3e&hm=3a6e8836c2addd9ab2b1007b36c91607daf437e2fb08334a4ed35967f6160805&",
+  "idle": "https://cdn.discordapp.com/attachments/922569836335358043/1309588404463468644/DoggoBotIdle.png?ex=674220be&is=6740cf3e&hm=5c0fe2a4bc75bcb07c0cf03b107bc05b189af1b6eca8130082e3abd401268397&",
+  "busy": "https://cdn.discordapp.com/attachments/922569836335358043/1309588403804835940/DoggoBotBusy.png?ex=674220be&is=6740cf3e&hm=da9297e4e51a13fa5c4d5c33aa36ec3776b97b30d37beeb6d505a854f6eca3a7&",
+  "stream": "https://cdn.discordapp.com/attachments/922569836335358043/1309588403209371770/DoggoBotStream.png?ex=674220be&is=6740cf3e&hm=7f9bf97c19cc2d6922301420dbfbe1f2b2fe9703581db9d2c07a902062d910af&",
+  "offline": "https://cdn.discordapp.com/attachments/922569836335358043/1309588405063258252/DoggoBotOffline.png?ex=674220be&is=6740cf3e&hm=11a40e86eed57d5169045261cbb36879cc3c416db244afdf64825f61be62d8cd&",
+  "neutral": "https://cdn.discordapp.com/attachments/922569836335358043/1309588365401919558/DoggoBotNeutral.png?ex=674220b5&is=6740cf35&hm=9ef865adf763ecee9d18cd33ea0d402cb74a6bcffda56451e604c3135606d2b6&",
+  "happy": "https://cdn.discordapp.com/attachments/922569836335358043/1309588364751667211/DoggoBotHappy.png?ex=674220b5&is=6740cf35&hm=4ae2c3bc135b44f11278bbaa9c3890b2e28fba63c61e476b9153f9003d9d9487&",
+  "annoyed": "https://cdn.discordapp.com/attachments/922569836335358043/1309588367914176524/DoggoBotAnnoyed.png?ex=674220b5&is=6740cf35&hm=2c08ef055e5d669f4f82c86fbba7d0ee4b336108c8eea0c3ce69ba42d06997e4&",
+  "sad": "https://cdn.discordapp.com/attachments/922569836335358043/1309588366009827389/DoggoBotSad.png?ex=674220b5&is=6740cf35&hm=b8b07d662d74efdfcd24caf10e8c4f5b82a3f4132cc68a848370f91bb4e5cd9f&",
+  "shocked": "https://cdn.discordapp.com/attachments/922569836335358043/1309588366660206602/DoggoBotShocked.png?ex=674220b5&is=6740cf35&hm=822354fd97a1c9531cfa49cd5a99bddac688d9bc4bb22e6eb51e7305a1fea41a&",
+  "sleepy": "https://cdn.discordapp.com/attachments/922569836335358043/1309588367213592667/DoggoBotSleepy.png?ex=674220b5&is=6740cf35&hm=6ce9ce6761d875a77ce562a0e97c6a7f22566592e957fdc3593ff6fbbfe45569&"
+}

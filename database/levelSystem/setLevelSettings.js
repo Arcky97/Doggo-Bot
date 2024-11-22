@@ -28,6 +28,11 @@ async function getRoleOrChannelMultipliers({id, type}) {
   }
 }
 
+async function getMultiplierReplace(id) {
+  const data = await getLevelSettings(id);
+  return JSON.parse(data.multiplierReplace);
+}
+
 async function getRoleOrChannelBlacklist({id, type}) {
   const data = await getLevelSettings(id);
   if (type === 'role') {
@@ -120,6 +125,7 @@ module.exports = {
   setLevelSettings, 
   getLevelSettings, 
   getRoleOrChannelMultipliers, 
+  getMultiplierReplace,
   getRoleOrChannelBlacklist, 
   getLevelRoles, 
   getAnnounceChannel, 
