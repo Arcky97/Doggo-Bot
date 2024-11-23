@@ -9,13 +9,15 @@ const showAnnouncementSettings = require("../../utils/levels/showAnnouncementSet
 const embedPlaceholders = require("../../utils/embeds/embedPlaceholders");
 const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings");
 const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
-const { resetLevelSystem, getAllUsersLevel, getUserLevel } = require("../../../database/levelSystem/setLevelSystem");
+const { resetLevelSystem, getAllUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../database/levelSystem/setLevelSystem");
 const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
 const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 const getVowel = require("../../utils/getVowel");
 const createAnnounceEmbed = require("../../utils/levels/createAnnounceEmbed");
 const calculateLevelByXp = require("../../utils/levels/calculateLevelByXp");
+const generateUserInfo = require("../../utils/levels/generateUserInfo");
+const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 
 module.exports = {
   name: 'lvsys',
@@ -495,6 +497,95 @@ module.exports = {
           ]
         }
       ]
+    },
+    {
+      type: ApplicationCommandOptionType.SubcommandGroup,
+      name: 'modify',
+      description: 'Change a User\'s Level or XP.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'level',
+          description: 'Change a User\'s Level.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'action',
+              description: 'Add or Remove x Levels or set the Level.',
+              required: true, 
+              choices: [
+                {
+                  name: 'add',
+                  value: 'add'
+                },
+                {
+                  name: 'set',
+                  value: 'set'
+                },
+                {
+                  name: 'remove',
+                  value: 'remove'
+                }
+              ]
+            },
+            {
+              type: ApplicationCommandOptionType.Mentionable,
+              name: 'user',
+              description: 'The User to modify it\'s Level.',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'value',
+              description: 'The Level to Add, Remove or set.',
+              required: true,
+              minValue: 1,
+              maxValue: 999999
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'xp',
+          description: 'Change a User\'s XP.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'action',
+              description: 'Add or Remove an amount of XP or set to a specific amount.',
+              required: true,
+              choices: [
+                {
+                  name: 'add',
+                  value: 'add'
+                },
+                {
+                  name: 'set',
+                  value: 'set'
+                },
+                {
+                  name: 'remove',
+                  value: 'remove'
+                }
+              ]
+            },
+            {
+              type: ApplicationCommandOptionType.Mentionable,
+              name: 'user',
+              description: 'The User to modify it\'s XP.',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'value',
+              description: 'The XP to Add, Remove or Set.',
+              required: true,
+              minValue: 1,
+              maxValue: 999999
+            }
+          ]
+        }
+      ]
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
@@ -659,20 +750,16 @@ module.exports = {
               } else {
                 embedOptions = JSON.parse(levSettings.announceDefaultMessage);
               }
-              if (embedOptions) {
-                const xpSettings = await getXpSettings(guildId);
-                const userInfo = await getUserLevel(guildId, interaction.user.id);
-                const userLevelInfo = {
-                  "guildId": guildId,
-                  "memberId": interaction.user.id,
-                  "level": level,
-                  "xp": calculateLevelByXp(level, xpSettings),
-                  "color": userInfo.color 
-                };
-                embed = await createAnnounceEmbed(guildId, interaction, userLevelInfo);
-              } else {
-                embed = createInfoEmbed({int: interaction, title: 'Level Up Message not found!', descr: `No Level Up Message set for lv. ${level}!`});
-              }
+              const xpSettings = await getXpSettings(guildId);
+              const userInfo = await getUserLevel(guildId, interaction.user.id);
+              const userLevelInfo = {
+                "guildId": guildId,
+                "memberId": interaction.user.id,
+                "level": level || userInfo.level,
+                "xp": calculateLevelByXp((level || userInfo.level), xpSettings),
+                "color": userInfo.color 
+              };
+              embed = await createAnnounceEmbed(guildId, interaction, userLevelInfo);
               break;
             case 'placeholders':
               const fieldObject = {
@@ -933,6 +1020,69 @@ module.exports = {
                 embed = createWarningEmbed({
                   int: interaction, 
                   descr: `The given step (\`${value.step}\`), min xp (\`${value.min}\`) and max xp (\`${value.max}\`) are the same as they were already set.`});
+              }
+              break;
+          }
+          interaction.editReply({ embeds: [embed] });
+          break;
+        case 'modify':
+          const action = interaction.options.getString('action');
+          const user = interaction.options.getMentionable('user');
+          const userLevelInfo = await getUserLevel(guildId, user.id);
+          const xpSettings = JSON.parse(levSettings.xpSettings)
+          const level = Number(value);
+          const xp = Number(value);
+          let levelToGive, xpToGive;
+          switch (subCmd) {
+            case 'level':
+              switch (action) {
+                case 'add':
+                  levelToGive = Math.min(userLevelInfo.level + level, 999999);
+                  if (userLevelInfo.level + level > 999999) {
+                    embed = createInfoEmbed({ int: interaction, title: 'User Level not Modified!', descr: `${user}'s Level was not modifed because it exceeds the maximum level!`});
+                  }
+                  break;
+                case 'remove':
+                  levelToGive = Math.max(userLevelInfo.level - level, 1);
+                  if (userLevelInfo.level - level < 1) {
+                    embed = createInfoEmbed({ int: interaction, title: 'User Level not Modified!', descr: `${user}'s Level was not modified because it exceeds the minimum level!`});
+                  }
+                  break;
+                case 'set':
+                  levelToGive = level;
+                  if (level === userLevelInfo.level && calculateXpByLevel(level, xpSettings) === userLevelInfo.xp) {
+                    embed = createInfoEmbed({ int: interaction, title: 'User Level not Modified!', descr: `${user}'s Level was not modified because the Level and XP are the same!`});
+                  }
+                  break;
+              }
+              if (!embed) {
+                xpToGive = calculateXpByLevel(levelToGive, xpSettings)
+                await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive });
+                embed = createSuccessEmbed({ int: interaction, title: 'User Level Modified!', descr: `${user}'s Level has been modified to Lv. ${levelToGive}!`});  
+              }
+              break;
+            case 'xp':
+              switch (action) {
+                case 'add':
+                  xpToGive = userLevelInfo.xp + xp;
+                  break;
+                case 'remove':
+                  xpToGive = Math.max(userLevelInfo.xp - xp, 1);
+                  break;
+                case 'set':
+                  xpToGive = xp;
+                  if (xp === userLevelInfo.xp) {
+                    embed = createInfoEmbed({ int: interaction, title: 'User XP not Modified!', descr: `${user}'s XP was not modified because the XP is the same!`});
+                  }
+                  break;
+              }
+              levelToGive = calculateLevelByXp(xpToGive, xpSettings);
+              if (levelToGive > 999999) {
+                embed = createInfoEmbed({ int: interaction, title: 'User XP not Modified!', descr: `${user}'s XP has not been modified as the maximum Level of 999.999 would be exceeded!`});
+              }
+              if (!embed) {
+                await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive });
+                embed = createSuccessEmbed({ int: interaction, title: 'User XP Modified!', descr: `${user}'s XP has been modified to ${xpToGive} XP!`});
               }
               break;
           }

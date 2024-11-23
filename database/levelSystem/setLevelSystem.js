@@ -24,7 +24,7 @@ async function addUserColor(guildId, memberId, color) {
 }
 
 async function setUserLevelInfo(user, keys, data) {
-  if (user) {
+  if (user.xp !== 0) {
     await updateData('LevelSystem', keys, data);
   } else {
     await insertData('LevelSystem', keys, data);

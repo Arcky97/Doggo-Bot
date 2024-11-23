@@ -25,6 +25,7 @@ module.exports = (settings, message, xpSettings) => {
   let totalXp = random;
 
   let totalMultiplier = 0;
+  
   const findCatMult = catMult.find(item => item.categoryId === message.channel.parent.id);
   const findChanMult = chanMult.find(item => item.channelId === message.channel.id);
   

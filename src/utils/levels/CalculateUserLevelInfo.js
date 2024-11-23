@@ -13,10 +13,10 @@ module.exports = async (client, guildId, user, userLevelInfo, xpSettings, xpToGi
   let newUserInfo;
   const ping = await getAnnouncePing(guildId) === 1 ? `<@${user.id}>` : ''
   if (userLevelInfo) {
-    const userLevelXp = calculateXpByLevel(userLevelInfo.level, xpSettings)
+    const nextLevelXp = calculateXpByLevel(userLevelInfo.level + 1, xpSettings)
     newXp = userLevelInfo.xp + xpToGive;
     newLevel = userLevelInfo.level;
-    if (newXp > userLevelXp) {
+    if (newXp > nextLevelXp) {
       newLevel = calculateLevelByXp(newXp, xpSettings);
       newUserInfo = {
         level: newLevel,

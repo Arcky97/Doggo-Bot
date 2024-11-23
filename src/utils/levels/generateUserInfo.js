@@ -3,15 +3,15 @@ const calculateLevelByXp = require("./calculateLevelByXp");
 const calculateXpByLevel = require("./calculateXpByLevel");
 
 module.exports = async (guildId, user, xpToGive, xpSettings) => {
-  const userLvInfo = await getUserLevel(guildId, user.id);
+  const userLvInfo = await getUserLevel(guildId, user.id) 
 
   const newXp = userLvInfo.xp + xpToGive;
   const newLevel = calculateLevelByXp(newXp, xpSettings);
-  const currentLevelXp = calculateXpByLevel(userLvInfo.level, xpSettings);
+  const nextLevelXp = calculateXpByLevel(userLvInfo.level + 1, xpSettings);
 
   let userInfo = null;
 
-  if (newXp > currentLevelXp || newLevel > userLvInfo.level) {
+  if (newXp > nextLevelXp || newLevel > userLvInfo.level) {
     userInfo = {
       level: newLevel,
       xp: newXp,

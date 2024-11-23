@@ -26,6 +26,7 @@ async function initDatabase() {
     //const editTable = `ALTER TABLE LevelSettings MODIFY announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!}", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }'`;
     //const editTable = `ALTER TABLE LevelSettings MODIFY categoryMultipliers JSON DEFAULT '[]'`;
     //const editTable = `ALTER TABLE LevelSettings CHANGE COLUMN xpSettings xpSettings JSON AFTER xpCooldown;`;
+    //const editTable = `ALTER TABLE LevelSystem MODIFY COLUMN xp BIGINT UNSIGNED DEFAULT 0`
     //await pool.query(editTable);
 
     //const dropBotRepliesTable = `DROP TABLE IF EXISTS BotReplies;`;
@@ -76,7 +77,7 @@ async function initDatabase() {
         guildId VARCHAR(100) NOT NULL,
         memberId VARCHAR(100) NOT NULL,
         level INT DEFAULT 0,
-        xp INT DEFAULT 0,
+        xp BIGINT DEFAULT 0,
         color VARCHAR(10) DEFAULT '#f97316',
         deletionDate TIMESTAMP NULL,
         PRIMARY KEY (guildId, memberId)

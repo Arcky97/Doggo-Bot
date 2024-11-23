@@ -69,8 +69,8 @@ module.exports = {
       }
       const targetAvatarURL = targetUserObj.user.displayAvatarURL({ size: 256 })
       const color = userLevel.color;
-      const startLevelXp = calculateXpByLevel(userLevel.level - 1, xpSettings);
-      const endLevelXp = calculateXpByLevel(userLevel.level, xpSettings);
+      const startLevelXp = calculateXpByLevel(userLevel.level, xpSettings);
+      const endLevelXp = calculateXpByLevel(userLevel.level + 1, xpSettings);
 
       let currentRank = guildUsers.findIndex(lvl => lvl.memberId === targetUserId) + 1;
       
@@ -211,7 +211,7 @@ module.exports = {
         for (const user of guildUsers) {
           descrition += `\n\n**#${rank}**: <@${user.memberId}>` +
                         `\n   **Lv.** \`${user.level}\`` +
-                        `\n   **Xp:** \`${user.xp}/${calculateXpByLevel(user.level, xpSettings)}\`` 
+                        `\n   **Xp:** \`${user.xp}/${calculateXpByLevel(user.level + 1, xpSettings)}\`` 
           rank ++;
         }
         embed.setDescription(descrition);

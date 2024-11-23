@@ -33,6 +33,5 @@ module.exports = async (time, full = false) => {
     timeSpent = timeParts[0];
   }
 
-  console.log(timeSpent);
   return timeSpent;
 };

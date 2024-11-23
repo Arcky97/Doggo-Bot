@@ -43,7 +43,6 @@ module.exports = {
     }
     
     const gameData = attempts[userId];
-    console.log(gameData);
     gameData.attempts += 1;
     let embed;
     if (userGuess === gameData.magicNumber) {

@@ -8,11 +8,9 @@ const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 async function getLevelSettings(id) {
   let data = await selectData('LevelSettings', { guildId: id});
   if (!data) {
-    console.log('we\'ll now create the data for a new server.');
     await insertData('LevelSettings', {guildId: id});
     data = await selectData('LevelSettings', {guildId: id});
     exportToJson('LevelSettings');
-    console.log('we log data after creating it if it doesn\'t exist yet', data);
   }
   return data;
 }

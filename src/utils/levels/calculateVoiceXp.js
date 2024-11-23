@@ -12,6 +12,8 @@ module.exports = async (guildId, channel, timeSpent) => {
   const catMult = JSON.parse(levelSettings.categoryMultipliers);
   const catBlkList = JSON.parse(levelSettings.blackListCategories);
 
+  const multRepl = JSON.parse(levelSettings.multiplierReplace);
+
   const xpSettings = JSON.parse(levelSettings.xpSettings);
   const minXp = xpSettings.min;
   const maxXp = xpSettings.max;
@@ -20,20 +22,29 @@ module.exports = async (guildId, channel, timeSpent) => {
   if (chanBlkList.some(item => item.channelId === channel.id)) return 0;
   
   let totalXp = 0;
-  let random, multiplier;
+  let multiplier = 0;
+  let random;
+
   const findCatMult = catMult.find(item => item.categoryId === channel.parent.id);
   const findChanMult = chanMult.find(item => item.channelId === channel.id);
-  if (findCatMult && !findChanMult) {
-    multiplier = findCatMult.value;
-  } else if (findChanMult) {
+  
+  if (findChanMult) {
     multiplier = findChanMult.value;
+    if (!multRepl.channel && !findChanMult.replace) {
+      multiplier += voiceMult;
+    }
+  } else if (findCatMult) {
+    multiplier = findCatMult.value;
+    if (!multRepl.category && !findCatMult.replace) {
+      multiplier += voiceMult;
+    }
   } else {
     multiplier = voiceMult;
   }
 
   for (let i = 0; i < timeSpent - voiceCooldown; i += voiceCooldown) {
     random = Math.floor(Math.random() * (maxXp - minXp + 1)) + minXp;
-    totalXp += Math.round(random * (multiplier) / 100);
+    totalXp += Math.round(random * (Math.min(multiplier, 1100)) / 100);
     console.log('The earned random XP', random);
     console.log('The new total XP:', totalXp);
   }
