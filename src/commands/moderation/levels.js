@@ -540,7 +540,7 @@ module.exports = {
               description: 'The Level to Add, Remove or set.',
               required: true,
               minValue: 1,
-              maxValue: 999999
+              maxValue: 999
             }
           ]
         },
@@ -581,7 +581,7 @@ module.exports = {
               description: 'The XP to Add, Remove or Set.',
               required: true,
               minValue: 1,
-              maxValue: 999999
+              maxValue: 99999
             }
           ]
         }
@@ -1037,9 +1037,9 @@ module.exports = {
             case 'level':
               switch (action) {
                 case 'add':
-                  levelToGive = Math.min(userLevelInfo.level + level, 999999);
-                  if (userLevelInfo.level + level > 999999) {
-                    embed = createInfoEmbed({ int: interaction, title: 'User Level not Modified!', descr: `${user}'s Level was not modifed because it exceeds the maximum level!`});
+                  levelToGive = Math.min(userLevelInfo.level + level, 999);
+                  if (userLevelInfo.level + level > 999) {
+                    embed = createInfoEmbed({ int: interaction, title: 'User Level not Modified!', descr: `${user}'s Level was not modifed because it exceeds the maximum level of 999!`});
                   }
                   break;
                 case 'remove':
@@ -1077,8 +1077,8 @@ module.exports = {
                   break;
               }
               levelToGive = calculateLevelByXp(xpToGive, xpSettings);
-              if (levelToGive > 999999) {
-                embed = createInfoEmbed({ int: interaction, title: 'User XP not Modified!', descr: `${user}'s XP has not been modified as the maximum Level of 999.999 would be exceeded!`});
+              if (levelToGive > 999) {
+                embed = createInfoEmbed({ int: interaction, title: 'User XP not Modified!', descr: `${user}'s XP has not been modified because it exceeds the maximum level of 999!`});
               }
               if (!embed) {
                 await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive });

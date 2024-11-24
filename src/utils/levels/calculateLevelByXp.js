@@ -4,7 +4,6 @@ module.exports = (userXp, xpSettings) => {
   const initialLevel = 0;
   let totalLevel = initialLevel;
   let xp = calculateXpByLevel(totalLevel, xpSettings);
-  console.log(userXp);
   while (userXp > xp) {
     totalLevel += 1;
     xp = calculateXpByLevel(totalLevel, xpSettings);

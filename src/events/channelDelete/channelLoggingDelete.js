@@ -3,7 +3,6 @@ const getLogChannel = require("../../utils/logging/getLogChannel");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
 
-
 module.exports = async (client, channel) => {
   try {
     const logChannel = await getLogChannel(client, channel.guild.id, 'server');
