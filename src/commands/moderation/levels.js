@@ -535,7 +535,7 @@ module.exports = {
               required: true
             },
             {
-              type: ApplicationCommandOptionType.String,
+              type: ApplicationCommandOptionType.Number,
               name: 'value',
               description: 'The Level to Add, Remove or set.',
               required: true,
@@ -576,12 +576,31 @@ module.exports = {
               required: true
             },
             {
-              type: ApplicationCommandOptionType.String,
+              type: ApplicationCommandOptionType.Number,
               name: 'value',
               description: 'The XP to Add, Remove or Set.',
               required: true,
               minValue: 1,
               maxValue: 99999
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: ApplicationCommandOptionType.SubcommandGroup,
+      name: 'calculator',
+      description: 'The Level Calculator is a handy tool!',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'xp',
+          description: 'Calculate how much xp you gain on given conditions.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Mentionable,
+              name: 'user',
+              description: 'The user.',
             }
           ]
         }
@@ -622,7 +641,7 @@ module.exports = {
 
     let value = interaction.options.get('value')?.value;
     try {
-      let data, setting, existingSetting, action, setData, role, channel, level;
+      let data, setting, existingSetting, action, setData, role, channel;
 
       switch(subCmdGroup) {
         case 'multiplier':
@@ -644,7 +663,7 @@ module.exports = {
                 if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 0))) {
                   embed = createWarningEmbed({int: interaction, title: 'Multiplier not Set!', descr: `${channel} is not a ${firstLetterToUpperCase(subCmd)}.\n Please use \`/lvsys ${subCmdGroup} ${subCmd === 'channel' ? 'category' : 'channel'}\` instead.`});
                 } else if (interaction.guild.afkChannelId !== channel.id) {
-                  [action, setData] = setChannelOrRoleArray(subCmd, data, channel.id, value, replace);
+                  [action, setData] = setChannelOrRoleArray({ type: subCmd, data: data, id: channel.id, value: value, replace: replace });
                   setting = { [`${subCmd}Multipliers`]: setData };
                   embed = createSuccessEmbed({int: interaction, title: `${firstLetterToUpperCase(subCmd)} Multiplier ${action}!`, descr: `The ${firstLetterToUpperCase(subCmd)} Multiplier for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!\nThe ${firstLetterToUpperCase(subCmd)} Multiplier will ${replace ? 'now replace' : 'stack up with'} the ${subCmd === 'channel' ? 'Category/Global' : 'Global'} Multiplier.`});
                 } else {
@@ -657,7 +676,7 @@ module.exports = {
             case 'role':
               role = interaction.options.getRole('name');
               if (role.id !== guildId) {
-                [action, setData] = setChannelOrRoleArray('role', data, role.id, value);
+                [action, setData] = setChannelOrRoleArray({ type: 'role', data: data, id: role.id, value: value });
                 setting = { 'roleMultipliers': setData };
                 embed = createSuccessEmbed({int: interaction, title: `Role Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${role} has been ${action !== 'removed' ? `set to \`${value}%\`` : action }!`});
               } else {
@@ -828,7 +847,7 @@ module.exports = {
                 if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 0))) {
                   embed = createWarningEmbed({int: interaction, title: 'Black List not Updated', descr: `${channel} is not a ${firstLetterToUpperCase(subCmd)}.\n Please use \`lvsys ${subCmdGroup} ${subCmd === 'channel' ? 'category' : 'channel'}\` instead.`});
                 } else if (interaction.guild.afkChannelId !== channel.id) {
-                  [action, setData] = setChannelOrRoleArray(subCmd, data, channel.id);
+                  [action, setData] = setChannelOrRoleArray({ type: subCmd, data: data, id: channel.id });
                   setting = { [`blackList${subCmd === 'channel' ? `${firstLetterToUpperCase(subCmd)}s` : `${subCmd.replace(/y$/, 'ies')}`}`] : setData };
                   embed = createSuccessEmbed({int: interaction, title: `${firstLetterToUpperCase(subCmd)} ${action}!`, descr: `${channel} has been ${action} to the Black List.`});
                 } else {
@@ -840,7 +859,7 @@ module.exports = {
               break;
             case 'role':
               role = interaction.options.getRole('name');
-              [action, setData] = setChannelOrRoleArray('role', data, role.id);
+              [action, setData] = setChannelOrRoleArray({type: 'role', data: data, id: role.id});
               setting = { 'blackListRoles' : setData};
               embed = createSuccessEmbed({int: interaction, title: `Role ${action}!`, descr: `${role} has been ${action} to the Black List.`});
               break;
@@ -1026,12 +1045,12 @@ module.exports = {
           interaction.editReply({ embeds: [embed] });
           break;
         case 'modify':
-          const action = interaction.options.getString('action');
+          action = interaction.options.getString('action');
           const user = interaction.options.getMentionable('user');
           const userLevelInfo = await getUserLevel(guildId, user.id);
           const xpSettings = JSON.parse(levSettings.xpSettings)
-          const level = Number(value);
-          const xp = Number(value);
+          const level = value;
+          const xp = value;
           let levelToGive, xpToGive;
           switch (subCmd) {
             case 'level':
@@ -1087,6 +1106,9 @@ module.exports = {
               break;
           }
           interaction.editReply({ embeds: [embed] });
+          break;
+        case 'calculator':
+          console.log('This command is not finished yet...');
           break;
         default: // lvsys settings
           embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, categoryMults, channelMults,  levelRoles, blackListRoles, blackListCategories, blackListChannels, annMess)

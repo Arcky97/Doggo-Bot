@@ -1,6 +1,7 @@
 const areCommandsDifferent = require('../../utils/commands/areCommandsDifferent');
 const getApplicationCommands = require('../../utils/commands/getApplicationCommands');
 const getLocalCommands = require('../../utils/commands/getLocalCommands');
+const validateCommandProperties = require('../../utils/commands/validateCommandProperties');
 
 module.exports = async (client, guild) => {
   try {
@@ -8,9 +9,20 @@ module.exports = async (client, guild) => {
     const applicationCommands = await getApplicationCommands(
       client, guild.id
     );
+    console.log(
+      `Checking ${localCommands.length} Commands`
+    );
 
     for (const localCommand of localCommands) {
       const { name, description, options } = localCommand;
+
+      if (!validateCommandProperties(localCommand)) {
+        console.log(
+          `👎Skipping editing command "${name}" as it has invalid option properties.`
+        );
+        continue;
+      }
+
       const existingCommand = await applicationCommands.cache.find(
         (cmd) => cmd.name === name
       );
@@ -26,7 +38,7 @@ module.exports = async (client, guild) => {
             description,
             options,
           });
-
+  
           console.log(`🔁 Edited command "${name}".`);
         }
       } else {
@@ -46,7 +58,8 @@ module.exports = async (client, guild) => {
         console.log(`👍 Registered command "${name}."`);
       }
     }
+    console.log('-----------------------------------');
   } catch (error) {
-    console.log(`There was an error: ${error}`);
+    console.error(`There was an error: ${error}`);
   }
 };

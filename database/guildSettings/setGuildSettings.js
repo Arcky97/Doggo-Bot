@@ -64,7 +64,7 @@ async function setGuildSettings(guildId, settingName, value) {
     }
   } else {
     const existingData = await getIgnoreLoggingChannels(guildId);
-    [action, setData] = setChannelOrRoleArray('channel', existingData, value.id)
+    [action, setData] = setChannelOrRoleArray({ type: 'channel', data: existingData, id: value.id });
     data = {
       [column]: setData
     }

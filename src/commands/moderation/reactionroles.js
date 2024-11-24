@@ -124,7 +124,7 @@ module.exports = {
           type: ApplicationCommandOptionType.Integer,
           name: 'limit',
           description: 'The role limit.',
-          minvalue: 1,
+          minValue: 1,
           maxValue: 250,
           required: true
         },

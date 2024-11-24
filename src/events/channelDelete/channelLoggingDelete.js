@@ -2,6 +2,7 @@ const { Client, GuildChannel, EmbedBuilder } = require("discord.js");
 const getLogChannel = require("../../utils/logging/getLogChannel");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
+const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers } = require("../../../database/levelSystem/setLevelSettings");
 
 module.exports = async (client, channel) => {
   try {
@@ -25,7 +26,22 @@ module.exports = async (client, channel) => {
         text: `Channel ID: ${channel.id}`
       })
       .setTimestamp()
+/*
+    const blackListChannels = await getRoleOrChannelBlacklist({ id: channel.guild.id, type: 'channel' });
+    const chanMults = await getRoleOrChannelMultipliers({ id: channel.guild.id, type: 'channel' });
+    const blackListCategories = await getRoleOrChannelBlacklist({ id: channel.guild.id, type: 'channel' });
+    const catMults = await getRoleOrChannelMultipliers({ id: channel.guild.id, type: 'channel'});
 
+    let [_, setData] = setChannelOrRoleArray({ type: 'channel', data: blackListChannels, id: channel.id, remove: true });
+    await setLevelSettings({ id: channel.guild.id, setting: { 'blackListChannels': setData } });
+    [_, setData] = setChannelOrRoleArray({ type: 'channel', data: chanMults, id: channel.id, remove: true });
+    await setLevelSettings({ id: channel.guild.id, setting: { 'channelMultipliers': setData } });
+
+    [_, setData] = setChannelOrRoleArray({ type: 'category', data: blackListCategories, id: channel.id, remove: true });
+    await setLevelSettings({ id: channel.guild.id, setting: { 'blackListCategory': setData } });
+    [_, setData] = setChannelOrRoleArray({ type: 'category', data: catMults, id: channel.id, remove: true });
+    await setLevelSettings({ id: channel.guild.id, setting: { 'categoryMultipliers': setData } })
+*/
     await setEventTimeOut('channel', channel.id, embed, logChannel);
 
     console.log(`The channel ${channel.name} with ID: ${channel.id} was deleted in Server ${channel.guild.id}.`);

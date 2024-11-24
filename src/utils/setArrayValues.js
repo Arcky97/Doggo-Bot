@@ -1,22 +1,20 @@
-function setChannelOrRoleArray(type, data, id, value, replace) {
+function setChannelOrRoleArray({type, data, id, value, replace, remove}) {
   const index = data.findIndex(item => item[`${type}Id`] === id);
-  console.log(index)
   let action; 
 
-  if (index === -1) { // data doesn't exist
+  if (index === -1 && !remove) { // data doesn't exist
     if (value) {
       if (replace !== undefined) {
         data.push({ [`${type}Id`]: id, value, replace });
       } else {
         data.push({ [`${type}Id`]: id, value });
       }
-      
     } else {
       data.push({ [`${type}Id`]: id});
     }
     action = 'added';
   } else {
-    if (value && data[index].value !== value || data[index].replace !== replace) { // data exist but it's not the same. (value)
+    if (!remove && value && data[index].value !== value || data[index].replace !== replace) { // data exist but it's not the same. (value)
       data[index].value = value;
       if (replace !== undefined) data[index].replace = replace;
       action = 'updated';
