@@ -28,11 +28,11 @@ module.exports = async (client, role) => {
         },
         {
           name: 'Mentionable',
-          value: `${role.mentionable}`
+          value: `${role.mentionable ? 'Yes' : 'No'}`
         },
         {
           name: 'Display Separatly',
-          value: role.hoist
+          value: `${role.hoist ? 'Yes': 'No'}`
         }
       )
       .setFooter({
@@ -40,14 +40,13 @@ module.exports = async (client, role) => {
       })
       .setTimestamp()
 
-/*
+    console.log(embed);
     const blackListRoles = await getRoleOrChannelBlacklist({ id: role.guild.id, type: 'role' });
     const roleMults = await getRoleOrChannelMultipliers({ id: role.guild.id, type: 'role' });
     let [_, setData] = setChannelOrRoleArray({ type: 'role', data: blackListRoles, id: role.id, remove: true });
     await setLevelSettings({ id: role.guild.id, setting: { 'blackListRoles': setData } });
     [_, setData] = setChannelOrRoleArray({ type: 'role', data: roleMults, id: role.id, remove: true });
     await setLevelSettings({ id: role.guild.id, setting: { 'roleMultipliers': setData } })
-*/
 
     await setEventTimeOut('role', role.id, embed, logChannel);
 

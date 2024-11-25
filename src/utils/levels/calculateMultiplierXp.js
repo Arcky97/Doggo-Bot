@@ -1,9 +1,8 @@
 const getMemberRoles = require("../logging/getMemberRoles")
 
-module.exports = (settings, message, xpSettings) => {
-  const member = message.guild.members.cache.get(message.author.id);
-  const userRoles = getMemberRoles(member);
-
+module.exports = ({settings, user, channel, roles, notRandom}) => {
+  // if roles are given, use roles, otherwise get the user roles.
+  const userRoles = roles ? roles : getMemberRoles(user);
   const globMult = settings.globalMultiplier;
   const roleMult = JSON.parse(settings.roleMultipliers);
   const chanMult = JSON.parse(settings.channelMultipliers);
@@ -14,20 +13,22 @@ module.exports = (settings, message, xpSettings) => {
   const chanBlkList = JSON.parse(settings.blackListChannels);
   const catBlkList = JSON.parse(settings.blackListCategories);
 
-  const minXp = xpSettings.min;
-  const maxXp = xpSettings.max;
+  const minXp = JSON.parse(settings.xpSettings).min;
+  const maxXp = JSON.parse(settings.xpSettings).max;
 
-  if (catBlkList.some(item => item.categoryId === message.channel.parent.id)) return 0 ;
-  if (chanBlkList.some(item => item.channelId === message.channel.id)) return 0;
-  if (roleBlkList.some(item => userRoles.some(role => role === item.roleId))) return 0;
+  if (catBlkList.some(item => item.categoryId === channel.parent.id)) return notRandom ? [0, 0] : 0;
+  if (chanBlkList.some(item => item.channelId === channel.id)) return notRandom ? [0, 0] : 0;
+  if (roleBlkList.some(item => userRoles.some(role => role === item.roleId))) return notRandom ? [0, 0] : 0;
 
   const random = Math.floor(Math.random() * (maxXp - minXp + 1)) + minXp;
   let totalXp = random;
+  let totalMinXp = minXp;
+  let totalMaxXp = maxXp;
 
   let totalMultiplier = 0;
   
-  const findCatMult = catMult.find(item => item.categoryId === message.channel.parent.id);
-  const findChanMult = chanMult.find(item => item.channelId === message.channel.id);
+  const findCatMult = catMult.find(item => item.categoryId === channel.parent.id);
+  const findChanMult = chanMult.find(item => item.channelId === channel.id);
   
   if (findChanMult) {
     totalMultiplier = findChanMult.value;
@@ -49,6 +50,13 @@ module.exports = (settings, message, xpSettings) => {
     }
   });
 
-  totalXp = Math.round(totalXp * (Math.min(totalMultiplier, 1100) / 100));
-  return totalXp;
+  if (notRandom) {
+    totalMinXp = Math.round(totalMinXp * (Math.min(totalMultiplier, 1100) / 100));
+    totalMaxXp = Math.round(totalMaxXp * (Math.min(totalMultiplier, 1100) / 100));
+    return [totalMinXp, totalMaxXp];
+  } else {
+    totalXp = Math.round(totalXp * (Math.min(totalMultiplier, 1100) / 100));
+    console.log(totalXp);
+    return totalXp;
+  }
 }

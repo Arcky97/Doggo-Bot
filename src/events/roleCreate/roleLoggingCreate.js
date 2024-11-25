@@ -22,11 +22,11 @@ module.exports = async (client, role) => {
         },
         {
           name: 'Mentionable',
-          value: `${role.mentionable}`
+          value: `${role.mentionable ? 'Yes' : 'No'}`
         },
         {
           name: 'Display Separatly',
-          value: `${role.hoist}`
+          value: `${role.hoist ? 'Yes' : 'No'}`
         }
       )
       .setFooter({

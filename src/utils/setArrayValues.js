@@ -14,13 +14,15 @@ function setChannelOrRoleArray({type, data, id, value, replace, remove}) {
     }
     action = 'added';
   } else {
-    if (!remove && value && data[index].value !== value || data[index].replace !== replace) { // data exist but it's not the same. (value)
+    if (!remove && value && data[index].value !== value || replace !== undefined && data[index].replace !== replace) { // data exist but it's not the same. (value)
       data[index].value = value;
       if (replace !== undefined) data[index].replace = replace;
       action = 'updated';
     } else { // data exist but it is the same
-      data.splice(index, 1);
-      action = 'removed';
+      if (index !== -1) {
+        data.splice(index, 1);
+        action = 'removed';
+      }
     }
   }
   return [action, JSON.stringify(data)];

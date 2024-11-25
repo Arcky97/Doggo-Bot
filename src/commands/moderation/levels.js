@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
+const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder, ChannelType } = require("discord.js");
 const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings, getXpSettings, getMultiplierReplace } = require("../../../database/levelSystem/setLevelSettings");
 const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
@@ -18,6 +18,8 @@ const createAnnounceEmbed = require("../../utils/levels/createAnnounceEmbed");
 const calculateLevelByXp = require("../../utils/levels/calculateLevelByXp");
 const generateUserInfo = require("../../utils/levels/generateUserInfo");
 const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
+const calculateMultiplierXp = require("../../utils/levels/calculateMultiplierXp");
+const getMemberRoles = require("../../utils/logging/getMemberRoles");
 
 module.exports = {
   name: 'lvsys',
@@ -60,7 +62,7 @@ module.exports = {
               description: 'The Channel Multiplier.',
               minValue: 0.01,
               maxValue: 5.0,
-              required: true
+              required: true,
             },
             {
               type: ApplicationCommandOptionType.Boolean,
@@ -78,7 +80,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Channel,
               name: 'name',
               description: 'The Category name.',
-              required: true 
+              required: true
             },
             {
               type: ApplicationCommandOptionType.Number,
@@ -99,7 +101,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Role,
               name: 'name',
               description: 'The Role name.',
-              required: true 
+              required: true
             },
             {
               type: ApplicationCommandOptionType.Number,
@@ -120,13 +122,13 @@ module.exports = {
               type: ApplicationCommandOptionType.Boolean,
               name: 'category',
               description: 'Category Multipliers replace or stack with Global Multipliers.',
-              required: true 
+              required: true
             },
             {
               type: ApplicationCommandOptionType.Boolean,
               name: 'channel',
               description: 'Channel Multipliers replace or stack with Category/Global Multipliers.',
-              required: true 
+              required: true
             }
           ]
         },
@@ -230,7 +232,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Integer,
               name: 'level',
               description: 'the level the level up message belongs to.',
-              required: true 
+              required: true
             }
           ]
         },
@@ -298,7 +300,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Role,
               name: 'name',
               description: 'The Role name.',
-              required: true 
+              required: true
             }
           ]
         },
@@ -355,7 +357,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Integer,
               name: 'level',
               description: 'The level',
-              required: true 
+              required: true
             }
           ]
         }
@@ -390,7 +392,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Number,
               name: 'step',
               description: 'The Step is used in the formula to calculate the XP requirement for each level. (default 40)',
-              required: true, 
+              required: true,
               minValue: 10,
               maxValue: 200,
             },
@@ -398,7 +400,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Number,
               name: 'min',
               description: 'The Minimum XP (without multipliers) that can be earned for each message giving XP.',
-              required: true, 
+              required: true,
               minValue: 1,
               maxValue: 100
             },
@@ -406,7 +408,7 @@ module.exports = {
               type: ApplicationCommandOptionType.Number,
               name: 'max',
               description: 'The Maximum XP (without multipliers) that can be earned for each message giving XP.',
-              required: true, 
+              required: true,
               minValue: 1,
               maxValue: 100
             }
@@ -428,10 +430,10 @@ module.exports = {
               type: ApplicationCommandOptionType.Boolean,
               name: 'value',
               description: 'your input.',
-              required: true 
+              required: true
             }
           ]
-        }, 
+        },
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'multiplier',
@@ -443,7 +445,7 @@ module.exports = {
               description: 'the amount of XP.',
               minValue: 1,
               maxValue: 500,
-              required: true 
+              required: true
             }
           ]
         },
@@ -512,7 +514,7 @@ module.exports = {
               type: ApplicationCommandOptionType.String,
               name: 'action',
               description: 'Add or Remove x Levels or set the Level.',
-              required: true, 
+              required: true,
               choices: [
                 {
                   name: 'add',
@@ -598,9 +600,76 @@ module.exports = {
           description: 'Calculate how much xp you gain on given conditions.',
           options: [
             {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'channel',
+              description: 'The channel (used for the eventual multiplier). (if not given, the current channel will be used.)'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'roles',
+              description: '1 or more Roles which will overwrite the User\'s Roles. (Separate each with \';\'.)'
+            },
+            {
               type: ApplicationCommandOptionType.Mentionable,
               name: 'user',
-              description: 'The user.',
+              description: 'The User to use it\'s Roles from (if not given, your Roles will be used).',
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'messages',
+          description: 'Calculate how many messages need to be sent to reach a certain level.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'level',
+              description: 'The wanted level.',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'channel',
+              description: 'The channel (used for the eventual multiplier). (If not given, the current channel will be used.)'
+            },
+            {
+              type: ApplicationCommandOptionType.Mentionable,
+              name: 'user',
+              description: 'The User to use it\'s Roles from (if not given, your Roles will be used).'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'roles',
+              description: '1 or more Roles which will overwrite the User\'s Roles. (Separate each with \';\'.)'
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'voice',
+          description: 'Calculate how much time you need to spent in a VC channel to reach a certain level.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'level',
+              description: 'The wanted level.',
+              required: true 
+            },
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'channel',
+              description: 'The Voice Channel.',
+              required: true
+            },
+            {
+              type: ApplicationCommandOptionType.Mentionable,
+              name: 'user',
+              description: 'The User to use it\'s Roles from (if not given, your Roles will be used).'
+            },
+            {
+              type: ApplicationCommandOptionType.Role,
+              name: 'roles',
+              description: '1 or more Roles which will overwrite the User\'s Roles. (Separate each with \';\'.)'
             }
           ]
         }
@@ -615,13 +684,13 @@ module.exports = {
 
     await interaction.deferReply();
 
-    let levSettings, embed, globalMult, roleMults, channelMults, levelRoles, annMess, blackListRoles, blackListChannels;
+    let levSettings, embed, globalMult, roleMults, channelMults, categoryMults, levelRoles, annMess, blackListRoles, blackListChannels, blackListCategories;
     try {
       levSettings = await getLevelSettings(guildId);
       if (levSettings && subCmd === 'settings') {
         globalMult = levSettings.globalMultiplier
         roleMults = createListFromArray(levSettings.roleMultipliers, '- `${value}%` - <@&${roleId}>');
-        channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>'); 
+        channelMults = createListFromArray(levSettings.channelMultipliers, '- `${value}%` - <#${channelId}>');
         categoryMults = createListFromArray(levSettings.categoryMultipliers, '- `${value}%` - <#${categoryId}>');
         levelRoles = createListFromArray(levSettings.levelRoles, 'lv. ${level} - <@&${roleId}>');
         annMess = JSON.parse(levSettings.announceLevelMessages);
@@ -632,16 +701,16 @@ module.exports = {
     } catch (error) {
       console.log('Error retrieving level system settings', error);
       embed = createErrorEmbed(
-        interaction, 
+        interaction,
         'Oh no! Something went wrong trying to access the Level Settings for your server, please try again later!'
       );
       await interaction.editReply({ embeds: [embed] });
-      return; 
+      return;
     }
 
     let value = interaction.options.get('value')?.value;
     try {
-      let data, setting, existingSetting, action, setData, role, channel;
+      let data, setting, existingSetting, action, setData, role, channel, level, user;
 
       switch(subCmdGroup) {
         case 'multiplier':
@@ -698,7 +767,7 @@ module.exports = {
               break;
             case 'settings':
               embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults, categoryMults);
-              
+
               break;
           }
           interaction.editReply({ embeds: [embed] });
@@ -713,7 +782,7 @@ module.exports = {
                 setting = { 'announceChannel': channel.id };
                 embed = createSuccessEmbed({int: interaction, title: `Level Up Announce Channel ${existingSetting ? 'Updated' : 'Set'}!`, descr: `The Level Up Announce Channel has been ${existingSetting ? 'updated' : 'set'} to ${channel}.`});
               } else {
-                embed = createInfoEmbed({ int: interaction, descr: `The Level Up Announce Channel has already been set to <#${existingSetting}>.`});  
+                embed = createInfoEmbed({ int: interaction, descr: `The Level Up Announce Channel has already been set to <#${existingSetting}>.`});
               }
               break;
             case 'ping':
@@ -776,40 +845,40 @@ module.exports = {
                 "memberId": interaction.user.id,
                 "level": level || userInfo.level,
                 "xp": calculateLevelByXp((level || userInfo.level), xpSettings),
-                "color": userInfo.color 
+                "color": userInfo.color
               };
               embed = await createAnnounceEmbed(guildId, interaction, userLevelInfo);
               break;
             case 'placeholders':
               const fieldObject = {
                 "user": [
-                  '{user id}** (The user\'s ID)', 
-                  '{user mention}** (Mention the User)', 
-                  '{user name}** (The user\'s name)', 
-                  '{user global}** (The user\'s Global name)', 
-                  '{user nick}** (The User\'s nickname)', 
-                  '{user avatar}** (The user\'s Avatar Url)', 
+                  '{user id}** (The user\'s ID)',
+                  '{user mention}** (Mention the User)',
+                  '{user name}** (The user\'s name)',
+                  '{user global}** (The user\'s Global name)',
+                  '{user nick}** (The User\'s nickname)',
+                  '{user avatar}** (The user\'s Avatar Url)',
                   '{user color}** (The user\'s Rank Card Color)'
                 ],
                 "level and xp": [
-                  '{user xp}** (The user\'s current level XP)', 
-                  '{level}** (The user\'s current level)', 
-                  '{level previous}** (The user\'s previous level)', 
-                  '{level previous xp}** (The user\'s previous level XP)', 
-                  '{level next}** (The user\'s next level)', 
+                  '{user xp}** (The user\'s current level XP)',
+                  '{level}** (The user\'s current level)',
+                  '{level previous}** (The user\'s previous level)',
+                  '{level previous xp}** (The user\'s previous level XP)',
+                  '{level next}** (The user\'s next level)',
                   '{level next xp}** (The user\'s next level XP)'
                 ],
                 "level awards": [
-                  '{reward}** (The Reward Role)', 
-                  '{reward role name}** (The Reward Role\'s name)', 
-                  '{reward rolecount}** (The total Reward Count)', 
-                  '{reward rolecount progress}** (The Reward progress in {reward rolecount progress} format)', '{reward previous} (The previous Reward Role)', 
+                  '{reward}** (The Reward Role)',
+                  '{reward role name}** (The Reward Role\'s name)',
+                  '{reward rolecount}** (The total Reward Count)',
+                  '{reward rolecount progress}** (The Reward progress in {reward rolecount progress} format)', '{reward previous} (The previous Reward Role)',
                   '{reward next}** (The next Reward Role)'
                 ],
                 "server": [
-                  '{server id}** (The Server\'s ID)', 
-                  '{server name}** (The Server\'s name)', 
-                  '{server member count}** (The total Members in the Server)', 
+                  '{server id}** (The Server\'s ID)',
+                  '{server name}** (The Server\'s name)',
+                  '{server member count}** (The total Members in the Server)',
                   '{server icon}** (The Server Icon Url)'
                 ],
                 "other" : [
@@ -881,7 +950,7 @@ module.exports = {
               } else {
                 embed = createInfoEmbed({int: interaction, descr:`The Replace Roles Setting is already ${value ? '\`enabled\`' : '\`disabled\`' }.`});
               }
-              break; 
+              break;
             case 'add':
               role = interaction.options.getRole('role');
               const match = data.find(dat => (dat.level !== level || dat.level === level) && dat.roleId === role.id)
@@ -944,7 +1013,6 @@ module.exports = {
           switch(subCmd) {
             case 'settings':
               await resetLevelSettings(guildId);
-              interaction.editReply({ embeds: [embed] });
               embed = createSuccessEmbed({int: interaction, title: 'Level Settings Resetted!', descr: 'All Level System Setting have been resetted.'})
               break;
             case 'levels':
@@ -959,7 +1027,7 @@ module.exports = {
                     embed = createInfoEmbed({int: interaction, descr: `The level for ${member} has already been resetted.`});
                   } else {
                     embed = createInfoEmbed({int: interaction, descr: `You can't reset the level of ${member} (it's a bot).`});
-                  } 
+                  }
                 }
               } else {
                 levelData = await getAllUsersLevel(guildId);
@@ -1013,8 +1081,8 @@ module.exports = {
                     let levelData = await getAllUsersLevel(guildId);
                     setting = { 'xpSettings' : JSON.stringify(value) };
                     embed = createSuccessEmbed({
-                      int: interaction, 
-                      title: 'XP Values Updated!', 
+                      int: interaction,
+                      title: 'XP Values Updated!',
                       descr: `The XP Values have been updated ${levelData.length > 0 ? 'and all levels resetted' : 'but levels were not resetted \n(they have been recently)'}: \n- **Step:** \`${existingSetting.step}\` => \`${value.step}\` \n- **Min Xp:** \`${existingSetting.min}xp\` => \`${value.min}xp\` \n- **Max Xp:** \`${existingSetting.max}xp\` => \`${value.max}xp\``
                     });
                     if (levelData.length > 0) await resetLevelSystem(guildId);
@@ -1029,15 +1097,15 @@ module.exports = {
                     int: interaction,
                     descr: 'No response detected. XP values remain unchanged.'
                   });
-                }  
+                }
                 try {
                   await warningMessage.reactions.removeAll();
                 } catch (error) {
                   console.error('Failed to remove reactions:', error);
-                }           
+                }
               } else {
                 embed = createWarningEmbed({
-                  int: interaction, 
+                  int: interaction,
                   descr: `The given step (\`${value.step}\`), min xp (\`${value.min}\`) and max xp (\`${value.max}\`) are the same as they were already set.`});
               }
               break;
@@ -1046,10 +1114,10 @@ module.exports = {
           break;
         case 'modify':
           action = interaction.options.getString('action');
-          const user = interaction.options.getMentionable('user');
+          user = interaction.options.getMentionable('user');
           const userLevelInfo = await getUserLevel(guildId, user.id);
           const xpSettings = JSON.parse(levSettings.xpSettings)
-          const level = value;
+          level = value;
           const xp = value;
           let levelToGive, xpToGive;
           switch (subCmd) {
@@ -1077,7 +1145,7 @@ module.exports = {
               if (!embed) {
                 xpToGive = calculateXpByLevel(levelToGive, xpSettings)
                 await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive });
-                embed = createSuccessEmbed({ int: interaction, title: 'User Level Modified!', descr: `${user}'s Level has been modified to Lv. ${levelToGive}!`});  
+                embed = createSuccessEmbed({ int: interaction, title: 'User Level Modified!', descr: `${user}'s Level has been modified to Lv. ${levelToGive}!`});
               }
               break;
             case 'xp':
@@ -1108,15 +1176,62 @@ module.exports = {
           interaction.editReply({ embeds: [embed] });
           break;
         case 'calculator':
-          console.log('This command is not finished yet...');
+          level = interaction.options.getNumber('level');
+          user = interaction.options.getMentionable('user') || interaction.member;
+          role = interaction.options.getString('roles');
+          let userRoles, description;
+          if (role) {
+            if (role.includes(';')) {
+              userRoles = role.split(';').map(s => s.trim()).filter(Boolean);
+            } else {
+              userRoles = [role.trim()];
+            }
+          } else {
+            userRoles = getMemberRoles(user);
+          }
+          roleMults = JSON.parse(levSettings.roleMultipliers).filter(role => userRoles.includes(role.roleId));
+          const usedRoleMults = createListFromArray(roleMults, '- `${value}%` - <@&${roleId}>', false);
+          channel = interaction.options.getChannel('channel') || interaction.channel;
+          /*channelMults = JSON.parse(levSettings.channelMultipliers).filter(channel => channel.channelId === channel.id);
+          if (!channelMults && channel.parent?.id) {
+            categoryMults = JSON.parse(levSettings.categoryMultipliers).filter(category => category.categoryId === channel.parent.id);
+            const usedCatMults = createListFromArray(categoryMults, '- `${value}%` - <#${categoryId}>');
+          } else {
+            const usedChanMults = createListFromArray(channelMults, '- `${value}%` - <#${channelId}>');
+          }*/
+          let xpObject = {
+            settings: levSettings, 
+            user: user, 
+            channel: channel, 
+            roles: userRoles,
+            notRandom: true
+          }
+          const [minXp, maxXp] = calculateMultiplierXp(xpObject);
+          switch (subCmd) {
+            case 'xp':
+              description = `${user} can gain between ${minXp} XP and ${maxXp} XP with following conditions:\n` +
+                            `Category: ${channel.parent?.name || 'No Category'}\n` + 
+                            `Channel: ${channel}\n` +
+                            `Roles: \n${usedRoleMults}`
+              embed = createSuccessEmbed({ int: interaction, title: 'XP Calculator', descr: description });
+              break;
+            case 'messages':
+              embed = createInfoEmbed({ int: interaction, title: 'Command not Finished', descr: 'This command is not doing anything just yet.\nPlease try another time or ask Arcky when he\'ll have this command finished!'})
+              break;
+            case 'voice':
+              embed = createInfoEmbed({ int: interaction, title: 'Command not Finished', descr: 'This command is not doing anything just yet.\nPlease try another time or ask Arcky when he\'ll have this command finished!'})
+              break;
+          }
+          interaction.editReply({ embeds: [embed] });
           break;
+          
         default: // lvsys settings
           embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, categoryMults, channelMults,  levelRoles, blackListRoles, blackListCategories, blackListChannels, annMess)
           interaction.editReply({ embeds: [embed] });
           break;
       }
       if (setting && subCmd !== 'settings' && subCmd !== 'show' && subCmdGroup !== 'reset') {
-        await setLevelSettings({ 
+        await setLevelSettings({
           id: guildId,
           setting
         });

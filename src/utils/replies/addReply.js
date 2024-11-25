@@ -9,12 +9,12 @@ const addReply = async (interaction) => {
     trigger = trigger.split(';').map(s => s.trim()).filter(Boolean);
   } else {
     trigger = [trigger.trim()];
-  };
+  }
   if (response.includes(';')) {
     response = response.split(';').map(s => s.trim()).filter(Boolean);
   } else {
     response = [response.trim()];
-  };
+  }
   const message = await setBotReplies({trigger: trigger, response: response, action: 'insert' });
   let embed;
   try {

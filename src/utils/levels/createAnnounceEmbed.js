@@ -5,8 +5,7 @@ const getOrConvertColor = require("../getOrConvertColor");
 
 module.exports = async (guildId, user, userLevelInfo) => {
   let annMessage = await getAnnounceMessage(guildId, userLevelInfo.level);
-  if (annMessage.lv) annMessage = annMessage.options;
-  const footerUrl = annMessage.length > 0 ? await embedPlaceholders(annMessage.footer.iconUrl, user, userLevelInfo) : null; 
+  if (annMessage.lv) annMessage = annMessage.options; 
   let embed = new EmbedBuilder()
     .setColor(await embedPlaceholders(annMessage.color, user, userLevelInfo))
     .setTitle(await embedPlaceholders(annMessage.title, user, userLevelInfo))
@@ -14,7 +13,7 @@ module.exports = async (guildId, user, userLevelInfo) => {
     .setFooter(
       {
         text: await embedPlaceholders(annMessage.footer.text, user, userLevelInfo),
-        iconURL: footerUrl !== '{server icon}' ? footerUrl : null
+        iconURL: await embedPlaceholders(annMessage.footer.iconUrl, user, userLevelInfo)
       }
     );
   if (annMessage.thumbnailUrl) embed.setThumbnail(await embedPlaceholders(annMessage.thumbnailUrl, user, userLevelInfo))

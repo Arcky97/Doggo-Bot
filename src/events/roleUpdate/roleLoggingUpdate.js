@@ -25,13 +25,13 @@ module.exports = async (client, oldRole, newRole) => {
     }
 
     if (oldRole.mentionable !== newRole.mentionable) {
-      beforeSettings += `**Mentionable:** ${oldRole.mentionable}\n`;
-      afterSettings += `**Mentionable:** ${newRole.mentionable}\n`;
+      beforeSettings += `**Mentionable:** ${oldRole.mentionable ? 'Yes' : 'No'}\n`;
+      afterSettings += `**Mentionable:** ${newRole.mentionable ? 'Yes' : 'No'}\n`;
     }
 
     if (oldRole.hoist !== newRole.hoist) {
-      beforeSettings += `**Separated:** ${oldRole.hoist}\n`;
-      afterSettings += `**Separated:** ${newRole.hoist}\n`;
+      beforeSettings += `**Separated:** ${oldRole.hoist ? 'Yes' : 'No'}\n`;
+      afterSettings += `**Separated:** ${newRole.hoist ? 'Yes' : 'No'}\n`;
     }
 
     const addedPermsByCategory = {};
