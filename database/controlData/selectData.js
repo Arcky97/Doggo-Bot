@@ -1,3 +1,4 @@
+const { addToDatabaseCount } = require("../../src/handlers/DatabaseCount");
 const exportToDatabaseLogging = require("../../src/handlers/exportToDatabaseLogging");
 const { query } = require("../db");
 
@@ -17,7 +18,8 @@ async function selectData(table, keys, selectAll = false) {
     }
   } catch (error) {
     console.error(`Error selecting data from ${table} table:`, error);
-    exportToDatabaseLogging(`Error Selecting data from ${table} table.`)
+    exportToDatabaseLogging(`Error Selecting data from ${table} table.`);
+    addToDatabaseCount(table, "select");
     return null;
   }
 }

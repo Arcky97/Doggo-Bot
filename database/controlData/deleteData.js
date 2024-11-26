@@ -1,3 +1,4 @@
+const { addToDatabaseCount } = require("../../src/handlers/DatabaseCount");
 const exportToDatabaseLogging = require("../../src/handlers/exportToDatabaseLogging");
 const { query } = require("../db");
 
@@ -23,6 +24,7 @@ async function deleteData(table, key, data) {
   try {
     await query(deleteQuery, whereValues);
     exportToDatabaseLogging(`Data Deleted from ${table} table.`);
+    addToDatabaseCount(table, "delete");
   } catch (error) {
     console.error(`Error Deleting data in ${table} table:`, error);
     exportToDatabaseLogging(`Error Deleting data from ${table} table.`);

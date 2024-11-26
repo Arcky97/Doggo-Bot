@@ -3,6 +3,7 @@ require('./handlers/dataBaseCleanUp');
 const { Client, IntentsBitField, Partials } = require('discord.js');
 const eventHandler = require('./handlers/eventHandler');
 const database = require('./../database/db.js');
+const { showDatabaseCount } = require('./handlers/DatabaseCount.js');
 
 const client = new Client({
   intents: [
@@ -28,6 +29,7 @@ async function startBot() {
     eventHandler(client);
     await database.initDatabase();
     await client.login(process.env.CLIENT_TOKEN);
+    showDatabaseCount();
   } catch (error) {
     console.error('Error starting the bot:', error);
   }

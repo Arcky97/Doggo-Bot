@@ -12,6 +12,8 @@ module.exports = async (event) => {
     // Append the log entry as plain text, with each event on a new line
     fs.appendFileSync(filePath, logEntry, 'utf8');
 
+    
+
   } catch (error) {
     console.error('Error exporting event to log file:', error);
   }

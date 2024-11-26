@@ -1190,15 +1190,22 @@ module.exports = {
             userRoles = getMemberRoles(user);
           }
           roleMults = JSON.parse(levSettings.roleMultipliers).filter(role => userRoles.includes(role.roleId));
-          const usedRoleMults = createListFromArray(roleMults, '- `${value}%` - <@&${roleId}>', false);
+          const usedRoleMults = createListFromArray(roleMults, '- <@&${roleId}>: `${value}%`', false);
           channel = interaction.options.getChannel('channel') || interaction.channel;
-          /*channelMults = JSON.parse(levSettings.channelMultipliers).filter(channel => channel.channelId === channel.id);
+          if (channel.type === 4) {
+            embed = createInfoEmbed({ int: interaction, title: 'Wrong Channel Type Given', descr: `${channel} is not a Category, please give a Text or Voice Channel instead to calculate the XP.`});
+            interaction.editReply({ embeds: [embed]});
+            return;
+          }
+          channelMults = JSON.parse(levSettings.channelMultipliers).filter(data => data.channelId === channel.id);
+          let usedChanMults
+          let usedCatMults = 'none';
           if (!channelMults && channel.parent?.id) {
-            categoryMults = JSON.parse(levSettings.categoryMultipliers).filter(category => category.categoryId === channel.parent.id);
-            const usedCatMults = createListFromArray(categoryMults, '- `${value}%` - <#${categoryId}>');
+            categoryMults = JSON.parse(levSettings.categoryMultipliers).filter(data => data.categoryId === channel.parent.id);
+            usedCatMults = createListFromArray(categoryMults, '`${value}%`', false);
           } else {
-            const usedChanMults = createListFromArray(channelMults, '- `${value}%` - <#${channelId}>');
-          }*/
+            usedChanMults = createListFromArray(channelMults, '`${value}%`', false);
+          }
           let xpObject = {
             settings: levSettings, 
             user: user, 
@@ -1209,10 +1216,11 @@ module.exports = {
           const [minXp, maxXp] = calculateMultiplierXp(xpObject);
           switch (subCmd) {
             case 'xp':
-              description = `${user} can gain between ${minXp} XP and ${maxXp} XP with following conditions:\n` +
-                            `Category: ${channel.parent?.name || 'No Category'}\n` + 
-                            `Channel: ${channel}\n` +
-                            `Roles: \n${usedRoleMults}`
+              description = `${user} can gain between ${minXp} XP and ${maxXp} XP with following conditions and multipliers:\n` +
+                            `- Global: \`${levSettings.globalMultiplier}%\`\n` +
+                            `- Category: ${channel.parent?.name || 'No Category'}: ${usedCatMults}\n` + 
+                            `- Channel: ${channel}: ${usedChanMults}\n` +
+                            `- Roles: \n  ${usedRoleMults}`
               embed = createSuccessEmbed({ int: interaction, title: 'XP Calculator', descr: description });
               break;
             case 'messages':
