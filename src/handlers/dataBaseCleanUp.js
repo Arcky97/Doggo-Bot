@@ -3,6 +3,7 @@ const { query } = require('../../database/db');
 const { deleteData } = require('../../database/controlData/deleteData');
 const { updateData } = require('../../database/controlData/updateData');
 const moment = require("moment");
+const { showDatabaseCount } = require('./DatabaseCount');
 
 const tables = ['GuildSettings', 'LevelSystem', 'LevelSettings', 'EventEmbeds', 'GeneratedEmbeds', 'ReactionRoles'];
 
@@ -30,6 +31,7 @@ cron.schedule('0 0 * * *', async () => {
     cleanupInfo.forEach(info => {
       console.log(`Table: ${info.table}, Rows deleted: ${info.rowsDeleted}`);
     });
+    showDatabaseCount();
   } catch (error) {
     console.error('Error running cleanup job:', error);
   }

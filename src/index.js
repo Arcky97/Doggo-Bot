@@ -29,7 +29,6 @@ async function startBot() {
     eventHandler(client);
     await database.initDatabase();
     await client.login(process.env.CLIENT_TOKEN);
-    showDatabaseCount();
   } catch (error) {
     console.error('Error starting the bot:', error);
   }

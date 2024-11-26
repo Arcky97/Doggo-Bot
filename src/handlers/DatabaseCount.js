@@ -47,6 +47,8 @@ function showDatabaseCount () {
     }
   }
   console.log('-----------------------------------');
+  databaseCount = {};
+  fs.writeFileSync(filePath, JSON.stringify(databaseCount, null, 2), 'utf8');
 }
 
 module.exports = { addToDatabaseCount, showDatabaseCount }
