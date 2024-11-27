@@ -97,8 +97,6 @@ module.exports = async (client, oldRole, newRole) => {
     
     await setEventTimeOut('role', newRole.id, embed, logChannel);
 
-    console.log(`The role ${newRole.name} with ID: ${oldRole.id} was updated in Server ${oldRole.guild.id}.`)
-
   } catch (error) {
     console.error('Failed to log Role Update!', error);
   }

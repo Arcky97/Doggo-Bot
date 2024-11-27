@@ -12,14 +12,9 @@ async function levelXpRequirements() {
     if (level > 1) {
       totalXp += currentIncrement;
       currentIncrement += incrementStep
-    }
-  
-    //console.log(`Level ${level}: ${totalXp} XP`);
-  
-    await query('INSERT INTO LevelXpRequirements (level, requiredXp) VALUES (?, ?)', [level, totalXp]);
-    
+    }  
+    await query('INSERT INTO LevelXpRequirements (level, requiredXp) VALUES (?, ?)', [level, totalXp]);   
   }
-  
   exportToJson('LevelXpRequirements');
 }
 

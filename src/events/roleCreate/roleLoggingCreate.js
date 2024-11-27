@@ -36,8 +36,6 @@ module.exports = async (client, role) => {
 
     await setEventTimeOut('server', role.id, embed, logChannel);
 
-    console.log(`A new role ${role.name} with ID: ${role.id} was created in Server ${role.guild.id}.`);
-
   } catch (error) {
     console.error('Failed to log Role Create!', error);
   }

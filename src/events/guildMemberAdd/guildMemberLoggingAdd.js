@@ -67,7 +67,6 @@ module.exports = async (client, member) => {
 
     await setEventTimeOut('joinleave', member.id, embed, logChannel);
  
-    console.log(`${member.user.username} joined ${member.guild.name}!`);
     await setActivity(client);
   } catch (error) {
     console.error('Failed to update Activity!', error)

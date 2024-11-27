@@ -45,8 +45,6 @@ module.exports = async (guildId, channel, timeSpent) => {
   for (let i = 0; i < timeSpent - voiceCooldown; i += voiceCooldown) {
     random = Math.floor(Math.random() * (maxXp - minXp + 1)) + minXp;
     totalXp += Math.round(random * (Math.min(multiplier, 1100)) / 100);
-    console.log('The earned random XP', random);
-    console.log('The new total XP:', totalXp);
   }
   return totalXp;
 }

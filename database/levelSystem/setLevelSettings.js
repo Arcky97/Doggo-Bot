@@ -101,7 +101,6 @@ async function setLevelSettings({ id, setting}) {
     if (settingValue !== existingValue) {
       await updateData('LevelSettings', { guildId: id}, setting);
     } else {
-      console.log('Data was not updated (it\'s the same as it was)');
       return;
     }
   } catch (error) {

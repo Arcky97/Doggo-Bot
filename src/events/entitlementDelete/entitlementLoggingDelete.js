@@ -35,7 +35,6 @@ module.exports = async (client, entitlement) => {
     
     await setEventTimeOut('Entitlement', entitlement.id, embed, logChannel);
 
-    console.log(`The Entitlement with ID: ${entitlement.id} was removed by User ID: ${entitlement.userId}.`)
   } catch (error) {
     console.error('Failed to log Entitlement Delete!',error);
   }

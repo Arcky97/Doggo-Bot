@@ -28,8 +28,6 @@ module.exports = async (client, oldEmoji, newEmoji) => {
 
     await setEventTimeOut('server', newEmoji.id, embed, logChannel);
 
-    console.log(`The emoji ${newEmoji.name} with ID: ${newEmoji.id} was updated in Server ${newEmoji.guild.id}`);
-
   } catch (error) {
     console.error('Failed to log Emoji Update!', error);
   }

@@ -46,8 +46,6 @@ module.exports = async (client, channel) => {
     }
     await setEventTimeOut('channel', channel.id, embed, logChannel);
 
-    console.log(`The ${getChannelTypeName(channel)} Channel "${channel.name}" with ID "${channel.id}" was deleted in Server "${channel.guild.id}".`);
-
   } catch (error) {
     console.error('Failed to log Channel Delete!', error);
   }

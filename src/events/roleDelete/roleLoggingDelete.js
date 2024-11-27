@@ -40,7 +40,6 @@ module.exports = async (client, role) => {
       })
       .setTimestamp()
 
-    console.log(embed);
     const blackListRoles = await getRoleOrChannelBlacklist({ id: role.guild.id, type: 'role' });
     const roleMults = await getRoleOrChannelMultipliers({ id: role.guild.id, type: 'role' });
     let [_, setData] = setChannelOrRoleArray({ type: 'role', data: blackListRoles, id: role.id, remove: true });
@@ -50,8 +49,6 @@ module.exports = async (client, role) => {
 
     await setEventTimeOut('role', role.id, embed, logChannel);
 
-    console.log(`The role ${role.name} with ID: ${role.id} was deleted in Server ${role.guild.id}.`);
- 
   } catch (error) {
     console.error('Failed to log Role Delete!', error);
   }

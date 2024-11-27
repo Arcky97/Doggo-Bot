@@ -30,7 +30,6 @@ module.exports = async (client, oldState, newState) => {
       .setTimestamp()
 
     if (oldState.channelId === null && newState.channelId !== null) {
-      console.log(`${newState.member.user.tag} joined ${newState.channel.name}`);
       embed.setColor('Green');
       embed.setTitle('Voice Channel Join');
       embed.setFields(
@@ -54,13 +53,10 @@ module.exports = async (client, oldState, newState) => {
             await sendAnnounceMessage(client, newState, newState.member, userInfo);
             await giveUserLevelRole(newState.guild.id, newState.member, userInfo);
           }
-        } else {
-          console.log('Was in AFK channel so no xp will be earned.');
         }
       }
       const joinDate = new Date(joinTime);
       if (oldState.channelId !== null && newState.channelId === null) {
-        console.log(`${newState.member.user.tag} left ${oldState.channel.name}`);
         embed.setColor('Red');
         embed.setTitle('Voice Channel Leave');
         embed.setFields(
@@ -74,7 +70,6 @@ module.exports = async (client, oldState, newState) => {
           }
         )
       } else if (oldState.channelId !== newState.channelId) {
-        console.log(`${newState.member.user.tag} moved from ${oldState.channel.name} to ${newState.channel.name}`);
         embed.setColor('Orange');
         embed.setTitle('Voice Channel Change');
         embed.setFields(

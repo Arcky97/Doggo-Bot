@@ -76,9 +76,7 @@ module.exports = async (client, oldUser, newUser) => {
       //await channel.send({ embeds: [embed] });
 
       await setEventTimeOut('member', `${newUser.id + guild.id}`, embed, logChannel);
-      console.log(`${oldUser.username} updated their profile in guild ${guild.id}!`);
     }
-    console.log(`${newUser} updated their profile.`);
   } catch (error) {
     console.error('Failed to log Member update!', error);
   }

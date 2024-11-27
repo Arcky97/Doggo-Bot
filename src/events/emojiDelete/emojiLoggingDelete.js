@@ -6,7 +6,6 @@ module.exports = async (client, emoji) => {
   try {
     const logChannel = await getLogChannel(client, emoji.guild.id, 'server');
     if (!logChannel) return;
-    console.log(emoji);
     const embed = new EmbedBuilder()
       .setColor('Red')
       .setTitle('Emoji Removed')
@@ -23,8 +22,6 @@ module.exports = async (client, emoji) => {
       .setTimestamp()
 
     await setEventTimeOut('server', emoji.id, embed, logChannel);
-
-    console.log(`Emoji ${emoji.name} with ID: ${emoji.id} was deleted in Server ${emoji.guild.id}.`);
   } catch (error) {
     console.error('Failed to log Emoji Delete!', error);
   }

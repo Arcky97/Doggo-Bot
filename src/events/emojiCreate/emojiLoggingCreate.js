@@ -23,8 +23,7 @@ module.exports = async (client, emoji) => {
       .setTimestamp()
     
     await setEventTimeOut('server', emoji.id, embed, logChannel);
-
-    console.log(`A new emoji ${emoji.name} with ID: ${emoji.id} was created in Server ${emoji.guild.id}`);
+    
   } catch (error) {
     console.error('Failed to log Emoji Create!', error);
   }

@@ -153,8 +153,6 @@ module.exports = async (client, oldChannel, newChannel) => {
     if (!embed.data.fields) return;
     await setEventTimeOut('channel', newChannel.id, embed, logChannel);
 
-    console.log(`The Channel ${newChannel} with ID: ${newChannel.id} was updated in Server ${newChannel.guild.id}.`);
-
   } catch (error) {
     console.error('Failed to log Channel Update!', error);
   }

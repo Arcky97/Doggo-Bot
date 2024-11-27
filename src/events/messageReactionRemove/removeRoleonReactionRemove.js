@@ -31,7 +31,6 @@ module.exports = async (client, reaction, user) => {
   });
 
   if (!matchedPair) {
-    console.log('No matching emoji-role pair found.');
     return;
   }
 
@@ -39,7 +38,6 @@ module.exports = async (client, reaction, user) => {
   const role = guild.roles.cache.get(roleId);
 
   if (!role) {
-    console.log('Role not found in the guild.');
     return;
   }
 
@@ -47,7 +45,6 @@ module.exports = async (client, reaction, user) => {
 
   try {
     await member.roles.remove(role);
-    console.log(`removed role ${role.name} to ${user.tag}.`);
   } catch (error) {
     console.error('Failed to assign role:', error);
   }

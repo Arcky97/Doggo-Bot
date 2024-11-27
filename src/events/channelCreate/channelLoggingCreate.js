@@ -29,8 +29,6 @@ module.exports = async (client, channel) => {
 
     await setEventTimeOut('server', channel.id, embed, logChannel);
 
-    console.log(`A new channel ${channel.name} with ID: ${channel.id} was created in Server ${channel.guild.id}.`);
-
   } catch (error) {
     console.error('Failed to log Channel Create!', error);
   }

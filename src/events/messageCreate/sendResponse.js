@@ -20,8 +20,6 @@ module.exports = async (client, message) => {
             const responses = matchingResponse.responses;
             const randomResponse = responses[Math.floor(Math.random() * responses.length)];
             message.channel.send(randomResponse);
-          } else {
-            console.log('No close match found!');
           }
         } 
       } catch (error) {

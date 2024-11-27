@@ -33,7 +33,6 @@ module.exports = async (client, reaction, user) => {
   });
 
   if (!matchedPair) {
-    console.log('No matching emoji-role pair found.');
     return;
   }
 
@@ -41,7 +40,6 @@ module.exports = async (client, reaction, user) => {
   const role = guild.roles.cache.get(roleId);
 
   if (!role) {
-    console.log('Role not found in the guild.');
     return;
   }
 
@@ -59,13 +57,11 @@ module.exports = async (client, reaction, user) => {
 
       try {
         await member.roles.remove(roleToRemove);
-        console.log(`Removed role ${roleToRemove.name} from ${user.tag} due to role limit of ${reactionLimit}.`)
-      
+
         const reactionToRemove = reaction.message.reactions.cache.find(r => r.emoji.name === emojiToRemove || r.emoji.id === emojiToRemove);
 
         if (reactionToRemove) {
           await reactionToRemove.users.remove(user.id);
-          console.log(`Removed reaction for ${roleToRemove.name} from ${user.tag}.`);
         }
 
       } catch (error) {
@@ -82,7 +78,6 @@ module.exports = async (client, reaction, user) => {
         const reactionToRemove = reaction.message.reactions.cache.find(r => r.emoji.name === emojiName || r.emoji.id === emojiId);
         if (reactionToRemove) {
           await reactionToRemove.users.remove(user.id);
-          console.log(`Removed reaction for ${role.name} from ${user.tag} as role limit of ${roleLimit} is reached.`);
         }
         return;
       } catch (error) {
@@ -93,7 +88,6 @@ module.exports = async (client, reaction, user) => {
 
   try {
     await member.roles.add(role);
-    console.log(`Assigned role ${role.name} to ${user.tag}.`);
   } catch (error) {
     console.error('Failed to assign role:', error);
   }

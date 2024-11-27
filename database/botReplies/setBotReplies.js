@@ -85,7 +85,6 @@ async function setBotReplies({ trigger, response, action, id }) {
   if (action === 'insert') {
     let numberId = generateNumericId();
     while (existIDs.includes(numberId)) {
-      console.log(`Generating a new id since ${numberId} is already in use!`);
       numberId = generateNumericId();
     }
 

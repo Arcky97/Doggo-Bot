@@ -40,7 +40,7 @@ async function setEmbedData(table, keys, data) {
     }
     exportToJson(table);
   } catch (error) {
-    console.log('There was an error setting Data for the Embed:', error);
+    console.error('There was an error setting Data for the Embed:', error);
   }
 }
 
