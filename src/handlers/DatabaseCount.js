@@ -14,7 +14,7 @@ function addToDatabaseCount (table, action) {
     }
 
     if (!databaseCount[table]) {
-      databaseCount[table] = { select: 0, insert: 0, update: 0, delete: 0};
+      databaseCount[table] = { selects: 0, inserts: 0, updates: 0, deletes: 0};
     }
 
     if (databaseCount[table][action] !== undefined ) {
@@ -36,8 +36,8 @@ function showDatabaseCount () {
     databaseCount = JSON.parse(rawData);
   }
   console.log(
-    'Database Counter:\n' +
-    '-----------------------------------'
+    '-----------------------------------\n' +
+    'Database Counter:'
   );
 
   for (const [table, actions] of Object.entries(databaseCount)) {

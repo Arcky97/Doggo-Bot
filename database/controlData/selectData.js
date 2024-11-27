@@ -19,7 +19,7 @@ async function selectData(table, keys, selectAll = false) {
   } catch (error) {
     console.error(`Error selecting data from ${table} table:`, error);
     exportToDatabaseLogging(`Error Selecting data from ${table} table.`);
-    addToDatabaseCount(table, "select");
+    addToDatabaseCount(table, "selects");
     return null;
   }
 }

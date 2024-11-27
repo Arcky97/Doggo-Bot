@@ -24,7 +24,7 @@ async function deleteData(table, key, data) {
   try {
     await query(deleteQuery, whereValues);
     exportToDatabaseLogging(`Data Deleted from ${table} table.`);
-    addToDatabaseCount(table, "delete");
+    addToDatabaseCount(table, "deletes");
   } catch (error) {
     console.error(`Error Deleting data in ${table} table:`, error);
     exportToDatabaseLogging(`Error Deleting data from ${table} table.`);

@@ -22,7 +22,7 @@ async function updateData(table, key, data) {
   try {
     await query(updateQuery, values);
     exportToDatabaseLogging(`Data Updated in ${table} table.`);
-    addToDatabaseCount(table, "update");
+    addToDatabaseCount(table, "updates");
   } catch (error) {
     console.error(`Error updating data in ${table} table:`, error);
     exportToDatabaseLogging(`Error Updating data in ${table} table.`)

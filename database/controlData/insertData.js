@@ -16,7 +16,7 @@ async function insertData(table, key, data) {
   try {
     await query(insertQuery, Object.values(combinedData));
     exportToDatabaseLogging(`Data Inserted in ${table} table.`);
-    addToDatabaseCount (table, "insert");
+    addToDatabaseCount (table, "inserts");
   } catch (error) {
     console.error(`Error inserting data in ${table} table:`, error);
     exportToDatabaseLogging(`Error Inserting data in ${table} table.`)

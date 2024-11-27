@@ -16,7 +16,7 @@ module.exports = ({settings, user, channel, roles, notRandom}) => {
   const minXp = JSON.parse(settings.xpSettings).min;
   const maxXp = JSON.parse(settings.xpSettings).max;
 
-  if (catBlkList.some(item => item.categoryId === channel.parent.id)) return notRandom ? [0, 0] : 0;
+  if (catBlkList.some(item => item.categoryId === channel.parent?.id)) return notRandom ? [0, 0] : 0;
   if (chanBlkList.some(item => item.channelId === channel.id)) return notRandom ? [0, 0] : 0;
   if (roleBlkList.some(item => userRoles.some(role => role === item.roleId))) return notRandom ? [0, 0] : 0;
 
@@ -56,7 +56,6 @@ module.exports = ({settings, user, channel, roles, notRandom}) => {
     return [totalMinXp, totalMaxXp];
   } else {
     totalXp = Math.round(totalXp * (Math.min(totalMultiplier, 1100) / 100));
-    console.log(totalXp);
     return totalXp;
   }
 }

@@ -1,5 +1,5 @@
-const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder, ChannelType } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings, getXpSettings, getMultiplierReplace } = require("../../../database/levelSystem/setLevelSettings");
+const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
 const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
@@ -16,7 +16,6 @@ const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 const getVowel = require("../../utils/getVowel");
 const createAnnounceEmbed = require("../../utils/levels/createAnnounceEmbed");
 const calculateLevelByXp = require("../../utils/levels/calculateLevelByXp");
-const generateUserInfo = require("../../utils/levels/generateUserInfo");
 const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 const calculateMultiplierXp = require("../../utils/levels/calculateMultiplierXp");
 const getMemberRoles = require("../../utils/logging/getMemberRoles");
@@ -628,6 +627,11 @@ module.exports = {
               required: true
             },
             {
+              type: ApplicationCommandOptionType.Boolean,
+              name: 'remain',
+              description: 'The remaining levels until reaching the wanted level.',
+            },
+            {
               type: ApplicationCommandOptionType.Channel,
               name: 'channel',
               description: 'The channel (used for the eventual multiplier). (If not given, the current channel will be used.)'
@@ -639,35 +643,6 @@ module.exports = {
             },
             {
               type: ApplicationCommandOptionType.String,
-              name: 'roles',
-              description: '1 or more Roles which will overwrite the User\'s Roles. (Separate each with \';\'.)'
-            }
-          ]
-        },
-        {
-          type: ApplicationCommandOptionType.Subcommand,
-          name: 'voice',
-          description: 'Calculate how much time you need to spent in a VC channel to reach a certain level.',
-          options: [
-            {
-              type: ApplicationCommandOptionType.Number,
-              name: 'level',
-              description: 'The wanted level.',
-              required: true 
-            },
-            {
-              type: ApplicationCommandOptionType.Channel,
-              name: 'channel',
-              description: 'The Voice Channel.',
-              required: true
-            },
-            {
-              type: ApplicationCommandOptionType.Mentionable,
-              name: 'user',
-              description: 'The User to use it\'s Roles from (if not given, your Roles will be used).'
-            },
-            {
-              type: ApplicationCommandOptionType.Role,
               name: 'roles',
               description: '1 or more Roles which will overwrite the User\'s Roles. (Separate each with \';\'.)'
             }
@@ -708,6 +683,7 @@ module.exports = {
       return;
     }
 
+    const xpSettings = JSON.parse(levSettings.xpSettings)
     let value = interaction.options.get('value')?.value;
     try {
       let data, setting, existingSetting, action, setData, role, channel, level, user;
@@ -755,7 +731,7 @@ module.exports = {
             case 'replace':
               const catRepl = interaction.options.getBoolean('category');
               const chanRepl = interaction.options.getBoolean('channel');
-              const multRepl = await getMultiplierReplace(guildId);
+              const multRepl = JSON.parse(levSettings.multiplierReplace);
               if (catRepl !== multRepl.category || chanRepl !== multRepl.channel) {
                 setData = JSON.stringify({
                   'category': catRepl,
@@ -838,7 +814,6 @@ module.exports = {
               } else {
                 embedOptions = JSON.parse(levSettings.announceDefaultMessage);
               }
-              const xpSettings = await getXpSettings(guildId);
               const userInfo = await getUserLevel(guildId, interaction.user.id);
               const userLevelInfo = {
                 "guildId": guildId,
@@ -1116,7 +1091,6 @@ module.exports = {
           action = interaction.options.getString('action');
           user = interaction.options.getMentionable('user');
           const userLevelInfo = await getUserLevel(guildId, user.id);
-          const xpSettings = JSON.parse(levSettings.xpSettings)
           level = value;
           const xp = value;
           let levelToGive, xpToGive;
@@ -1179,7 +1153,9 @@ module.exports = {
           level = interaction.options.getNumber('level');
           user = interaction.options.getMentionable('user') || interaction.member;
           role = interaction.options.getString('roles');
-          let userRoles, description;
+          const userData = await getUserLevel(guildId, user.id);
+          const startLevel = interaction.options.getBoolean('remain') ? userData.level : 0;
+          let userRoles, description, catString, chanString, roleString;
           if (role) {
             if (role.includes(';')) {
               userRoles = role.split(';').map(s => s.trim()).filter(Boolean);
@@ -1198,10 +1174,11 @@ module.exports = {
             return;
           }
           channelMults = JSON.parse(levSettings.channelMultipliers).filter(data => data.channelId === channel.id);
-          let usedChanMults
+          categoryMults = JSON.parse(levSettings.categoryMultipliers).filter(data => data.categoryId === channel.parent?.id);
+          let usedChanMults= 'none';
           let usedCatMults = 'none';
-          if (!channelMults && channel.parent?.id) {
-            categoryMults = JSON.parse(levSettings.categoryMultipliers).filter(data => data.categoryId === channel.parent.id);
+          if (categoryMults.length === 1) {
+            if (channelMults.length === 1) usedChanMults = 'replaced by Category';
             usedCatMults = createListFromArray(categoryMults, '`${value}%`', false);
           } else {
             usedChanMults = createListFromArray(channelMults, '`${value}%`', false);
@@ -1213,21 +1190,49 @@ module.exports = {
             roles: userRoles,
             notRandom: true
           }
+          const catBlackList = JSON.parse(levSettings.blackListCategories);
+          if (catBlackList.find(data => data.categoryId === channel.parent?.id )) catString = 'blacklisted';
+          if (!catString) catString = channel?.parent ? `${channel.parent.name}: ${usedCatMults}` : 'No Category';
+
+          const chanBlackList = JSON.parse(levSettings.blackListChannels);
+          chanString = (chanBlackList.find(data => data.channelId === channel.id)) ? 'blacklisted' : `${channel}: ${usedChanMults}`;
+
+          const roleBlackList = JSON.parse(levSettings.blackListRoles);
+          const userBlackListRoles = roleBlackList.filter(data => userRoles.includes(data.roleId));
+          const blackListRolesString = createListFromArray(userBlackListRoles, '  - <@&${roleId}>: blacklisted', false);
+          roleString = `${usedRoleMults !== 'none' ? `\n  ${usedRoleMults}` : '' } ${blackListRolesString !== 'none' ? `\n  ${blackListRolesString}` : ''}`;
           const [minXp, maxXp] = calculateMultiplierXp(xpObject);
+          const multiplierString =  `- **Global:** \`${levSettings.globalMultiplier}%\`\n` +
+                                    `- **Category:** ${catString}\n` + 
+                                    `- **Channel:** ${chanString}\n` +
+                                    `- **Roles:** ${roleString !== '' ? roleString : 'none'}\n` +
+                                    `**Extra Information:**\n` +
+                                    `${categoryMults.length === 1 ? `- Category ${categoryMults[0].replace ? '**Replaces**' : '**stacks on**' } Global Multiplier.\n` : ''}` +
+                                    `${channelMults.length === 1 && categoryMults.length === 0 ? `- Channel ${channelMults[0].replace ? '**Replaces**' : '**stacks on**' } Global Multiplier\n` : ''}` +
+                                    `${usedRoleMults !== 'none' && blackListRolesString === 'none' ? '- Role Multipliers **always stack.**' : ''}`
           switch (subCmd) {
             case 'xp':
-              description = `${user} can gain between ${minXp} XP and ${maxXp} XP with following conditions and multipliers:\n` +
-                            `- Global: \`${levSettings.globalMultiplier}%\`\n` +
-                            `- Category: ${channel.parent?.name || 'No Category'}: ${usedCatMults}\n` + 
-                            `- Channel: ${channel}: ${usedChanMults}\n` +
-                            `- Roles: \n  ${usedRoleMults}`
-              embed = createSuccessEmbed({ int: interaction, title: 'XP Calculator', descr: description });
+              if (minXp === 0) {
+                embed = createInfoEmbed({ int: interaction, title: 'XP Calculator!', descr: `No XP can be gained with the given **Conditions** and **Multipliers:**\n ${multiplierString}`});
+               } else {
+                description = `${user} can gain between **${minXp} - ${maxXp} XP** with following **Conditions** and **Multipliers:**\n ${multiplierString}`
+                embed = createSuccessEmbed({ int: interaction, title: 'XP Calculator!', descr: description });
+              }
               break;
             case 'messages':
-              embed = createInfoEmbed({ int: interaction, title: 'Command not Finished', descr: 'This command is not doing anything just yet.\nPlease try another time or ask Arcky when he\'ll have this command finished!'})
-              break;
-            case 'voice':
-              embed = createInfoEmbed({ int: interaction, title: 'Command not Finished', descr: 'This command is not doing anything just yet.\nPlease try another time or ask Arcky when he\'ll have this command finished!'})
+              if (minXp === 0) {
+                embed = createInfoEmbed({ int: interaction, title: 'Message Calculator!', descr: `Messages sent with the given **Conditions** and **Multipliers** will not give any XP at all: \n${multiplierString}`});
+              } else if (startLevel > level) {
+                embed = createInfoEmbed({ int: interaction, title: 'Message Calculator!', descr: `${user}'s level is already higher than **lv. ${level}**.\nMessage Calculation is not possible.`});
+              } else if (startLevel === level) {
+                embed = createInfoEmbed({ int: interaction, title: 'Message Calculator!', descr: `${user}'s level is already equal to **lv. ${level}**. \nMessage Calculation is not possible.`});
+              } else {
+                const totalXp = calculateXpByLevel((level - startLevel), xpSettings);
+                const minMess = Math.ceil(totalXp / maxXp);
+                const maxMess = Math.ceil(totalXp / minXp);
+                description = `${user} can gain **lv. ${level}** by sending between **${minMess} - ${maxMess} messages** starting at **lv. ${startLevel}** with following **Conditions** and **Multipliers:**\n ${multiplierString}`
+                embed = createSuccessEmbed({ int: interaction, title: 'Message Calculator!', descr: description});
+              }
               break;
           }
           interaction.editReply({ embeds: [embed] });
