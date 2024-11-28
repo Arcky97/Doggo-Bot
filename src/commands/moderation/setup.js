@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandSubcommandBuilder } = require("discord.js");
-const { setGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
+const { setGuildSettings, getGuildLoggingConfig } = require("../../../database/guildSettings/setGuildSettings");
 const { createErrorEmbed, createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
 const createLoggingMenu = require("../../utils/menus/createLoggingMenu");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
@@ -146,7 +146,7 @@ module.exports = {
                 },
                 {
                   name: 'join leave events',
-                  value: 'joinleave'
+                  value: 'joinLeave'
                 }
               ]
             }
@@ -196,7 +196,7 @@ module.exports = {
         const filter = (i) =>
           (i.customId === `${firstLetterToUpperCase(choice)} Logging Menu` ||
            i.customId === 'confirm' || i.customId === 'cancel') &&
-          i.user.id === interaction.user.id;
+           i.user.id === interaction.user.id;
   
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 150000 });
         let selectedOptions = [];
@@ -211,6 +211,53 @@ module.exports = {
               return;
             }
             console.log('Confirmed options:', selectedOptions);
+
+            let loggingConfig = await getGuildLoggingConfig(guildId, choice);
+
+            const filteredOptions = selectedOptions.filter(option => {
+              if (option === 'all') return true;
+              if (selectedOptions.includes('all')) return false;
+
+              const [category] = option.split('.');
+              return !selectedOptions.includes(`${category}.all`) || option === `${category}.all`;
+            });
+            Object.keys(loggingConfig).forEach(category => {
+              if (typeof loggingConfig[category] === 'object') {
+                Object.keys(loggingConfig[category]).forEach(subOption => {
+                  loggingConfig[category][subOption] = false
+                });
+              } else {
+                loggingConfig[category] = false;
+              }
+            });
+
+            console.log(loggingConfig);
+            filteredOptions.forEach(option => {
+              const [category, subOption] = option.includes('.') ? option.split('.') : [null, option];
+
+              if (category) {
+                if (subOption === 'all')
+                  if (loggingConfig[category] && typeof loggingConfig[category] === 'object') {
+                    Object.keys(loggingConfig[category]).forEach(key => {
+                      loggingConfig[category][key] = true;
+                    });
+                  } else {
+                    if (loggingConfig[category] && loggingConfig[category][subOption] !== undefined) {
+                      loggingConfig[category][subOption] = true;
+                    }
+                  }
+              } else {
+                if (subOption === 'all') {
+                  Object.keys(loggingConfig).forEach(key => {
+                    loggingConfig[key] = true;
+                  })
+                } else {
+                  loggingConfig[subOption] = true;
+                }
+              }
+            })
+            console.log(loggingConfig);
+
             await i.update({ content: 'Logging preferences updated!', components: [] });
             collector.stop();
           } else if (i.customId === 'cancel') {

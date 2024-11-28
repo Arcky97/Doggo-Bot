@@ -958,9 +958,9 @@ module.exports = {
               break;
             case 'multiplier':
               existingSetting = levSettings.voiceMultiplier;
-              value = Math.round(value);
+              value = Math.round(value * 100);
               if (existingSetting !== value) {
-                setting = {'voiceMultiplier': value};
+                setting = {'voiceMultiplier': value };
                 embed = createSuccessEmbed({int: interaction, title: `Voice Multiplier Updated!`, descr: `The Voice Multiplier has been updated to \`${value}%\`.`});
               } else {
                 embed = createInfoEmbed({int: interaction, descr: `The Voice Multiplier was already set to \`${value}%\`.`});

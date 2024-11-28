@@ -2,23 +2,19 @@
   "message": {
     "all": {
       "name": "Message Events",
-      "description": "All Message Events in the Server.",
-      "value": "messageAll"
+      "description": "All Message Events in the Server."
     },
     "edits": {
       "name": "Message Edits",
-      "description": "Message Edit Events in the Server.",
-      "value": "messageUpdate"
+      "description": "Message Edit Events in the Server."
     },
     "deletes": {
       "name": "Message Deletes",
-      "description": "Message Delete Events in the Server.",
-      "value": "messageDelete"
+      "description": "Message Delete Events in the Server."
     },
     "bulks": {
       "name": "Message Bulk Deletes",
-      "description": "Bulk of Messages Delete Events in the Server.",
-      "value": "messageDeleteBulk"
+      "description": "Bulk of Messages Delete Events in the Server."
     }
   },
   "member": {
@@ -59,7 +55,7 @@
         "name": "Member Avatar Change Events",
         "description": "Log when a Member changes their Global Avatar on Discord or Server Avatar in the Server."
       },
-      "gloabl": {
+      "global": {
         "name": "Member Global Avatar Changes",
         "description": "Log when a Member changes their Global Avatar on Discord."
       },
@@ -101,77 +97,77 @@
     "channels": {
       "all": {
         "name": "Server Channel Events",
-        "description": "Log when a Channel has been Created, Updated or Deleted in the Server."
+        "description": "Log Channel Creates, Updates and Deletes in the Server."
       },
       "creates": {
         "name": "Server Channel Creates",
-        "description": "Log when a Channel has been Created in the Server."
+        "description": "Log Channel Creates in the Server."
       },
       "updates": {
         "name": "Server Channel Updates",
-        "description": "Log when a Channel has been Updated in the Server."
+        "description": "Log Channel Updates in the Server."
       },
       "deletes": {
         "name": "Server Channel Deletes",
-        "description": "Log when a Channel has been Removed in the Server."
+        "description": "Log Channel Removes in the Server."
       }
     },
     "roles": {
       "all": {
         "name": "Server Role Events",
-        "description": "Log when a Role has been Created, Updated or Deleted in the Server."
+        "description": "Log Role Creates, Updates and Deletes in the Server."
       },
       "creates": {
         "name": "Server Role Creates",
-        "description": "Log when a Role has been Created in the Server."
+        "description": "Log Role Creates in the Server."
       },
       "updates": {
         "name": "Server Role Updates",
-        "description": "Log when a Role has been Updated in the Server."
+        "description": "Log Role Updates in the Server."
       },
       "deletes": {
         "name": "Server Role Deletes",
-        "description": "Log when a Role has been Deleted in the Server."
+        "description": "Log Role Deletes in the Server."
       }
     },
     "updates": {
       "name": "Server Update Events",
-      "description": "Log when the Server gets updated."
+      "description": "Log Server Updates."
     },
     "emojis": {
       "all": {
         "name": "Server Emoji Events",
-        "description": "Log when an Emoji has been Created, Updated or Deleted in the Server."
+        "description": "Log Emoji Creates, Updates and Deletes in the Server."
       },
       "creates": {
         "name": "Server Emoji Creates",
-        "description": "Log when an Emoji has been Created in the Server."
+        "description": "Log Emoji Creates in the Server."
       },
       "updates": {
         "name": "Server Emoji Updates",
-        "description": "Log when an Emoji has been Updated in the Server."
+        "description": "Log Emoji Updates in the Server."
       },
       "deletes": {
         "name": "Server Emoji Deletes",
-        "description": "Log when an Emoji has been Deleted in the Server."
+        "description": "Log Emoji Deletes in the Server."
       }
     },
     "stickers": {
       "all": {
         "name": "Server Sticker Events",
-        "description": "Log when a Sticker has been Created, Updated or Deleted in the Server."
+        "description": "Log Sticker Creates, Updates and Deletes in the Server."
       },
       "creates": {
         "name": "Server Sticker Creates",
-        "description": "Log when a Sticker has been Created in the Server."
+        "description": "Log Sticker Creates in the Server."
       },
       "updates": {
         "name": "Server Sticker Updates",
-        "description": "Log when a Sticker has been Updated in the Server."
+        "description": "Log Sticker Updates in the Server."
       },
       "deletes": {
         "name": "Server Sticker Deletes",
-        "description": "Log when a Sticker has been Deleted in the Server."
+        "description": "Log Sticker Deletes in the Server."
       }
     }
   },
@@ -193,7 +189,7 @@
       "description": "Log when a Member has left a Voice Channel in the Server."
     }
   },
-  "joinleave": {
+  "joinLeave": {
     "all": {
       "name": "Member Join-Leave Events",
       "description": "Log when a Member has Joined or Left the Server."

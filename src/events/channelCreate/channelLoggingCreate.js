@@ -11,7 +11,7 @@ module.exports = async (client, channel) => {
 
     const embed = new EmbedBuilder()
       .setColor('Green')
-      .setTitle(`${getChannelTypeName(channel)} Created: ${channel}`)
+      .setTitle(`${getChannelTypeName(channel)} Created`)
       .setFields(
         {
           name: 'Name',
@@ -28,6 +28,7 @@ module.exports = async (client, channel) => {
       .setTimestamp()
 
     await setEventTimeOut('server', channel.id, embed, logChannel);
+
 
   } catch (error) {
     console.error('Failed to log Channel Create!', error);

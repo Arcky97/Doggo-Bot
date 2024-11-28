@@ -22,6 +22,8 @@ async function initDatabase() {
     //await pool.query(editLevelSettingsTable);
 
     //const editTable = `ALTER TABLE LevelSettings ADD multiplierReplace JSON DEFAULT '{ "category": true, "channel": true }'`
+    //const editTable = `ALTER TABLE GuildSettings ADD joinLeaveConfig JSON DEFAULT '{ "joins": true, "leaves": true }' AFTER joinLeaveLogging;`;
+    //const editTable = `ALTER TABLE GuildSettings DROP memberConfig`;
     //const editTable = `ALTER TABLE LevelSettings CHANGE COLUMN multiplierReplace multiplierReplace JSON DEFAULT '{ "category": true, "channel": true }' AFTER categoryMultipliers`;
     //const editTable = `ALTER TABLE LevelSettings MODIFY announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!}", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }'`;
     //const editTable = `ALTER TABLE LevelSettings MODIFY categoryMultipliers JSON DEFAULT '[]'`;

@@ -29,6 +29,15 @@ const convertSetupCommand = (setting => {
   }
 })
 
+async function getGuildLoggingConfig(guildId, type) {
+  try {
+    const data = await selectData('GuildSettings', {guildId: guildId})
+    return JSON.parse(data[`${type}Config`]);
+  } catch (error) {
+    console.error('Error fetching GuildLoggingConfig:', error);
+    return [];
+  }
+}
 async function getGuildSettings(guildId) {
   try {
     return await selectData('GuildSettings', { guildId: guildId });
@@ -40,7 +49,7 @@ async function getGuildSettings(guildId) {
 
 async function getIgnoreLoggingChannels(guildId) {
   try {
-    let data = await selectData('GuildSettings', {guildId: guildId });
+    const data = await selectData('GuildSettings', {guildId: guildId });
     return JSON.parse(data.ignoreLogging);
   } catch (error) {
     console.error('Error fetching ignore Logging data from guildSettings:', error);
@@ -135,4 +144,4 @@ async function resetGuildSettings(id) {
   }
 }
 
-module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings, getIgnoreLoggingChannels };
+module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings, getIgnoreLoggingChannels, getGuildLoggingConfig };
