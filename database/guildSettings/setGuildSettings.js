@@ -38,6 +38,16 @@ async function getGuildLoggingConfig(guildId, type) {
     return [];
   }
 }
+
+async function setGuildLoggingConfig(guildId, type, data) {
+  try {
+    await updateData('GuildSettings', {guildId: guildId}, { [`${type}Config`]: JSON.stringify(data) });
+  } catch (error) {
+    console.error('Error Updating Guild Logging Config data:', error);
+  }
+  exportToJson('GuildSettings');
+}
+
 async function getGuildSettings(guildId) {
   try {
     return await selectData('GuildSettings', { guildId: guildId });
@@ -144,4 +154,4 @@ async function resetGuildSettings(id) {
   }
 }
 
-module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings, getIgnoreLoggingChannels, getGuildLoggingConfig };
+module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings, getIgnoreLoggingChannels, getGuildLoggingConfig, setGuildLoggingConfig };

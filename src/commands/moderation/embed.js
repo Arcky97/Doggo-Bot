@@ -72,7 +72,7 @@ module.exports = {
           description: 'The color of the embed'
         },
         {
-          type: ApplicationCommandOptionType.Mentionable,
+          type: ApplicationCommandOptionType.String,
           name: 'author',
           description: 'The author of the embed'
         },
@@ -185,7 +185,7 @@ module.exports = {
           description: 'The color of the embed'
         },
         {
-          type: ApplicationCommandOptionType.Mentionable,
+          type: ApplicationCommandOptionType.String,
           name: 'author',
           description: 'The author of the embed'
         },
@@ -328,7 +328,11 @@ module.exports = {
         if (name.includes('stamp')) name = name.replace('stamp', 'Stamp');
 
         if (value) {
-          embedOptions[name] = value;
+          if (typeof value === 'boolean' && option.name === 'authoriconurl') {
+            embedOptions[name] = '{user avatar}';
+          } else {
+            embedOptions[name] = value;
+          }
         }
       }
       // Build the embed object

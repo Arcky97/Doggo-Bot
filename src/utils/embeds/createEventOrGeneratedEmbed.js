@@ -16,18 +16,21 @@ async function createEmbed(input, embedData) {
       iconURL: await embedPlaceholders(embedData.authorIconUrl, input)
     };
     if (!embedData.authorUrl) delete authorObj.url;
-    if (!embedData.authorIconUrl) delete authorObj.iconURL;
+    if (!embedData.authorIconUrl || authorObj.iconURL.startsWith('{')) delete authorObj.iconURL;
     embed.setAuthor(authorObj);
   }
 
-  if (embedData.imageUrl) embed.setImage(await embedPlaceholders(embedData.imageUrl, input));
-  if (embedData.thumbnailUrl) embed.setThumbnail(await embedPlaceholders(embedData.thumbnailUrl, input));
+  const image = await embedPlaceholders(embedData.imageUrl, input);
+  if (embedData.imageUrl && image && !image.startsWith('{')) embed.setImage(image);
+  
+  const thumbnail = await embedPlaceholders(embedData.imageUrl, input);
+  if (embedData.thumbnailUrl && thumbnail && !thumbnail.startsWith('{')) embed.setThumbnail(thumbnail);
   if (embedData.footer) {
     let footerObj = {
       text: await embedPlaceholders(embedData.footer, input),
       iconURL: await embedPlaceholders(embedData.footerIconUrl, input)
     };
-    if (!embedData.footerIconUrl) delete footerObj.iconURL;
+    if (!embedData.footerIconUrl || footerObj.iconURL.startsWith('{')) delete footerObj.iconURL;
     embed.setFooter(footerObj);
   }
   if (embedData.timeStamp) embed.setTimestamp();

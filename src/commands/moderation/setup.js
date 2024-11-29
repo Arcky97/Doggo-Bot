@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandSubcommandBuilder } = require("discord.js");
-const { setGuildSettings, getGuildLoggingConfig } = require("../../../database/guildSettings/setGuildSettings");
+const { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig } = require("../../../database/guildSettings/setGuildSettings");
 const { createErrorEmbed, createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
 const createLoggingMenu = require("../../utils/menus/createLoggingMenu");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
@@ -210,8 +210,6 @@ module.exports = {
               await i.reply({ content: 'Please make a selection before confirming.', ephemeral: true });
               return;
             }
-            console.log('Confirmed options:', selectedOptions);
-
             let loggingConfig = await getGuildLoggingConfig(guildId, choice);
 
             const filteredOptions = selectedOptions.filter(option => {
@@ -231,7 +229,6 @@ module.exports = {
               }
             });
 
-            console.log(loggingConfig);
             filteredOptions.forEach(option => {
               const [category, subOption] = option.includes('.') ? option.split('.') : [null, option];
 
@@ -256,7 +253,8 @@ module.exports = {
                 }
               }
             })
-            console.log(loggingConfig);
+
+            await setGuildLoggingConfig(guildId, choice, loggingConfig);
 
             await i.update({ content: 'Logging preferences updated!', components: [] });
             collector.stop();
