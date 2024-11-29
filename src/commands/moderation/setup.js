@@ -1,8 +1,9 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandSubcommandBuilder } = require("discord.js");
 const { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig } = require("../../../database/guildSettings/setGuildSettings");
-const { createErrorEmbed, createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { createErrorEmbed, createSuccessEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
 const createLoggingMenu = require("../../utils/menus/createLoggingMenu");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
+const loggingTypes = require('../../../data/loggingTypes.json');
 
 module.exports = {
   name: 'setup',
@@ -211,7 +212,8 @@ module.exports = {
               return;
             }
             let loggingConfig = await getGuildLoggingConfig(guildId, choice);
-
+            let description = `Your Preferences for ${firstLetterToUpperCase(choice)} Events:`;
+            const loggingType = loggingTypes[choice];
             const filteredOptions = selectedOptions.filter(option => {
               if (option === 'all') return true;
               if (selectedOptions.includes('all')) return false;
@@ -219,6 +221,7 @@ module.exports = {
               const [category] = option.split('.');
               return !selectedOptions.includes(`${category}.all`) || option === `${category}.all`;
             });
+
             Object.keys(loggingConfig).forEach(category => {
               if (typeof loggingConfig[category] === 'object') {
                 Object.keys(loggingConfig[category]).forEach(subOption => {
@@ -231,44 +234,82 @@ module.exports = {
 
             filteredOptions.forEach(option => {
               const [category, subOption] = option.includes('.') ? option.split('.') : [null, option];
-
+            
               if (category) {
-                if (subOption === 'all')
+                if (subOption === 'all') {
+                  // If the category exists and is an object, set all sub-options to true
                   if (loggingConfig[category] && typeof loggingConfig[category] === 'object') {
                     Object.keys(loggingConfig[category]).forEach(key => {
                       loggingConfig[category][key] = true;
                     });
-                  } else {
-                    if (loggingConfig[category] && loggingConfig[category][subOption] !== undefined) {
-                      loggingConfig[category][subOption] = true;
-                    }
                   }
+                } else {
+                  // Set the specific sub-option to true
+                  if (loggingConfig[category] && loggingConfig[category][subOption] !== undefined) {
+                    loggingConfig[category][subOption] = true;
+                  }
+                }
               } else {
                 if (subOption === 'all') {
+                  // Set all top-level keys to true
                   Object.keys(loggingConfig).forEach(key => {
-                    loggingConfig[key] = true;
-                  })
+                    if (typeof loggingConfig[key] === 'object') {
+                      // If the value is an object, set all its keys to true
+                      Object.keys(loggingConfig[key]).forEach(subKey => {
+                        loggingConfig[key][subKey] = true;
+                      });
+                    } else {
+                      loggingConfig[key] = true;
+                    }
+                  });
                 } else {
-                  loggingConfig[subOption] = true;
+                  // Set the specific top-level key to true
+                  if (loggingConfig[subOption] !== undefined) {
+                    loggingConfig[subOption] = true;
+                  }
+                }
+              }
+            });
+            
+            let values = [];
+            embed = createSuccessEmbed({ int: interaction, title: 'Logging Preferences Updated', descr: description });
+            Object.keys(loggingType).forEach(category => {
+              if (typeof loggingConfig[category] === 'object') {
+                Object.entries(loggingType[category]).forEach(([subCat, option]) => {
+                  if (subCat !== 'all') {
+                    values.push(`${option.name}: **${loggingConfig[category][subCat] ? 'enabled': 'disabled'}**`);
+                  }
+                });
+                embed.addFields({ 
+                  name: category, 
+                  value: `- ${values.join('\n - ')}`
+                });
+                values = [];
+              } else {
+                console.log(category);
+                if (category !== 'all') {
+                  description += `\n - ${loggingType[category].name}: **${loggingConfig[category] ? 'enabled' : 'disabled'}**`;
                 }
               }
             })
-
+            embed.setDescription(description);
             await setGuildLoggingConfig(guildId, choice, loggingConfig);
 
-            await i.update({ content: 'Logging preferences updated!', components: [] });
+            await i.update({ embeds: [embed], components: [] });
             collector.stop();
           } else if (i.customId === 'cancel') {
             console.log('Canceled');
-            await i.update({ content: 'Logging preferences were not updated.', components: [] });
+            embed = createInfoEmbed({ int: interaction, title: 'Logging Preferences not Updated', descr: `Changing Logging Preferences for ${firstLetterToUpperCase(choice)} Logging was Canceled and no changes were made.`});
+            await i.update({ embeds: [embed], components: [] });
             collector.stop();
           }
         });
   
         collector.on('end', async (collected, reason) => {
           if (reason === 'time') {
+            embed = createInfoEmbed({ int: interaction, title: 'Logging Preferences not Updated', descr: `Time ran out and no Changes have been made for ${firstLetterToUpperCase(choice)} Logging.`});
             await interaction.editReply({
-              content: 'Time ran out! No changes were made.',
+              embeds: [embed],
               components: []
             });
           }
