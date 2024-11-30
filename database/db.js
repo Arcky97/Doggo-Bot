@@ -24,6 +24,7 @@ async function initDatabase() {
     //const editTable = `ALTER TABLE LevelSettings ADD multiplierReplace JSON DEFAULT '{ "category": true, "channel": true }'`
     //const editTable = `ALTER TABLE GuildSettings ADD joinLeaveConfig JSON DEFAULT '{ "joins": true, "leaves": true }' AFTER joinLeaveLogging;`;
     //const editTable = `ALTER TABLE GuildSettings DROP memberConfig`;
+    //const editTable = `ALTER TABLE GuildSettings MODIFY memberConfig JSON DEFAULT '{ "roles": { "adds": true, "removes": true }, "names": { "users": true, "globals": true, "nicks": true }, "avatars": { "globals": true, "servers": true }, "bans": { "adds": true, "removes": true }, "timeouts": { "adds": true, "removes": true } }'`
     //const editTable = `ALTER TABLE LevelSettings CHANGE COLUMN multiplierReplace multiplierReplace JSON DEFAULT '{ "category": true, "channel": true }' AFTER categoryMultipliers`;
     //const editTable = `ALTER TABLE LevelSettings MODIFY announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!}", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }'`;
     //const editTable = `ALTER TABLE LevelSettings MODIFY categoryMultipliers JSON DEFAULT '[]'`;

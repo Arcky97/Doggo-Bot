@@ -16,7 +16,11 @@ module.exports = (oldOverwrite, newOverwrite) => {
         const isNowAllowed = newOverwrite?.allow.has(permission);
         const isNowDenied = newOverwrite?.deny.has(permission);
     
-        if (wasAllowed && !isNowAllowed && !isNowDenied) {
+        if (!oldOverwrite && isNowAllowed) {
+          changes[category].push(`- **${description}:** ✅`);
+        } else if (!oldOverwrite && isNowDenied) {
+          changes[category].push(`- **${description}:** ❌`);
+        } else if (wasAllowed && !isNowAllowed && !isNowDenied) {
           changes[category].push(`- **${description}:** ✅  =>  ⬜`);
         } else if (wasDenied && !isNowAllowed && !isNowDenied) {
           changes[category].push(`- **${description}:** ❌  =>  ⬜`);

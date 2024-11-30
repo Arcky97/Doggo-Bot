@@ -4,11 +4,16 @@ const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
 const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { setChannelOrRoleArray } = require('../../utils/setArrayValues');
+const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
 
 module.exports = async (client, channel) => {
+  const guildId = channel.guild.id;
   try {
-    const logChannel = await getLogChannel(client, channel.guild.id, 'server');
+    const logChannel = await getLogChannel(client, guildId, 'server');
     if (!logChannel) return;
+
+    const loggingConfig = await checkLogTypeConfig({guildId: guildId, type: 'server', cat: 'channels', option: 'deletes' });
+    if (!loggingConfig) return;
 
     const embed = new EmbedBuilder()
       .setColor('Red')

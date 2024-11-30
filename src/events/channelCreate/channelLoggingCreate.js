@@ -2,14 +2,20 @@ const { Client, GuildChannel, EmbedBuilder } = require('discord.js');
 const getLogChannel = require("../../utils//logging/getLogChannel");
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const getChannelTypeName = require('../../utils/logging/getChannelTypeName');
+const formatOverwrite = require('../../utils/permissions/formatOverwrite');
+const comparePermissions = require('../../utils/permissions/comparePermissions');
+const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
 module.exports = async (client, channel) => {
+  const guildId = channel.guild.id;
   try {
-    
-    const logChannel = await getLogChannel(client, channel.guild.id, 'server');
+    const logChannel = await getLogChannel(client, guildId, 'server');
     if (!logChannel) return;
 
-    const embed = new EmbedBuilder()
+    const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'channels', option: 'creates' });
+    if (!configLogging) return;
+
+    let embed = new EmbedBuilder()
       .setColor('Green')
       .setTitle(`${getChannelTypeName(channel)} Created`)
       .setFields(
@@ -27,8 +33,52 @@ module.exports = async (client, channel) => {
       })
       .setTimestamp()
 
-    await setEventTimeOut('server', channel.id, embed, logChannel);
+      const permissionChanges = [];
+      const permissionFields = {};
+  
+      // If permissions are custom
+      channel.permissionOverwrites.cache.forEach(overwrite => {
+        const changes = comparePermissions(null, overwrite); // Compare against no permissions
+        if (changes) {
+          permissionChanges.push({ id: overwrite.id, type: overwrite.type, changes });
+        }
+      });
+  
+      // Process changes for roles/members
+      if (permissionChanges.length > 0) {
+        permissionChanges.forEach(change => {
+          for (const [category, permissions] of Object.entries(change.changes)) {
+            if (!permissionFields[category]) permissionFields[category] = [];
+            permissionFields[category].push(`${formatOverwrite(change, guildId)}`);
+            permissionFields[category].push(permissions);
+          }
+        });
+  
+        // Add changes to the embed
+        for (const [category, rolePermissions] of Object.entries(permissionFields)) {
+          let fieldValue = '';
+          for (let i = 0; i < rolePermissions.length; i += 2) {
+            const role = rolePermissions[i];
+            const changes = rolePermissions[i + 1];
+  
+            if (changes.length > 0) {
+              fieldValue += `${role}\n`;
+              changes.forEach(change => {
+                fieldValue += `${change}\n`;
+              });
+            }
+          }
+  
+          if (fieldValue !== '') {
+            embed.addFields({
+              name: category,
+              value: fieldValue.trim()
+            });
+          }
+        }
+      }
 
+    await setEventTimeOut('server', channel.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Channel Create!', error);

@@ -16,6 +16,7 @@ const client = new Client({
     IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.GuildEmojisAndStickers,
+    IntentsBitField.Flags.GuildModeration
   ],
   partials: [
     Partials.Message,

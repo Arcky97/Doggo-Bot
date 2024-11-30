@@ -3,6 +3,7 @@ const getLogChannel = require('../../utils/logging/getLogChannel');
 const truncateText = require('../../utils/truncateText');
 const ignoreLogging = require('../../utils/logging/ignoreLogging');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
 module.exports = async (client, oldMessage, newMessage) => {
   if (!oldMessage.inGuild() || 
@@ -14,11 +15,15 @@ module.exports = async (client, oldMessage, newMessage) => {
       )
     ) return;
 
+  const guildId = oldMessage.guild.id;
   try {
-    const logChannel = await getLogChannel(client, oldMessage.guild.id, 'message');
+    const logChannel = await getLogChannel(client, guildId, 'message');
     if (!logChannel) return;
 
-    if (await ignoreLogging(oldMessage.guild.id, logChannel.id)) return;
+    const loggingConfig = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'edits' })
+    if (!loggingConfig) return;
+
+    if (await ignoreLogging(guildId, logChannel.id)) return;
     
     const oldContent = await truncateText(oldMessage.content, 1024) || '*No content*';
     const newContent = await truncateText(newMessage.content, 1024) || '*No content*';

@@ -5,12 +5,16 @@ const getChannelTypeName = require('../../utils/logging/getChannelTypeName');
 const convertNumberInTime = require('../../utils/convertNumberInTime');
 const formatOverwrite = require('../../utils/permissions/formatOverwrite');
 const comparePermissions = require('../../utils/permissions/comparePermissions');
+const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
 module.exports = async (client, oldChannel, newChannel) => {
+  const guildId = oldChannel.guild.id;
   try {
-    
-    const logChannel = await getLogChannel(client, oldChannel.guild.id, 'server');
+    const logChannel = await getLogChannel(client, guildId, 'server');
     if (!logChannel) return;
+
+    const loggingConfig = await checkLogTypeConfig({guildId: guildId, type: 'server', cat: 'channels', option: 'updates'});
+    if (!loggingConfig) return;
 
     let embed = new EmbedBuilder()
       .setColor('Orange')

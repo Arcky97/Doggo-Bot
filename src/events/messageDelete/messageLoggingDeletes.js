@@ -3,15 +3,20 @@ const getLogChannel = require("../../utils/logging/getLogChannel");
 const truncateText = require("../../utils/truncateText");
 const ignoreLogging = require("../../utils/logging/ignoreLogging");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
+const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
 
 module.exports = async (client, message) => {
   if (!message.inGuild() || !message.author || message.author.bot) return;
   
+  const guildId = message.guild.id;
   try {
-    const logChannel = await getLogChannel(client, message.guild.id, 'message');
+    const logChannel = await getLogChannel(client, guildId, 'message');
     if (!logChannel) return;
 
-    if (await ignoreLogging(message.guild.id, logChannel.id)) return;
+    const loggingConfig = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'deletes' });
+    if (!loggingConfig) return;
+    
+    if (await ignoreLogging(guildId, logChannel.id)) return;
 
     const embed = new EmbedBuilder()
       .setColor('DarkOrange')

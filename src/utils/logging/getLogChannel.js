@@ -1,8 +1,8 @@
-const { selectData } = require("../../../database/controlData/selectData");
+const { getGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
+const checkChannelPermissions = require("../permissions/checkChannelPermissions");
 
-module.exports = async (client, guild, log) => {
-  const logChannels = await selectData('GuildSettings', { guildId: guild });
-
+module.exports = async (client, guildId, log) => {
+  const logChannels = await getGuildSettings(guildId);
   if (!logChannels) return;
 
   let channel;
@@ -23,5 +23,8 @@ module.exports = async (client, guild, log) => {
       channel = client.channels.cache.get(logChannels.voiceLogging);
       break;
   }
-  return channel;
+
+  const hasPermissions = await checkChannelPermissions(client, channel);
+
+  if (hasPermissions) return channel;
 }

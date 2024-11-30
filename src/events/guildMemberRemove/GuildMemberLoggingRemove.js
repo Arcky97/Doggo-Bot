@@ -9,24 +9,29 @@ const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSyst
 const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
 const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
+const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
 
 module.exports = async (client, member) => {
+  const guildId = member.guild.id;
   try {
     
     if(member.user.id === client.user.id) return;
     
-    const embedData = await getEventEmbed(member.guild.id, 'leave');
+    const embedData = await getEventEmbed(guildId, 'leave');
     if (embedData) {
       const channel = client.channels.cache.get(embedData.channelId);
       const leave = await createEventEmbed(member, embedData);
       await channel.send({ embeds: [leave] });
     }
 
-    const logChannel = await getLogChannel(client, member.guild.id, 'joinleave');
+    const logChannel = await getLogChannel(client, guildId, 'joinleave');
     if(!logChannel) return;
 
-    const levelSettings = getLevelSettings(member.guild.id);
-    if (levelSettings.clearOnLeave === 1) await resetLevelSystem(member.guild.id, member);
+    const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'joinLeave', option: 'leaves' });
+    if (!configLogging) return;
+
+    const levelSettings = getLevelSettings(guildId);
+    if (levelSettings.clearOnLeave === 1) await resetLevelSystem(guildId, member);
     
     const joinedAt = moment(member.joinedAt).format('MMMM Do YYYY, h:mm:ss a');
     const leftAt = moment().format('MMMM Do YYYY, h:mm:ss a');

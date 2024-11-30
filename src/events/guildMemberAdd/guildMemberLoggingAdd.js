@@ -6,38 +6,27 @@ const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
 const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
 const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
-
-const embedQueue = new Map();
+const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
 
 module.exports = async (client, member) => {
+  const guildId = member.guild.id;
   try {
 
     if (member.user.id === client.user.id) return;
 
-    const embedData = await getEventEmbed(member.guild.id, 'welcome');
+    const embedData = await getEventEmbed(guildId, 'welcome');
     if (embedData) {
       const channel = client.channels.cache.get(embedData.channelId);
       const welcome = await createEventEmbed(member, embedData);
       await channel.send({ embeds: [welcome] });
     }
 
-    const logChannel = await getLogChannel(client, member.guild.id, 'joinleave');
+    const logChannel = await getLogChannel(client, guildId, 'joinleave');
     if(!logChannel) return;
 
-    /*if (member.guild.id === '925765418545741854') {
-      const channelId = client.channels.cache.get('934536340022890517');
-      const welcome = new EmbedBuilder()
-        .setTitle(`Welcome to the ${member.guild.name} Server!`)
-        .setDescription(`Hey <@${member.id}>, make sure to read and agree to the <#934547510825979914>!\n
-          After you've done that you'll have access to more Channels to talk in.\n
-          Check out <#926214632849432596> to get some fancy roles and <#941761135827353650> for a nice color for your name.\n
-          We have now ${member.guild.memberCount} Members!`)
-        .setTimestamp()
-        .setFooter({
-          text: 'The Admin Team'
-        })
-      await channelId.send({ embeds: [welcome] })
-    }*/
+    const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'joinLeave', option: 'joins'});
+    if (!configLogging) return;
+
     const userAge = await formatTime(member.user.createdAt);
     const embed = new EmbedBuilder()
       .setColor('Orange')

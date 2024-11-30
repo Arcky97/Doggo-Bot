@@ -1,3 +1,4 @@
+const { getGuildLoggingConfig, setGuildLoggingConfig } = require("../../../database/guildSettings/setGuildSettings");
 const { getRoleOrChannelMultipliers, setLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
 
@@ -12,22 +13,16 @@ module.exports = {
     } else {
       try {
         for (const guild of client.guilds.cache.values()) {
-          console.log(guild.name);
-          let chanMults = await getRoleOrChannelMultipliers({ id: guild.id, type: 'channel'});
-          let catMults = await getRoleOrChannelMultipliers({ id: guild.id, type: 'category'});
-          
-          for (const channel of chanMults) {
-            if (channel.replace === undefined) {
-              channel.replace = true;
-            }
-          }
-          for (const category of catMults) {
-            if (category.replace === undefined) {
-              category.replace = true;
-            }
-          }
-          await setLevelSettings({ id: guild.id, setting: { 'channelMultipliers': JSON.stringify(chanMults) } });
-          await setLevelSettings({ id: guild.id, setting: { 'categoryMultipliers': JSON.stringify(catMults) }});
+          let configLogging = await getGuildLoggingConfig(guild.id, 'member');
+          configLogging.bans.removes = true;
+          delete configLogging.bans.deletes;
+          configLogging.timeouts.removes = true;
+          delete configLogging.timeouts.deletes;
+          configLogging.avatars.globals = true;
+          configLogging.avatars.servers = true;
+          delete configLogging.avatars.global;
+          delete configLogging.avatars.server;
+          await setGuildLoggingConfig(guild.id, 'member', configLogging);
         }
         embed = createSuccessEmbed({ int: interaction, title: 'Fixed stuff in the Database!', descr: 'Stuff has been fixed in the Database for the LevelSettings Table.'});
       } catch (error) {

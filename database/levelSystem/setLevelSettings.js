@@ -6,13 +6,18 @@ const { updateData } = require("../controlData/updateData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
 
 async function getLevelSettings(id) {
-  let data = await selectData('LevelSettings', { guildId: id});
-  if (!data) {
-    await insertData('LevelSettings', {guildId: id});
-    data = await selectData('LevelSettings', {guildId: id});
-    exportToJson('LevelSettings');
+  try {
+    let data = await selectData('LevelSettings', { guildId: id });
+    if (!data) {
+      await insertData('LevelSettings', { guildId: id });
+      data = await selectData('LevelSettings', { guildId: id });
+      exportToJson('LevelSettings');
+    }
+    return data;
+  } catch (error) {
+    console.error('Error fetching LevelSettings:', error);
+    return [];
   }
-  return data;
 }
 
 async function getRoleOrChannelMultipliers({id, type}) {

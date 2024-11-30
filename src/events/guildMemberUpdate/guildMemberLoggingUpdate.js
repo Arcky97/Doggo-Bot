@@ -1,14 +1,19 @@
-const { Client, GuildMember, EmbedBuilder } = require('discord.js');
+const { Client, GuildMember, EmbedBuilder, GuildWidgetStyle } = require('discord.js');
 const getMemberRoles = require('../../utils/logging/getMemberRoles');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
+const { getGuildLoggingConfig } = require('../../../database/guildSettings/setGuildSettings');
 
 module.exports = async (client, oldMember, newMember) => {
+  const guildId = oldMember.guild.id
   try {
     if (client.user.id === oldMember.user.id) return;
 
-    const logChannel = await getLogChannel(client, newMember.guild.id, 'member');
+    const logChannel = await getLogChannel(client, guildId, 'member');
     if (!logChannel) return;
+
+    const configLogging = await getGuildLoggingConfig(guildId, 'member');
 
     const oldRoles = getMemberRoles(oldMember);
     const newRoles = getMemberRoles(newMember);

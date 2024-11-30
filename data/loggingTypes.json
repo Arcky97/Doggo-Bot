@@ -55,11 +55,11 @@
         "name": "Member Avatar Change Events",
         "description": "Log when a Member changes their Global Avatar on Discord or Server Avatar in the Server."
       },
-      "global": {
+      "globals": {
         "name": "Member Global Avatar Changes",
         "description": "Log when a Member changes their Global Avatar on Discord."
       },
-      "server": {
+      "servers": {
         "name": "Member Server Avatar Changes",
         "description": "Log when a Member changes their Server Avatar in the Server."
       }
@@ -73,7 +73,7 @@
         "name": "Member Bans",
         "description": "Log when a Member gets Banned from the Server."
       },
-      "deletes": {
+      "removes": {
         "name": "Member Unbans",
         "description": "Log when a Member gets Unbanned from the Server."
       }
@@ -87,7 +87,7 @@
         "name": "Member Timeouts",
         "description": "Log when a Member gets a Timeout in the Server."
       },
-      "deletes": {
+      "removes": {
         "name": "Member Timeout Removes",
         "description": "Log when a Member gets the Timeout Removed in the Server."
       }
