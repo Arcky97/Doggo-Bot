@@ -48,7 +48,7 @@ module.exports = {
         "Please, don't slap yourself!",
         "Why are you still trying?",
         "Well I guess I will allow you to slap yourself then...",
-        `You slapped youself with ${getVowel(object)}! \nHappy now?`
+        `You slapped yourself with ${getVowel(object)}! \nHappy now?`
       ];
   
       let userSlapAttempts = await getUserAttempts(guildId, userId);

@@ -12,7 +12,8 @@ module.exports = async (client, oldMember, newMember) => {
     const logChannel = await getLogChannel(client, guildId, 'member');
     if (!logChannel) return;
 
-    //const configLogging = await getGuildLoggingConfig(guildId, 'member');
+    const configLogging = await getGuildLoggingConfig(guildId, 'member');
+    if (configLogging.length === 0) return;
 
     const oldRoles = getMemberRoles(oldMember);
     const newRoles = getMemberRoles(newMember);
@@ -26,9 +27,11 @@ module.exports = async (client, oldMember, newMember) => {
     // Check for role changes
     if (oldRoles.length !== newRoles.length) {
       if (oldRoles.length < newRoles.length) {
+        if (!configLogging.roles.adds) return;
         roles = newRoles.filter(role => !oldRoles.includes(role));
         action = 'added';
       } else {
+        if (!configLogging.roles.removes) return;
         roles = oldRoles.filter(role => !newRoles.includes(role));
         action = 'removed';
       }
@@ -38,6 +41,7 @@ module.exports = async (client, oldMember, newMember) => {
     } 
     // Check for nickname change
     else if (oldNickName !== newNickName) {
+      if (!configLogging.names.nicks) return;
       action = oldNickName === 'no Nickname' ? 'added' : (newNickName === 'no Nickname' ? 'removed' : 'changed');
       title = `Nickname ${action}`;
       fields.push({ name: 'Before', value: oldNickName });
@@ -45,6 +49,7 @@ module.exports = async (client, oldMember, newMember) => {
     } 
     // Check for server icon change
     else if (oldServerIcon !== newServerIcon) {
+      if (!configLogging.avatars.servers) return;
       thumbnail = newServerIcon;
       action = !oldServerIcon ? 'added' : (!newServerIcon ? 'removed' : 'changed');
       title = `Server Icon ${action}`;

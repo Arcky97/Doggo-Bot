@@ -24,7 +24,7 @@ module.exports = {
           delete configLogging.avatars.server;
           await setGuildLoggingConfig(guild.id, 'member', configLogging);
         }
-        embed = createSuccessEmbed({ int: interaction, title: 'Fixed stuff in the Database!', descr: 'Stuff has been fixed in the Database for the LevelSettings Table.'});
+        embed = createSuccessEmbed({ int: interaction, title: 'Fixed stuff in the Database!', descr: 'Stuff has been fixed in the Database for the GuildSettings Table.'});
       } catch (error) {
         embed = createErrorEmbed({int: interaction, description: 'Something went wrong fixing the Database! Try again later!'});
       }

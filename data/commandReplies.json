@@ -4,10 +4,25 @@
 
     ],
     "bot": [
-
+      "Why in the world would I allow you to slap myself?",
+      "No, I still won't do it!",
+      "I said no!",
+      "No!",
+      "No stays no!",
+      "I haven't changed my mind. It's still no!",
+      "Still not giving up?",
+      "You're a though one!",
+      "Nice try but no thanks!",
+      "Why are you still trying?",
+      "For the last time: NOOO!",
+      "I won't even try stopping you anymore but I still refuse to slap myself!"
     ],
     "self": [
-
+      "Why would you even want to slap yourself?",
+      "Please, don't slap yourself!",
+      "Why are you still trying?",
+      "Well I guess I will allow you to slap yourself then...",
+      "You slapped yourself with { object }! \nHappy now?"
     ],
     "owner": [
 
