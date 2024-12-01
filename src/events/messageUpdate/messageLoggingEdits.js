@@ -23,7 +23,7 @@ module.exports = async (client, oldMessage, newMessage) => {
     const loggingConfig = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'edits' })
     if (!loggingConfig) return;
 
-    //if (await ignoreLogging(guildId, logChannel.id)) return;
+    if (await ignoreLogging(guildId, logChannel.id)) return;
     
     const oldContent = await truncateText(oldMessage.content, 1024) || '*No content*';
     const newContent = await truncateText(newMessage.content, 1024) || '*No content*';

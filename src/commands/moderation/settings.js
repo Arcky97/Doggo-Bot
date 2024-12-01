@@ -1,6 +1,7 @@
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { getGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js');
 const { createErrorEmbed } = require("../../utils/embeds/createReplyEmbed.js");
+const createListFromArray = require("../../utils/settings/createListFromArray.js");
 
 module.exports = {
   name: 'settings',
@@ -10,6 +11,7 @@ module.exports = {
     try {
       await interaction.deferReply();
       const settings = await getGuildSettings(interaction.guild.id);
+      const ignoreLogging = JSON.parse(settings.ignoreLogging);
       let embed;
       if (settings) {
         embed = new EmbedBuilder()
@@ -45,6 +47,21 @@ module.exports = {
               name: '**Join/Leave Logs**',
               value: `${settings.joinLeaveLogging ? `<#${settings.joinLeaveLogging}>` : 'Not set'}`,
               inline: true
+            },
+            {
+              name: '**Report Logging**',
+              value: `${settings.reportLogging ? `<#${settings.reportLogging}>` : 'Not Set'}`,
+              inline: true, 
+            },
+            {
+              name: '**Ignore Logging**',
+              value: `${ignoreLogging.length > 0 ? `${createListFromArray(ignoreLogging, '- <#${channelId}>', false)}` : 'Not set'}`,
+              inline: true 
+            },
+            {
+              name: '**Mute Role**',
+              value: `${settings.muteRole ? `<@&${settings.muteRole}>` : 'Not Set'}`,
+              inline: true 
             }
           )
           .setTimestamp();

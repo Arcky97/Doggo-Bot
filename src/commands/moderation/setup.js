@@ -181,7 +181,13 @@ module.exports = {
     try {
       switch (subCmd) {
         case 'mute-role':
-          [title, description] = await setGuildSettings(guildId, subCmd, role);
+          if (role.id === interaction.guild.id) {
+            embed = createInfoEmbed({ int: interaction, title: 'Mute Role not Set!', descr: `${role} cannot be set as the Mute Role! Please try again.`});
+            await interaction.editReply({ embeds: [embed] });
+            return;
+          } else {
+            [title, description] = await setGuildSettings(guildId, subCmd, role);
+          }
           break;
         case 'events':
           choice = interaction.options.getString('type');

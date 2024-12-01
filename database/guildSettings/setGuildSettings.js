@@ -65,7 +65,7 @@ async function getGuildSettings(guildId) {
 
 async function getIgnoreLoggingChannels(guildId) {
   try {
-    const data = getGuildSettings(guildId);
+    const data = await getGuildSettings(guildId);
     return JSON.parse(data.ignoreLogging);
   } catch (error) {
     console.error('Error fetching ignore Logging data from guildSettings:', error);
