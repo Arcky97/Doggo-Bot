@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
     const loggingConfig = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'deletes' });
     if (!loggingConfig) return;
     
-    if (await ignoreLogging(guildId, logChannel.id)) return;
+    //if (await ignoreLogging(guildId, logChannel.id)) return;
 
     const embed = new EmbedBuilder()
       .setColor('DarkOrange')
