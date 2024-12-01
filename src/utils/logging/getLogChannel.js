@@ -24,6 +24,8 @@ module.exports = async (client, guildId, log) => {
       break;
   }
 
+  if (!channel) return;
+  
   const hasPermissions = await checkChannelPermissions(client, channel);
 
   if (hasPermissions) return channel;
