@@ -1,6 +1,5 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
 
-
 module.exports = {
   name: 'mod',
   description: 'Various Moderation Commands.',
