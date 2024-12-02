@@ -48,7 +48,7 @@ module.exports = {
 
         const randomUsers = userArray.sort(() => Math.random() - 0.5).slice(0, amount);
 
-        embed = createSuccessEmbed({ int: interaction, title: 'Random Selection Made!', descr: `The ${amount} Member${amount > 1 ? 's' : '' } chosen are: \n - <@${randomUsers.join('>\n - <@')}>`});
+        embed = createSuccessEmbed({ int: interaction, title: 'The 100 Members Giveaway Winners!', descr: `The ${amount} Winners for the 100 Members Giveaway I announced a month back are: \n - <@${randomUsers.join('>\n - <@')}>`});
       } else {
         embed = createInfoEmbed({ int: interaction, title: 'No Reactions Found!', descr: `No reactions found for the emoji "${emoji}".`});
       }
