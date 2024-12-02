@@ -44,7 +44,9 @@ module.exports = {
       if (reaction) {
         const users = await reaction.users.fetch();
 
-        const userArray = users.map(user => user.id);
+        const userArray = users
+          .filter(user => user.id !== client.user.id && user.id !== '835094939724808232' && user.id !== '763287145615982592' && user.id !== '755687070210457644')
+          .map(user => user.id)
 
         const randomUsers = userArray.sort(() => Math.random() - 0.5).slice(0, amount);
 
