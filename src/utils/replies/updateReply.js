@@ -58,7 +58,7 @@ const updateReply = async (interaction, type) => {
         )
         .setTimestamp()
     } else {
-      embed = createErrorEmbed(interaction, message);
+      embed = createErrorEmbed({ int: interaction, descr: message});
     }
     await interaction.reply({ embeds: [embed]});
   } catch (error) {

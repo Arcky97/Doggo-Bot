@@ -75,7 +75,7 @@ module.exports = {
         interaction.editReply({ embeds: [embed] })
     } catch (error) {
       console.error(`Error getting Settings for guild ${interaction.guild.id}:`, error);
-      embed = createErrorEmbed(interaction, 'Oh no, I couldn\'t retrieve the Settings for your Server. \nPlease try again later.')
+      embed = createErrorEmbed({ int: interaction, descr: 'Oh no, I couldn\'t retrieve the Settings for your Server. \nPlease try again later.'});
       interaction.editReply({ embeds: [embed]})
     }
   }

@@ -169,7 +169,7 @@ module.exports = {
         interaction.editReply({ files: [attachment] });
       } catch (error) {
         console.error('Error building rank card:', error);
-        embed = createErrorEmbed(interaction, 'Something went wrong while generating the rank card. \nPlease try again later.');
+        embed = createErrorEmbed({int: interaction, descr: 'Something went wrong while generating the rank card. \nPlease try again later.'});
         interaction.editReply({ embeds: [embed] });
       }
     } else if (subCommand === 'color') {
@@ -188,11 +188,11 @@ module.exports = {
             await addUserColor(interaction.guild.id, interaction.member.id, hexColor);
           } catch (error) {
             console.log('Error inserting color.', error);
-            embed = createErrorEmbed(interaction, 'Something went wrong while setting you color. \nPlease try again later.');
+            embed = createErrorEmbed({int: interaction, descr: 'Something went wrong while setting you color. \nPlease try again later.'});
             if (embed) interaction.editReply({embeds: [embed]});
           }
         } else {
-          embed = createErrorEmbed(interaction, message);
+          embed = createErrorEmbed({int: interaction, descr: message});
         }
         interaction.editReply({ embeds: [embed] });
       } else {

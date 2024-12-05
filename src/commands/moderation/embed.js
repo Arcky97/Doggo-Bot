@@ -307,7 +307,7 @@ module.exports = {
       }
 
       if (!embedData) {
-        embed = createErrorEmbed(interaction, `No embed found with the specified ${embedAction === 'edit' ? 'message ID' : 'type'}.`);
+        embed = createErrorEmbed({int: interaction, descr: `No embed found with the specified ${embedAction === 'edit' ? 'message ID' : 'type'}.`});
         interaction.editReply({embeds: [embed]}); 
         return;
       }
@@ -377,11 +377,11 @@ module.exports = {
                 console.error('Error fetching the message:', error);
                 replyMessage = 'An error occurred while fetching the message.';
               }
-              embed = createErrorEmbed(interaction, replyMessage);
+              embed = createErrorEmbed({int: interaction, descr: replyMessage});
             }
           }
         } catch (error) {
-          embed = createErrorEmbed(interaction, `The Embed Message with ID: ${messageId} was not found. \nPlease check if this Message hasn't been deleted already or is from this Server.`);
+          embed = createErrorEmbed({ int: interaction, descr: `The Embed Message with ID: ${messageId} was not found. \nPlease check if this Message hasn't been deleted already or is from this Server.`});
           interaction.editReply({embeds: [embed]});
           return
         }
@@ -414,7 +414,7 @@ module.exports = {
       }
     } catch (error) {
       console.error(`There was an error while trying to ${embedAction} the embed:`, error);
-      embed = createErrorEmbed(interaction, `Something went wrong while trying to ${embedAction} the embed. \nPlease try again later.`);
+      embed = createErrorEmbed({int: interaction, descr: `Something went wrong while trying to ${embedAction} the embed. \nPlease try again later.`});
       interaction.editReply({embeds: [embed]});
     }
   }

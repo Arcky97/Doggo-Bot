@@ -123,7 +123,7 @@ async function setBotReplies({ trigger, response, action, id }) {
           message = {...key, ...data};
         } else {
 
-          message = `A trigger "${trigger}" already exists!`;
+          message = `A trigger "${trigger}" already exists in the database!`;
         }
       } catch (error) {
         console.error('Error inserting data:', error);

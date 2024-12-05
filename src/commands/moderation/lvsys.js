@@ -675,10 +675,10 @@ module.exports = {
       }
     } catch (error) {
       console.log('Error retrieving level system settings', error);
-      embed = createErrorEmbed(
-        interaction,
-        'Oh no! Something went wrong trying to access the Level Settings for your server, please try again later!'
-      );
+      embed = createErrorEmbed({
+        int: interaction,
+        descr: 'Oh no! Something went wrong trying to access the Level Settings for your server, please try again later!'
+      });
       await interaction.editReply({ embeds: [embed] });
       return;
     }
@@ -1251,7 +1251,7 @@ module.exports = {
       }
     } catch (error) {
       console.error('Error with the levels command:', error);
-      embed = createErrorEmbed(interaction, 'There was an error...');
+      embed = createErrorEmbed({int: interaction, descr: 'There was an error...'});
       interaction.editReply({ embeds: [embed] });
     }
   }

@@ -326,7 +326,7 @@ module.exports = {
       }
     } catch (error) {
       console.error('Error setting channel:', error);
-      embed = createErrorEmbed(interaction, 'There was an error setting the channel. Please try again later.');
+      embed = createErrorEmbed({ int: interaction, descr: 'There was an error setting the channel. Please try again later.'});
       interaction.editReply({ embeds: [embed] });
     }
   }
