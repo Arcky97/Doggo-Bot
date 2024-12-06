@@ -84,7 +84,7 @@ async function resetDeletionDate(id) {
         await deleteData(table, { guildId: id }, { deletionDate: null });
       }
     } catch (error) {
-      console.error(`Failed to process the ${table} table for guild ${guild.id}.`, error);
+      console.error(`Failed to process the ${table} table for guild ${id}.`, error);
     }
   }
   return hasMarkedData;
