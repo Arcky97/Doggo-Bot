@@ -74,7 +74,7 @@ async function resetDeletionDate(id) {
   for (const table of tables) {
     try {
       const [rows] = await query(
-        `SELECT COUNT(*) AS count FROM ${table} WHERE guildId = ? AND deletionData IS NOT NULL`,
+        `SELECT COUNT(*) AS count FROM ${table} WHERE guildId = ? AND deletionDate IS NOT NULL`,
         [id]
       );
 

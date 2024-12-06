@@ -31,11 +31,11 @@ module.exports = async (client, guild) => {
         },
         {
           name: 'Server Age',
-          value: guild.createdTimestamp
+          value: `${guild.createdTimestamp}`
         },
         {
           name: 'Members',
-          value: guild.memberCount
+          value: `${guild.memberCount}`
         }
       )
       .setFooter({ text: `Server ID: ${guild.id}`})
