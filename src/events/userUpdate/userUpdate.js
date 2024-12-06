@@ -64,8 +64,8 @@ module.exports = async (client, oldUser, newUser) => {
       if (title.includes('Name')) {
         fields.forEach(field => {
           embed.addFields({
-            name: field.name,
-            value: field.value
+            name: `${field.name}`,
+            value: `${field.value}`
           });
         });
       } else {
