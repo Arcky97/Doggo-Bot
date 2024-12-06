@@ -20,7 +20,7 @@ module.exports = async (client, guild) => {
     const embed = new EmbedBuilder()
       .setColor('Red')
       .setTitle('Left a Server')
-      .setDescription(`Oh no! ${client.name} has left a Server`)
+      .setDescription(`Oh no! Doggo Bot has left a Server`)
       .setFields(
         {
           name: 'Name',
@@ -28,7 +28,7 @@ module.exports = async (client, guild) => {
         },
         {
           name: 'Owner',
-          value: `<@${guild.ownerId}`
+          value: `<@${guild.ownerId}>`
         },
         {
           name: 'Joined At',

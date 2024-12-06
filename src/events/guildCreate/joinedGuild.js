@@ -19,7 +19,7 @@ module.exports = async (client, guild) => {
     const embed = new EmbedBuilder()
       .setColor('Green')
       .setTitle('Joined a New Server')
-      .setDescription(`Hooray! ${client.name} has joined a new Server`)
+      .setDescription(`Hooray! Doggo Bot has joined a new Server`)
       .setFields(
         {
           name: 'Name',
