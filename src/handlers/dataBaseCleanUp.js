@@ -69,13 +69,25 @@ async function setDeletionDate(id, data) {
 }
 
 async function resetDeletionDate(id) {
+  let hasMarkedData = false;
+
   for (const table of tables) {
     try {
-      await deleteData(table, {guildId: id}, {deletionDate: null});
+      const [rows] = await pool.query(
+        `SELECT COUNT(*) AS count FROM ${table} WHERE guildId = ? AND deletionData IS NOT NULL`,
+        [id]
+      );
+
+      if (rows[0].count > 0) {
+        hasMarkedData = true;
+
+        await deleteData(table, { guildId: id }, { deletionDate: null });
+      }
     } catch (error) {
-      console.error(`Failed to reset Deletion Date of the ${table} table for guild ${guild.id}.`, error);
+      console.error(`Failed to process the ${table} table for guild ${guild.id}.`, error);
     }
   }
+  return hasMarkedData;
 }
 
 module.exports = { setDeletionDate, resetDeletionDate };

@@ -1,4 +1,5 @@
 const { ActivityType } = require('discord.js');
+const sendMessageToDevServer = require('./sendMessageToDevServer');
 
 module.exports = async (client) => {
   let serverCount = totalMembers = 0;
@@ -13,18 +14,7 @@ module.exports = async (client) => {
     type: ActivityType.Watching,
   });
 
-  const channelId = '1273771024801861734'; // Your channel ID here
-  const channel = client.channels.cache.get(channelId);
-  
-  if (channel) {
-    try {
-      await channel.send(`Bot has started/restarted successfully!`);
-    } catch (error) {
-      console.error(`Failed to send message to channel ${channelId}:`, error);
-    }
-  } else {
-    console.error(`Channel with ID '${channelId}' not found!`);
-    console.log('-----------------------------------');
-  }
-  
+
+  const channelId = '1273771024801861734';
+  await sendMessageToDevServer(client, channelId, 'Bot has started/restarted successfully!');
 }
