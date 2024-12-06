@@ -28,7 +28,7 @@ module.exports = async (client, guild) => {
         },
         {
           name: 'Owner',
-          value: `<@${guild.owner.id}`
+          value: `<@${guild.ownerId}`
         },
         {
           name: 'Joined At',
