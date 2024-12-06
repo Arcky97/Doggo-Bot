@@ -128,12 +128,6 @@ module.exports = async (client, oldGuild, newGuild) => {
       fields.push({ name: 'Description Before:', value: oldDescr});
       fields.push({ name: 'Description After:', value: newDescr});
     }
-    
-    const oldWidgetChannel = oldGuild.widgetChannel;
-    const newWidgetChannel = newGuild.widgetChannel;
-
-    const oldUseWidget = oldGuild.widgetEnabled;
-    const newUseWidget = newGuild.widgetEnabled;
 
     if (!title) return;
 

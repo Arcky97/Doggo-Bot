@@ -1,11 +1,44 @@
 const { Client, Invite, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
+const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
+const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const convertNumberInTime = require('../../utils/convertNumberInTime');
 
 module.exports = async (client, invite) => {
+  const guildId = invite.guild.id;
   try {
-    const logChannel = await getLogChannel(client, invite.guild.id, 'server');
+    const logChannel = await getLogChannel(client, guildId, 'server');
     if (!logChannel) return;
+
+    const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', option: 'updates' });
+    if (!configLogging) return;
+
+    const embed = new EmbedBuilder()
+      .setColor('Green')
+      .setTitle('New Invite Created')
+      .setFields(
+        {
+          name: 'Created By',
+          value: `${invite.inviter}`
+        },
+        {
+          name: 'url',
+          value: invite.url
+        },
+        {
+          name: 'Expire After',
+          value: invite.maxAge !== 0 ? convertNumberInTime(invite.maxAge, 'Seconds') : 'never'
+        },
+        {
+          name: 'Max Uses',
+          value: invite.maxUses !== 0 ? `${invite.maxUses}` : 'No limit'
+        }
+      )
+      .setTimestamp()
+
+    await setEventTimeOut('server', guildId, embed, logChannel);
+
   } catch (error) {
-    console.error(error);
+    console.error('Failed to log Invite Create!', error);
   }
 }

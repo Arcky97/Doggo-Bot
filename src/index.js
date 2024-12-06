@@ -3,7 +3,6 @@ require('./handlers/dataBaseCleanUp');
 const { Client, IntentsBitField, Partials } = require('discord.js');
 const eventHandler = require('./handlers/eventHandler');
 const database = require('./../database/db.js');
-const { showDatabaseCount } = require('./handlers/DatabaseCount.js');
 
 const client = new Client({
   intents: [
@@ -16,12 +15,13 @@ const client = new Client({
     IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.GuildEmojisAndStickers,
-    IntentsBitField.Flags.GuildModeration
+    IntentsBitField.Flags.GuildModeration,
+    IntentsBitField.Flags.GuildInvites
   ],
   partials: [
     Partials.Message,
     Partials.Reaction,
-    Partials.User
+    Partials.User,
   ]
 });
 
@@ -36,3 +36,8 @@ async function startBot() {
 }
 
 startBot();
+
+const botStartTime = Date.now();
+
+module.exports = { botStartTime };
+
