@@ -19,7 +19,7 @@ module.exports = async (client, emoji) => {
         {
           name: 'Name',
           value: emoji.name
-        },
+        }
       )
       .setThumbnail(emoji.imageURL())
       .setFooter({

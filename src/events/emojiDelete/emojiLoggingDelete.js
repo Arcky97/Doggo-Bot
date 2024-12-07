@@ -28,6 +28,7 @@ module.exports = async (client, emoji) => {
       .setTimestamp()
 
     await setEventTimeOut('server', emoji.id, embed, logChannel);
+    
   } catch (error) {
     console.error('Failed to log Emoji Delete!', error);
   }

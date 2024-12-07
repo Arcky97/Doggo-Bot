@@ -12,10 +12,10 @@ module.exports = async (client, oldUser, newUser) => {
       const logChannel = await getLogChannel(client, guild.id, 'member');
       if (!logChannel) continue;
 
-      const oldUserName = oldUser.username;
-      const newUserName = newUser.username;
-      const oldGlobalName = oldUser.globalName;
-      const newGlobalName = newUser.globalName;
+      const oldUserName = oldUser.username || 'No Name';
+      const newUserName = newUser.username || 'No Name';
+      const oldGlobalName = oldUser.globalName || 'No Name';
+      const newGlobalName = newUser.globalName || 'No Name';
       const oldUserIcon = oldUser.avatarURL();
       const newUserIcon = newUser.avatarURL();
       let action, title, thumbnail;

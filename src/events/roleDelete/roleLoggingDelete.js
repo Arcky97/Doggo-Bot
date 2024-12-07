@@ -3,13 +3,16 @@ const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require('../../../database/levelSystem/setLevelSettings');
 const { setChannelOrRoleArray } = require('../../utils/setArrayValues');
+const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
 module.exports = async (client, role) => {
+  const guildId = role.guild.id;
   try {
-    
-    const logChannel = await getLogChannel(client, role.guild.id, 'server');
+    const logChannel = await getLogChannel(client, guildId, 'server');
     if (!logChannel) return;
 
+    const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'roles', option: 'deletes'});
+    if (!configLogging) return;
     const embed = new EmbedBuilder()
       .setColor('Red')
       .setTitle(`Role Deleted: ${role.name}`)
@@ -40,12 +43,12 @@ module.exports = async (client, role) => {
       })
       .setTimestamp()
 
-    const blackListRoles = await getRoleOrChannelBlacklist({ id: role.guild.id, type: 'role' });
-    const roleMults = await getRoleOrChannelMultipliers({ id: role.guild.id, type: 'role' });
+    const blackListRoles = await getRoleOrChannelBlacklist({ id: guildId, type: 'role' });
+    const roleMults = await getRoleOrChannelMultipliers({ id: guildId, type: 'role' });
     let [_, setData] = setChannelOrRoleArray({ type: 'role', data: blackListRoles, id: role.id, remove: true });
-    await setLevelSettings({ id: role.guild.id, setting: { 'blackListRoles': setData } });
+    await setLevelSettings({ id: guildId, setting: { 'blackListRoles': setData } });
     [_, setData] = setChannelOrRoleArray({ type: 'role', data: roleMults, id: role.id, remove: true });
-    await setLevelSettings({ id: role.guild.id, setting: { 'roleMultipliers': setData } })
+    await setLevelSettings({ id: guildId, setting: { 'roleMultipliers': setData } })
 
     await setEventTimeOut('role', role.id, embed, logChannel);
 

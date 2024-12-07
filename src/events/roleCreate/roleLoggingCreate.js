@@ -1,13 +1,18 @@
 const { Client, Role, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
 module.exports = async (client, role) => {
+  const guildId = role.guild.id;
   try {
     
-    const logChannel = await getLogChannel(client, role.guild.id, 'server');
+    const logChannel = await getLogChannel(client, guildId, 'server');
     if (!logChannel) return;
 
+    const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'roles', option: 'creates' });
+    if (!configLogging) return;
+    
     const embed = new EmbedBuilder()
       .setColor('Green')
       .setTitle(`Role Created: ${role.name}`)

@@ -2,14 +2,18 @@ const { Client, Role, EmbedBuilder, PermissionsBitField } = require('discord.js'
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const categorizedPermissions = require('./../../../data/loggingPermissions.json');
+const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
 module.exports = async (client, oldRole, newRole) => {
+  const guildId = oldRole.guild.id;
   try {
-    
-    const logChannel = await getLogChannel(client, oldRole.guild.id, 'server');
+    const logChannel = await getLogChannel(client, guildId, 'server');
     if (!logChannel) return;
 
-    let embed = new EmbedBuilder()
+    const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'roles', option: 'updates' });
+    if (!configLogging) return;
+
+    const embed = new EmbedBuilder()
       .setColor('Orange')  
       .setTitle(`Role Updated: ${oldRole.name}`)
 
