@@ -2,7 +2,9 @@ const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.j
 const { createSuccessEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
 const getVowel = require("../../utils/getVowel");
 const { getUserAttempts, setUserAttempts } = require("../../../database/userStats/setUserStats");
+const getUserClass = require("../../utils/getUserClass");
 const cooldowns = new Set();
+const commandReplies = require('../../../data/commandReplies.json');
 
 module.exports = {
   name: 'slap',
@@ -23,68 +25,59 @@ module.exports = {
   ],
   callback: async (client, interaction) => {
     const guildId = interaction.guild.id;
+    const user = interaction.member;
     const userId = interaction.member.id;
     const target = interaction.options.getMentionable('target');
     const object = interaction.options.getString('object');
     let embed, response;
     try {
-      const botResponses = [
-        "Why in the world would I allow you to slap myself?",
-        "No, I still won't do it!",
-        "I said no!",
-        "No!",
-        "No stays no!",
-        "I haven't changed my mind. It's still no!",
-        "Still not giving up?",
-        "You're a though one!",
-        "Nice try but no thanks!",
-        "Why are you still trying?",
-        "For the last time: NOOO!",
-        "I won't even try stopping you anymore but I still refuse to slap myself!"
-      ];
-  
-      const selfResponses = [
-        "Why would you even want to slap yourself?",
-        "Please, don't slap yourself!",
-        "Why are you still trying?",
-        "Well I guess I will allow you to slap yourself then...",
-        `You slapped yourself with ${getVowel(object)}! \nHappy now?`
-      ];
-  
-      let userSlapAttempts = await getUserAttempts(guildId, userId);
+      const [userClass, targetClass] = getUserClass(client, [user, target]);
 
-      if (target.id !== client.user.id && target.id !== userId) {
-        const replies = [
+      let replies = commandReplies['slap'][userClass][targetClass];
+      let userSlapAttempts = await getUserAttempts(guildId, userId);
+      let slapKey;
+      if (targetClass === 'bot') {
+        slapKey = target.id === client.user.id ? 'client' : 'bots';
+      } else if (targetClass === 'default') {
+        slapKey = target.id === userId ? 'self' : 'members'; 
+      } else {
+        slapKey = targetClass;
+      }
+
+      if (!replies) {
+        replies = [
           `You slapped ${target} with ${getVowel(object)}!`, 
           `You used ${getVowel(object)} to slap ${target}!`
         ];
-        embed = createSuccessEmbed({int: interaction, title: 'A Slap-tastic Hit!', descr: replies[Math.floor(Math.random() * replies.length)], footer: false});
+        embed = createSuccessEmbed({
+          int: interaction, 
+          title: 'A Slap-tastic Hit!', 
+          descr: replies[Math.floor(Math.random() * replies.length)], 
+          footer: false
+        });
+        userSlapAttempts.slap[slapKey][target.id] = (userSlapAttempts.slap[slapKey][target.id] || 0) + 1;
       } else {
-        let slapKey = target.id === client.user.id ? 'client' : 'self';
-        userSlapAttempts.slap[slapKey] += 1
-        let arrayToUse = slapKey === 'client' ? botResponses : selfResponses;
-        response = arrayToUse[Math.min(userSlapAttempts.slap[slapKey] - 1, arrayToUse.length - 1)];
-        embed = createInfoEmbed({ int: interaction, descr: response });
+        userSlapAttempts.slap[slapKey] += 1;
+        response = replies[Math.min(userSlapAttempts.slap[slapKey] - 1, replies.length - 1)];
+        embed = createInfoEmbed({ 
+          int: interaction, 
+          descr: response.replace('{object}', getVowel(object))
+        });
       }
-      let type;
-      if (target.user.bot) {
-        type = 'bots';
-      } else if (target.permissions.has(PermissionFlagsBits.Administrator)) {
-        type = 'admins';
-      } else {
-        type = 'members';
-      }
-      userSlapAttempts.slap[type][target.id] = (userSlapAttempts.slap[type][target.id] || 0) + 1;
+
       await setUserAttempts(guildId, userId, JSON.stringify(userSlapAttempts));  
+      
       await interaction.reply({embeds: [embed]});
-      const cooldownKey = `SCD${guildId + userId}`;
+
+      const cooldownKey = `SCD${guildId + userId + slapKey}`;
+
       if (!cooldowns.has(cooldownKey)) {
         cooldowns.add(cooldownKey);
         setTimeout(async () => {
           cooldowns.delete(cooldownKey);
           // Reset slap attempts if applicable
-          if (target.id === client.user.id || target.id === userId) {
-            userSlapAttempts.slap[target.id === client.user.id ? 'client' : 'self'] = 0;
+          if (["dev", "client", "owner", "self"].includes(slapKey)) {
+            userSlapAttempts.slap[slapKey] = 0;
             await setUserAttempts(guildId, userId, JSON.stringify(userSlapAttempts));
           }
         }, 30000);

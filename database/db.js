@@ -144,7 +144,7 @@ async function initDatabase() {
         CREATE TABLE IF NOT EXISTS UserStats (
           guildId VARCHAR(100) NOT NULL,
           memberId VARCHAR(100) NOT NULL,
-          attempts JSON DEFAULT '{ "slap": { "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "kick": { "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "ban": { "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "mute": { "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }}',
+          attempts JSON DEFAULT '{ "slap": { "dev": 0, "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "kick": { "dev": 0, "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "ban": { "dev": 0, "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "mute": { "dev": 0, "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }}',
           PRIMARY KEY (guildId, memberId)
         )
       `,
@@ -182,7 +182,7 @@ async function initDatabase() {
 }
 
 async function checkTableUpdates(tableName) {
-  const [columns] = await pool.query(
+  const [columns] = await query(
     `SELECT COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE, COLUMN_DEFAULT 
     FROM information_schema.columns 
     WHERE table_name = ? AND table_schema = ?`,
@@ -202,7 +202,7 @@ async function checkTableUpdates(tableName) {
 
 async function getExistingColumns(tableName) {
   try {
-    const [columns] = await pool.query(
+    const [columns] = await query(
       `SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = ? AND table_schema = ?`,
       [tableName, process.env.DB_NAME]
     );
@@ -218,7 +218,7 @@ async function addColumn(tableName, columnName, columnDefinition) {
     const existingColumns = await getExistingColumns(tableName);
 
     if (!existingColumns.includes(columnName)) {
-      await pool.query(
+      await query(
       `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition}`
       );
       console.log(`Column "${columnName}" added to Table "${tableName}".`);
@@ -235,7 +235,7 @@ async function modifyColumn(tableName, columnName, newDefinition) {
     const existingColumns = await getExistingColumns(tableName);
 
     if (!existingColumns.includes(columnName)) {
-      await pool.query(
+      await query(
         `ALTER TABLE ${tableName} MODIFY COLUMN ${columnName} ${newDefinition}`
       );
       console.log(`Column "${columnName}" Modified in Table "${tableName}".`);
@@ -252,7 +252,7 @@ async function removeColumn(tableName, columnName) {
     const existingColumns = await getExistingColumns(tableName);
 
     if (!existingColumns.includes(columnName)) {
-      await pool.query(
+      await query(
         `ALTER TABLE ${tableName} DROP COLUMN ${columnName}`
       );
       console.log(`Column "${columnName}" Removed from Table "${tableName}".`);
@@ -266,11 +266,11 @@ async function removeColumn(tableName, columnName) {
 
 async function resetTable(tableName, createQuery) {
   try {
-    await pool.query(`DROP TABLE IF EXISTS ${tableName}`);
+    await query(`DROP TABLE IF EXISTS ${tableName}`);
     console.log(`Table "${tableName}" has been Resetted.`);
 
     if (createQuery) {
-      await pool.query(createQuery);
+      await query(createQuery);
       console.log(`Table "${tableName}" Recreated.`);
     }
   } catch (error) {
@@ -280,7 +280,7 @@ async function resetTable(tableName, createQuery) {
 
 async function deleteTable(tableName) {
   try {
-    await pool.query(`DROP TABLE IF EXISTS ${tableName}`);
+    await query(`DROP TABLE IF EXISTS ${tableName}`);
     console.log(`Table "${tableName}" Removed.`);
   } catch (error) {
     console.error(`Error Removing Table "${tableName}":`, error);
@@ -299,4 +299,4 @@ async function query(sql, params) {
 }
 
 // Export the functions and connection
-module.exports = { initDatabase, query };
+module.exports = { initDatabase, query, resetTable };
