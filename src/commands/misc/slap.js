@@ -32,8 +32,7 @@ module.exports = {
     let embed, response;
     try {
       const [userClass, targetClass] = getUserClass(client, [user, target]);
-
-      console.log([userClass, targetClass]);
+      
       let replies = commandReplies['slap']?.[targetClass]?.[userClass];
       let userSlapAttempts = await getUserAttempts(guildId, userId);
       let slapKey;
