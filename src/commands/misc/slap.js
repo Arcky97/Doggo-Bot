@@ -35,7 +35,6 @@ module.exports = {
 
       console.log([userClass, targetClass]);
       let replies = commandReplies['slap']?.[targetClass]?.[userClass];
-      console.log([commandReplies['slap'][targetClass], commandReplies['slap'][targetClass][userClass]])
       let userSlapAttempts = await getUserAttempts(guildId, userId);
       let slapKey;
       if (targetClass === 'bot') {
