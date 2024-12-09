@@ -34,7 +34,7 @@ module.exports = {
       const [userClass, targetClass] = getUserClass(client, [user, target]);
 
       console.log([userClass, targetClass]);
-      let replies = commandReplies['slap'][targetClass][userClass];
+      let replies = commandReplies['slap']?.[targetClass]?.[userClass];
       console.log([commandReplies['slap'][targetClass], commandReplies['slap'][targetClass][userClass]])
       let userSlapAttempts = await getUserAttempts(guildId, userId);
       let slapKey;
