@@ -7,8 +7,10 @@ module.exports = (client, input) => {
     let type;
     if (devs.includes(i.user.id)) {
       type = 'dev';
-    } else if (i.user.id === client.user.id || i.user.bot) {
-      type = 'bot';
+    } else if (i.user.id === client.user.id) {
+      type = 'client';
+    } else if (i.user.bot) {
+      type = 'bots'
     } else if (i.user.id === i.guild.ownerId) {
       type = 'owner';
     } else if (i.permissions.has(PermissionFlagsBits.Administrator)) {

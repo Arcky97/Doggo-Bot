@@ -36,9 +36,7 @@ module.exports = {
       let replies = commandReplies['slap']?.[targetClass]?.[userClass];
       let userSlapAttempts = await getUserAttempts(guildId, userId);
       let slapKey;
-      if (targetClass === 'bot') {
-        slapKey = target.id === client.user.id ? 'client' : 'bots';
-      } else if (targetClass === 'default') {
+      if (targetClass === 'default') {
         slapKey = target.id === userId ? 'self' : 'members'; 
       } else {
         slapKey = targetClass;
@@ -57,8 +55,15 @@ module.exports = {
         });
         userSlapAttempts.slap[slapKey][target.id] = (userSlapAttempts.slap[slapKey][target.id] || 0) + 1;
       } else {
-        userSlapAttempts.slap[slapKey] += 1;
-        response = replies[Math.min(userSlapAttempts.slap[slapKey] - 1, replies.length - 1)];
+        let currentAttempts;
+        if (typeof userSlapAttempts.slap[slapKey] === 'object') {
+          userSlapAttempts.slap[slapKey][target.id] += 1;
+          currentAttempts = userSlapAttempts.slap[slapKey][target.id];
+        } else {
+          userSlapAttempts.slap[slapKey] += 1;
+          currentAttempts = userSlapAttempts.slap[slapKey];
+        }
+        response = replies[Math.min(currentAttempts - 1, replies.length - 1)];
         embed = createInfoEmbed({ 
           int: interaction, 
           descr: response.replace('{object}', getVowel(object))

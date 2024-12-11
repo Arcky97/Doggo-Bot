@@ -40,14 +40,18 @@ cron.schedule('0 0 * * *', async () => {
 async function cleanupExpiredData(now) {
   const cleanupInfo = [];
 
+  const nowFormatted = now instanceof Data 
+    ? now.toISOString().slice(0, 19).replace('T', ' ')
+    : now;
+
   for (const table of tables) {
-    const [rowsToDelete] = await query(`SELECT COUNT(*) AS count FROM ${table} WHERE deletionDate IS NOT NULL AND deletionDate < ?`, [now]);
+    const [rowsToDelete] = await query(`SELECT COUNT(*) AS count FROM ${table} WHERE deletionDate IS NOT NULL AND deletionDate < ?`, [nowFormatted]);
     const [rowsToCount] = await query(`SELECT COUNT(*) AS count FROM ${table}`);
     const rowsDeleted = rowsToDelete[0]?.count || 0;
     const rowsCounted = rowsToCount[0]?.count || 0;
     console.log(`Table: ${table}, Rows checked: ${rowsCounted}`);
     if (rowsDeleted > 0) {
-      await query(`DELETE FROM ${table} WHERE deletionDate IS NOT NULL AND deletionDate < ?`, [now]);
+      await query(`DELETE FROM ${table} WHERE deletionDate IS NOT NULL AND deletionDate < ?`, [nowFormatted]);
     }
 
     cleanupInfo.push({
