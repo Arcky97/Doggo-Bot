@@ -148,6 +148,13 @@ async function initDatabase() {
           PRIMARY KEY (guildId, memberId)
         )
       `,
+      PremiumUsers: `
+        CREATE TABLE IF NOT EXISTS PremiumUsers (
+          userId VARCHAR(100) NOT NULL PRIMARY KEY,
+          type VARCHAR(100) NOT NULL,
+          date TIMESTAMP NOT NULL 
+        )
+      `,
       TestTable: `
         CREATE TABLE IF NOT EXISTS TestTable (
           id VARCHAR(100) NOT NULL PRIMARY KEY,

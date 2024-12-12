@@ -40,7 +40,7 @@ cron.schedule('0 0 * * *', async () => {
 async function cleanupExpiredData(now) {
   const cleanupInfo = [];
 
-  const nowFormatted = now instanceof Data 
+  const nowFormatted = now instanceof Date 
     ? now.toISOString().slice(0, 19).replace('T', ' ')
     : now;
 

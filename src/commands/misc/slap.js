@@ -34,43 +34,51 @@ module.exports = {
       const [userClass, targetClass] = getUserClass(client, [user, target]);
       
       let replies = commandReplies['slap']?.[targetClass]?.[userClass];
-      let userSlapAttempts = await getUserAttempts(guildId, userId);
+      let userAttempts = await getUserAttempts(guildId, userId);
       let slapKey;
       if (targetClass === 'default') {
-        slapKey = target.id === userId ? 'self' : 'members'; 
+        slapKey = 'members'; 
+      } else if (userId === target.id) {
+        slapKey = 'self';
       } else {
         slapKey = targetClass;
       }
+
+      let attempts; 
 
       if (!replies) {
         replies = [
           `You slapped ${target} with ${getVowel(object)}!`, 
           `You used ${getVowel(object)} to slap ${target}!`
         ];
+        if (!userAttempts.slap[slapKey][target.id]) {
+          userAttempts.slap[slapKey][target.id] = { total: 1 };
+        } else {
+          userAttempts.slap[slapKey][target.id].total += 1;
+        }
         embed = createSuccessEmbed({
           int: interaction, 
           title: 'A Slap-tastic Hit!', 
           descr: replies[Math.floor(Math.random() * replies.length)], 
           footer: false
         });
-        userSlapAttempts.slap[slapKey][target.id] = (userSlapAttempts.slap[slapKey][target.id] || 0) + 1;
       } else {
-        let currentAttempts;
-        if (typeof userSlapAttempts.slap[slapKey] === 'object') {
-          userSlapAttempts.slap[slapKey][target.id] += 1;
-          currentAttempts = userSlapAttempts.slap[slapKey][target.id];
+
+        if (!userAttempts.slap[slapKey][target.id]) {
+          userAttempts.slap[slapKey][target.id] = { temp: 1, total: 0 };
+          attempts = userAttempts.slap[slapKey][target.id];
         } else {
-          userSlapAttempts.slap[slapKey] += 1;
-          currentAttempts = userSlapAttempts.slap[slapKey];
+          attempts = userAttempts.slap[slapKey][target.id];
+          attempts.temp += 1;
         }
-        response = replies[Math.min(currentAttempts - 1, replies.length - 1)];
+        response = replies[Math.min(attempts.temp - 1, replies.length - 1)];
         embed = createInfoEmbed({ 
           int: interaction, 
           descr: response.replace('{object}', getVowel(object))
         });
       }
 
-      await setUserAttempts(guildId, userId, JSON.stringify(userSlapAttempts));  
+      await setUserAttempts(guildId, userId, JSON.stringify(userAttempts));  
       
       await interaction.reply({embeds: [embed]});
 
@@ -81,9 +89,12 @@ module.exports = {
         setTimeout(async () => {
           cooldowns.delete(cooldownKey);
           // Reset slap attempts if applicable
-          if (["dev", "client", "owner", "self"].includes(slapKey)) {
-            userSlapAttempts.slap[slapKey] = 0;
-            await setUserAttempts(guildId, userId, JSON.stringify(userSlapAttempts));
+          if (["dev", "client", "owner", "self", "admin"].includes(slapKey)) {
+            userAttempts = await getUserAttempts(guildId, userId);
+            userAttempts.slap[slapKey][target.id].total += userAttempts.slap[slapKey][target.id].temp;
+            userAttempts.slap[slapKey][target.id].temp = 0;
+
+            await setUserAttempts(guildId, userId, JSON.stringify(userAttempts));
           }
         }, 30000);
       }

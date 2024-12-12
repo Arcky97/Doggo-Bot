@@ -3,6 +3,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
 module.exports = {
   name: 'todo',
   description: "Manage the ToDo's for deving this bot.",
+  deleted: true,
   devOnly: true,
   options: [
     {
