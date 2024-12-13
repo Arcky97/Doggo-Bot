@@ -10,7 +10,11 @@ module.exports = {
   callback: async (client, interaction) => {
     let embed;
     if (interaction.user.id === '763287145615982592') {
-      embed = createWarningEmbed({int: interaction, title: 'Bad Zeta!', descr: `No ${interaction.user}! Don't try to fix what's broken!`});
+      embed = createWarningEmbed({
+        int: interaction, 
+        title: 'Bad Zeta!', 
+        descr: `No ${interaction.user}! Don't try to fix what's broken!`
+      });
     } else {
       try {
         for (const guild of client.guilds.cache.values()) {

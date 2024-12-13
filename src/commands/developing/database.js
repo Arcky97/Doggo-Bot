@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { query } = require("../../../database/db");
-const { createSuccessEmbed, createErrorEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'database',
@@ -257,80 +257,88 @@ module.exports = {
     let embed, insertQuery, title, description;
     let params = [];
     try {
-      switch(subCmdGroup) {
-        case 'table':
-          switch(subCmd) {
-            case 'add':
-              const columns = interaction.options.getString('columns');
-              insertQuery = `CREATE TABLE \`${table}\` (${columns});`;
-              title = 'Table Created!';
-              description = `The Table '${table}' has been Created and Added to the Database.`;
-              break;
-            case 'rename':
-              const rename = interaction.options.getString('rename');
-              insertQuery = `ALTER TABLE ${table} RENAME TO ${rename};`;
-              title = 'Table Renamed';
-              description = `The Table '${table}' has been Renamed to '${rename}' in the Database.`;
-              break;
-            case 'clear':
-              insertQuery = `TRUNCATE TABLE \`${table}\`;`;
-              title = 'Table Data Cleared';
-              description = `The Data in the '${table}' has been cleared in the Database.`;
-              break;
-            case 'remove':
-              insertQuery = `DROP TABLE \`${table}\``;
-              title = 'Table Removed';
-              description = `The Table '${table}' has been removed from the Database.`;
-              break;
-          }
-          break;
-        case 'column':
-          const column = interaction.options.getString('column');
-          const input = interaction.options.getString('input');
-          const rename = interaction.options.getString('rename');
-          const value = interaction.options.getString('default');
-          const type = interaction.options.getString('type');
-          const after = interaction.options.getString('after');
-          switch(subCmd) {
-            case 'add':
-              insertQuery = `ALTER TABLE \`${table}\` ADD \`${column}\` ${input};`;
-              title = 'Column Added';
-              description = `The Column '${column}' has been added to the '${table}' Table in the Database.`;
-              break;
-            case 'modify':
-              insertQuery = `ALTER TABLE \`${table}\` MODIFY \`${column}\` ${input};`;
-              title = 'Column Modified';
-              description = `The Column '${column}' has been modified in the '${table}' Table in the Database.`;
-              break;
-            case 'rename':
-              insertQuery = `ALTER TABLE \`${table}\` RENAME COLUMN \`${column}\` TO \`${rename}\`;`;
-              title = 'Column Renamed';
-              description = `The Column '${column}' has been renamed to '${rename}' in the '${table}' Table in the Database.`;
-              break;
-            case 'default':
-              insertQuery = `ALTER TABLE \`${table}\` MODIFY \`${column}\` ${type} DEFAULT '${value}';`;
-              title = 'Column Default Added';
-              description = `The Default value for '${column}' has been set to '${value}' in the '${table}' Table in the Database.`;
-              break;
-            case 'order':
-              insertQuery = `ALTER TABLE \`${table}\` MODIFY COLUMN \`${column}\` ${type} AFTER \`${after}\`;`;
-              title = 'Column Order Changed';
-              description = `The Column '${column}' is now placed after the '${after}' Column in the '${table}' Table in the Database.`;
-              break;
-            case 'remove':
-              insertQuery = `ALTER TABLE \`${table}\` DROP COLUMN \`${column}\`;`;
-              title = 'Column Removed';
-              description = `The '${column}' has been removed from the '${table}' Table in the Database.`;
-              break;
-          }
-          break;
+      if (interaction.user.id !== '763287145615982592') {
+        switch(subCmdGroup) {
+          case 'table':
+            switch(subCmd) {
+              case 'add':
+                const columns = interaction.options.getString('columns');
+                insertQuery = `CREATE TABLE \`${table}\` (${columns});`;
+                title = 'Table Created!';
+                description = `The Table '${table}' has been Created and Added to the Database.`;
+                break;
+              case 'rename':
+                const rename = interaction.options.getString('rename');
+                insertQuery = `ALTER TABLE ${table} RENAME TO ${rename};`;
+                title = 'Table Renamed';
+                description = `The Table '${table}' has been Renamed to '${rename}' in the Database.`;
+                break;
+              case 'clear':
+                insertQuery = `TRUNCATE TABLE \`${table}\`;`;
+                title = 'Table Data Cleared';
+                description = `The Data in the '${table}' has been cleared in the Database.`;
+                break;
+              case 'remove':
+                insertQuery = `DROP TABLE \`${table}\``;
+                title = 'Table Removed';
+                description = `The Table '${table}' has been removed from the Database.`;
+                break;
+            }
+            break;
+          case 'column':
+            const column = interaction.options.getString('column');
+            const input = interaction.options.getString('input');
+            const rename = interaction.options.getString('rename');
+            const value = interaction.options.getString('default');
+            const type = interaction.options.getString('type');
+            const after = interaction.options.getString('after');
+            switch(subCmd) {
+              case 'add':
+                insertQuery = `ALTER TABLE \`${table}\` ADD \`${column}\` ${input};`;
+                title = 'Column Added';
+                description = `The Column '${column}' has been added to the '${table}' Table in the Database.`;
+                break;
+              case 'modify':
+                insertQuery = `ALTER TABLE \`${table}\` MODIFY \`${column}\` ${input};`;
+                title = 'Column Modified';
+                description = `The Column '${column}' has been modified in the '${table}' Table in the Database.`;
+                break;
+              case 'rename':
+                insertQuery = `ALTER TABLE \`${table}\` RENAME COLUMN \`${column}\` TO \`${rename}\`;`;
+                title = 'Column Renamed';
+                description = `The Column '${column}' has been renamed to '${rename}' in the '${table}' Table in the Database.`;
+                break;
+              case 'default':
+                insertQuery = `ALTER TABLE \`${table}\` MODIFY \`${column}\` ${type} DEFAULT '${value}';`;
+                title = 'Column Default Added';
+                description = `The Default value for '${column}' has been set to '${value}' in the '${table}' Table in the Database.`;
+                break;
+              case 'order':
+                insertQuery = `ALTER TABLE \`${table}\` MODIFY COLUMN \`${column}\` ${type} AFTER \`${after}\`;`;
+                title = 'Column Order Changed';
+                description = `The Column '${column}' is now placed after the '${after}' Column in the '${table}' Table in the Database.`;
+                break;
+              case 'remove':
+                insertQuery = `ALTER TABLE \`${table}\` DROP COLUMN \`${column}\`;`;
+                title = 'Column Removed';
+                description = `The '${column}' has been removed from the '${table}' Table in the Database.`;
+                break;
+            }
+            break;
+        }
+        embed = createSuccessEmbed({
+          int: interaction,
+          title: title,
+          descr: description 
+        });
+        await query(insertQuery, params) // what are my params?
+      } else {
+        embed = createWarningEmbed({
+          int: interaction,
+          title: 'Bad Zeta!',
+          descr: `No ${interaction.user}! Don't use this command!`
+        });
       }
-      embed = createSuccessEmbed({
-        int: interaction,
-        title: title,
-        descr: description 
-      });
-      await query(insertQuery, params) // what are my params?
     } catch (error) {
       console.error(`Error executing the ${subCmdGroup} ${subCmd} command.`, error);
       embed = createErrorEmbed({
