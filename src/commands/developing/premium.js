@@ -60,24 +60,33 @@ module.exports = {
     if (client.guilds.cache.find(guild => guild.id === id)) userOrGuild = 'Server';
     if (client.users.cache.find(user => user.id === id)) userOrGuild = 'User';
     if (userOrGuild === null) return; // id is not a user or guild.
+
     try {
       if (interaction.user.id !== '763287145615982592') {
         switch (subCmd) {
           case 'add':
             const type = interaction.options.getString('type');
-            if (!hasPremium) {
-              embed = createSuccessEmbed({
-                int: interaction,
-                title: 'Premium Added',
-                descr: `Premium Membership has been Asigned for ${userOrGuild} with ID: ${id}`
-              });
-              await setPremium(id, type);
-            } else {
+            if (userOrGuild === 'User' && type === 'Server-Based' || userOrGuild === 'Server' && type === 'User-Based') {
               embed = createInfoEmbed({
-                int: interaction, 
-                title: 'Premium Already Added',
-                descr: `There's already a Premium Membership for ${userOrGuild} with ID: ${id}`
+                int: interaction,
+                title: 'Wrong Premium Type',
+                descr: `The given ${userOrGuild} ID: ${id} is not a valid ${type} Type.`
               })
+            } else {
+              if (!hasPremium) {
+                embed = createSuccessEmbed({
+                  int: interaction,
+                  title: 'Premium Added',
+                  descr: `Premium Membership has been Asigned for ${userOrGuild} with ID: ${id}`
+                });
+                await setPremium(id, type);
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction, 
+                  title: 'Premium Already Added',
+                  descr: `There's already a Premium Membership for ${userOrGuild} with ID: ${id}`
+                })
+              }
             }
             break;
           case 'remove':
