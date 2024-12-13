@@ -1,7 +1,8 @@
 const moment = require("moment");
 
 module.exports = async (time, full = false) => {
-  const duration = moment.duration(moment().diff(time));
+  const timeInLocal = moment(time).local();
+  const duration = moment.duration(moment().diff(timeInLocal));
   const years = duration.years();
   const months = duration.months();
   const days = duration.days();

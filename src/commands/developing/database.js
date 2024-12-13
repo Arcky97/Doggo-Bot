@@ -32,6 +32,25 @@ module.exports = {
         },
         {
           type: ApplicationCommandOptionType.Subcommand,
+          name: 'rename',
+          description: 'Rename a Table in the Database.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'table',
+              description: 'The current Table name.',
+              required: true 
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'rename',
+              description: 'The new Table name.',
+              required: true 
+            }
+          ] 
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
           name: 'clear',
           description: 'Clear the Data inside a Table from the Database.',
           options: [
@@ -244,8 +263,14 @@ module.exports = {
             case 'add':
               const columns = interaction.options.getString('columns');
               insertQuery = `CREATE TABLE \`${table}\` (${columns});`;
-              title = 'Table Created!'
+              title = 'Table Created!';
               description = `The Table '${table}' has been Created and Added to the Database.`;
+              break;
+            case 'rename':
+              const rename = interaction.options.getString('rename');
+              insertQuery = `ALTER TABLE ${table} RENAME TO ${rename};`;
+              title = 'Table Renamed';
+              description = `The Table '${table}' has been Renamed to '${rename}' in the Database.`;
               break;
             case 'clear':
               insertQuery = `TRUNCATE TABLE \`${table}\`;`;

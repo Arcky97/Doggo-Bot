@@ -11,15 +11,15 @@ module.exports = {
   description: 'Slap a person with an object',
   options: [
     {
+      type: ApplicationCommandOptionType.Mentionable,
       name: 'target',
       description: 'Choose your target.',
-      type: ApplicationCommandOptionType.Mentionable,
       required: true 
     },
     {
+      type: ApplicationCommandOptionType.String,
       name: 'object',
       description: 'Choose the object.',
-      type: ApplicationCommandOptionType.String,
       required: true 
     }
   ],

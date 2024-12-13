@@ -1,4 +1,5 @@
 const { devs, testServer } = require('../../../config.json');
+const { getPremiumById } = require('../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds');
 const getLocalCommands = require('../../utils/commands/getLocalCommands');
 const { createInfoEmbed, createWarningEmbed } = require('../../utils/embeds/createReplyEmbed');
 
@@ -20,9 +21,27 @@ module.exports = async (client, interaction) => {
         embed = createInfoEmbed({int: interaction, descr: 'Only **Developers** are allowed to run this command.'});
         interaction.reply({
           embeds: [embed],
-          ephemeral: true,
+          ephemeral: true
         });
         return;
+      }
+    }
+
+    if (commandObject.premiumOnly) {
+      let isPremium = await getPremiumById(interaction.user.id);
+      console.log(isPremium);
+      if (!isPremium) isPremium = await getPremiumById(interaction.guild.id);
+      if (!isPremium) {
+        embed = createInfoEmbed({
+          int: interaction,
+          title: 'Premium Command Only',
+          descr: `Sorry ${interaction.user} but this command is a Premium Only Command.`
+        });
+        interaction.reply({
+          embeds: [embed],
+          ephemeral: true
+        });
+        return; 
       }
     }
 
