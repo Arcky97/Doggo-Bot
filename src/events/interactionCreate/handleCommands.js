@@ -29,8 +29,6 @@ module.exports = async (client, interaction) => {
 
     if (commandObject.premiumOnly) {
       let isPremium = await getPremiumById(interaction.user.id);
-      console.log(isPremium);
-      if (!isPremium) isPremium = await getPremiumById(interaction.guild.id);
       if (!isPremium) {
         embed = createInfoEmbed({
           int: interaction,
