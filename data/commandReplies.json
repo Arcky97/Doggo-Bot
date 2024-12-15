@@ -259,21 +259,56 @@
     }
   },
   "kick": {
-    "dev": [
+    "dev": {
+      "dev": [
+        "Two devs at odds? Maybe sort this out over coffee instead of kicks.",
+        ""
+      ],
+      "owner": {
 
-    ],
-    "bot": [
+      },
+      "admin": {
 
-    ],
-    "self": [
+      }
+    },
+    "client": {
+      "dev": {
 
-    ],
-    "owner": [
+      },
+      "owner": {
 
-    ],
-    "admin": [
+      },
+      "admin": {
 
-    ]
+      }
+    },
+    "self": {
+      "dev": {
+
+      },
+      "owner": {
+    
+      },
+      "admin": {
+
+      }
+    },
+    "owner": {
+      "dev": {
+
+      },
+      "admin": {
+
+      }
+    },
+    "admin": {
+      "dev": {
+
+      },
+      "admin": {
+
+      }
+    }
   },
   "ban": {
     "regular": {
