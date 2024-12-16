@@ -64,7 +64,7 @@ module.exports = {
         });
       } else {
 
-        if (!userAttempts.slap[slapKey][target.id]) {
+        if (!userAttempts.slap[slapKey]?.[target.id]) {
           userAttempts.slap[slapKey][target.id] = { temp: 1, total: 0 };
           attempts = userAttempts.slap[slapKey][target.id];
         } else {
@@ -72,10 +72,20 @@ module.exports = {
           attempts.temp += 1;
         }
         response = replies[Math.min(attempts.temp - 1, replies.length - 1)];
-        embed = createInfoEmbed({ 
-          int: interaction, 
-          descr: response.replace('{object}', getVowel(object))
-        });
+        if (response) {
+          embed = createInfoEmbed({ 
+            int: interaction,
+            title: 'But it failed!',
+            descr: response.replace('{object}', getVowel(object))
+          });
+        } else {
+          embed = createInfoEmbed({ 
+            int: interaction, 
+            title: 'It was a miss!',
+            descr: 'Slapping this person is not possible yet, or at least I won\'t give a cool reply when your try...'
+          });
+        }
+
       }
 
       await setUserAttempts(guildId, userId, JSON.stringify(userAttempts));  

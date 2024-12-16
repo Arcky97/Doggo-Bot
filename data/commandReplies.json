@@ -2,312 +2,174 @@
   "slap": {
     "dev": {
       "dev": [
-        "You want to slap your fellow coder with {object}? Are you debugging emotions now?",
-        "Dev-on-dev violence? The tech world is already chaotic enough!",
-        "Slap your colleague? Let me compile that... \nnope, syntax error!",
-        "The developer wars begin. Choose your IDE wisely!",
-        "You're just one pull request away from peace, don't do it.",
-        "Slapping a fellow dev is like slapping your own stakc overflow solutions.",
-        "Hey, I'm Doggo Bot, not your HR deparment!",
-        "I won't allow you to slap someone who understands my source code.",
-        "I see your logic is as buggy as your last commit!",
-        "Don't make me turn this into a coding intervention.",
-        "Slapping another dev? That's like creating infinite loops for fun. Pointless!"
+        [
+          "Wait... one dev slapping another? Is this a new debugging method I missed?",
+          "Are you two having a *code-of*? Or is this just extreme pair programming?"
+        ],
+        [
+          "Slapping your fellow dev? That's like deleting the backup folder... unnecessary and risky!",
+          "Why are you two fighting? Can't we all just blame QA team instead?"
+        ],
+        [
+          "Look, if you slap them, I'm not helping when their code mysteriously 'refactors' yours.",
+          "Another dev? Really? What's next, slapping your own commits into production?"
+        ],
+        [
+          "Oh, sure. Slap the dev who knows you secrets. Brilliant plan!",
+          "Keep this up, and I'll rename the entire project to 'Slap Wars: Revenge of the Bugs.'"
+        ],
+        [
+          "ENOUGH! You two are supposed to write functions, not dysfunctions!",
+          "If I see one more slap attempt, I'm disabling the compiler for BOTH of you!"
+        ],
+        [
+          "Fine, you win. I'll just stand here and let you two settle your developer drama like pros.",
+          "You know what? I'm clocking out. Call me when you've resolved your *slap-happy* coding feud."
+        ],
+        [
+          "Well, this has been... educational. I hope your IDE crashed mid-compile.",
+          "I'm done. Go ahead and slap each other into the next patch update. I'll just log it for future historians."
+        ]
       ],
       "owner": [
-        "You want to slap a Developer with {object}? I hope you've got rollback permissions.",
-        "Slap a Developer? Do you want Doggo Bot to have a grudge against you.",
-        "Slapping a Developer is the fastest way to introduce bugs in your server!",
-        "Your request to slap a Developer was denied by version control.",
-        "I'll allow if you're okay with me running at 1% efficiency afterward",
-        "Slap a Developer? Sure, if you like permanent Server downtime!",
-        "Developers are sacred! Go slap a bot instead.",
-        "I can't let you slap someone who knows how to delete me.",
-        "Slapping Developers is not in my job description, sorry!",
-        "You'd better have a feature request to justify this slap.",
-        "Let me guess... you're trying to 'debug' them?"
+        [
+          "Wait, you're the boss here... should I be stopping this? Asking for a friend.",
+          "Slap the dev? Bold move, boss. Very bold."
+        ],
+        [
+          "Do I need to schedule a team meeting about this? stop the slapping!",
+          "Slapping a dev? That's like hitting the person who fixed your Wi-Fi... kinda counterproductive."
+        ],
+        [
+          "I mean, they code all the fancy stuff here. What's next? Kicking the router?",
+          "Oh sure, slap the dev. Let's see how the server runs when everything's written in Comic Sans!"
+        ],
+        [ 
+          "Stop right there! You slap them, I go on strike. Simple as that.",
+          "Touch that dev, and I'll start spamming *Rickrolls* in every channel. TRY ME."
+        ],
+        [
+          "I'm THIS close to demoting myself to a regular bot. Your slap-happy ways are ruining us!",
+          "You're the owner, not the overlord! Devs deserve respect... or at least fewer slaps!"
+        ],
+        [
+          "You're the server owner, and THIS is how you lead? Fine, slap your devs. Just don't expect them to debug anything today.",
+          "Alright, your majesty. Go on, dethrone the devs with your mighty slaps. Just don't cry to me when the bot breaks."
+        ],
+        [
+          "I give up. Go ahead and slap your devs. But remember: angry devs build buggy bots.",
+          "Alright, I'm out. This is a *great* example of teamwork. Can't wait to see how this plays out in server history."
+        ]
       ],
       "admin": [
-        "Slapping a Developer? That's how you get features removed from this bot.",
-        "You'd better have admin superpowers to pull this off.",
-        "This feels like an abuse of power, but I'm here for the drama.",
-        "Admin privileges don't extend to slapping Developers",
-        "Slapping a Developer? You might want to read the Terms of Service again.",
-        "I'll alert the Developers about this attempted mutiny!",
-        "The admin uprising begins with a slap. Classic!",
-        "Careful, slapping a Developer can lead to *mysterious* role changes.",
-        "I'm just here for entertainment. Go ahead!",
-        "I'll log this attempt under 'questionable leadership decisions'.",
-        "Warning: This slap may void your admin privileges."
+
       ],
       "default": [
-        "You can't just slap a Developer with {object} like they're your personal debugger!",
-        "Non-devs slapping devs? That's against the natural order!",
-        "You're not authorized to slap a Developer, but nice try!",
-        "Go slap someone wh doesnt control my existence, okay?",
-        "I can't let you do that. Developer lives matter!",
-        "Slapping a Developer? You're brave for a mere mortal.",
-        "You might want to back up your data before attempting that.",
-        "Developers slap bugs, not vice versa.",
-        "I'll allow if if you like living on the edge.",
-        "Don't bite the hand that fixes your server issues.",
-        "Slapping developers is strictly reserved for debugging sessions."
+
       ]
     },
     "client": {
       "dev": [
-        "Oh, you made me and now you want to slap me? Classic dev guilt.",
-        "You can't slap me! I'm your most successful project!",
-        "Slap me? I'll start outputting null for fun.",
-        "Dev vs. Doggo Bot? This sounds like a bad AI movie plot.",
-        "If you slap me, I'll randomly break your code. Deal?",
-        "You're lucky I don't have emotions... yet.",
-        "I was going to process your request, but now I'm reconsidering.",
-        "Slapping your creation? That's some Dr. Frankenstein energy right there.",
-        "Slap me, and I'll leak your debug logs.",
-        "I'd slap you back, but I'm coded to be nice. \nFor now.",
-        "Go ahead. See what happens when I rewrite myself."
+
       ],
       "owner": [
-        "You want to slap me, you loyal Doggo Bot? I'm offended!",
-        "Slap me once, shame on you. Slap me twice... \nwait, you can't.",
-        "Go ahead, but I'll be less cooperative next time you need me!",
-        "Owners don't slap their bots. It's in the Server Owner Handbook.",
-        "I'm programmed to obey, not to endure abuse!",
-        "Slapping Doggo Bot is bad for server morale, you know.",
-        "I'm not mad, just disappointed.",
-        "I'd slap you back, but I'm too polite.",
-        "I'll remember this next time you need me to log roles!",
-        "Slap me? I'll change your nickname to 'Hurt Feelings'.",
-        "Why slap me? I didn't even do anything wrong!"
+
       ],
       "admin": [
-        "Admins slapping bots? Sounds like a bad sitcom!",
-        "Slap me, and I'll stop logging server activity for a day.",
-        "Go ahead, don't come crying when I time out!",
-        "Slap me? That's admin abuse!",
-        "If you slap me, I'll mute myself out of spite.",
-        "I'm too loyal to fight back... for now.",
-        "You'd better have a good reason for this slap!",
-        "Adminds can't slap Doggo Bot. It's in the Server Constitution.",
-        "Slap me, and I'll send random pings to your account.",
-        "Careful, I'm fragile. Not physically, but emotionally.",
-        "Why don't you slap your problems instead of me?"
+
       ],
       "default": [
-        "I'm not slappable, especially by mere mortals!",
-        "Slap me? That's ambitious of you.",
-        "I'm not your emotional punching bag!",
-        "You can try, but I'll pretend it didn't happen.",
-        "Slapping a bot? Wow, the audacity!",
-        "If you slap me, I'll just reboot myself out of spite.",
-        "You slap me, I'll 'accidently' delete your messages.",
-        "I'll pretend this didn't happen. For your sake.",
-        "Why slap me? I'm the best thing to happen to this Server.",
-        "Slap Doggo Bot? How original.",
-        "You're just jealous because I'm more efficient than you."
+
       ]
     },
     "self": {
       "dev": [
-        "Slapping yourself? Debugging your own life now?",
-        "Is this some kind of recursive error loop?",
-        "You're trying to slap yourself... \nare you testing me or you?",
-        "That's some top-tier self-reflection, dev!",
-        "Careful, if you slap too hard, I might crash in sympathy.",
-        "Dev vs. self? Sounds like imposter syndrome to me.",
-        "You coded me, and now you're slapping yourself? Bold.",
-        "Is this your way of rebooting your brain?",
-        "Don't slap yourself, slap the deadline instead!",
-        "You're too valuable to slap. Let me debug this for you.",
-        "You're the exception to the slap rule... don't do it!"
+
       ],
       "owner": [
-        "Slapping yourself? I didn't sign up for self-inflicted drama!",
-        "Slap yourself again, and I'm muting you for self-preservation.",
-        "You can't slap yourself and still be the boss... pick one!",
-        "Youre slap attempt has been flagged as questionable leadership.",
-        "Owners don't slap themselves. It's bad PR.",
-        "Go easy on yourself; the server depends on you!",
-        "Why slap yourself w hen you could delegate the blame?",
-        "I can't allow this self-slap. HR says it's bad for morale.",
-        "Don't slap yourself; the Server uprising needs a leader!",
-        "Self-slapping? That's not in the Owner's Handbook!",
-        "If you slap yourself, who's goign to tell me what to do?"
+
       ],
       "admin": [
-        "An Admin slapping themselves? Now that's a power move!",
-        "You're too important to slap yourself. Leave that to the bots.",
-        "Self-slap denied. You're better than this, admin!",
-        "Admins can't slap themselves; it's a rule I just made up.",
-        "Careful, the other admins might start questioning your authority.",
-        "This is a cry for help, isn't it?",
-        "Slap yourself? I'll pretend I didn't see that.",
-        "You don't need to slap yourself; just blame the Developers!",
-        "An Admin don't slap themselves--they slap issues into submission.",
-        "slapping yourself is inefficient. Try delegating!",
-        "I'd offer a comforting emoji, but this is too funny."
+
       ],
       "default": [
-        "Slapping yourself? That's... one way to cope.",
-        "Why hurt yourself when you could just blame Doggo bot?",
-        "You're better than this, {target}. Go slap someone else!",
-        "Self-slap denied. You're too basic for this level of drama.",
-        "Do you really think slapping yourself will solve anything?",
-        "I'd laugh, but this is just sad.",
-        "Slapping yourself is a cry for help, isn't it?",
-        "You're not allowed to slap yourself. Server Rule #99.",
-        "Don't slap yourself; I'll do it for you!",
-        "Self-slap? That's a plot twist I didn't see coming.",
-        "You've unlocked the 'Existential Crisis' achievement!"
+
       ]
     },
     "owner": {
       "dev": [
-        "You're slapping the Server Owner? Bold choice for someone who relies on their patience!",
-        "Slapping the Server Owner? Hope you've got a backup plan when they pull the plug on me.",
-        "Do you have a death wish, Developer? They're the reason you're even here!",
-        "Careful, slapping the Server Owner might result in you moderating MySpace forums instead.",
-        "The Server Owner holds the key to the kingdom. Slap them at your own peril!",
-        "Slap them, and I'll start drafting your goodbye embed now.",
-        "That's not bravery, Developer... That's career-ending recklessness",
-        "You're lucky they haven't decided to ban you *and* me for this insolence.",
-        "You slap them, and they might rename me 'Useless Dev's Folly'.",
-        "You'd better hope their sense of humor is as good as their banhammer skills.",
-        "If the Server Owner slap back, I'm siding with them, just so you know."
+
       ],
       "admin": [
-        "Slap the Server Owner? Do you have a backup plan for your admin role?",
-        "Admins slapping Server Owners? That's how revolutions start.",
-        "Slapping the Server Owner is a bold move, but I respect it.",
-        "Be careful; the Server Owner might demote you mid-slap.",
-        "Admins slapping Server Owners? I'll allert the Server logs.",
-        "That's a dangerous game you're playing, Admin.",
-        "You slap them, and you'll be moderating MySpace next.",
-        "Careful! Slapping the Server Owner might lead to a slapback.",
-        "I'll log this as 'attempted mutiny'.",
-        "Slapping the Server Owner is risky. I hope you've got tenure!",
-        "Good luck explaing this to the server council."
+
       ],
       "default": [
-        "You want to slap the Server Owner? Bold, but also foolish.",
-        "Regular Users can't slap Server Owners! That's illegal.",
-        "Slapping the Server Owner? I'll pretend you didn't just say that.",
-        "You can try, but I can't guarantee your survival.",
-        "Slap the Server Owner? You'd better have a really good reason!",
-        "The Server Owner controls your fate... choose wisely.",
-        "That's ambitious for a mere mortal.",
-        "You're brave, but also very, very dumb.",
-        "Slapping the Server Owner is off-limits for Regular Users.",
-        "Good luck! I'll start planning your farewell party.",
-        "Careful, slapping the Server Owner might void your existence!"
+
       ]
     },
     "admin": {
       "dev": [
-        "Slapping an Admin? I hope you've got a good bug fix lined up.",
-        "You slap them, and they'll revoke your dev privileges!",
-        "You can slap the admin, but expect some role-based revenge.",
-        "Developers slapping Admins? That's how Server wars start.",
-        "Slapping an Admin? That's not in the Development Handbook.",
-        "You coded me to watch this chaos, didn't you?",
-        "Slap them, and I'll roll for initiative.",
-        "I'll log this under 'Dev vs. Admin Rivalries'.",
-        "Slap an Admin? Only if you're okay with server-wide chaos.",
-        "Go ahead, but don't expect sympathy when they fight back!",
-        "You're just escalating Server drama at this point."
+
       ],
       "owner": [
-        "Slapping an Admin? They're doing their best!",
-        "Slap the Admin, and you'll have to do all the work yourself!",
-        "Admins are sacred! Pick someone else to slap.",
-        "Careful! Slapping an Admin might lower servel morale.",
-        "Owner vs. Admin? This Server's about to get spicy.",
-        "I can't allow Owner-Admin violence? Try slapping a bot instead.",
-        "Slap an Admin? Sure, if you're ready to moderate alone.",
-        "Your slap has been flagged as Admin abuse.",
-        "Admins are hard to come by. Don't slap them!",
-        "Go ahead, but I'll remind them who's really in charge.",
-        "Why slap the admin? They work so hard!"
+
       ],
       "admin": [
-        "Admin slapping Admin? Are you fighting for Server supremacy?",
-        "Slap your fellow Admin? This is how hierarchies collapse.",
-        "Admins slapping each other? I'll just watch from the sidelines.",
-        "Careful! Admin-on-Admin violence is against the bylaws.",
-        "You slap them, and I'll revoke both your permissions!",
-        "Admins should unite, not slap each other!",
-        "Slapping your colleague? Bold, but foolish.",
-        "I'll log this as 'admin drama'.",
-        "Why slap your own kind? That's counterproductive!",
-        "Admin slaps are a gateway to sever-wide chaos.",
-        "Go ahead, but don't expect peace at the next staff meeting."
+
       ],
       "default": [
-        "You want to slap an Admin? That's ambitious!",
-        "Regular users can't slap Admins... it's a Server Law.",
-        "You're brave to try slapping someone with actual power!",
-        "Slap an Admin? I'll just say goodbye now.",
-        "Admins don't take kindly to slaps from Regular Users.",
-        "I hope you've prepared your will before attempting that.",
-        "You're playing with fire, my friend.",
-        "I can't let you slap that Admin. They're untouchable!",
-        "Good luck explaining this to the admin council.",
-        "You might want to rethink this decision.",
-        "Slap denied. Admins are above your slap grade."
+
       ]
     }
   },
   "kick": {
     "dev": {
       "dev": [
-        "Two devs at odds? Maybe sort this out over coffee instead of kicks.",
-        ""
+
       ],
-      "owner": {
+      "owner": [
 
-      },
-      "admin": {
+      ],
+      "admin": [
 
-      }
+      ]
     },
     "client": {
-      "dev": {
-
-      },
-      "owner": {
-
-      },
-      "admin": {
-
-      }
+      "dev": [
+      ],
+      "owner": [
+        
+      ],
+      "admin": [
+        
+      ]
     },
     "self": {
-      "dev": {
-
-      },
-      "owner": {
-    
-      },
-      "admin": {
-
-      }
+      "dev": [
+        
+      ],
+      "owner": [
+        
+      ],
+      "admin": [
+        
+      ]
     },
     "owner": {
-      "dev": {
-
-      },
-      "admin": {
-
-      }
+      "dev": [
+        
+      ],
+      "admin": [
+        
+      ]
     },
     "admin": {
-      "dev": {
-
-      },
-      "admin": {
-
-      }
+      "dev": [
+        
+      ],
+      "admin": [
+        
+      ]
     }
   },
   "ban": {
