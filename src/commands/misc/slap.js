@@ -64,7 +64,7 @@ module.exports = {
         });
       } else {
 
-        if (!userAttempts.slap[slapKey]?.[target.id]) {
+        if (!userAttempts.slap[slapKey].has([target.id])) {
           userAttempts.slap[slapKey][target.id] = { temp: 1, total: 0 };
           attempts = userAttempts.slap[slapKey][target.id];
         } else {
