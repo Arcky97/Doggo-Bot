@@ -64,13 +64,18 @@ module.exports = {
         });
       } else {
 
-        if (!userAttempts.slap[slapKey].has([target.id])) {
-          userAttempts.slap[slapKey][target.id] = { temp: 1, total: 0 };
-          attempts = userAttempts.slap[slapKey][target.id];
-        } else {
-          attempts = userAttempts.slap[slapKey][target.id];
-          attempts.temp += 1;
+        if (!userAttempts.slap[slapKey]) {
+          userAttempts.slap[slapKey] = {};
         }
+
+        if (!userAttempts.slap[slapKey][target.id]) {
+          userAttempts.slap[slapKey][target.id] = { temp: 1, total: 0 };
+        } else {
+          userAttempts.slap[slapKey][target.id].temp += 1;
+        }
+
+        const attempts = userAttempts.slap[slapKey][target.id];
+        
         response = replies[Math.min(attempts.temp - 1, replies.length - 1)];
         if (response) {
           embed = createInfoEmbed({ 
