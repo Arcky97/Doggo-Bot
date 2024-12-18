@@ -496,6 +496,19 @@ module.exports = {
               description: 'The User who you want to reset the level from.'
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'leave',
+          description: 'Reset a User\'s level when they leave the Server.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Boolean,
+              name: 'value',
+              description: 'Reset User level on leave or not.',
+              required: true 
+            }
+          ]
         }
       ]
     },
@@ -990,6 +1003,15 @@ module.exports = {
               await resetLevelSettings(guildId);
               embed = createSuccessEmbed({int: interaction, title: 'Level Settings Resetted!', descr: 'All Level System Setting have been resetted.'})
               break;
+            case 'leave':
+              existingSetting = levSettings.clearOnLeave === 1;
+              if (existingSetting !== value) {
+                setting = { 'clearOnLeave' : value };
+                embed = createSuccessEmbed({int: interaction, title: 'Clear on Leave Updated!', descr: `The Clear on Leave Setting has been ${value ? '\`enabled\`' : '\`disabled\`'}.`});
+              } else {
+                embed = createInfoEmbed({int: interaction, descr: `The Clear on Leave Setting is already ${value ? '\`enabled\`' : '\`disabled\`'}.`});
+              }
+              break;
             case 'levels':
               const member = interaction.options.getMentionable('user');
               if (member) {
@@ -1243,7 +1265,7 @@ module.exports = {
           interaction.editReply({ embeds: [embed] });
           break;
       }
-      if (setting && subCmd !== 'settings' && subCmd !== 'show' && subCmdGroup !== 'reset') {
+      if (setting && subCmd !== 'settings' && subCmd !== 'show' && (subCmdGroup !== 'reset' || subCmdGroup === 'reset' && subCmd === 'leave')) {
         await setLevelSettings({
           id: guildId,
           setting

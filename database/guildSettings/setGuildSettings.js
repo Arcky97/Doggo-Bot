@@ -16,7 +16,8 @@ const convertSetupCommand = (setting => {
     'join-leave': 'joinLeaveLogging',
     'report': 'reportLogging',
     'ignore': 'ignoreLogging',
-    'mute-role': 'muteRole'
+    'mute-role': 'muteRole',
+    'join-role': 'joinRole'
   };
 
   const column = columnMapping[setting];
@@ -103,21 +104,23 @@ async function setGuildSettings(guildId, settingName, value) {
       if (dataExist[column] && settingName !== 'Ignore') {
         if (dataExist[column] === data[column]) {
           await deleteData('GuildSettings', key, data);
-          if (settingName !== 'Mute-role') {
+          if (settingName !== 'Mute-role' && settingName !== 'Join-role') {
             title = `${settingName} Logging Resetted!`;
             descr = `The channel for **${settingName} Logging** has been resetted!`;
           } else {
-            title= 'Mute Role Removed!';
-            descr = `The Mute Role has been removed.`;
+            const name = settingName === 'Mute-role' ? 'Mute' : 'Join';
+            title= `${name} Role Removed!`;
+            descr = `The ${name} Role has been removed.`;
           }
         } else {
           await updateData('GuildSettings', key, data);
-          if (settingName !== 'Mute-role') {
+          if (settingName !== 'Mute-role' && settingName !== 'Join-role') {
             title = `${settingName} Logging Updated!`;
             descr = `The channel for **${settingName} Logging** has been updated to ${value}!`;
           } else {
-            title = 'Mute Role Updated!';
-            descr = `The Mute Role has been updated to ${value}`;
+            const name = settingName === 'Mute-role' ? 'Mute' : 'Join';
+            title = `${name} Role Updated!`;
+            descr = `The ${name} Role has been updated to ${value}`;
           }
         }
       } else {
@@ -127,12 +130,13 @@ async function setGuildSettings(guildId, settingName, value) {
           } else {
             await insertData('GuildSettings', key, data);
           }
-          if (settingName !== 'Mute-role') {
+          if (settingName !== 'Mute-role' && settingName !== 'Join-role') {
             title = `${settingName} Logging Set!`;
             descr = `The channel for **${settingName} Logging** has been set to ${value}!`;
           } else {
-            title = 'Mute Role Set!';
-            descr = `The Mute Role has been set to ${value}`;
+            const name = settingName === 'Mute-role' ? 'Mute' : 'Join';
+            title = `${name} Role Set!`;
+            descr = `The ${name} Role has been set to ${value}`;
           }
         } else {
           await updateData('GuildSettings', key, data);

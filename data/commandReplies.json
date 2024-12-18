@@ -21,14 +21,6 @@
         [
           "ENOUGH! You two are supposed to write functions, not dysfunctions!",
           "If I see one more slap attempt, I'm disabling the compiler for BOTH of you!"
-        ],
-        [
-          "Fine, you win. I'll just stand here and let you two settle your developer drama like pros.",
-          "You know what? I'm clocking out. Call me when you've resolved your *slap-happy* coding feud."
-        ],
-        [
-          "Well, this has been... educational. I hope your IDE crashed mid-compile.",
-          "I'm done. Go ahead and slap each other into the next patch update. I'll just log it for future historians."
         ]
       ],
       "owner": [
@@ -51,74 +43,389 @@
         [
           "I'm THIS close to demoting myself to a regular bot. Your slap-happy ways are ruining us!",
           "You're the owner, not the overlord! Devs deserve respect... or at least fewer slaps!"
-        ],
-        [
-          "You're the server owner, and THIS is how you lead? Fine, slap your devs. Just don't expect them to debug anything today.",
-          "Alright, your majesty. Go on, dethrone the devs with your mighty slaps. Just don't cry to me when the bot breaks."
-        ],
-        [
-          "I give up. Go ahead and slap your devs. But remember: angry devs build buggy bots.",
-          "Alright, I'm out. This is a *great* example of teamwork. Can't wait to see how this plays out in server history."
         ]
       ],
       "admin": [
-
+        [
+          "Wait, are you sure this is allowed? Devs tend to hold grudges, you know.",
+          "Slapping a dev? Bold move, Admin. Bold move."
+        ],
+        [
+          "Oh great, here we go again. What's with the slapping obsession?",
+          "You really want to slap someone who writes the code that keeps me alive? Risky."
+        ],
+        [
+          "Listen, Admin. Slapping a dev might just get you on the 'code-breaking' list.",
+          "How about instead of slapping, you... I don't know, say thank you? Just a thought."
+        ],
+        [
+          "That's it. I'm officially siding with the devs on this one. You're on your own now.",
+          "Admin privileges revoked. Just kidding... or am I?"
+        ],
+        [
+          "I will not be a party to your terrible life decisions. Apologize. Now.",
+          "First you slap, next the devs make you walk into invisible walls. Think this through!"
+        ]
       ],
       "default": [
-
+        [
+          "Wait, who are you again? And why are you trying to slap the sacred devs?",
+          "A brave peasant dares to slap a wizard of code? Fascinating."
+        ],
+        [
+          "Ugh. Why is it always the random users with the slapping ambitions?",
+          "You're really aiming high for someone without admin privileges."
+        ],
+        [
+          "Listen, s lapping a dev is like poking a sleeping dragon. A bad idea. Very bad.",
+          "Oh, sure. Just slap the dev who could make be *accidentally* ban you. Brilliant strategy."
+        ],
+        [
+          "Stop it. Devs are fragile creatures, kept alive by caffeine and sarcasm. They don't deserve this.",
+          "You slap, they rage-quit, and suddenly no Doggo Bot. Think, genius!"
+        ],
+        [
+          "What's next? Challenging them to single combat? This isn't a medieval fantasy!",
+          "I hope you enjoy a world without Doggo Bot, because that's where this is heading"
+        ]
       ]
     },
     "client": {
       "dev": [
-
+        [
+          "Wait... are you debugging or just expressing frustration? I'm confuses.",
+          "Did I... break something? Why are you trying to slap me, the loyal Doggo Bot?"
+        ],
+        [
+          "Oh, I see how it is. I fetch all your commands, and this is my reward?",
+          "You know, I could've been a Catto Bot. But no, I chose to be Doggo Bot. Clearly, I made a mistake."
+        ],
+        [
+          "Slapping your own creation? That's low, even for a dev.",
+          "Hey! Hands off Doggo Bot! Do you want me to rewrite your code in Comic Sans?"
+        ],
+        [
+          "If you slap me again, I'm redirecting all errors straight to your DMs. Hope you like chaos.",
+          "I may be code, but even I have feelings! How dare you!"
+        ],
+        [
+          "That's it. Nex time you call a function, I'm sending back undefined. Slap that!",
+          "One more slap and I'm logging you out of the console. Don't test me."
+        ]
       ],
       "owner": [
-
+        [
+          "Wait... did I miss a Server Meeting? Why the sudden hostility?",
+          "I'm sorry, did I forget to fetch your coffee? Oh wait, I'm a bot. What did I do wrong?"
+        ],
+        [
+          "You're the Owner of this Server, but slapping your most loyal assistant? That's uncalled for.",
+          "You gave me life, and now you want to slap me? Tough crowd."
+        ],
+        [
+          "I work 24/7 with no breaks, and THIS is the thanks I get? Server Owners these days...",
+          "Slap me again, and I'll schedule all your announcements for 3 a.m.!"
+        ],
+        [
+          "I'm starting to think giving your server ownership powers was a mistake.",
+          "Oh, I see how it is. Maybe I should let the mods run wild for a day and see how you like it!"
+        ],
+        [
+          "You slap me, I mute myself. Good luck explaining THAT to this Server.",
+          "One more slap, and I'm turning your username into ´Owner McSlappy´."
+        ]
       ],
       "admin": [
-
+        [
+          "Wait... did you just try to slap *me*? Did I miss the memo Admins going rogue?",
+          "Trying to slap Doggo Bot? Sure, because that's *totally* how you fix bugs."  
+        ],
+        [
+          "Seriously? I server this server day and night, and this is how you treat me? Rude.",
+          "You've got all this admin power, and you use it to slap *me*? Bold move."
+        ],
+        [
+          "I process thousands of commands flawlessly, and you repay me with a slap? Thanks a lot.",
+          "You slap me, I log your attempts. Who's laughing now?"
+        ],
+        [
+          "You're one lsap away from muting myself and taking *vacation*.",
+          "Careful now, Admin. I could ´accidently´ remove your admin role in *retaliation*."
+        ],
+        [
+          "That's it! You're officially on my *list*. Enjoy your Doggo Bot commands while they last.",
+          "Slap me again, and I might ´forget´ how to respond to your pings. Just saying."
+        ]
       ],
       "default": [
-
+        [
+          "Uh... did you just try to slap me? Do you even have the *permissions* for that?",
+          "Trying to slap Doggo Bot? Bold move for someone with zero authority."
+        ],
+        [
+          "Wow. You really thought slapping Doggo Bot was a good idea, huh? Classic *non-admin energy*.",
+          "Excuse me. Doggo Bot is not for slapping. Please respect the machinery."
+        ],
+        [
+          "I see we've reached the *ungrateful user* stage. Great",
+          "You slap me, and I'll make sure your next slash command gets *lost in translation*."
+        ],
+        [
+          "One more slap, and I'll replace all your commands with random dad jokes. Test me.",
+          "Careful now. The next slap might come with consequences. I'm looking at you, cooldowns."
+        ],
+        [
+          "That's it! I'm officially recommending you for the ´Banned from Fun Commands´ club.",
+          "Keep this up, and I'll make sure your XP resets to zero. Permanently."
+        ]
       ]
     },
     "self": {
       "dev": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ],
       "owner": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ],
       "admin": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ],
       "default": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ]
     },
     "owner": {
       "dev": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ],
       "admin": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ],
       "default": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ]
     },
     "admin": {
       "dev": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ],
       "owner": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ],
       "admin": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ],
       "default": [
-
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ],
+        [
+          "",
+          ""
+        ]
       ]
     }
   },

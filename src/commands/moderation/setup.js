@@ -167,6 +167,19 @@ module.exports = {
           required: true
         }
       ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'join-role',
+      description: 'Add the Role that will be given to new Members joining the Server.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.Role,
+          name: 'role',
+          description: 'The Join Role.',
+          required: true 
+        }
+      ]
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
@@ -183,6 +196,15 @@ module.exports = {
         case 'mute-role':
           if (role.id === interaction.guild.id) {
             embed = createInfoEmbed({ int: interaction, title: 'Mute Role not Set!', descr: `${role} cannot be set as the Mute Role! Please try again.`});
+            await interaction.editReply({ embeds: [embed] });
+            return;
+          } else {
+            [title, description] = await setGuildSettings(guildId, subCmd, role);
+          }
+          break;
+        case 'join-role':
+          if (role.id === interaction.guild.id) {
+            embed = createInfoEmbed({ int: interaction, title: 'Join Role not Set!', descr: `${role} cannot be set as the Join Role! Please try again.`});
             await interaction.editReply({ embeds: [embed] });
             return;
           } else {

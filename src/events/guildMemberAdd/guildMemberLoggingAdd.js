@@ -7,6 +7,7 @@ const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
 const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
+const { getGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
 
 module.exports = async (client, member) => {
   const guildId = member.guild.id;
@@ -27,6 +28,9 @@ module.exports = async (client, member) => {
     const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'joinLeave', option: 'joins'});
     if (!configLogging) return;
 
+    const guildSettings = getGuildSettings(guildId);
+    if (guildSettings.joinRole) member.roles.add(guildSettings.joinRole);
+    
     const userAge = await formatTime(member.user.createdAt);
     const embed = new EmbedBuilder()
       .setColor('Orange')

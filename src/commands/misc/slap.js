@@ -29,7 +29,7 @@ module.exports = {
     const userId = interaction.member.id;
     const target = interaction.options.getMentionable('target');
     const object = interaction.options.getString('object');
-    let embed, response;
+    let embed, responseArray, response;
     try {
       const [userClass, targetClass] = getUserClass(client, [user, target]);
       
@@ -43,8 +43,6 @@ module.exports = {
       } else {
         slapKey = targetClass;
       }
-
-      let attempts; 
 
       if (!replies) {
         replies = [
@@ -76,7 +74,8 @@ module.exports = {
 
         const attempts = userAttempts.slap[slapKey][target.id];
         
-        response = replies[Math.min(attempts.temp - 1, replies.length - 1)];
+        responseArray = replies[Math.min(attempts.temp - 1, replies.length - 1)];
+        response = responseArray[Math.floor(Math.random() * responseArray.length)];
         if (response) {
           embed = createInfoEmbed({ 
             int: interaction,
@@ -111,7 +110,7 @@ module.exports = {
 
             await setUserAttempts(guildId, userId, JSON.stringify(userAttempts));
           }
-        }, 30000);
+        }, 300000); // 5 min before reset.
       }
     } catch (error) {
       console.error('Error processing slap command:', error);
