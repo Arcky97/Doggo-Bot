@@ -161,6 +161,19 @@ async function initDatabase() {
           id VARCHAR(100) NOT NULL PRIMARY KEY,
           name VARCHAR(100) NOT NULL
         )
+      `,
+      ModerationLogs: `
+        CREATE TABLE IF NOT EXISTS ModerationLogs (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          guildId VARCHAR(100) NOT NULL,
+          userId VARCHAR(100) NOT NULL,
+          modId VARCHAR(100) NOT NULL,
+          action VARCHAR(100) NOT NULL,
+          reason TEXT DEFAULT 'No reason provided.',
+          date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          endTime TIMESTAMP NULL,
+          deletionDate TIMESTAMP NULL
+        )
       `
     };
     

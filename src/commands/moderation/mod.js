@@ -1,4 +1,6 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
+const { addModerationLogs, removeModerationLogs, getModerationLogs, clearModerationLogs } = require("../../../database/moderationLogs/setModerationLogs");
+const convertTimeInNumber = require("../../utils/convertTimeInNumber");
 
 module.exports = {
   name: 'mod',
@@ -282,16 +284,35 @@ module.exports = {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
+    const modId = interaction.user.id;
     const member = interaction.options.getMember('member');
     const duration = interaction.options.getString('duration');
     const reason = interaction.options.getString('reason');
-    const warnId = interaction.options.getString('id');
+    const id = interaction.options.getString('id');
 
+    let endTime;
+    if (duration) {
+      endTime = convertTimeInNumber(duration);
+    }
     await interaction.deferReply();
 
     switch(subCmdGroup) {
       case 'warn':
-        
+        switch(subCmd) {
+          case 'show':
+            const modLogs = await getModerationLogs(guildId, member.id, 'warn');
+            console.log(modLogs);
+            break;
+          case 'add':
+            await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: subCmdGroup, reason: reason});
+            break;
+          case 'remove':
+            await removeModerationLogs(id);
+            break;
+          case 'clear':
+            await clearModerationLogs(guildId, member.id, 'warn');
+            break;
+        }
         await interaction.editReply('You chose the warn command.');
         break;
       case 'timeout':
@@ -303,6 +324,7 @@ module.exports = {
       default: 
         switch(subCmd) {
           case 'mute':
+
             await interaction.editReply('You chose the mute command.');
             break;
           case 'unmute':

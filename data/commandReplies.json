@@ -132,7 +132,7 @@
         ],
         [
           "You slap me, I mute myself. Good luck explaining THAT to this Server.",
-          "One more slap, and I'm turning your username into ´Owner McSlappy´."
+          "One more slap, and I'm turning your username into 'Owner McSlappy'."
         ]
       ],
       "admin": [
@@ -150,11 +150,11 @@
         ],
         [
           "You're one lsap away from muting myself and taking *vacation*.",
-          "Careful now, Admin. I could ´accidently´ remove your admin role in *retaliation*."
+          "Careful now, Admin. I could 'accidently' remove your admin role in *retaliation*."
         ],
         [
           "That's it! You're officially on my *list*. Enjoy your Doggo Bot commands while they last.",
-          "Slap me again, and I might ´forget´ how to respond to your pings. Just saying."
+          "Slap me again, and I might 'forget' how to respond to your pings. Just saying."
         ]
       ],
       "default": [
@@ -175,7 +175,7 @@
           "Careful now. The next slap might come with consequences. I'm looking at you, cooldowns."
         ],
         [
-          "That's it! I'm officially recommending you for the ´Banned from Fun Commands´ club.",
+          "That's it! I'm officially recommending you for the 'Banned from Fun Commands' club.",
           "Keep this up, and I'll make sure your XP resets to zero. Permanently."
         ]
       ]
@@ -183,90 +183,106 @@
     "self": {
       "dev": [
         [
-          "",
-          ""
+          "Wait… did you just try to slap *yourself*? Is this some kind of debugging ritual?",
+          "Slapping yourself? Bold strategy, Dev. Let's see if it pays off."
         ],
         [
-          "",
-          ""
+          "I'd stop you, but honestly, this feels like a *you* problem.",
+          "Is this your way of testing command functionality? Because it's *weird*."
         ],
         [
-          "",
-          ""
+          "Look, if you need a timeout, there are easier ways to take a break than *slapping yourself*.",
+          "Do you really think self-slapping will solve your bugs? Newsflash: It won't."
         ],
         [
-          "",
-          ""
+          "You're the developer. Act like it! Or do I need to revoke your slap privileges?",
+          "Slapping yourself? Oh, great. Now I have to document this in the *Dev Meltdown Log*."
         ],
         [
-          "",
-          ""
+          "Enough! If you slap yourself again, I'm filing a formal complaint… with you.",
+          "This is peak chaos. If you're done debugging your sanity, we've got work to do."
+        ],
+        [
+          "Fine. Go ahead. Slap yourself into oblivion. Just don't ask me to help.",
+          "You know what? I'm done. If slapping yourself brings you *joy*, who am I to judge?"
         ]
       ],
       "owner": [
         [
-          "",
-          ""
+          "Um… are you okay? Why would you slap yourself, *Owner of All Things Server*?",
+          "Wait, hold on. Did you just… try to slap yourself? Are you testing me, Supreme Leader?"
         ],
         [
-          "",
-          ""
+          "Look, you're the server owner. You're supposed to lead, not… self-slap.",
+          "Is this how you assert dominance? Because it's kind of backfiring."
         ],
         [
-          "",
-          ""
+          "What are you doing? Slapping yourself won't fix anything. Trust me, I checked the logs.",
+          "This is not what I expected from someone in your position. Are you trolling Doggo Bot right now?"
         ],
         [
-          "",
-          ""
+          "Seriously? Slapping yourself? Great leadership strategy, Your Majesty.",
+          "If I were the server, I'd revoke your owner rights for *this*. Just saying."
         ],
         [
-          "",
-          ""
+          "I'm done with this nonsense. Go ahead, slap yourself into server chaos. See if I care!",
+          "You're embarrassing me. And I didn't even think that was possible."
+        ],
+        [
+          "Fine. Slap yourself. But don't expect me to clean up the mess when you regret it.",
+          "You know what? I'm out. Just ping me when you're done having this existential crisis."
         ]
       ],
       "admin": [
         [
-          "",
-          ""
+          "Uh… did you just try to slap yourself? Are you feeling okay, Admin?",
+          "Wait, hold on. You're an admin. Aren't you supposed to slap… other people, not yourself?"
         ],
         [
-          "",
-          ""
+          "What's going on here? Admins slapping themselves? What's next, bots slapping bots?",
+          "Slapping yourself? That's not very admin-like behavior. Should I file this under ‘weird admin things'?"
         ],
         [
-          "",
-          ""
+          "Admins are supposed to enforce rules, not slap themselves into oblivion! What are you doing?",
+          "Do I need to revoke your slap privileges? Because this is just getting sad."
         ],
         [
-          "",
-          ""
+          "You're an admin, not a punching bag! Stop slapping yourself before you embarrass us both.",
+          "This is not the example an admin should set. I'm questioning your judgment here."
         ],
         [
-          "",
-          ""
+          "This is ridiculous. You're an admin! Stop treating yourself like a common meme.",
+          "If I had hands, I'd slap you myself—for trying to slap yourself. Stop it!"
+        ],
+        [
+          "You know what? Fine. Go ahead and slap yourself. But don't come crying to me when it backfires.",
+          "Great, an admin in a slap spiral. I can't believe this is my life."
         ]
       ],
       "default": [
         [
-          "",
-          ""
+          "Uh… are you okay? Did you just try to slap yourself?",
+          "Why slap yourself when you can slap… literally anyone else? I'm concerned."
         ],
         [
-          "",
-          ""
+          "Really? You're slapping yourself now? This isn't what the slap command was made for.",
+          "Self-slap? Is this a new trend I'm not aware of? Because it's *weird*."
         ],
         [
-          "",
-          ""
+          "You're making me question my purpose as a bot. Stop slapping yourself, please!",
+          "This is embarrassing for both of us. Knock it off, or I'll start charging you for slaps."
         ],
         [
-          "",
-          ""
+          "Why are you doing this? Do you need a hug instead? I can't take this anymore!",
+          "Stop. Just stop. No one wins when you slap yourself—except maybe irony."
         ],
         [
-          "",
-          ""
+          "You're not just slapping yourself; you're slapping my patience. Cut it out!",
+          "I don't have the patience for this nonsense. Can't you slap a pillow or something?"
+        ],
+        [
+          "Fine. You want to slap yourself? Go ahead. I'll just sit here, judging quietly.",
+          "Self-slap? Whatever. At this point, I've seen it all. Do your thing, I guess."
         ]
       ]
     },

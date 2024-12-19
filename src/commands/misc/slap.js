@@ -89,7 +89,6 @@ module.exports = {
             descr: 'Slapping this person is not possible yet, or at least I won\'t give a cool reply when your try...'
           });
         }
-
       }
 
       await setUserAttempts(guildId, userId, JSON.stringify(userAttempts));  
