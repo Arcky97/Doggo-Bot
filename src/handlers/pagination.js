@@ -4,7 +4,7 @@ module.exports = async (interaction, pages, time = 30 * 1000) => {
   try {
     if (!interaction || !pages || pages.length === 0) throw new Error('[PAGINATION] Invalid args');
 
-    await interaction.deferReply();
+    //await interaction.deferReply();
 
     if (pages.length === 1) {
       return await interaction.editReply({ embeds: pages, components: [], fetchReply: true });

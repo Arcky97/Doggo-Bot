@@ -2,13 +2,53 @@ const { deleteData } = require("../controlData/deleteData");
 const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
 const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+const { query } = require("../db");
 
-async function getModerationLogs(guildId, userId, action) {
+async function getModerationLogs({guildId, userId, action}) {
+  const keys = {
+    guildId: guildId,
+    userId: userId,
+    action: action
+  }
   try {
-    return await selectData('ModerationLogs', {guildId: guildId, userId: userId, action: action}, true);
+    for (const key in keys) {
+      if (keys[key] === undefined) {
+        delete keys[key];
+      }
+    }
+    return await selectData('ModerationLogs', keys, true);
   } catch (error) {
     console.error('Error getting Moderation Logs:', error);
-    return [];
+  }
+}
+
+async function getModerationLogsById(guildId, id) {
+  try {
+    const data = await selectData('ModerationLogs', {guildId: guildId, id: id});
+    if (data) {
+      return data;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting Moderation Logs by ID:', error);
+  }
+}
+
+/**
+ * @returns {Promise<number>}
+ */
+async function nextModerationLogId() {
+  const maxIdQuery = `
+    SELECT MAX(Id) AS maxId
+    FROM ModerationLogs
+  `;
+
+  try {
+    const [[{ maxId }]] = await query(maxIdQuery);
+    return (maxId || 0) + 1;  
+  } catch (error) {
+    console.error('Error getting next Moderation Log ID:', error);
   }
 }
 
@@ -19,8 +59,9 @@ async function addModerationLogs({guildId, userId, modId, action, reason, durati
       userId: userId,
       modId: modId,
       action: action,
-      reason: reason
     }
+    if (reason) data.reason = reason;
+    if (duration) data.endTime = duration;
     await insertData('ModerationLogs', {}, data);
     exportToJson('ModerationLogs');
   } catch (error) {
@@ -39,7 +80,7 @@ async function removeModerationLogs(id) {
 
 async function clearModerationLogs(guildId, userId, action) {
   try {
-    const data = await getModerationLogs(guildId, userId, action);
+    const data = await getModerationLogs({guildId: guildId, userId: userId, action: action});
     if (data.length > 0) {
       data.forEach(async (log) => {
         await removeModerationLogs(log.id);
@@ -51,5 +92,5 @@ async function clearModerationLogs(guildId, userId, action) {
 }
 
 module.exports = {
-  getModerationLogs, addModerationLogs, removeModerationLogs, clearModerationLogs
+  getModerationLogs, addModerationLogs, removeModerationLogs, clearModerationLogs, nextModerationLogId, getModerationLogsById
 }

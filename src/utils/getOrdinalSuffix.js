@@ -1,4 +1,4 @@
-module.exports = async (number) => {
+module.exports = (number) => {
   const remainder = number % 100;
 
   if (remainder >= 11 && remainder <= 13) {

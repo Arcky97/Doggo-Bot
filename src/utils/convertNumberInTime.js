@@ -1,6 +1,8 @@
 module.exports = (input, format) => {
   switch (format) {
+    case 'Miliseconds':
     case 'Seconds':
+      if (format === 'Miliseconds') input = Math.floor(input / 1000);
       if (input >= 604800) {
         return `${Math.floor(input / 604800)} week${input >= 1209600 ? 's' : ''}`;
       } else if (input >= 86400) {

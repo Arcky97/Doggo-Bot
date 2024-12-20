@@ -1,6 +1,10 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
-const { addModerationLogs, removeModerationLogs, getModerationLogs, clearModerationLogs } = require("../../../database/moderationLogs/setModerationLogs");
-const convertTimeInNumber = require("../../utils/convertTimeInNumber");
+const { addModerationLogs, removeModerationLogs, getModerationLogs, clearModerationLogs, nextModerationLogId, getModerationLogsById } = require("../../../database/moderationLogs/setModerationLogs");
+const { createSuccessEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
+const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
+const pagination = require("../../handlers/pagination");
+const convertNumberInTime = require("../../utils/convertNumberInTime");
+const calculateEndTime = require('../../utils/calculateEndTime');
 
 module.exports = {
   name: 'mod',
@@ -92,6 +96,11 @@ module.exports = {
               name: 'id',
               description: 'The ID of the warning to remove.',
               required: true 
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'reason',
+              description: 'The reason for removing the warning.'
             }
           ]
         },
@@ -287,57 +296,172 @@ module.exports = {
     const modId = interaction.user.id;
     const member = interaction.options.getMember('member');
     const duration = interaction.options.getString('duration');
-    const reason = interaction.options.getString('reason');
+    const reason = interaction.options.getString('reason') || 'No reason provided.';
     const id = interaction.options.getString('id');
 
-    let endTime;
-    if (duration) {
-      endTime = convertTimeInNumber(duration);
-    }
+    let embed, title, description;
+    let fields = [];
+    const result = calculateEndTime(duration);
+
     await interaction.deferReply();
 
-    switch(subCmdGroup) {
-      case 'warn':
-        switch(subCmd) {
-          case 'show':
-            const modLogs = await getModerationLogs(guildId, member.id, 'warn');
-            console.log(modLogs);
-            break;
-          case 'add':
-            await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: subCmdGroup, reason: reason});
-            break;
-          case 'remove':
-            await removeModerationLogs(id);
-            break;
-          case 'clear':
-            await clearModerationLogs(guildId, member.id, 'warn');
-            break;
-        }
-        await interaction.editReply('You chose the warn command.');
-        break;
-      case 'timeout':
-        await interaction.editReply('You chose the time out command.');
-        break;
-      case 'ban':
-        await interaction.editReply('You chose the ban command.');
-        break;
-      default: 
-        switch(subCmd) {
-          case 'mute':
-
-            await interaction.editReply('You chose the mute command.');
-            break;
-          case 'unmute':
-            await interaction.editReply('You chose the unmute command.');
-            break; 
-          case 'kick':
-            await interaction.editReply('You chose the kick command.');
-            break;
-          case 'unban':
-            await interaction.editReply('You chose the unban command.');
-            break;
-        }
-        break;
+    if (!result && duration) {
+      embed = createInfoEmbed({
+        int: interaction,
+        title: `Invalid Duration format`,
+        descr: `The duration ${duration} is not a valid duration.`
+      });
+      return interaction.editReply({embeds: [embed]});
     }
+
+    const { endTime, durationMs } = result || {};
+    try {
+      switch(subCmdGroup) {
+        case 'warn':
+          const keys = {guildId: guildId, userId: member?.id, action: 'warn'};
+          if (!member) delete keys.userId;
+          const warnings = await getModerationLogs(keys);
+          switch(subCmd) {
+            case 'show':
+              const pageSize = 5;
+              const embeds = [];
+              let pageTracker;
+              if (warnings.length > 0) {
+                for (var i = 0; i < Math.ceil(warnings.length / pageSize); i++) {
+                  pageTracker = warnings.length > pageSize ? `(${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, warnings.length)} of ${warnings.length} Warnings)` : '';
+                  if (member) {
+                    title = `${warnings.length} Warning${warnings.length > 1 ? 's' : ''} for ${member.user.username} ${pageTracker}`
+                  } else {
+                    title = `All Warnings ${pageTracker}`;
+                  }
+                  for (let j = i * pageSize; j < (i * pageSize) + pageSize && j < warnings.length; j++) {
+                    let log = warnings[j];
+                    fields.push({
+                      name: `ID: ${log.id}`,
+                      value:  `${!member ? `**User:** <@${log.userId}>\n` : ''}` +
+                              `**Warned by:** <@${log.modId}>\n` + 
+                              `**Reason:** ${log.reason}\n` +
+                              `**Date:** ${(log.date)}`
+                    });
+                  }
+                  embed = createSuccessEmbed({
+                    int: interaction,
+                    title: title,
+                    descr: null 
+                  });
+                  embed.addFields(fields)
+                  embeds.push(embed);
+                  fields = [];
+                }
+              await pagination(interaction, embeds);
+              return;              
+              } else {
+                title = `No Warnings for ${member.user.username}`;
+                description = `${member} has no active warnings. Let's hope it stays that way.`;
+              }
+              break;
+            case 'add':
+              const nextWarningId = await nextModerationLogId();
+              await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: subCmdGroup, reason: reason});
+              title = `New Warning for ${member.user.username}`;
+              description = `${member} has been warned for the ${getOrdinalSuffix(warnings.length + 1)} Time!`
+              fields.push({
+                name: `ID: ${nextWarningId}`,
+                value:  `**Warned by:** <@${modId}>\n` +
+                        `**Reason:** ${reason}\n`
+              });
+              break;
+            case 'remove':
+              const warningById = await getModerationLogsById(guildId, id);
+              if (warningById) {
+                const user = client.users.cache.get(warningById.userId);
+                await removeModerationLogs(id);
+                title = `Warning for ${user.username} removed`;
+                description = `The Warning with ID ${id} has been removed.`;
+                fields.push({
+                  name: `ID: ${id}`,
+                  value:  `**Removed by:** ${interaction.user}\n` +
+                          `**Reason:** ${reason}\n`
+                });
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction,
+                  title: 'Warning not found',
+                  descr: `No warning with ID ${id} was found for this Server. \nPlease check the ID and try again.`
+                });
+              }
+              break;
+            case 'clear':
+              const warningsByUser = await getModerationLogs({guildId: guildId, userId: member.id, action: 'warn'});
+              if (warningsByUser.length > 0) {
+                await clearModerationLogs(guildId, member.id, 'warn');
+                title = `Warnings for ${member.user.username} Cleared`;
+                description = `All Warnings for ${member} have been cleared.`;
+                fields.push({
+                  name: `Total: ${warningsByUser.length}`,
+                  value:  `**Cleared by:** ${interaction.user}\n` +
+                          `**Reason:** ${reason}\n`
+                });
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction,
+                  title: 'No Warnings found',
+                  descr: `${member} doesn't have any Warnings. \nNothing to clear.`
+                });
+              }
+              break;
+          }
+          break;
+        case 'timeout':
+          switch(subCmd) {
+            case 'add':
+              const nextTimeoutId = await nextModerationLogId();
+              await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: subCmdGroup, reason: reason, duration: endTime});
+              title = `New Timeout for ${member.user.username}`;
+              description = `${member} has been timed out for ${convertNumberInTime(durationMs, 'Miliseconds')}!`;
+              fields.push({
+                name: `ID: ${nextTimeoutId}`,
+                value:  `**Timed out by: ** <@${modId}>\n` +
+                        `**Reason:** ${reason}\n` +
+                        `**Duration: ** ${convertNumberInTime(durationMs, 'Miliseconds')}`
+              })
+              break;
+            case 'remove':
+
+              break;
+          }
+          break;
+        case 'ban':
+          await interaction.editReply('You chose the ban command.');
+          break;
+        default: 
+          switch(subCmd) {
+            case 'mute':
+              await interaction.editReply('You chose the mute command.');
+              break;
+            case 'unmute':
+              await interaction.editReply('You chose the unmute command.');
+              break; 
+            case 'kick':
+              await interaction.editReply('You chose the kick command.');
+              break;
+            case 'unban':
+              await interaction.editReply('You chose the unban command.');
+              break;
+          }
+          break;
+      }
+    } catch (error) {
+      console.error('Error executing moderation command:', error);
+    }
+    if (!embed) {
+      embed = createSuccessEmbed({
+        int: interaction,
+        title: title,
+        descr: description ? description : null,
+      });
+      if (fields.length >= 1) embed.addFields(fields);
+    }
+    interaction.editReply({embeds: [embed]});
   }
-}
+};

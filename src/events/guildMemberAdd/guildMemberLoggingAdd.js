@@ -46,7 +46,7 @@ module.exports = async (client, member) => {
         },
         {
           name: 'Member count',
-          value: `${await getOrdinalSuffix(member.guild.memberCount)}`
+          value: `${getOrdinalSuffix(member.guild.memberCount)}`
         },
         {
           name: 'Created',
