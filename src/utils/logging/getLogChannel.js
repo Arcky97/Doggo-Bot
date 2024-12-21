@@ -22,6 +22,9 @@ module.exports = async (client, guildId, log) => {
     case 'voice':
       channel = client.channels.cache.get(logChannels.voiceLogging);
       break;
+    case 'moderation':
+      channel = client.channels.cache.get(logChannels.moderationLogging);
+      break;
   }
 
   if (!channel) return;

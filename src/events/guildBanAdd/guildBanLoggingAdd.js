@@ -23,11 +23,7 @@ module.exports = async (client, ban) => {
         {
           name: 'Name',
           value: `${ban.user}`
-        },
-        /*{
-          name: 'Reason',
-          value: ban.reason || 'No Reason given.'
-        }*/
+        }
       )
       .setFooter({
         text: `Member ID: ${ban.user.id}`

@@ -29,7 +29,11 @@ module.exports = async (client, member) => {
     if (!configLogging) return;
 
     const guildSettings = getGuildSettings(guildId);
-    if (guildSettings.joinRole) member.roles.add(guildSettings.joinRole);
+    if (guildSettings.joinRoles) {
+      guildSettings.joinRoles.forEach(role => {
+        member.roles.add(role);
+      });
+    }
     
     const userAge = await formatTime(member.user.createdAt);
     const embed = new EmbedBuilder()

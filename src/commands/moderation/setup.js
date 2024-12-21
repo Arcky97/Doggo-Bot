@@ -74,7 +74,7 @@ module.exports = {
             {
               type: ApplicationCommandOptionType.Channel,
               name: 'channel',
-              description: 'The channel for Server Logging',
+              description: 'The channel for Server Logging.',
               required: true
             }
           ]
@@ -82,12 +82,25 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Subcommand,
           name: 'join-leave',
-          description: 'Setup the channel for Join/Leave Logging',
+          description: 'Setup the channel for Join/Leave Logging.',
           options: [
             {
               type: ApplicationCommandOptionType.Channel,
               name: 'channel',
-              description: 'The channel for Join/Leave Logging',
+              description: 'The channel for Join/Leave Logging.',
+              required: true
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'moderation',
+          description: 'Setup the channel for Moderation Logging.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.Channel,
+              name: 'channel',
+              description: 'The channel for Moderation Logging.',
               required: true
             }
           ]
@@ -148,6 +161,10 @@ module.exports = {
                 {
                   name: 'join leave events',
                   value: 'joinLeave'
+                },
+                {
+                  name: 'moderation events',
+                  value: 'moderation'
                 }
               ]
             }
@@ -204,6 +221,7 @@ module.exports = {
           break;
         case 'join-role':
           if (role.id === interaction.guild.id) {
+            
             embed = createInfoEmbed({ int: interaction, title: 'Join Role not Set!', descr: `${role} cannot be set as the Join Role! Please try again.`});
             await interaction.editReply({ embeds: [embed] });
             return;

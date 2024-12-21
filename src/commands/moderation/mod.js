@@ -5,6 +5,9 @@ const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
 const pagination = require("../../handlers/pagination");
 const convertNumberInTime = require("../../utils/convertNumberInTime");
 const calculateEndTime = require('../../utils/calculateEndTime');
+const getLogChannel = require("../../utils/logging/getLogChannel");
+const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
+const { createWarningAddLogEmbed } = require("../../utils/sendModerationLogEvent");
 
 module.exports = {
   name: 'mod',
@@ -292,6 +295,7 @@ module.exports = {
   callback: async (client, interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
+    const guild = interaction.guild;
     const guildId = interaction.guild.id;
     const modId = interaction.user.id;
     const member = interaction.options.getMember('member');
@@ -314,6 +318,8 @@ module.exports = {
       return interaction.editReply({embeds: [embed]});
     }
 
+    const logChannel = await getLogChannel(client, guildId, 'moderation');
+
     const { endTime, durationMs } = result || {};
     try {
       switch(subCmdGroup) {
@@ -321,6 +327,7 @@ module.exports = {
           const keys = {guildId: guildId, userId: member?.id, action: 'warn'};
           if (!member) delete keys.userId;
           const warnings = await getModerationLogs(keys);
+          const warningLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'warns'})
           switch(subCmd) {
             case 'show':
               const pageSize = 5;
@@ -370,6 +377,7 @@ module.exports = {
                 value:  `**Warned by:** <@${modId}>\n` +
                         `**Reason:** ${reason}\n`
               });
+              await createWarningAddLogEmbed(guild, logChannel, title, fields)
               break;
             case 'remove':
               const warningById = await getModerationLogsById(guildId, id);
@@ -417,6 +425,7 @@ module.exports = {
             case 'add':
               const nextTimeoutId = await nextModerationLogId();
               await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: subCmdGroup, reason: reason, duration: endTime});
+              member.timeout(durationMs, reason);
               title = `New Timeout for ${member.user.username}`;
               description = `${member} has been timed out for ${convertNumberInTime(durationMs, 'Miliseconds')}!`;
               fields.push({
@@ -427,7 +436,6 @@ module.exports = {
               })
               break;
             case 'remove':
-
               break;
           }
           break;
@@ -460,7 +468,7 @@ module.exports = {
         title: title,
         descr: description ? description : null,
       });
-      if (fields.length >= 1) embed.addFields(fields);
+      //if (fields.length >= 1) embed.addFields(fields);
     }
     interaction.editReply({embeds: [embed]});
   }

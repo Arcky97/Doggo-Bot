@@ -14,10 +14,11 @@ const convertSetupCommand = (setting => {
     'server': 'serverLogging',
     'voice': 'voiceLogging',
     'join-leave': 'joinLeaveLogging',
+    'moderation': 'moderationLogging',
     'report': 'reportLogging',
     'ignore': 'ignoreLogging',
     'mute-role': 'muteRole',
-    'join-role': 'joinRole'
+    'join-role': 'joinRoles'
   };
 
   const column = columnMapping[setting];
@@ -74,6 +75,14 @@ async function getIgnoreLoggingChannels(guildId) {
   }
 }
 
+async function getJoinRoles(guildId) {
+  try {
+    const data = await getGuildSettings(guildId);
+    return JSON.parse(data.joinRoles);
+  } catch (error) {
+    console.error('Error fetching join roles data from guildSettings:', error);
+  }
+}
 async function setGuildSettings(guildId, settingName, value) {
   const column = convertSetupCommand(settingName);
   if (!column) return;
@@ -84,13 +93,20 @@ async function setGuildSettings(guildId, settingName, value) {
 
   let data, action, setData;
 
-  if (settingName !== 'ignore') {
+  if (settingName !== 'ignore' && settingName !== 'join-role') {
     data = {
       [column]: value.id
     }
   } else {
-    const existingData = await getIgnoreLoggingChannels(guildId);
-    [action, setData] = setChannelOrRoleArray({ type: 'channel', data: existingData, id: value.id });
+    let existingData, type;
+    if (settingName === 'ignore') {
+      existingData = await getIgnoreLoggingChannels(guildId);
+      type = 'channel';
+    } else {
+      existingData = await getJoinRoles(guildId);
+      type = 'role';
+    }
+    [action, setData] = setChannelOrRoleArray({ type: type, data: existingData, id: value.id});
     data = {
       [column]: setData
     }
@@ -101,47 +117,49 @@ async function setGuildSettings(guildId, settingName, value) {
     let title, descr;
     settingName = firstLetterToUpperCase(settingName);
     try {
-      if (dataExist[column] && settingName !== 'Ignore') {
+      if (dataExist[column] && settingName !== 'Ignore' && settingName !== 'Join-role') {
         if (dataExist[column] === data[column]) {
           await deleteData('GuildSettings', key, data);
-          if (settingName !== 'Mute-role' && settingName !== 'Join-role') {
+          if (settingName !== 'Mute-role') {
             title = `${settingName} Logging Resetted!`;
             descr = `The channel for **${settingName} Logging** has been resetted!`;
           } else {
-            const name = settingName === 'Mute-role' ? 'Mute' : 'Join';
-            title= `${name} Role Removed!`;
-            descr = `The ${name} Role has been removed.`;
+            title= `Mute Role Removed!`;
+            descr = `The Mute Role has been removed.`;
           }
         } else {
           await updateData('GuildSettings', key, data);
-          if (settingName !== 'Mute-role' && settingName !== 'Join-role') {
+          if (settingName !== 'Mute-role') {
             title = `${settingName} Logging Updated!`;
             descr = `The channel for **${settingName} Logging** has been updated to ${value}!`;
           } else {
-            const name = settingName === 'Mute-role' ? 'Mute' : 'Join';
-            title = `${name} Role Updated!`;
-            descr = `The ${name} Role has been updated to ${value}`;
+            title = `Mute Role Updated!`;
+            descr = `The Mute Role has been updated to ${value}`;
           }
         }
       } else {
-        if (settingName !== 'Ignore') {
+        if (settingName !== 'Ignore' && settingName !== 'Join-role') {
           if (dataExist) {
             await updateData('GuildSettings', key, data);
           } else {
             await insertData('GuildSettings', key, data);
           }
-          if (settingName !== 'Mute-role' && settingName !== 'Join-role') {
+          if (settingName !== 'Mute-role') {
             title = `${settingName} Logging Set!`;
             descr = `The channel for **${settingName} Logging** has been set to ${value}!`;
           } else {
-            const name = settingName === 'Mute-role' ? 'Mute' : 'Join';
-            title = `${name} Role Set!`;
-            descr = `The ${name} Role has been set to ${value}`;
+            title = `Mute Role Set!`;
+            descr = `The Mute Role has been set to ${value}`;
           }
         } else {
           await updateData('GuildSettings', key, data);
-          title = `Ignore Channel ${action}!`;
-          descr = `${value} has been ${action} ${action === 'added' ? 'to' : 'from'} the **${settingName}** Logging Channel List.`;
+          if (settingName === 'ignore') {
+            title = `Ignore Channel ${action}!`;
+            descr = `${value} has been ${action} ${action === 'added' ? 'to' : 'from'} the **${settingName}** Logging Channel List.`;
+          } else {
+            title = `Join Role ${action}!`;
+            descr = `${value} has been ${action} ${action === 'added' ? 'to' : 'from'} the **${settingName}** List.`;
+          }
         }        
       }
       exportToJson('GuildSettings');

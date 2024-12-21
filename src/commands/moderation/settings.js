@@ -12,6 +12,7 @@ module.exports = {
       await interaction.deferReply();
       const settings = await getGuildSettings(interaction.guild.id);
       const ignoreLogging = JSON.parse(settings.ignoreLogging);
+      const joinRoles = JSON.parse(settings.joinRoles);
       let embed;
       if (settings) {
         embed = new EmbedBuilder()
@@ -55,12 +56,17 @@ module.exports = {
             },
             {
               name: '**Ignore Logging**',
-              value: `${ignoreLogging.length > 0 ? `${createListFromArray(ignoreLogging, '- <#${channelId}>', false)}` : 'Not set'}`,
+              value: `${ignoreLogging.length > 0 ? `${createListFromArray(ignoreLogging, '- <#${channelId}>', false)}` : 'None set.'}`,
               inline: true 
             },
             {
               name: '**Mute Role**',
               value: `${settings.muteRole ? `<@&${settings.muteRole}>` : 'Not Set'}`,
+              inline: true 
+            },
+            {
+              name: '**Join Roles**',
+              value: `${joinRoles.length > 0 ? `${createListFromArray(joinRoles, '- <@&${roleId}>', false)}` : 'None Set.'}`,
               inline: true 
             }
           )

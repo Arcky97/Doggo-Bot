@@ -21,6 +21,8 @@ module.exports = async (client, oldMember, newMember) => {
     const newNickName = newMember.nickname || 'no Nickname';
     const oldServerIcon = oldMember.avatarURL();
     const newServerIcon = newMember.avatarURL();
+    const oldTimeout = oldMember.communicationDisabledUntilTimestamp;
+    const newTimeout = newMember.communicationDisabledUntilTimestamp;
     let action, title, description, roles, thumbnail;
     let fields = [];
 
@@ -53,6 +55,19 @@ module.exports = async (client, oldMember, newMember) => {
       thumbnail = newServerIcon;
       action = !oldServerIcon ? 'added' : (!newServerIcon ? 'removed' : 'changed');
       title = `Server Icon ${action}`;
+    }
+    // Check for timeout change
+    else if (oldTimeout !== newTimeout) {
+      console.log(newTimeout);
+      if (newTimeout) {
+        if (!configLogging.timeouts.adds) return;
+        action = 'added'
+      } else {
+        if (!configLogging.timeouts.removes) return;
+        action = 'removed';
+      }
+      title = `Member Timeout ${action}`;
+      fields.push({ name: 'Name', value: `${newMember.user}`});
     }
 
     if (!title) return;

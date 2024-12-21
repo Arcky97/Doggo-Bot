@@ -53,43 +53,43 @@
     "avatars": {
       "all": {
         "name": "Member Avatar Change Events",
-        "description": "Log when a Member changes their Global Avatar on Discord or Server Avatar in the Server."
+        "description": "All Member Avatar Changes."
       },
       "globals": {
         "name": "Member Global Avatar Changes",
-        "description": "Log when a Member changes their Global Avatar on Discord."
+        "description": "Member Global Avatar Changes."
       },
       "servers": {
         "name": "Member Server Avatar Changes",
-        "description": "Log when a Member changes their Server Avatar in the Server."
+        "description": "Member Server Avatar Changes."
       }
     },
     "bans": {
       "all": {
         "name": "Member Ban and Unban Events",
-        "description": "Log when a Member gets Banned or Unbanned from the Server."
+        "description": "All Bans or Unbans in the Server."
       },
       "adds": {
         "name": "Member Bans",
-        "description": "Log when a Member gets Banned from the Server."
+        "description": "Member Bans in the Server."
       },
       "removes": {
         "name": "Member Unbans",
-        "description": "Log when a Member gets Unbanned from the Server."
+        "description": "Member Unbans in the Server."
       }
     },
     "timeouts": {
       "all": {
         "name": "Member Timeout Events",
-        "description": "Log when a Member gets a Timeout Added or Removed in the Server."
+        "description": "All Member Timeouts in the Server."
       },
       "adds": {
         "name": "Member Timeouts",
-        "description": "Log when a Member gets a Timeout in the Server."
+        "description": "Member Timeout Adds in the Server."
       },
       "removes": {
         "name": "Member Timeout Removes",
-        "description": "Log when a Member gets the Timeout Removed in the Server."
+        "description": "Member Timeout Removes in the Server."
       }
     }
   },
@@ -97,110 +97,178 @@
     "channels": {
       "all": {
         "name": "Server Channel Events",
-        "description": "Log Channel Creates, Updates and Deletes in the Server."
+        "description": "All Channel Managements in the Server."
       },
       "creates": {
         "name": "Server Channel Creates",
-        "description": "Log Channel Creates in the Server."
+        "description": "Channel Creates in the Server."
       },
       "updates": {
         "name": "Server Channel Updates",
-        "description": "Log Channel Updates in the Server."
+        "description": "Channel Updates in the Server."
       },
       "deletes": {
         "name": "Server Channel Deletes",
-        "description": "Log Channel Removes in the Server."
+        "description": "Channel Removes in the Server."
       }
     },
     "roles": {
       "all": {
         "name": "Server Role Events",
-        "description": "Log Role Creates, Updates and Deletes in the Server."
+        "description": "All Role Managements in the Server."
       },
       "creates": {
         "name": "Server Role Creates",
-        "description": "Log Role Creates in the Server."
+        "description": "Role Creates in the Server."
       },
       "updates": {
         "name": "Server Role Updates",
-        "description": "Log Role Updates in the Server."
+        "description": "Role Updates in the Server."
       },
       "deletes": {
         "name": "Server Role Deletes",
-        "description": "Log Role Deletes in the Server."
+        "description": "Role Deletes in the Server."
       }
     },
     "updates": {
       "name": "Server Update Events",
-      "description": "Log Server Updates."
+      "description": "Server Updates."
     },
     "emojis": {
       "all": {
         "name": "Server Emoji Events",
-        "description": "Log Emoji Creates, Updates and Deletes in the Server."
+        "description": "All Emoji Managements in the Server."
       },
       "creates": {
         "name": "Server Emoji Creates",
-        "description": "Log Emoji Creates in the Server."
+        "description": "Emoji Creates in the Server."
       },
       "updates": {
         "name": "Server Emoji Updates",
-        "description": "Log Emoji Updates in the Server."
+        "description": "Emoji Updates in the Server."
       },
       "deletes": {
         "name": "Server Emoji Deletes",
-        "description": "Log Emoji Deletes in the Server."
+        "description": "Emoji Deletes in the Server."
       }
     },
     "stickers": {
       "all": {
         "name": "Server Sticker Events",
-        "description": "Log Sticker Creates, Updates and Deletes in the Server."
+        "description": "All Sticker Managements in the Server."
       },
       "creates": {
         "name": "Server Sticker Creates",
-        "description": "Log Sticker Creates in the Server."
+        "description": "Sticker Creates in the Server."
       },
       "updates": {
         "name": "Server Sticker Updates",
-        "description": "Log Sticker Updates in the Server."
+        "description": "Sticker Updates in the Server."
       },
       "deletes": {
         "name": "Server Sticker Deletes",
-        "description": "Log Sticker Deletes in the Server."
+        "description": "Sticker Deletes in the Server."
       }
     }
   },
   "voice": {
     "all": {
       "name": "Voice Channel Events",
-      "description": "Log when a Member has Joined, Moved between or Left a Voice Channel(s) in the Server."
+      "description": "All Voice Channel Activities in the Server."
     },
     "joins": {
       "name": "Voice Channel Joins",
-      "description": "Log when a Member has Joined a Voice Channel in the Server."
+      "description": "Voice Channel Joins in the Server."
     },
     "moves": {
       "name": "Voice Channel Moves",
-      "description": "Log when a Member has Moved between Voice Channels in the Server."
+      "description": "Voice Channel Moves in the Server."
     },
     "leaves": {
       "name": "Voice Channel Leaves",
-      "description": "Log when a Member has left a Voice Channel in the Server."
+      "description": "Voice Channel Leaves in the Server."
     }
   },
   "joinLeave": {
     "all": {
       "name": "Member Join-Leave Events",
-      "description": "Log when a Member has Joined or Left the Server."
+      "description": "All Member Joins and Leaves the Server."
     },
     "joins": {
       "name": "Member Joins",
-      "description": "Log when a Member has Joined the Server."
+      "description": "Member Joins the Server."
     },
     "leaves": {
       "name": "Member Leaves",
-      "description": "Log when a Member has Left the Server."
+      "description": "Member Leaves in the Server."
+    }
+  },
+  "moderation": {
+    "warns": {
+      "all": {
+        "name": "Warn Events",
+        "description": "All Warn Events in the Server."
+      },
+      "adds": {
+        "name": "Warn Adds",
+        "description": "Member Warn Adds in the Server."
+      },
+      "removes": {
+        "name": "Warn Removes",
+        "description": "Member Warn Removes in the Server."
+      },
+      "clears": {
+        "name": "Warn Clears",
+        "description": "Member Warn Clears in the Server."
+      }
+    },
+    "mutes": {
+      "name": "Mute Events",
+      "description": "Member Mute Events in the Server."
+    },
+    "unmutes": {
+      "name": "Unmute Events",
+      "description": "Member Unmute Events in the Server."
+    },
+    "timeouts": {
+      "all": {
+        "name": "All Timeout Events",
+        "description": "All Member Timeout Events in the Server."
+      },
+      "adds": {
+        "name": "Timeout Events",
+        "description": "Member Timeout Events in the Server."
+      },
+      "removes": {
+        "name": "Timeout Remove Events",
+        "description": "Member Timeout Remove Events in the Server."
+      }
+    },
+    "kicks": {
+      "name": "Kick Events",
+      "description": "Member Kick Events in the Server."
+    },
+    "bans": {
+      "all": {
+        "name": "All Ban Events",
+        "description": "All Member Bans in the Server."
+      },
+      "regulars": {
+        "name": "Regular Ban Events",
+        "description": "Member Regular Ban Events in the Server."
+      },  
+      "softs": {
+        "name": "Soft Ban Events",
+        "description": "Member soft Ban Events in the Server."
+      },
+      "temps": {
+        "name": "Temp Ban Events",
+        "description": "Member Temporary Ban Events in the Server."
+      }
+    },
+    "unbans": {
+      "name": "Unban Events",
+      "description": "Member Unban Events in the Server."
     }
   }
 }
