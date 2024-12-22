@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
 const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setReactionOrRoleLimit } = require("../../../database/reactionRoles/setReactionRoles");
-const { exportToJson } = require("../../../database/controlData/visualDatabase/exportToJson");
+const exportToJson = require("../../handlers/exportToJson");
 const setMessageReactions = require("../../utils/setMessageReactions");
 
 module.exports = {
@@ -205,6 +205,6 @@ module.exports = {
         await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxReactions: limit } );
       }
     }
-    exportToJson('ReactionRoles');
+    exportToJson('ReactionRoles', guildId);
   }
 }

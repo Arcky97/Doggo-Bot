@@ -1,7 +1,7 @@
-const { deleteData } = require("../controlData/deleteData");
-const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
-const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+const { insertData } = require("../controlData/insertData");
+const { deleteData } = require("../controlData/deleteData");
+const exportToJson = require("../../src/handlers/exportToJson");
 
 async function getPremiumById(id) {
   return await selectData('PremiumUsersAndGuilds', { id: id });

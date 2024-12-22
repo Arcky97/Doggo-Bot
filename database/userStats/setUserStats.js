@@ -1,7 +1,7 @@
-const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
+const { insertData } = require("../controlData/insertData");
 const { updateData } = require("../controlData/updateData");
-const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+const exportToJson = require("../../src/handlers/exportToJson");
 
 async function getUserStats(guildId, memberId) {
   return await selectData('UserStats', {guildId: guildId, memberId: memberId});
@@ -13,7 +13,7 @@ async function getUserAttempts(guildId, memberId) {
     if (!data) {
       await insertData('UserStats', { guildId: guildId, memberId: memberId });
       data = await getUserStats(guildId, memberId);
-      await exportToJson('UserStats');
+      await exportToJson('UserStats', guildId);
     }
     return JSON.parse(data.attempts);
   } catch (error) {
@@ -28,7 +28,7 @@ async function setUserAttempts(guildId, memberId, attempts) {
   } catch (error) {
     console.error(`Error Updating User Attempts for user ${memberId} in guild ${guildId}:`, error);
   }
-  await exportToJson('UserStats');
+  await exportToJson('UserStats', guildId);
 }
 
 module.exports = { getUserAttempts, setUserAttempts };

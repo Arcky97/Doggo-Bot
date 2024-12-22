@@ -1,4 +1,3 @@
-const { exportToJson } = require("../../../database/controlData/visualDatabase/exportToJson");
 const { query } = require("../../../database/db");
 
 async function levelXpRequirements() {
@@ -15,7 +14,7 @@ async function levelXpRequirements() {
     }  
     await query('INSERT INTO LevelXpRequirements (level, requiredXp) VALUES (?, ?)', [level, totalXp]);   
   }
-  exportToJson('LevelXpRequirements');
+  //exportToJson('LevelXpRequirements');
 }
 
 module.exports = { levelXpRequirements };

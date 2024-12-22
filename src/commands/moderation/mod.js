@@ -383,7 +383,7 @@ module.exports = {
               const warningById = await getModerationLogsById(guildId, id);
               if (warningById) {
                 const user = client.users.cache.get(warningById.userId);
-                await removeModerationLogs(id);
+                await removeModerationLogs(guildId, id);
                 title = `Warning for ${user.username} removed`;
                 description = `The Warning with ID ${id} has been removed.`;
                 fields.push({

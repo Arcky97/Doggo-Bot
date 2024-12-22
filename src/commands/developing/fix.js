@@ -1,11 +1,9 @@
-const { getGuildLoggingConfig, setGuildLoggingConfig } = require("../../../database/guildSettings/setGuildSettings");
-const { getRoleOrChannelMultipliers, setLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
+const exportToJson = require("../../handlers/exportToJson");
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'fix',
   description: 'fix some stuff in the database.',
-  deleted: true,
   devOnly: true,
   callback: async (client, interaction) => {
     let embed;
@@ -17,19 +15,13 @@ module.exports = {
       });
     } else {
       try {
+        const tables = ['BotReplies', 'EventEmbeds', 'GeneratedEmbeds', 'GuildSettings', 'LevelSettings', 'LevelSystem', 'ModerationLogs', 'PremiumUsersAndGuilds', 'ReactionRoles', 'UserStats'];
         for (const guild of client.guilds.cache.values()) {
-          let configLogging = await getGuildLoggingConfig(guild.id, 'member');
-          configLogging.bans.removes = true;
-          delete configLogging.bans.deletes;
-          configLogging.timeouts.removes = true;
-          delete configLogging.timeouts.deletes;
-          configLogging.avatars.globals = true;
-          configLogging.avatars.servers = true;
-          delete configLogging.avatars.global;
-          delete configLogging.avatars.server;
-          await setGuildLoggingConfig(guild.id, 'member', configLogging);
+          tables.forEach(async table => {
+            exportToJson(table, guild.id);
+          });
         }
-        embed = createSuccessEmbed({ int: interaction, title: 'Fixed stuff in the Database!', descr: 'Stuff has been fixed in the Database for the GuildSettings Table.'});
+        embed = createSuccessEmbed({ int: interaction, title: 'Database Tables Exported.', descr: 'Each Table from the Database has been exported by Guild Id to a json file.'});
       } catch (error) {
         embed = createErrorEmbed({int: interaction, description: 'Something went wrong fixing the Database! Try again later!'});
       }

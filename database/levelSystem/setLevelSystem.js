@@ -1,8 +1,8 @@
-const { deleteData } = require("../controlData/deleteData");
-const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
+const { insertData } = require("../controlData/insertData");
 const { updateData } = require("../controlData/updateData");
-const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+const { deleteData } = require("../controlData/deleteData");
+const exportToJson = require("../../src/handlers/exportToJson");
 
 async function getAllUsersLevel(guildId) {
   try {
@@ -20,7 +20,7 @@ async function getUserLevel(guildId, memberId) {
 
 async function addUserColor(guildId, memberId, color) {
   await updateData('LevelSystem', { guildId: guildId, memberId: memberId} , {color: color });
-  exportToJson('LevelSystem')
+  exportToJson('LevelSystem', guildId)
 }
 
 async function setUserLevelInfo(user, keys, data) {
@@ -29,7 +29,7 @@ async function setUserLevelInfo(user, keys, data) {
   } else {
     await insertData('LevelSystem', keys, data);
   }
-  exportToJson('LevelSystem');
+  exportToJson('LevelSystem', keys.guildId);
 }
 
 async function resetLevelSystem(id, member) {
@@ -42,7 +42,7 @@ async function resetLevelSystem(id, member) {
   } catch (error) {
     console.error('Failed to Reset Level(s)', error);
   }
-  exportToJson('LevelSystem');
+  exportToJson('LevelSystem', id);
 }
 
 module.exports = { 

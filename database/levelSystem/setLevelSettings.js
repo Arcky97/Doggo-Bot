@@ -1,9 +1,8 @@
-const { isJSONEncodable } = require("discord.js");
-const { deleteData } = require("../controlData/deleteData");
-const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
+const { insertData } = require("../controlData/insertData");
 const { updateData } = require("../controlData/updateData");
-const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+const { deleteData } = require("../controlData/deleteData");
+const exportToJson = require("../../src/handlers/exportToJson");
 
 async function getLevelSettings(id) {
   try {
@@ -11,7 +10,7 @@ async function getLevelSettings(id) {
     if (!data) {
       await insertData('LevelSettings', { guildId: id });
       data = await selectData('LevelSettings', { guildId: id });
-      exportToJson('LevelSettings');
+      exportToJson('LevelSettings', id);
     }
     return data;
   } catch (error) {
@@ -111,7 +110,7 @@ async function setLevelSettings({ id, setting}) {
   } catch (error) {
     console.log('Error setting level settings', error);
   }
-  exportToJson('LevelSettings');
+  exportToJson('LevelSettings', id);
 }
 
 async function resetLevelSettings(id) {
@@ -120,7 +119,7 @@ async function resetLevelSettings(id) {
   } catch (error) {
     console.error('Failed to reset LevelSettings', error);
   }
-  exportToJson('LevelSettings');
+  exportToJson('LevelSettings', id);
 }
 
 module.exports = { 

@@ -1,7 +1,7 @@
-const { deleteData } = require("../controlData/deleteData");
-const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
-const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+const { insertData } = require("../controlData/insertData");
+const { deleteData } = require("../controlData/deleteData");
+const exportToJson = require("../../src/handlers/exportToJson");
 const { query } = require("../db");
 
 async function getModerationLogs({guildId, userId, action}) {
@@ -63,16 +63,16 @@ async function addModerationLogs({guildId, userId, modId, action, reason, durati
     if (reason) data.reason = reason;
     if (duration) data.endTime = duration;
     await insertData('ModerationLogs', {}, data);
-    exportToJson('ModerationLogs');
+    exportToJson('ModerationLogs', guildId);
   } catch (error) {
     console.error('Error adding Moderation Log:', error);
   }
 }
 
-async function removeModerationLogs(id) {
+async function removeModerationLogs(guildId, id) {
   try {
     await deleteData('ModerationLogs', {id: id});
-    exportToJson('ModerationLogs');
+    exportToJson('ModerationLogs', guildId);
   } catch (error) {
     console.error('Error removing Moderation Log:', error);
   }

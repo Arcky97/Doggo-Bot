@@ -3,7 +3,7 @@ const { insertData } = require('../controlData/insertData');
 const { updateData } = require('../controlData/updateData');
 const { deleteData } = require('../controlData/deleteData');
 const { query } = require('../db');
-const { exportToJson } = require('../controlData/visualDatabase/exportToJson');
+const exportToJson = require('../../src/handlers/exportToJson');
 const Fuse = require('fuse.js');
 
 async function getTriggers() {

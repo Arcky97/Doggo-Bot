@@ -2,7 +2,7 @@ const { selectData } = require("../controlData/selectData");
 const { insertData } = require("../controlData/insertData");
 const { updateData } = require("../controlData/updateData");
 const { deleteData } = require("../controlData/deleteData");
-const { exportToJson } = require("../controlData/visualDatabase/exportToJson");
+const exportToJson = require("../../src/handlers/exportToJson");
 const firstLetterToUpperCase = require("../../src/utils/firstLetterToUpperCase");
 const { setChannelOrRoleArray } = require("../../src/utils/setArrayValues");
 
@@ -47,7 +47,7 @@ async function setGuildLoggingConfig(guildId, type, data) {
   } catch (error) {
     console.error('Error Updating Guild Logging Config data:', error);
   }
-  exportToJson('GuildSettings');
+  exportToJson('GuildSettings', guildId);
 }
 
 async function getGuildSettings(guildId) {
@@ -56,7 +56,7 @@ async function getGuildSettings(guildId) {
     if (!data) {
       await insertData('GuildSettings', { guildId: guildId });
       data = await selectData('GuildSettings', { guildId: guildId });
-      exportToJson('GuildSettings');
+      exportToJson('GuildSettings', guildId);
     }
     return data;
   } catch (error) {
@@ -162,7 +162,7 @@ async function setGuildSettings(guildId, settingName, value) {
           }
         }        
       }
-      exportToJson('GuildSettings');
+      exportToJson('GuildSettings', guildId);
       return [title, descr];
     } catch (error) {
       console.error('Error setting channel:', error);

@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
 const setEventTimeOut = require("../handlers/setEventTimeOut");
-const getLogChannel = require("./logging/getLogChannel");
 
 async function sendModerationLogEvent (guild, channel, color, title, fields) {
   const embed = new EmbedBuilder()
