@@ -16,5 +16,5 @@ module.exports = async (type, id, embed, channel) => {
     const { embeds } = data;
     await channel.send({ embeds });
     embedQueue.delete(queueKey);
-  }, 5000);
+  }, 5500);
 }

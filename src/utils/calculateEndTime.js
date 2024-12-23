@@ -56,7 +56,7 @@ module.exports = (input) => {
     }
 
     const durationMs = endTime - now;
-    return { endTime, durationMs };
+    return { now, endTime, durationMs };
   } else {
     return null;
   }

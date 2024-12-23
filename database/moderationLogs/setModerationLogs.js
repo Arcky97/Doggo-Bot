@@ -24,6 +24,7 @@ async function getModerationLogs({guildId, userId, action}) {
 
 async function getModerationLogsById(guildId, id) {
   try {
+    console.log([guildId, id]);
     const data = await selectData('ModerationLogs', {guildId: guildId, id: id});
     if (data) {
       return data;
@@ -52,7 +53,7 @@ async function nextModerationLogId() {
   }
 }
 
-async function addModerationLogs({guildId, userId, modId, action, reason, duration}) {
+async function addModerationLogs({guildId, userId, modId, action, reason, date, duration}) {
   try {
     const data = {
       guildId: guildId,
@@ -61,6 +62,7 @@ async function addModerationLogs({guildId, userId, modId, action, reason, durati
       action: action,
     }
     if (reason) data.reason = reason;
+    if (date) data.date = date;
     if (duration) data.endTime = duration;
     await insertData('ModerationLogs', {}, data);
     exportToJson('ModerationLogs', guildId);
@@ -82,8 +84,8 @@ async function clearModerationLogs(guildId, userId, action) {
   try {
     const data = await getModerationLogs({guildId: guildId, userId: userId, action: action});
     if (data.length > 0) {
-      data.forEach(async (log) => {
-        await removeModerationLogs(log.id);
+      data.forEach(async log => {
+        await removeModerationLogs(guildId, log.id);
       });
     }
   } catch (error) {

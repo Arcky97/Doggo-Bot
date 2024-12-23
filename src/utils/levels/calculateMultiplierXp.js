@@ -27,7 +27,7 @@ module.exports = ({settings, user, channel, roles, notRandom}) => {
 
   let totalMultiplier = 0;
   
-  const findCatMult = catMult.find(item => item.categoryId === channel.parent.id);
+  const findCatMult = catMult.find(item => item.categoryId === channel.parent?.id);
   const findChanMult = chanMult.find(item => item.channelId === channel.id);
   
   if (findChanMult) {

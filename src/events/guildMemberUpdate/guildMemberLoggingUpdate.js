@@ -1,4 +1,4 @@
-const { Client, GuildMember, EmbedBuilder, GuildWidgetStyle } = require('discord.js');
+const { Client, GuildMember, EmbedBuilder } = require('discord.js');
 const getMemberRoles = require('../../utils/logging/getMemberRoles');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
@@ -58,7 +58,6 @@ module.exports = async (client, oldMember, newMember) => {
     }
     // Check for timeout change
     else if (oldTimeout !== newTimeout) {
-      console.log(newTimeout);
       if (newTimeout) {
         if (!configLogging.timeouts.adds) return;
         action = 'added'

@@ -332,7 +332,6 @@ module.exports = {
                 });
                 values = [];
               } else {
-                console.log(category);
                 if (category !== 'all') {
                   description += `\n - ${loggingType[category].name}: **${loggingConfig[category] ? 'enabled' : 'disabled'}**`;
                 }

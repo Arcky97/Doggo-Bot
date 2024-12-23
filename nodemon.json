@@ -1,8 +1,5 @@
 {
   "ignore": [
-    "database/controlData/visualDatabase/LevelSettings/*.json",
-    "database/controlData/visualDatabase/LevelSystem/*.json",
-    "database/controlData/visualDatabase/ModerationLogs/*.json",
-    "database/controlData/visualDatabase/*.txt"
+    "database/controlData/visualDatabase/***"
   ]
 }
