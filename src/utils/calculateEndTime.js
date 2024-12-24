@@ -38,19 +38,19 @@ module.exports = (input) => {
       endTime.setHours(0, 0, 0, 0)
     } else {
       endTime = new Date(now);
-      if (unit === 'seconds' || unit === 'secs') {
+      if (['seconds', 'second', 'secs', 'sec'].includes(unit)) {
         endTime.setSeconds(now.getSeconds() + amount);
-      } else if (unit === 'minutes' || unit === 'mins') {
+      } else if (['minutes', 'minute', 'mins', 'min'].includes(unit)) {
         endTime.setMinutes(now.getMinutes() + amount);
-      } else if (unit === 'hours' || unit === 'hrs') {
+      } else if (['hours', 'hour', 'hrs', 'hr'].includes(unit)) {
         endTime.setHours(now.getHours() + amount);
-      } else if (unit === 'days' || unit === 'dys') {
+      } else if (['days', 'day', 'dys', 'dy'].includes(unit)) {
         endTime.setDate(now.getDate() + amount);
-      } else if (unit === 'weeks' || unit === 'wks') {
+      } else if (['weeks', 'week', 'wks', 'wk'].includes(unit)) {
         endTime.setDate(now.getDate() + amount * 7);
-      } else if (unit === 'months' || unit === 'mos') {
+      } else if (['months', 'month', 'mos', 'mo'].includes(unit)) {
         endTime.setMonth(now.getMonth() + amount);
-      } else if (unit === 'years' || unit === 'yrs') {
+      } else if (['years', 'year', 'yrs', 'yr'].includes(unit)) {
         endTime.setFullYear(now.getFullYear() + amount);
       }
     }

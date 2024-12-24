@@ -207,7 +207,7 @@ module.exports = {
           description: 'Ban a member for an undefined time.',
           options: [
             {
-              type: ApplicationCommandOptionType.String,
+              type: ApplicationCommandOptionType.User,
               name: 'member',
               description: 'The member to ban.',
               required: true
@@ -216,6 +216,11 @@ module.exports = {
               type: ApplicationCommandOptionType.String,
               name: 'reason',
               description: 'The reason for the ban.'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'time',
+              description: 'Delete all message during provided time (max 7 days).'
             }
           ]
         },
@@ -234,6 +239,11 @@ module.exports = {
               type: ApplicationCommandOptionType.String,
               name: 'reason',
               description: 'The reason for the soft ban.'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'time',
+              description: 'Delete all message during provided time (max 7 days).'
             }
           ]
         },
@@ -251,13 +261,18 @@ module.exports = {
             {
               type: ApplicationCommandOptionType.String,
               name: 'duration',
-              description: 'The duration the member will be banned. (s, m or h => For ex. 5m = 5 minutes.)',
+              description: 'The duration the member will be banned.',
               required: true 
             },
             {
               type: ApplicationCommandOptionType.String,
               name: 'reason',
               description: 'The reason for the temp ban.'
+            },
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'time',
+              description: 'Delete all messages during provided time (max 7 days).'
             }
           ]
         }
@@ -300,20 +315,18 @@ module.exports = {
     const guild = interaction.guild;
     const guildId = interaction.guild.id;
     const modId = interaction.user.id;
-    let member = interaction.options.getMember('member');
+    const member = interaction.options.getUser('member');
     const duration = interaction.options.getString('duration');
     const reason = interaction.options.getString('reason') || 'No reason provided.';
     const id = interaction.options.getString('id');
-    console.log(member);
-    if (typeof member === 'string') member = client.users.cache.get(member);
-    console.log(member);
+
     let embed, title, description;
     fields = [];
     const result = calculateEndTime(duration);
 
     await interaction.deferReply();
 
-    if (!result && duration) {
+    if (!result && duration || result && result.durationMs === 0) {
       embed = createInfoEmbed({
         int: interaction,
         title: `Invalid Duration format`,
@@ -341,7 +354,7 @@ module.exports = {
                 for (var i = 0; i < Math.ceil(warnings.length / pageSize); i++) {
                   pageTracker = warnings.length > pageSize ? `(${1 + (i * pageSize)} - ${Math.min((i + 1) * pageSize, warnings.length)} of ${warnings.length} Warnings)` : '';
                   if (member) {
-                    title = `${warnings.length} Warning${warnings.length > 1 ? 's' : ''} for ${member.user.username} ${pageTracker}`
+                    title = `${warnings.length} Warning${warnings.length > 1 ? 's' : ''} for ${member.username} ${pageTracker}`
                   } else {
                     title = `All Warnings ${pageTracker}`;
                   }
@@ -368,7 +381,7 @@ module.exports = {
                 return;              
               } else {
                 if (member) {
-                  title = `No Warnings for ${member.user.username}`;
+                  title = `No Warnings for ${member.username}`;
                   description = `${member} has no active warnings. Let's hope it stays that way.`;
                 } else {
                   title = `No Warnings found`;
@@ -379,7 +392,7 @@ module.exports = {
             case 'add':
               const nextWarningId = await nextModerationLogId();
               await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: subCmdGroup, reason: reason});
-              title = `New Warning for ${member.user.username}`;
+              title = `New Warning for ${member.username}`;
               description = `${member} has been warned for the ${getOrdinalSuffix(warnings.length + 1)} Time!`
               fields.push({
                 name: `ID: ${nextWarningId}`,
@@ -415,7 +428,7 @@ module.exports = {
               const warningsByUser = await getModerationLogs({guildId: guildId, userId: member.id, action: 'warns'});
               if (warningsByUser.length > 0) {
                 await clearModerationLogs(guildId, member.id, 'warn');
-                title = `Warnings for ${member.user.username} Cleared`;
+                title = `Warnings for ${member.username} Cleared`;
                 description = `All Warnings for ${member} have been cleared.`;
                 fields.push({
                   name: `Total: ${warningsByUser.length}`,
@@ -436,16 +449,16 @@ module.exports = {
           break;
         case 'timeout':
           const timeoutLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'timeouts'});
+          const user = interaction.options.getMember('member');
           switch(subCmd) {
             case 'add':
               if (!member.communicationDisabledUntilTimestamp) {
                 const nextTimeoutId = await nextModerationLogId();
-
                 // Store timeout in the Map with guildId
                 activeTimeouts.set(nextTimeoutId, guildId);
                 await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: subCmdGroup, reason: reason, date: beginTime, duration: endTime});
-                member.timeout(durationMs, reason);
-                title = `New Timeout for ${member.user.username}`;
+                user.timeout(durationMs, reason);
+                title = `New Timeout for ${member.username}`;
                 description = `${member} has been timed out for ${convertNumberInTime(durationMs, 'Miliseconds')}!`;
                 fields.push({
                   name: `ID: ${nextTimeoutId}`,
@@ -475,7 +488,7 @@ module.exports = {
                 embed = createInfoEmbed({
                   int: interaction,
                   title: 'Timeout already active.',
-                  descr: `There's already an active Timeout for ${member.user.username}.`
+                  descr: `There's already an active Timeout for ${member.username}.`
                 })
               }
               break;
@@ -493,9 +506,9 @@ module.exports = {
                 activeTimeouts.delete(id);
               }
               
-              member.timeout(null, reason);
+              user.timeout(null, reason);
 
-              title = `Timeout Removed for ${member.user.username}`;
+              title = `Timeout Removed for ${member.username}`;
               description = `${member} is no longer Timed out.`;
               fields.push({
                 name: `ID: ${timeoutByUser.at(-1).id}`,
@@ -512,49 +525,91 @@ module.exports = {
           const nextBanId = await nextModerationLogId();
           switch (subCmd) {
             case 'regular':
-              title = `Banned ${member.user.username}`;
-              description = `${member} has been banned!`;
-              fields.push({
-                name: `ID: ${nextBanId}`,
-                value:  `**Member:** ${member}\n` +
-                        `**Banned by:** <@${modId}>\n` +
-                        `**Reason:** ${reason}`
-              })
-              if (banLogging.regulars) await createRegularBanLogEmbed(guildId, logChannel, fields);
+              const banInfo = await interaction.guild.bans.fetch(member.id).catch(() => null);
+              if (!banInfo) {
+                await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: 'ban', reason: reason, date: beginTime})
+                title = `Banned ${member.username}`;
+                description = `${member} has been banned!`;
+                fields.push({
+                  name: `ID: ${nextBanId}`,
+                  value:  `**Member:** ${member}\n` +
+                          `**Banned by:** <@${modId}>\n` +
+                          `**Reason:** ${reason}`
+                })
+                await interaction.guild.members.ban(member.id, { reason: reason });
+                if (banLogging.regulars) await createRegularBanLogEmbed(guild, logChannel, fields);  
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction,
+                  title: `${member.username} already banned`,
+                  descr: `${member} has already been banned from this Server.`
+                });
+              }
               break;
             case 'soft':
-
+              embed = createInfoEmbed({
+                int: interaction,
+                title: 'Command unfinished',
+                descr: 'Please try again later when this command might be finished.'
+              });
               break;
             case 'temp':
-
+              embed = createInfoEmbed({
+                int: interaction,
+                title: 'Command unfinished',
+                descr: 'Please try again later when this command might be finished.'
+              });
               break;
           }
           break;
         default: 
           switch(subCmd) {
             case 'mute':
-              await interaction.editReply('You chose the mute command.');
+              embed = createInfoEmbed({
+                int: interaction,
+                title: 'Command unfinished',
+                descr: 'Please try again later when this command might be finished.'
+              });
               break;
             case 'unmute':
-              await interaction.editReply('You chose the unmute command.');
+              embed = createInfoEmbed({
+                int: interaction,
+                title: 'Command unfinished',
+                descr: 'Please try again later when this command might be finished.'
+              });
               break; 
             case 'kick':
-              await interaction.editReply('You chose the kick command.');
+              embed = createInfoEmbed({
+                int: interaction,
+                title: 'Command unfinished',
+                descr: 'Please try again later when this command might be finished.'
+              });
               break;
             case 'unban':
-              const banLog = await getModerationLogs({ guildId: guildId, userId: member.id, action: 'bans'});
+              const banLog = await getModerationLogs({ guildId: guildId, userId: member.id, action: 'ban'});
               const unbanLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'unbans'});
               const nextUnbanId = await nextModerationLogId();
-              title = `Unbanned ${member.user.username}`;
-              description = `${member} has been unbanned!`;
-              fields.push({
-                name: `ID: ${nextUnbanId}`,
-                value:  `**Member by:** ${member}\n` +
-                        `**Unbanned by:** <@${modId}>\n` +
-                        `**Reason:** ${reason}\n` +
-                        `**Time Banned:** ${formatTime(banLog.date, false)}`
-              });
-              if (unbanLogging) await createUnbanLogEmbed(guildId, logChannel, fields);
+              const unbanInfo = await interaction.guild.bans.fetch(member.id).catch(() => null);
+              if (unbanInfo) {
+                await addModerationLogs({ guildId: guildId, userId: member.id, modId: modId, action: 'unban', reason: reason});
+                title = `Unbanned ${member.username}`;
+                description = `${member} has been unbanned!`;
+                fields.push({
+                  name: `ID: ${nextUnbanId}`,
+                  value:  `**Member by:** ${member}\n` +
+                          `**Unbanned by:** <@${modId}>\n` +
+                          `**Reason:** ${reason}\n` +
+                          `**Time Banned:** ${await formatTime(banLog.at(-1).date, false)}`
+                });
+                await interaction.guild.members.unban(member.id, reason);
+                if (unbanLogging) await createUnbanLogEmbed(guild, logChannel, fields);
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction,
+                  title: `${member.username} not banned`,
+                  descr: `${member} wasn't banned so they cannot be unbanned from this Server.`
+                });
+              }
               break;
           }
           break;
