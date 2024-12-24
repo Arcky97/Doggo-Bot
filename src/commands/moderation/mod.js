@@ -521,6 +521,13 @@ module.exports = {
           }
           break;
         case 'ban':
+          if (member.id === '1270100901067100230') {
+            createInfoEmbed({
+              int: interaction,
+              title: 'No, don\'t ban me',
+              descr: 'Hey, what did I do wrong to you?'
+            });
+          }
           const banLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'bans' });
           const nextBanId = await nextModerationLogId();
           switch (subCmd) {
