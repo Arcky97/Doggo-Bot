@@ -40,14 +40,13 @@ async function getModerationLogsById(guildId, id) {
  * @returns {Promise<number>}
  */
 async function nextModerationLogId() {
-  const maxIdQuery = `
-    SELECT MAX(Id) AS maxId
-    FROM ModerationLogs
+  const autoIncrementQuery = `
+    SHOW TABLE STATUS LIKE 'ModerationLogs';
   `;
 
   try {
-    const [[{ maxId }]] = await query(maxIdQuery);
-    return (maxId || 0) + 1;  
+    const [[{ Auto_increment }]] = await query(autoIncrementQuery);
+    return Auto_increment;  
   } catch (error) {
     console.error('Error getting next Moderation Log ID:', error);
   }
