@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
 const { addModerationLogs, removeModerationLogs, getModerationLogs, clearModerationLogs, nextModerationLogId, getModerationLogsById } = require("../../../database/moderationLogs/setModerationLogs");
-const { createSuccessEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { createSuccessEmbed, createInfoEmbed, createUnfinishedEmbed } = require("../../utils/embeds/createReplyEmbed");
 const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
 const pagination = require("../../handlers/pagination");
 const convertNumberInTime = require("../../utils/convertNumberInTime");
@@ -554,43 +554,23 @@ module.exports = {
               }
               break;
             case 'soft':
-              embed = createInfoEmbed({
-                int: interaction,
-                title: 'Command unfinished',
-                descr: 'Please try again later when this command might be finished.'
-              });
+              embed = createUnfinishedEmbed(interaction);
               break;
             case 'temp':
-              embed = createInfoEmbed({
-                int: interaction,
-                title: 'Command unfinished',
-                descr: 'Please try again later when this command might be finished.'
-              });
+              embed = createUnfinishedEmbed(interaction);
               break;
           }
           break;
         default: 
           switch(subCmd) {
             case 'mute':
-              embed = createInfoEmbed({
-                int: interaction,
-                title: 'Command unfinished',
-                descr: 'Please try again later when this command might be finished.'
-              });
+              embed = createUnfinishedEmbed(interaction);
               break;
             case 'unmute':
-              embed = createInfoEmbed({
-                int: interaction,
-                title: 'Command unfinished',
-                descr: 'Please try again later when this command might be finished.'
-              });
+              embed = createUnfinishedEmbed(interaction);
               break; 
             case 'kick':
-              embed = createInfoEmbed({
-                int: interaction,
-                title: 'Command unfinished',
-                descr: 'Please try again later when this command might be finished.'
-              });
+              embed = createUnfinishedEmbed(interaction);
               break;
             case 'unban':
               const banLog = await getModerationLogs({ guildId: guildId, userId: member.id, action: 'ban'});

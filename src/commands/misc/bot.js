@@ -28,12 +28,12 @@ module.exports = {
           embed = createSuccessEmbed({ int: interaction, title: 'Doggo Bot Up Time', descr: `Doggo Bot has been online for ${uptime}.`});
           break;
         case 'info':
-
+          embed = createUnfinishedEmbed(interaction);
           break;
       }
       
     } catch (error) {
-      console.error('There was an error with the uptime command', error);
+      console.error('There was an error with the bot command', error);
     }
     await interaction.reply({ embeds: [embed] });
   }

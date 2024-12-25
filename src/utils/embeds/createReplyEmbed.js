@@ -26,5 +26,6 @@ module.exports = {
   createSuccessEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Green', title, descr, footer, false, "happy"),
   createInfoEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Yellow', `${title ? title : 'Info'}`, descr, footer, !title, "sad"),
   createWarningEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Orange', `${title ? title : 'Warning'}`, descr, footer, !title, "annoyed"),
-  createErrorEmbed: ({int, title, descr}) => createReplyEmbed(int, 'Red', 'Error', descr, false, !title, "shocked")
+  createErrorEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Red', 'Error', descr, footer, !title, "shocked"),
+  createUnfinishedEmbed: (int) => createReplyEmbed(int, 'Blue', 'Unfinished', 'Sorry, this Command is not finished yet.', true, true, "Sleepy")
 }

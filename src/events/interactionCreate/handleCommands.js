@@ -1,18 +1,23 @@
 const { devs, testServer } = require('../../../config.json');
 const { getPremiumById } = require('../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds');
 const getLocalCommands = require('../../utils/commands/getLocalCommands');
-const { createInfoEmbed, createWarningEmbed } = require('../../utils/embeds/createReplyEmbed');
+const { createInfoEmbed, createWarningEmbed, createErrorEmbed } = require('../../utils/embeds/createReplyEmbed');
 
 module.exports = async (client, interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   const localCommands = getLocalCommands();
 
+  const commandObject = localCommands.find(
+    (cmd) => cmd.name === interaction.commandName
+  );
+
+  const cmdName = commandObject.name;
+  const subCmdGroup = interaction.options.getSubcommandGroup();
+  const subCmd = interaction.options.getSubcommand();
+
   try {
     let embed;
-    const commandObject = localCommands.find(
-      (cmd) => cmd.name === interaction.commandName
-    );
 
     if (!commandObject) return;
 
@@ -84,6 +89,8 @@ module.exports = async (client, interaction) => {
 
     await commandObject.callback(client, interaction);
   } catch (error) {
-    console.log(`There was an error running this command: ${error}.`);
+    console.log(`There was an error running the '${cmdName}${subCmdGroup ? ` ${subCmdGroup}` : ''}${subCmd ? ` ${subCmd}` : ''}' command: ${error}.`);
+    embed = createErrorEmbed({int: interaction, descr: `Something went wrong while running this Command. Please try again later.`});
+    interaction.reply({ embeds: [embed] });
   }
 };
