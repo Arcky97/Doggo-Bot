@@ -13,8 +13,8 @@ module.exports = async (client, interaction) => {
   );
 
   const cmdName = commandObject.name;
-  const subCmdGroup = interaction.options.getSubcommandGroup();
-  const subCmd = interaction.options.getSubcommand();
+  //const subCmdGroup = interaction.options?.getSubcommandGroup();
+  //const subCmd = interaction.options?.getSubcommand();
 
   try {
     let embed;
@@ -89,7 +89,7 @@ module.exports = async (client, interaction) => {
 
     await commandObject.callback(client, interaction);
   } catch (error) {
-    console.log(`There was an error running the '${cmdName}${subCmdGroup ? ` ${subCmdGroup}` : ''}${subCmd ? ` ${subCmd}` : ''}' command: ${error}.`);
+    console.log(`There was an error running the '${cmdName}' command: ${error}.`);
     embed = createErrorEmbed({int: interaction, descr: `Something went wrong while running this Command. Please try again later.`});
     interaction.reply({ embeds: [embed] });
   }

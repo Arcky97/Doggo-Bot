@@ -75,12 +75,20 @@ async function getIgnoreLoggingChannels(guildId) {
   }
 }
 
+async function getMuteRole(guildId) {
+  try {
+    const data = await getGuildSettings(guildId);
+    return data.muteRole;
+  } catch (error) {
+    console.error('Error fetching mute role data from GuildSettings:', error);
+  }
+}
 async function getJoinRoles(guildId) {
   try {
     const data = await getGuildSettings(guildId);
     return JSON.parse(data.joinRoles);
   } catch (error) {
-    console.error('Error fetching join roles data from guildSettings:', error);
+    console.error('Error fetching join roles data from GuildSettings:', error);
   }
 }
 async function setGuildSettings(guildId, settingName, value) {
@@ -182,4 +190,13 @@ async function resetGuildSettings(id) {
   }
 }
 
-module.exports = { setGuildSettings, getGuildSettings, convertSetupCommand, resetGuildSettings, getIgnoreLoggingChannels, getGuildLoggingConfig, setGuildLoggingConfig };
+module.exports = { 
+  setGuildSettings, 
+  getGuildSettings, 
+  convertSetupCommand, 
+  resetGuildSettings, 
+  getIgnoreLoggingChannels, 
+  getGuildLoggingConfig, 
+  setGuildLoggingConfig,
+  getMuteRole
+};

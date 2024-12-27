@@ -7,8 +7,11 @@ const convertNumberInTime = require("../../utils/convertNumberInTime");
 const calculateEndTime = require('../../utils/calculateEndTime');
 const getLogChannel = require("../../utils/logging/getLogChannel");
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
-const { createWarningAddLogEmbed, createWarningRemoveLogEmbed, createWarningClearLogEmbed, createTimeoutAddLogEmbed, createTimeoutRemoveLogEmbed, createRegularBanLogEmbed, createUnbanLogEmbed } = require("../../utils/sendModerationLogEvent");
+const { createWarningAddLogEmbed, createWarningRemoveLogEmbed, createWarningClearLogEmbed, createTimeoutAddLogEmbed, createTimeoutRemoveLogEmbed, createRegularBanLogEmbed, createUnbanLogEmbed, createKickLogEmbed, createMuteLogEmbed, createUnmuteLogEmbed } = require("../../utils/sendModerationLogEvent");
 const formatTime = require("../../utils/formatTime");
+const { getMuteRole } = require("../../../database/guildSettings/setGuildSettings");
+const { addModerationTask } = require("../../handlers/moderationTasks");
+
 const activeTimeouts = new Map();
 
 module.exports = {
@@ -314,8 +317,10 @@ module.exports = {
     const subCmd = interaction.options.getSubcommand();
     const guild = interaction.guild;
     const guildId = interaction.guild.id;
+    const mod = interaction.user;
     const modId = interaction.user.id;
     const user = interaction.options.getUser('user');
+    const fetchUser = await client.users.fetch(interaction.options.get('member').value);
     const member = interaction.options.getMember('member');
     const duration = interaction.options.getString('duration');
     const reason = interaction.options.getString('reason') || 'No reason provided.';
@@ -338,7 +343,9 @@ module.exports = {
 
     const logChannel = await getLogChannel(client, guildId, 'moderation');
 
-    const { beginTime, endTime, durationMs } = result || {};
+    const { beginTime, endTime, durationMs, roundDate } = result || {};
+
+    const formatDuration = roundDate ? convertNumberInTime(durationMs, 'Miliseconds') : await formatTime(endTime, false);
 
     const nextId = await nextModerationLogId();
     try {
@@ -405,7 +412,6 @@ module.exports = {
                 });
                 if (warningLogging.adds) await createWarningAddLogEmbed(guild, logChannel, fields);  
               } else {
-                const fetchUser = await client.users.fetch(interaction.options.get('member').value);
                 embed = createInfoEmbed({
                   int: interaction,
                   title: `Cannot warn ${fetchUser.username}`,
@@ -436,96 +442,108 @@ module.exports = {
               if (warningLogging.removes) await createWarningRemoveLogEmbed(guild, logChannel, fields);
               break;
             case 'clear':
-              if (warnings.length > 0) {
-                await clearModerationLogs(guildId, member.id, 'warn');
-                title = `Warnings for ${member.user.username} Cleared`;
-                description = `All Warnings for ${member} have been cleared.`;
-                fields.push({
-                  name: `Total: ${warnings.length}`,
-                  value:  `**Member:** ${member}\n` +
-                          `**Cleared by:** ${interaction.user}\n` +
-                          `**Reason:** ${reason}\n`
-                });
+              const userWarnings = await getModerationLogs({guildId: guildId, userId: fetchUser.id, action: 'warn'});
+              if (member || userWarnings) {
+                const warningLength = warnings ? warnings.length : userWarnings.length;
+                const memberToClear = member ? member : fetchUser
+                if (warningLength > 0) {
+                  await clearModerationLogs(guildId, memberToClear.id, 'warn');
+                  title = `Warnings for ${member ? member.user.username : fetchUser.username} Cleared`;
+                  description = `All Warnings for ${memberToClear} have been cleared.`;
+                  fields.push({
+                    name: `Total: ${warningLength}`,
+                    value:  `**Member:** ${memberToClear}\n` +
+                            `**Cleared by:** ${interaction.user}\n` +
+                            `**Reason:** ${reason}\n`
+                  });
+                } else {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    title: 'No Warnings found',
+                    descr: `${member} doesn't have any Warnings. \nNothing to clear.`
+                  });
+                }
+                if (warningLogging.clears) await createWarningClearLogEmbed(guild, logChannel, fields);
               } else {
                 embed = createInfoEmbed({
                   int: interaction,
-                  title: 'No Warnings found',
-                  descr: `${member} doesn't have any Warnings. \nNothing to clear.`
+                  title: 'Cannot Clear Warnings',
+                  descr: `${fetchUser} is not in this server and has no Warnings to clear.`
                 });
               }
-              if (warningLogging.clears) await createWarningClearLogEmbed(guild, logChannel, fields);
               break;
           }
           break;
         case 'timeout':
           const timeoutLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'timeouts'});
-          const user = interaction.options.getMember('member');
           switch(subCmd) {
             case 'add':
-              if (!member.communicationDisabledUntilTimestamp) {
-                // Store timeout in the Map with guildId
-                activeTimeouts.set(nextId, guildId);
-                await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: subCmdGroup, reason: reason, date: beginTime, duration: endTime});
-                user.timeout(durationMs, reason);
-                title = `New Timeout for ${member.user.username}`;
-                description = `${member} has been timed out for ${convertNumberInTime(durationMs, 'Miliseconds')}!`;
-                fields.push({
-                  name: `ID: ${nextId}`,
-                  value:  `**Member:** ${member}\n` +
-                          `**Timed out by:** <@${modId}>\n` +
-                          `**Reason:** ${reason}\n` +
-                          `**Duration: ** ${convertNumberInTime(durationMs, 'Miliseconds')}`
-                });
-                if (timeoutLogging.adds) await createTimeoutAddLogEmbed(guild, logChannel, fields);
-                
-                setTimeout(async () => {
-                  const guildId = activeTimeouts.get(nextId);
-                  if (guildId) {
-                    await removeModerationLogs(guildId, nextId);
-                    activeTimeouts.delete(nextId);
-  
-                    fields = [{
-                      name: `ID: ${nextId}`,
-                      value:  `**Member:** ${member}\n` +
-                              `**Timed out by:** <@${modId}>\n` +
-                              `**Reason:** Automatic Removal`
-                    }];
-                    if (timeoutLogging.removes) await createTimeoutRemoveLogEmbed(guild, logChannel, fields);
+              if (member) {
+                console.log(member);
+                if (!member.communicationDisabledUntilTimestamp) {
+                  await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: 'timeout', reason: reason, date: beginTime, duration: endTime});
+                  member.timeout(durationMs, reason);
+                  title = `New Timeout for ${member.user.username}`;
+                  description = `${member} has been timed out for ${formatDuration}!`;
+                  fields.push({
+                    name: `ID: ${nextId}`,
+                    value:  `**Member:** ${member}\n` +
+                            `**Timed out by:** <@${modId}>\n` +
+                            `**Reason:** ${reason}\n` +
+                            `**Duration: ** ${formatDuration}`
+                  });
+                  if (timeoutLogging.adds) await createTimeoutAddLogEmbed(guild, logChannel, fields);
+                  if (durationMs <= 86400000) {
+                    await addModerationTask(nextId, guild, member, mod, durationMs, 'timeout', timeoutLogging.removes, logChannel);
+                  } else {
+                    console.log('The duration is longer than 24 hours so it\'ll be scheduled for tomorrow eventually');
                   }
-                }, durationMs)
+                } else {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    title: 'Timeout already active.',
+                    descr: `There's already an active Timeout for ${member.user.username}.`
+                  })
+                }
               } else {
                 embed = createInfoEmbed({
                   int: interaction,
-                  title: 'Timeout already active.',
-                  descr: `There's already an active Timeout for ${member.user.username}.`
-                })
+                  title: 'Member not in this Server',
+                  descr: `${fetchUser} is not in this Server so you can't use Timeout on them.`
+                });
               }
               break;
             case 'remove':
-              const timeoutByUser = await getModerationLogs({ guildId: guildId, userId: member.id, action: 'timeout' });
-              const guildIdToRemove = activeTimeouts.get(timeoutByUser.at(-1).id);
-              const timeoutDuration = timeoutByUser.at(-1).endTime - timeoutByUser.at(-1).date;
-              if (timeoutDuration >= 86400) {
-                console.log('The timeout lasts more than 1 day...'); 
+              if (member) {
+                const timeoutByUser = await getModerationLogs({ guildId: guildId, userId: member.id, action: 'timeout' });
+                const guildIdToRemove = activeTimeouts.get(timeoutByUser.at(-1).id);
+                const timeoutDuration = timeoutByUser.at(-1).endTime - timeoutByUser.at(-1).date;
+                if (timeoutDuration >= 86400) {
+                  console.log('The timeout lasts more than 1 day...'); 
+                } else {
+                  console.log('The timeout lasts less than 1 day...');
+                }
+                if (guildIdToRemove) {
+                  await removeModerationLogs(guildIdToRemove, id); 
+                  activeTimeouts.delete(id);
+                }
+                user.timeout(null, reason);
+                title = `Timeout Removed for ${member.user.username}`;
+                description = `${member} is no longer Timed out.`;
+                fields.push({
+                  name: `ID: ${timeoutByUser.at(-1).id}`,
+                  value:  `**Member:** ${member}\n` +
+                          `**Removed by:** <@${modId}>\n` +
+                          `**Reason:** ${reason}\n`
+                });
+                if (timeoutLogging.removes) await createTimeoutRemoveLogEmbed(guild, logChannel, fields);
               } else {
-                console.log('The timeout lasts less than 1 day...');
+                embed = createInfoEmbed({
+                  int: interaction,
+                  title: 'Member not in this Server',
+                  descr: `${fetchUser} is not in this Server so you can't remove a time out from them.`
+                });
               }
-              if (guildIdToRemove) {
-                await removeModerationLogs(guildIdToRemove, id); 
-                activeTimeouts.delete(id);
-              }
-              
-              user.timeout(null, reason);
-
-              title = `Timeout Removed for ${member.user.username}`;
-              description = `${member} is no longer Timed out.`;
-              fields.push({
-                name: `ID: ${timeoutByUser.at(-1).id}`,
-                value:  `**Member:** ${member}\n` +
-                        `**Removed by:** <@${modId}>\n` +
-                        `**Reason:** ${reason}\n`
-              });
-              if (timeoutLogging.removes) await createTimeoutRemoveLogEmbed(guild, logChannel, fields);
               break;
           }
           break;
@@ -564,7 +582,7 @@ module.exports = {
             case 'soft':
               const softBanInfo = client.users.cache.find(member => member.id === user.id);
               if (softBanInfo) {
-
+                embed = createUnfinishedEmbed(interaction);
               } else {
                 embed = createInfoEmbed({
                   int: interaction,
@@ -572,7 +590,6 @@ module.exports = {
                   descr: `${user} is not in this Server so soft banning won't have any effect. \nUse \`mod ban regular\` or \`mod ban temp\` instead.`
                 })
               }
-              embed = createUnfinishedEmbed(interaction);
               break;
             case 'temp':
               embed = createUnfinishedEmbed(interaction);
@@ -580,18 +597,104 @@ module.exports = {
           }
           break;
         default: 
+          const muteRole = await getMuteRole(guildId);
+          if (subCmd === 'mute' || subCmd === 'unmute') {
+            const role = guild.roles.cache.find(r => r.id === muteRole);
+            if (!role) {
+              embed = createInfoEmbed({
+                int: interaction,
+                title: 'No Mute Role',
+                descr: 'You haven\'t setup a Mute Role for this Server yet. \nUse `setup mute-role` to set one up.'
+              });
+              break;
+            }
+          }
           switch(subCmd) {
             case 'mute':
-              embed = createUnfinishedEmbed(interaction);
+              const muteLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'mutes'});
+              if (member) {
+                if (!member.roles.cache.has(muteRole)) {
+                  await addModerationLogs({ guildId: guildId, userId: member.id, modId, modId, action: 'mute', reason: reason, date: beginTime, duration: endTime})
+                  await member.roles.add(muteRole);
+                  title = `Muted ${member.user.username}`;
+                  description = `${member} has been given the <@&${muteRole}> Role and is now Muted.`;
+                  fields.push({
+                    name: `ID: ${nextId}`,
+                    value:  `**Member:** ${member}\n` +
+                            `**Muted by:** <@${modId}>\n` +
+                            `**Reason:** ${reason}`
+                  });
+                  if (muteLogging) await createMuteLogEmbed(guild, logChannel, fields);
+                } else {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    title: 'Already Muted',
+                    descr: `${member} is already muted.`
+                  });
+                }
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction,
+                  title: 'Cannot Mute Member',
+                  descr: `${fetchUser} cannot be Muted as they are not in this Server.`
+                });
+              }
               break;
             case 'unmute':
-              embed = createUnfinishedEmbed(interaction);
+              const unmuteLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'unmutes'});
+              if (member) {
+                if (member.roles.cache.has(muteRole)) {
+                  await addModerationLogs({ guildId: guildId, userId: member.id, modId, modId, action: 'unmute', reason: reason});
+                  await member.roles.remove(muteRole);
+                  title = `Unmuted ${member.user.username}`;
+                  description = `${member} has been taken away the <@&${muteRole}> Role and is no longer Muted.`;
+                  fields.push({
+                    name: `ID: ${nextId}`,
+                    value:  `**Member:** ${member}\n` +
+                            `**Unmuted by:** <@${modId}>\n` +
+                            `**Reason:** ${reason}`
+                  });
+                  if (unmuteLogging) await createUnmuteLogEmbed(guild, logChannel, fields);
+                } else {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    title: 'Cannot Unmute Member',
+                    descr: `${member} cannot be Unmuted as they were not muted.`
+                  });
+                }
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction,
+                  title: 'Cannot Unmute Member',
+                  descr: `${fetchUser} cannot be Unmuted as they are not in this Server.`                
+                });
+              }
               break; 
             case 'kick':
-              embed = createUnfinishedEmbed(interaction);
+              const kickLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'kicks'});
+              if (member) {
+                await addModerationLogs({ guildId: guildId, userId: member.id, modId: modId, action: 'kick', reason: reason });
+                await member.kick({ reason: reason });
+                title = `Kicked ${member.user.username}`;
+                description = `${member} has been kicked from the Server.`;
+                fields.push({
+                  name: `ID: ${nextId}`,
+                  value:  `**Member:** ${member}\n` +
+                          `**Kicked by:** <@${modId}>\n` +
+                          `**Reason:** ${reason}`
+                });
+                if (kickLogging) await createKickLogEmbed(guild, logChannel, fields);
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction,
+                  title: 'Cannot kick member',
+                  descr: `${fetchUser} cannot be kicked from the Server as they are not in the Server (anymore).`
+                });
+              }
+
               break;
             case 'unban':
-              const banLog = await getModerationLogs({ guildId: guildId, userId: member.id, action: 'ban'});
+              const banLog = await getModerationLogs({ guildId: guildId, userId: member.id, action: 'ban' });
               const unbanLogging = await checkLogTypeConfig({ guildId: guildId, type: 'moderation', option: 'unbans'});
               const unbanInfo = await interaction.guild.bans.fetch(member.id).catch(() => null);
               if (unbanInfo) {

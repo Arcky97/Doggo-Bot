@@ -3,13 +3,13 @@ const moment = require("moment");
 module.exports = async (time, full = false) => {
   const timeInLocal = moment(time).local();
   const duration = moment.duration(moment().diff(timeInLocal));
-  const years = duration.years();
-  const months = duration.months();
-  const days = duration.days();
-  const hours = duration.hours();
-  const minutes = duration.minutes();
-  const seconds = duration.seconds();
-  const milSeconds = duration.milliseconds();
+  const years = Math.abs(duration.years());
+  const months = Math.abs(duration.months());
+  const days = Math.abs(duration.days());
+  const hours = Math.abs(duration.hours());
+  const minutes = Math.abs(duration.minutes());
+  const seconds = Math.abs(duration.seconds());
+  const milSeconds = Math.abs(duration.milliseconds());
 
   const timeParts = [];
 

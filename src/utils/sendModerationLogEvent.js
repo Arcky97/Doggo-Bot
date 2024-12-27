@@ -4,7 +4,7 @@ const setEventTimeOut = require("../handlers/setEventTimeOut");
 async function sendModerationLogEvent (guild, channel, color, title, fields) {
   const embed = new EmbedBuilder()
     .setColor(color)
-    .setTitle(title)
+    .setTitle(`Moderation ${title}`)
     .addFields(fields)
     .setFooter({
       text: guild.name,
