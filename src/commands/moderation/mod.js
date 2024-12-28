@@ -479,7 +479,6 @@ module.exports = {
           switch(subCmd) {
             case 'add':
               if (member) {
-                console.log(member);
                 if (!member.communicationDisabledUntilTimestamp) {
                   await addModerationLogs({guildId: guildId, userId: member.id, modId: modId, action: 'timeout', reason: reason, date: beginTime, duration: endTime});
                   member.timeout(durationMs, reason);
@@ -527,7 +526,7 @@ module.exports = {
                   await removeModerationLogs(guildIdToRemove, id); 
                   activeTimeouts.delete(id);
                 }
-                user.timeout(null, reason);
+                member.timeout(null, reason);
                 title = `Timeout Removed for ${member.user.username}`;
                 description = `${member} is no longer Timed out.`;
                 fields.push({
