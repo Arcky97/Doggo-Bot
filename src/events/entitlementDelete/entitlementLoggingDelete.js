@@ -3,7 +3,7 @@ const { Client, Entitlement, EmbedBuilder } = require('discord.js');
 const getEntitlementTypeName = require('../../utils/logging/getEntitlementTypeName');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
-module.exports = async (client, entitlement) => {
+module.exports = async (entitlement) => {
   try {
     // return if entitlement is not for client.
     if (entitlement.applicationId !== client.id) return;

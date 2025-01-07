@@ -1,10 +1,21 @@
 const { EmbedBuilder } = require("discord.js");
 const botMood = require('../../../data/images.json');
 
+/**
+ * 
+ * @param {Object} interaction 
+ * @param {*} color 
+ * @param {String} title 
+ * @param {String} description 
+ * @param {String} footer 
+ * @param {Boolean} addCommand 
+ * @param {String} mood 
+ * @returns 
+ */
 function createReplyEmbed(interaction, color, title, description, footer = true, addCommand = true, mood) {
   try {
     const embedTitle = addCommand ? `Command ${title}` : title;
-    let embed = new EmbedBuilder()
+    const embed = new EmbedBuilder()
     .setColor(color)
     .setTitle(embedTitle)
     .setDescription(description)

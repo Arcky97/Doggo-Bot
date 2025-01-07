@@ -10,9 +10,9 @@ const sendAnnounceMessage = require('../../utils/levels/sendAnnounceMessage');
 const generateUserInfo = require('../../utils/levels/generateUserInfo');
 const voiceActivity = new Map();
 
-module.exports = async (client, oldState, newState) => {
+module.exports = async (oldState, newState) => {
   try {
-    const logChannel = await getLogChannel(client, oldState.guild.id, 'voice');
+    const logChannel = await getLogChannel(oldState.guild.id, 'voice');
     if (!logChannel) return;
 
     if (await ignoreLogging(oldState.guild.id, logChannel.id)) return;
@@ -50,7 +50,7 @@ module.exports = async (client, oldState, newState) => {
           const xpSettings = await getXpSettings(newState.guild.id);
           const userInfo = await generateUserInfo(newState.guild.id, newState.member, xpToGive, xpSettings);
           if (userInfo) {
-            await sendAnnounceMessage(client, newState, newState.member, userInfo);
+            await sendAnnounceMessage(newState, newState.member, userInfo);
             await giveUserLevelRole(newState.guild.id, newState.member, userInfo);
           }
         }

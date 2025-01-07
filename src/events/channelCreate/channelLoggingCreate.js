@@ -6,10 +6,10 @@ const formatOverwrite = require('../../utils/permissions/formatOverwrite');
 const comparePermissions = require('../../utils/permissions/comparePermissions');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
-module.exports = async (client, channel) => {
+module.exports = async (channel) => {
   const guildId = channel.guild.id;
   try {
-    const logChannel = await getLogChannel(client, guildId, 'server');
+    const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 
     const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'channels', option: 'creates' });

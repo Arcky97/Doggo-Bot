@@ -2,7 +2,7 @@ const { Client, Message } = require('discord.js');
 const { selectData } = require('../../../database/controlData/selectData');
 const { getReplies, findClosestMatch, getTriggers } = require('../../../database/botReplies/setBotReplies');
 
-module.exports = async (client, message) => {
+module.exports = async (message) => {
   if (!message.inGuild() || message.author.bot) return;
   try {
     const chatChannelId = await selectData('GuildSettings', {guildId: message.guildId });

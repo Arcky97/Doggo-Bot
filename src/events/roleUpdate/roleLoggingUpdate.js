@@ -4,10 +4,10 @@ const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const categorizedPermissions = require('./../../../data/loggingPermissions.json');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
-module.exports = async (client, oldRole, newRole) => {
+module.exports = async (oldRole, newRole) => {
   const guildId = oldRole.guild.id;
   try {
-    const logChannel = await getLogChannel(client, guildId, 'server');
+    const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 
     const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'roles', option: 'updates' });

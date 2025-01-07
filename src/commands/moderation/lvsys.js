@@ -19,6 +19,7 @@ const calculateLevelByXp = require("../../utils/levels/calculateLevelByXp");
 const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 const calculateMultiplierXp = require("../../utils/levels/calculateMultiplierXp");
 const getMemberRoles = require("../../utils/logging/getMemberRoles");
+const checkClientPermissions = require("../../utils/checkClientPermissions");
 
 module.exports = {
   name: 'lvsys',
@@ -665,7 +666,7 @@ module.exports = {
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
@@ -756,7 +757,6 @@ module.exports = {
               break;
             case 'settings':
               embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults, categoryMults);
-
               break;
           }
           interaction.editReply({ embeds: [embed] });
@@ -767,11 +767,28 @@ module.exports = {
             case 'channel':
               existingSetting = levSettings.announceChannel;
               channel = interaction.options.getChannel('name');
-              if (existingSetting !== channel.id) {
-                setting = { 'announceChannel': channel.id };
-                embed = createSuccessEmbed({int: interaction, title: `Level Up Announce Channel ${existingSetting ? 'Updated' : 'Set'}!`, descr: `The Level Up Announce Channel has been ${existingSetting ? 'updated' : 'set'} to ${channel}.`});
+              const missingPerms = checkClientPermissions(channel, ['SendMessages', 'EmbedLinks']);
+              if (missingPerms && missingPerms.length === 0) {
+                if (existingSetting !== channel.id) {
+                  setting = { 'announceChannel': channel.id };
+                  embed = createSuccessEmbed({int: interaction, title: `Level Up Announce Channel ${existingSetting ? 'Updated' : 'Set'}!`, descr: `The Level Up Announce Channel has been ${existingSetting ? 'updated' : 'set'} to ${channel}.`});
+                } else {
+                  embed = createInfoEmbed({ int: interaction, descr: `The Level Up Announce Channel has already been set to <#${existingSetting}>.`});
+                }
               } else {
-                embed = createInfoEmbed({ int: interaction, descr: `The Level Up Announce Channel has already been set to <#${existingSetting}>.`});
+                if (!missingPerms) {
+                  embed = createWarningEmbed({
+                    int: interaction,
+                    title: 'Something went wrong',
+                    descr: `I was unable to retrieve the permissions for <#${channel.id}>`
+                  });
+                } else {
+                  embed = createWarningEmbed({
+                    int: interaction, 
+                    title: 'Missing required permissions',
+                    descr: `I do not have the required permissions in <#${channel.id}> to send Level Announcement Messages. \nMissing Permissions: \n- ${missingPerms.join('- ')}`
+                  });
+                }
               }
               break;
             case 'ping':
@@ -787,8 +804,8 @@ module.exports = {
               const color = interaction.options.getString('color');
               embedOptions = {
                 title: interaction.options.getString('title') || '{user global} has leveled up!',
-                description: interaction.options.getString('description') || '{Congrats you leveled up to lv. {level}!',
-                color: color.startsWith('{') ? color : await getOrConvertColor(color) || '{user color}',
+                description: interaction.options.getString('description') || 'Congrats you leveled up to lv. {level}!',
+                color: color?.startsWith('{') ? color : await getOrConvertColor(color) || '{user color}',
                 thumbnailUrl: interaction.options.getBoolean('thumbnailurl') ? '{user avatar}' : null,
                 imageUrl: interaction.options.getString('imageurl'),
                 footer: {

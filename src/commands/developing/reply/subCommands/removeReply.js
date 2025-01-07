@@ -1,19 +1,19 @@
 const { EmbedBuilder } = require("discord.js");
-const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
-const { createErrorEmbed } = require("../embeds/createReplyEmbed");
+const { setBotReplies } = require("../../../../../database/botReplies/setBotReplies");
+const { createErrorEmbed } = require('../../../../utils/embeds/createReplyEmbed');
 
-const removeReply = async (interaction) => {
+module.exports = async (interaction) => {
   const replyID = interaction.options.getString('id');
   const message = await setBotReplies({id: replyID, action: 'remove'});
   let embed;
   try {
     if (typeof message === 'object') {
-      let triggerArray = JSON.parse(message.triggers);
-      let triggerString = triggerArray.join('\n-  ');
-      let trig = triggerArray.length > 1 ? 'Triggers:' : 'Trigger:'
-      let responseArray = JSON.parse(message.responses);
-      let responseString = responseArray.join('\n-  ');
-      let resp = responseArray.lenght > 1 ? 'Responses:' : 'Response:'
+      const triggerArray = JSON.parse(message.triggers);
+      const triggerString = triggerArray.join('\n-  ');
+      const trig = triggerArray.length > 1 ? 'Triggers:' : 'Trigger:';
+      const responseArray = JSON.parse(message.responses);
+      const responseString = responseArray.join('\n-  ');
+      const resp = responseArray.lenght > 1 ? 'Responses:' : 'Response:';
       embed = new EmbedBuilder()
         .setColor(0xED4245)
         .setTitle('Reply Removed')
@@ -31,10 +31,8 @@ const removeReply = async (interaction) => {
     } else {
       embed = createErrorEmbed({ int: interaction, descr: message });
     }
-    await interaction.reply({ embeds: [embed] });
+    return embed;
   } catch (error) {
     console.error('Error generating removeReply embed:', error);
   }
 }
-
-module.exports = { removeReply };

@@ -7,7 +7,7 @@ module.exports = {
   name: 'settings',
   description: 'Shows the settings of the bot.',
   permissionsRequired: [PermissionFlagsBits.Administrator],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     try {
       await interaction.deferReply();
       const settings = await getGuildSettings(interaction.guild.id);
@@ -50,6 +50,11 @@ module.exports = {
               inline: true
             },
             {
+              name: '**Moderation Logging**',
+              value: `${settings.moderationLogging ? `<#${settings.moderationLogging}>` : 'Not set'}`,
+              inline: true
+            },
+            {
               name: '**Report Logging**',
               value: `${settings.reportLogging ? `<#${settings.reportLogging}>` : 'Not Set'}`,
               inline: true, 
@@ -60,13 +65,13 @@ module.exports = {
               inline: true 
             },
             {
-              name: '**Mute Role**',
-              value: `${settings.muteRole ? `<@&${settings.muteRole}>` : 'Not Set'}`,
+              name: '**Join Roles**',
+              value: `${joinRoles.length > 0 ? `${createListFromArray(joinRoles, '- <@&${roleId}>', false)}` : 'None Set.'}`,
               inline: true 
             },
             {
-              name: '**Join Roles**',
-              value: `${joinRoles.length > 0 ? `${createListFromArray(joinRoles, '- <@&${roleId}>', false)}` : 'None Set.'}`,
+              name: '**Mute Role**',
+              value: `${settings.muteRole ? `<@&${settings.muteRole}>` : 'Not Set'}`,
               inline: true 
             }
           )

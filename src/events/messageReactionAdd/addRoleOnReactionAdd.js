@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const { getReactionRoles } = require('../../../database/reactionRoles/setReactionRoles');
 
-module.exports = async (client, reaction, user) => {
+module.exports = async (reaction, user) => {
   const guild = reaction.message.guild;
   const guildId = reaction.message.guildId;
   const channelId = reaction.message.channelId;
@@ -43,7 +43,7 @@ module.exports = async (client, reaction, user) => {
     return;
   }
 
-  const member = await guild.members.fetch(user.id);
+  const member = guild.members.cache.get(user.id);
 
   if (reactionLimit > 0) {
     const memberRoles = emojiRolePairs

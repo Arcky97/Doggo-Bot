@@ -4,7 +4,6 @@ const { query } = require("../db");
 
 async function insertData(table, key, data) {
   const combinedData = { ...key, ...data };
-  
   const columns = Object.keys(combinedData);
   const placeholders = columns.map(() => '?').join(', ');
 

@@ -3,7 +3,7 @@ const { createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
 module.exports = {
   name: 'ping',
   description: 'Replies with the bot ping!',
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     await interaction.deferReply();
 
     const reply = await interaction.fetchReply();

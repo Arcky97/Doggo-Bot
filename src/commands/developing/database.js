@@ -247,7 +247,7 @@ module.exports = {
     }
   ],
   devOnly: true,
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
 
@@ -331,7 +331,7 @@ module.exports = {
           title: title,
           descr: description 
         });
-        await query(insertQuery, params) // what are my params?
+        await query(insertQuery, params)
       } else {
         embed = createWarningEmbed({
           int: interaction,

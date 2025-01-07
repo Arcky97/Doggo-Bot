@@ -3,10 +3,10 @@ const getLogChannel = require('../../utils/logging/getLogChannel');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
-module.exports = async (client, oldSticker, newSticker) => {
+module.exports = async (oldSticker, newSticker) => {
   const guildId = oldSticker.guild.id;
   try {
-    const logChannel = await getLogChannel(client, guildId, 'server');
+    const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 
     const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'stickers', option: 'updates' });

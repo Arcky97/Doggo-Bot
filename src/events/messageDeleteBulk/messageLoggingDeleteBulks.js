@@ -2,9 +2,9 @@ const { Client, Message, EmbedBuilder } = require("discord.js");
 const getLogChannel = require("../../utils/logging/getLogChannel");
 const ignoreLogging = require("../../utils/logging/ignoreLogging");
 
-module.exports = async (client, bulk) => {
+module.exports = async (bulk) => {
   try {
-    const logChannel = await getLogChannel(client, bulk.first().guild.id, 'message');
+    const logChannel = await getLogChannel(bulk.first().guild.id, 'message');
     if (!logChannel) return;
 
     if (await ignoreLogging(bulk.guild.id, logChannel.id)) return;

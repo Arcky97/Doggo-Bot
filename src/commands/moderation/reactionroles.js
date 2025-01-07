@@ -137,7 +137,7 @@ module.exports = {
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;

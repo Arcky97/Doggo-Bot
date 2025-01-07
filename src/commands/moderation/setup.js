@@ -200,7 +200,7 @@ module.exports = {
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const subCmd = interaction.options.getSubcommand();
     const channel = interaction.options.getChannel('channel');
     const role = interaction.options.getRole('role');

@@ -5,12 +5,12 @@ const ignoreLogging = require("../../utils/logging/ignoreLogging");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
 
-module.exports = async (client, message) => {
+module.exports = async (message) => {
   if (!message.inGuild() || !message.author || message.author.bot) return;
   
   const guildId = message.guild.id;
   try {
-    const logChannel = await getLogChannel(client, guildId, 'message');
+    const logChannel = await getLogChannel(guildId, 'message');
     if (!logChannel) return;
 
     const loggingConfig = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'deletes' });

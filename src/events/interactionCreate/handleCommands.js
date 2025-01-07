@@ -3,7 +3,7 @@ const { getPremiumById } = require('../../../database/PremiumUsersAndGuilds/setP
 const getLocalCommands = require('../../utils/commands/getLocalCommands');
 const { createInfoEmbed, createWarningEmbed, createErrorEmbed } = require('../../utils/embeds/createReplyEmbed');
 
-module.exports = async (client, interaction) => {
+module.exports = async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   const localCommands = getLocalCommands();
@@ -87,7 +87,7 @@ module.exports = async (client, interaction) => {
       }
     }
 
-    await commandObject.callback(client, interaction);
+    await commandObject.callback(interaction);
   } catch (error) {
     console.log(`There was an error running the '${cmdName}' command: ${error}.`);
     embed = createErrorEmbed({int: interaction, descr: `Something went wrong while running this Command. Please try again later.`});

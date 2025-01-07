@@ -4,12 +4,12 @@ const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const { getGuildLoggingConfig } = require('../../../database/guildSettings/setGuildSettings');
 
-module.exports = async (client, oldMember, newMember) => {
+module.exports = async (oldMember, newMember) => {
   const guildId = oldMember.guild.id
   try {
     if (client.user.id === oldMember.user.id) return;
 
-    const logChannel = await getLogChannel(client, guildId, 'member');
+    const logChannel = await getLogChannel(guildId, 'member');
     if (!logChannel) return;
 
     const configLogging = await getGuildLoggingConfig(guildId, 'member');

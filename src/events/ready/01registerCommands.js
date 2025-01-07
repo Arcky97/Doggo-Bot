@@ -3,12 +3,10 @@ const getApplicationCommands = require('../../utils/commands/getApplicationComma
 const getLocalCommands = require('../../utils/commands/getLocalCommands');
 const validateCommandProperties = require('../../utils/commands/validateCommandProperties');
 
-module.exports = async (client, guild) => {
+module.exports = async (guild) => {
   try {
     const localCommands = getLocalCommands();
-    const applicationCommands = await getApplicationCommands(
-      client, guild.id
-    );
+    const applicationCommands = await getApplicationCommands(guild.id);
     console.log(
       `Checking ${localCommands.length} Commands`
     );
@@ -23,7 +21,7 @@ module.exports = async (client, guild) => {
         continue;
       }
 
-      const existingCommand = await applicationCommands.cache.find(
+      const existingCommand = applicationCommands.cache.find(
         (cmd) => cmd.name === name
       );
       if (existingCommand) {

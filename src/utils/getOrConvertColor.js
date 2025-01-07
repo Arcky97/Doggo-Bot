@@ -1,4 +1,5 @@
 const ntc = require("ntc");
+const { findClosestMatch } = require("../../database/botReplies/setBotReplies");
 
 module.exports = async (input, output = false) => {
   let hexColor;
@@ -15,10 +16,13 @@ module.exports = async (input, output = false) => {
       message = `The provided hex color "${input}" is not valid.`;
     }        
   } else {
-    const colorMatch = ntc.names.find(([hex, name]) => name.toLowerCase() === input.toLowerCase() || name.toLowerCase().includes(input.toLowerCase()));
-    if (colorMatch) {
-      hexColor = "#" + colorMatch[0];
-      message = `Your given color name is ${colorMatch[1]} with hex #${colorMatch[0]}`
+    const colorMatch = ntc.names.filter(([_, name]) => name.toLowerCase() === input.toLowerCase() || name.toLowerCase().includes(input.toLowerCase()));
+    const closestMatch = await findClosestMatch(input, colorMatch.map(color => color[1]));
+    const useColor = colorMatch.find(color => color[1] === closestMatch.matches[0]);
+
+    if (useColor) {
+      hexColor = "#" + useColor[0];
+      message = `Your given color name is ${useColor[1]} with hex #${useColor[0]}`
     } else {
       message = `The color name "${input}" was not found.`;
     }

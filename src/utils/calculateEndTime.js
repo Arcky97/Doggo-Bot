@@ -3,7 +3,7 @@
  * @param {*} input
  */
 
-module.exports = (input) => {
+module.exports = (input, durationOnly = false) => {
   if (!input) return null;
 
   const regex = /^(?:\d+\s*)?(tomorrow?|tmrw?|next\s*day?|next\s*week?|next\s*month?|next\s*year?|seconds?|secs?|minutes?|mins?|hours?|hrs?|days?|dys?|weeks?|wks?|months?|mos?|years?|yrs?)$/i;
@@ -62,7 +62,11 @@ module.exports = (input) => {
     }
 
     const durationMs = endTime - now;
-    return { now, endTime, durationMs, roundDate };
+    if (!durationOnly) {
+      return { now, endTime, durationMs, roundDate };
+    } else {
+      return durationMs
+    }
   } else {
     return null;
   }

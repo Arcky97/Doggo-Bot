@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require("discord.js");
-const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
-const { createErrorEmbed } = require("../embeds/createReplyEmbed");
+const { setBotReplies } = require("../../../../../database/botReplies/setBotReplies");
+const { createErrorEmbed } = require('../../../../utils/embeds/createReplyEmbed');
 
-const updateReply = async (interaction, type) => {
+module.exports = async (interaction, type) => {
   const replyID = interaction.options.getString('id');
   let input = interaction.options.getString('new');
   if (input.includes(';')) {
@@ -14,14 +14,14 @@ const updateReply = async (interaction, type) => {
   let embed;
   try {
     if (typeof message === 'object') {
-      let triggerArrayBefore = JSON.parse(message.old.triggers);
-      let triggerStringBefore = triggerArrayBefore.join('\n-  ');
-      let triggerArrayAfter = JSON.parse(message.new.triggers);
-      let triggerStringAfter = triggerArrayAfter.join('\n-  ');
-      let responseArrayBefore = JSON.parse(message.old.responses);
-      let responseStringBefore = responseArrayBefore.join('\n- ');
-      let responseArrayAfter = JSON.parse(message.new.responses);
-      let responseStringAfter = responseArrayAfter.join('\n- ');
+      const triggerArrayBefore = JSON.parse(message.old.triggers)
+      const triggerStringBefore = triggerArrayBefore.join('\n-  ');
+      const triggerArrayAfter = JSON.parse(message.new.triggers)
+      const triggerStringAfter = triggerArrayAfter.join('\n-  ');
+      const responseArrayBefore = JSON.parse(message.old.responses)
+      const responseStringBefore = responseArrayBefore.join('\n-  ');
+      const responseArrayAfter = JSON.parse(message.new.responses)
+      const responseStringAfter = responseArrayAfter.join('\n-  ');
       embed = new EmbedBuilder()
         .setColor(0xE67E22)
         .setTitle('Reply Updated')
@@ -58,12 +58,13 @@ const updateReply = async (interaction, type) => {
         )
         .setTimestamp()
     } else {
-      embed = createErrorEmbed({ int: interaction, descr: message});
+      embed = createErrorEmbed({ 
+        int: interaction, 
+        descr: message
+      });
     }
-    await interaction.reply({ embeds: [embed]});
+    return embed;
   } catch (error) {
     console.log('Error generating UpdateReply embed:', error);
   }
 }
-
-module.exports = { updateReply };

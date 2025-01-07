@@ -3,6 +3,7 @@ const { insertData } = require("../controlData/insertData");
 const { deleteData } = require("../controlData/deleteData");
 const exportToJson = require("../../src/handlers/exportToJson");
 const { query } = require("../db");
+const { updateData } = require("../controlData/updateData");
 
 async function getModerationLogs({guildId, userId, action}) {
   const keys = {
@@ -24,7 +25,6 @@ async function getModerationLogs({guildId, userId, action}) {
 
 async function getModerationLogsById(guildId, id) {
   try {
-    console.log([guildId, id]);
     const data = await selectData('ModerationLogs', {guildId: guildId, id: id});
     if (data) {
       return data;
@@ -35,6 +35,7 @@ async function getModerationLogsById(guildId, id) {
     console.error('Error getting Moderation Logs by ID:', error);
   }
 }
+
 
 /**
  * @returns {Promise<number>}
@@ -52,21 +53,75 @@ async function nextModerationLogId() {
   }
 }
 
-async function addModerationLogs({guildId, userId, modId, action, reason, date, duration}) {
+/**
+ * Adds a Moderation Log entry to the 'ModerationLogs' table in the database.
+ * 
+ * @param {Object} params - The parameters for the Moderation Log entry.
+ * @param {string} params.guildId - The ID of the guild.
+ * @param {string} params.userId - The ID of the target user.
+ * @param {string} params.modId - The ID of the Moderator.
+ * @param {string} params.action - The type of Moderation (e.g. 'warn', 'timeout', 'timeout remove', 'mute', 'unmute', 'kick', 'ban', 'unban')
+ * @param {string} [params.reason] - The reason the Moderation action was taken.
+ * @param {string} [params.status] - The status of the Moderation action (e.g. 'completed', 'pending', 'scheduled', 'failed')
+ * @param {string} [params.formatDuration] - The formatted duration of the Moderation action.
+ * @param {boolean} params.logging - Wheter to Log the Moderation action to the Moderation Log channel (default true).
+ * @param {string} [params.logChannel] - The Channel ID of the Moderation Log channel (if setup).
+ * @param {string} [params.data] - The date the Moderation action was taken.
+ * @param {string} [params.duration] - The duration of the Moderation action.
+ */
+async function addModerationLogs({guildId, userId, modId, action, reason, status, formatDuration, logging, logChannel, date, duration}) {
   try {
     const data = {
       guildId: guildId,
       userId: userId,
       modId: modId,
       action: action,
+      logging: logging,
     }
     if (reason) data.reason = reason;
+    if (status) data.status = status;
+    if (formatDuration) data.formatDuration = formatDuration;
+    if (logChannel) data.logChannel = logChannel;
     if (date) data.date = date;
     if (duration) data.endTime = duration;
     await insertData('ModerationLogs', {}, data);
     exportToJson('ModerationLogs', guildId);
   } catch (error) {
     console.error('Error adding Moderation Log:', error);
+  }
+}
+
+async function addModerationLogTimeoutId(id, guildId, timeoutId) {
+  try {
+    await updateData('ModerationLogs', { id: id }, { timeoutId: timeoutId });
+    exportToJson('ModerationLogs', guildId);
+  } catch (error) {
+    console.error('Error adding Timeout ID to Moderation Log:', error);
+  }
+}
+
+async function getModerationLogTimeoutId(guildId, userId, action) {
+  try {
+    const data = await selectData('ModerationLogs', { guildId: guildId, userId: userId, action: action });
+    if (data) {
+      return data.timeoutId;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting timeoutId from Moderation Logs:', error);
+  }
+}
+async function setModerationLogStatus(id, guildId, status) {
+  try {
+    if (['completed', 'pending', 'scheduled', 'failed'].includes(status)) {
+      await updateData('ModerationLogs', {id: id}, {status: status});
+      exportToJson('ModerationLogs', guildId);
+    } else {
+      console.error('Ivalid status:', status);
+    }
+  } catch (error) {
+    console.error('Error setting Moderation Log status as completed:', error);
   }
 }
 
@@ -93,5 +148,5 @@ async function clearModerationLogs(guildId, userId, action) {
 }
 
 module.exports = {
-  getModerationLogs, addModerationLogs, removeModerationLogs, clearModerationLogs, nextModerationLogId, getModerationLogsById
+  getModerationLogs, addModerationLogs, addModerationLogTimeoutId, getModerationLogTimeoutId, setModerationLogStatus, removeModerationLogs, clearModerationLogs, nextModerationLogId, getModerationLogsById
 }

@@ -2,11 +2,17 @@ const { addToDatabaseCount } = require("../../src/handlers/DatabaseCount");
 const exportToDatabaseLogging = require("../../src/handlers/exportToDatabaseLogging");
 const { query } = require("../db");
 
-async function selectData(table, keys, selectAll = false) {
-  const whereClause = Object.keys(keys).map(key => `${key} = ?`).join(' AND ');
-  const whereValues = Object.values(keys);
+async function selectData(table, keys = {}, selectAll = false) {
+  let whereClause = '';
+  let whereValues = [];
+
+  if (Object.keys(keys).length > 0) {
+    whereClause = 'WHERE ' + Object.keys(keys).map(key => `${key} = ?`).join(' AND ');
+    whereValues = Object.values(keys);
+  }
+  
   const selectQuery = `
-    SELECT * FROM ${table} WHERE ${whereClause};
+    SELECT * FROM ${table} ${whereClause};
   `;
 
   try {

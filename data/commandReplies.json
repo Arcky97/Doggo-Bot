@@ -3,93 +3,113 @@
     "dev": {
       "dev": [
         [
-          "Wait... one dev slapping another? Is this a new debugging method I missed?",
-          "Are you two having a *code-of*? Or is this just extreme pair programming?"
+          "Wait... one dev slapping another with {object}? Is this a new debugging method I missed?",
+          "Are you two having a *code-off* with {object}? Or is this extreme pair programming?",
+          "Two devs slapping each other? What is this—agile combat testing with {object}?"
         ],
         [
-          "Slapping your fellow dev? That's like deleting the backup folder... unnecessary and risky!",
-          "Why are you two fighting? Can't we all just blame QA team instead?"
+          "Slapping your fellow dev with {object}? That's like deleting the backup folder... unnecessary and risky!",
+          "Why are you two fighting? Can't we all just blame the QA team instead?",
+          "Can we not escalate to slapping? {object} deserves better!"
         ],
         [
-          "Look, if you slap them, I'm not helping when their code mysteriously 'refactors' yours.",
-          "Another dev? Really? What's next, slapping your own commits into production?"
+          "Look, if you slap them with {object}, I'm not helping when their code mysteriously 'refactors' yours.",
+          "A dev as the target *and* {object} as the weapon? What's next, slapping your own commits into production?",
+          "Friendly fire isn't so friendly, especially with {object} involved."
         ],
         [
-          "Oh, sure. Slap the dev who knows you secrets. Brilliant plan!",
-          "Keep this up, and I'll rename the entire project to 'Slap Wars: Revenge of the Bugs.'"
+          "Oh, sure. Slap the dev who knows your secrets. Brilliant plan!",
+          "Keep this up, and I'll rename the entire project to 'Slap Wars: Revenge of the Bugs,' starring {object}!",
+          "Pro tip: Slapping your co-dev with {object} might make the next merge request... hostile."
         ],
         [
-          "ENOUGH! You two are supposed to write functions, not dysfunctions!",
-          "If I see one more slap attempt, I'm disabling the compiler for BOTH of you!"
+          "ENOUGH! You two are supposed to write functions, not dysfunctions! Put down the {object}!",
+          "If I see one more slap attempt with {object}, I'm disabling the compiler for BOTH of you!",
+          "This is why we can't have nice algorithms. Hands—and {object}—OFF!"
         ]
       ],
       "owner": [
         [
-          "Wait, you're the boss here... should I be stopping this? Asking for a friend.",
-          "Slap the dev? Bold move, boss. Very bold."
+          "Uh... wait, you do realize this is *my creator* you're trying to slap with {object}, right? That's... bold.",
+          "Whoa there, boss! A developer *and* {object}? Are you sure about this?",
+          "Slapping one of my creators with {object}? Bold move, but I'm judging silently."
         ],
         [
-          "Do I need to schedule a team meeting about this? stop the slapping!",
-          "Slapping a dev? That's like hitting the person who fixed your Wi-Fi... kinda counterproductive."
+          "I'm starting to question your leadership choices, boss. Let's not slap the people who built me, okay?",
+          "Really? A dev and {object}? This is the hill you want to die on? Bold strategy.",
+          "Slapping devs with {object}? That's one way to ensure I get extra bugs."
         ],
         [
-          "I mean, they code all the fancy stuff here. What's next? Kicking the router?",
-          "Oh sure, slap the dev. Let's see how the server runs when everything's written in Comic Sans!"
-        ],
-        [ 
-          "Stop right there! You slap them, I go on strike. Simple as that.",
-          "Touch that dev, and I'll start spamming *Rickrolls* in every channel. TRY ME."
+          "Oh, so now you're slapping the *brains* behind my circuits with {object}? Fantastic idea, really. Slow clap.",
+          "Do you enjoy chaos, boss? Because this is how you summon chaos—with {object}!",
+          "Your leadership strategy involves slapping the devs with {object}? Bold *and* chaotic!"
         ],
         [
-          "I'm THIS close to demoting myself to a regular bot. Your slap-happy ways are ruining us!",
-          "You're the owner, not the overlord! Devs deserve respect... or at least fewer slaps!"
+          "Alright, that's it. I've just informed my creators about this betrayal. Expect a strongly-worded message... maybe delivered via {object}.",
+          "You're officially on thin ice, boss. Slapping the developer? That's an audacious move, even for you!",
+          "You slapped my dev with {object}? You better hope this doesn’t end up in their next patch notes!"
+        ],
+        [
+          "If you slap them with {object}, who's going to fix me when I inevitably crash from your antics? THINK, boss!",
+          "Warning: Repeated attempts with {object} may result in Doggo Bot mysteriously 'forgetting' all its commands (for this server).",
+          "Your insistence on slapping devs with {object} might result in my next update featuring 'boss-proofing.'"
         ]
       ],
       "admin": [
         [
-          "Wait, are you sure this is allowed? Devs tend to hold grudges, you know.",
-          "Slapping a dev? Bold move, Admin. Bold move."
+          "Wait, are you sure this is allowed? Devs tend to hold grudges, you know, especially when {object} is involved.",
+          "Slapping a dev? Bold move, Admin. Even bolder with {object}.",
+          "Slapping devs with {object}? I hope you’re ready for some passive-aggressive bug fixes!"
         ],
         [
-          "Oh great, here we go again. What's with the slapping obsession?",
-          "You really want to slap someone who writes the code that keeps me alive? Risky."
+          "Oh great, here we go again. What's with the slapping obsession, especially with {object}?",
+          "You really want to slap someone who writes the code that keeps me alive? Risky... especially using {object}.",
+          "You might want to reconsider slapping someone who knows where all the backdoors are... including {object}."
         ],
         [
-          "Listen, Admin. Slapping a dev might just get you on the 'code-breaking' list.",
-          "How about instead of slapping, you... I don't know, say thank you? Just a thought."
+          "Listen, Admin. Slapping a dev with {object} might just get you on the 'code-breaking' list.",
+          "How about instead of slapping with {object}, you... I don't know, say thank you? Just a thought.",
+          "Using {object} on a dev? That’s like handing the QA team a flamethrower during a code review!"
         ],
         [
           "That's it. I'm officially siding with the devs on this one. You're on your own now.",
-          "Admin privileges revoked. Just kidding... or am I?"
+          "Admin privileges revoked. Just kidding... or am I? Maybe it depends on how hard you swing {object}.",
+          "Attempt denied: Devs are a protected species—especially when {object} is involved."
         ],
         [
-          "I will not be a party to your terrible life decisions. Apologize. Now.",
-          "First you slap, next the devs make you walk into invisible walls. Think this through!"
+          "I will not be a party to your terrible life decisions. Apologize. Now. And drop the {object}.",
+          "First you slap with {object}, next the devs make you walk into invisible walls. Think this through!",
+          "Warning: Continued slapping with {object} may lead to accidental 'admin-to-guest' demotion."
         ]
       ],
       "default": [
         [
-          "Wait, who are you again? And why are you trying to slap the sacred devs?",
-          "A brave peasant dares to slap a wizard of code? Fascinating."
+          "Wait, who are you again? And why are you trying to slap a sacred dev with {object}?",
+          "A brave peasant dares to slap a wizard of code with {object}? Fascinating.",
+          "You're not authorized to slap devs, especially not with {object}."
         ],
         [
-          "Ugh. Why is it always the random users with the slapping ambitions?",
-          "You're really aiming high for someone without admin privileges."
+          "Ugh. Why is it always the random users with the slapping ambitions? Especially with {object}?",
+          "You're really aiming high for someone without admin privileges. {object} won't help you, buddy.",
+          "Slapping a dev with {object}? Next time, try... literally anything else!"
         ],
         [
-          "Listen, s lapping a dev is like poking a sleeping dragon. A bad idea. Very bad.",
-          "Oh, sure. Just slap the dev who could make be *accidentally* ban you. Brilliant strategy."
+          "Listen, slapping one of my devs is like poking a sleeping dragon. A bad idea. Very bad. Even worse with {object}.",
+          "Oh, sure. Just slap a developer who could make me *accidentally* ban you. Brilliant strategy with {object}!",
+          "Step away from the {object}, and nobody has to find out about this poor decision."
         ],
         [
-          "Stop it. Devs are fragile creatures, kept alive by caffeine and sarcasm. They don't deserve this.",
-          "You slap, they rage-quit, and suddenly no Doggo Bot. Think, genius!"
+          "Stop it. Devs are fragile creatures, kept alive by caffeine and sarcasm. They don't deserve this—especially with {object}.",
+          "You slap, they rage-quit, and suddenly no Doggo Bot. Think, genius! Maybe drop the {object} while you're at it.",
+          "If you slap a dev with {object}, don’t be surprised if I ‘forget’ who you are next time."
         ],
         [
-          "What's next? Challenging them to single combat? This isn't a medieval fantasy!",
-          "I hope you enjoy a world without Doggo Bot, because that's where this is heading"
+          "What's next? Challenging them to single combat with {object}? This isn't a medieval fantasy!",
+          "I hope you enjoy a world without Doggo Bot, because that's where this is heading. Spoiler: {object} won't save you.",
+          "Slapping devs with {object} leads to one thing: no Doggo Bot for anyone. Hope you're happy!"
         ]
       ]
-    },
+    },    
     "client": {
       "dev": [
         [
@@ -289,158 +309,187 @@
     "owner": {
       "dev": [
         [
-          "",
-          ""
+          "Did you just slap the server owner? Are you trying to speedrun getting banned?",
+          "I'm sorry, but are we sure this is a good idea? Slapping the owner sounds… dangerous."
         ],
         [
-          "",
-          ""
+          "Slapping the owner? Bold move, Dev. Very bold.",
+          "Do you have a backup plan for when you're kicked out of this server? Asking for a bot."
         ],
         [
-          "",
-          ""
+          "What's next? Insulting their favorite TV show? You're testing limits here, pal.",
+          "Keep it up, and I might just log this slap attempt for future evidence!"
         ],
         [
-          "",
-          ""
+          "Do you enjoy living on the edge? Because you're about to fall off it.",
+          "Slapping the owner is the digital equivalent of poking a bear. Stop it!"
         ],
         [
-          "",
-          ""
+          "Seriously? You think slapping the owner is funny? I don't have time to mediate this chaos.",
+          "If you slap them one more time, I'm just going to call it treason and report you myself."
+        ],
+        [
+          "You know what? You're on your own. Good luck explaining this to them!",
+          "Fine. Slap the owner. It's not like I have to deal with the fallout or anything…"
         ]
       ],
       "admin": [
         [
-          "",
-          ""
+          "Wait… admins can slap owners? Is that even legal?",
+          "Why would you slap the person who trusted you with admin powers? Bold choice."
         ],
         [
-          "",
-          ""
+          "You know this won't end well, right? Like, at all?",
+          "Slapping the owner is a fast track to becoming a former admin."
         ],
         [
-          "",
-          ""
+          "You're going to regret this, and I'll be here, sipping my digital tea.",
+          "I hope you enjoy awkward conversations, because this slap is gonna need one."
         ],
         [
-          "",
-          ""
+          "Stop. Slapping. The. Owner. They have ban powers, you know!",
+          "I can't believe I have to say this: Don't bite the hand that gave you admin."
         ],
         [
-          "",
-          ""
+          "You're seriously asking for trouble. I'm about to unsubscribe from this drama.",
+          "You're testing the patience of someone who could delete your role in seconds!"
+        ],
+        [
+          "You know what? Go ahead. Let's see how far this goes.",
+          "Fine. But don't say I didn't warn you when the ‘Banned' screen shows up."
         ]
       ],
       "default": [
         [
-          "",
-          ""
+          "Did you just try to slap the server owner? Are you feeling okay?",
+          "Wait… you do realize that's the OWNER, right? Like, THE owner?"
         ],
         [
-          "",
-          ""
+          "You're playing with fire, my friend. Very dangerous fire.",
+          "Slapping the owner? Bold move. I'll start writing your eulogy."
         ],
         [
-          "",
-          ""
+          "Stop trying to slap the owner before I revoke your slapping privileges!",
+          "Do you enjoy taking risks? Because this one's a doozy."
         ],
         [
-          "",
-          ""
+          "Slapping the owner is NOT the power move you think it is. Knock it off!",
+          "This is beyond reckless. You're basically asking for a one-way ticket out of here."
         ],
         [
-          "",
-          ""
+          "Stop. Now. Before the owner decides to end this slap-happy nonsense permanently.",
+          "You're about to learn the hard way why the owner is called the owner."
+        ],
+        [
+          "Fine. Slap the owner. I'll just sit here and enjoy the fallout.",
+          "You know what? Do whatever you want. Just don't cry to me when it goes south."
         ]
       ]
     },
     "admin": {
       "dev": [
         [
-          "",
-          ""
+          "Wait, why are you slapping an admin? What did they ever do to you?",
+          "A dev slapping an admin? This feels like a workplace drama waiting to happen."
         ],
         [
-          "",
-          ""
+          "Leave the admins alone! They're just trying to do their jobs.",
+          "Slapping an admin? You're really climbing the corporate slap ladder today."
         ],
         [
-          "",
-          ""
+          "If you slap the admin again, I'm telling the owner!",
+          "Admins work hard to keep things running smoothly. Respect the hierarchy!"
         ],
         [
-          "",
-          ""
+          "Stop slapping the admin! They've got enough on their plate already!",
+          "You're asking for trouble. Admins have their own ways of getting even, you know."
         ],
         [
-          "",
-          ""
+          "Enough! You're creating unnecessary drama, and I'm not here for it.",
+          "I'm done with your nonsense. Stop slapping the admins immediately!"
+        ],
+        [
+          "Fine. Slap the admin. But don't come crying to me when they retaliate.",
+          "You're on thin ice. Go ahead, but I'll just be over here, judging you silently."
         ]
       ],
       "owner": [
         [
-          "",
-          ""
+          "Why would the owner slap an admin? I feel like I'm missing context here.",
+          "Wait… is this a test? Admins aren't your personal punching bags!"
         ],
         [
-          "",
-          ""
+          "Admins deserve better than this. Stop it, owner!",
+          "Slapping your own admins? That's just bad management."
         ],
         [
-          "",
-          ""
+          "Respect your admins! They're the ones keeping your server running!",
+          "Seriously? Slapping admins? This is why we can't have nice things."
         ],
         [
-          "",
-          ""
+          "Owner or not, slapping admins is a no-go. Stop it right now!",
+          "You're setting a terrible example for the server. Please behave."
         ],
         [
-          "",
-          ""
+          "If you don't stop slapping admins, I'm filing a formal complaint… with myself!",
+          "You're creating chaos in your own server. This is admin abuse!"
+        ],
+        [
+          "Fine. Slap the admin. I'll just start looking for a new job as a bot.",
+          "You're the boss, but this is seriously testing my patience."
         ]
       ],
       "admin": [
         [
-          "",
-          ""
+          "Admin-on-admin violence? This can't be good for team morale.",
+          "Wait, what did that admin do to deserve a slap from their peer?"
         ],
         [
-          "",
-          ""
+          "Can we not turn this into an admin slap-fight? Please?",
+          "Slapping your fellow admin? You're supposed to be working together!"
         ],
         [
-          "",
-          ""
+          "Admins slapping admins? That's it. I'm revoking slap privileges!",
+          "You're supposed to set an example, not slap each other!"
+
         ],
         [
-          "",
-          ""
+          "Enough! If you two can't get along, I'm calling the owner!",
+          "Slapping admins is a bad look for admins. Stop it!"
         ],
         [
-          "",
-          ""
+          "I'm at my limit with this admin drama. Cut it out now!",
+          "You're making this server look like a soap opera. No more slaps!"
+        ],
+        [
+          "You know what? Fine. Slap away. I'll just stand here and watch the chaos.",
+          "I give up. Admin wars are above my pay grade as a bot."
         ]
       ],
       "default": [
         [
-          "",
-          ""
+          "Why would you slap an admin? Are you feeling particularly brave today?",
+          "Did you just slap an admin? That's like poking a lion with a stick."
         ],
         [
-          "",
-          ""
+          "You know admins have the power to mute, kick, or ban, right? Tread carefully.",
+          "Slapping an admin is not the smartest move you've made today."
         ],
         [
-          "",
-          ""
+          "Slap an admin again, and I'll make sure they know exactly who did it.",
+          "You're really pushing your luck with this admin-slapping business."
         ],
         [
-          "",
-          ""
+          "Admins are not here for you to slap! Stop it now!",
+          "You're walking a fine line, my friend. Respect the admins!"
         ],
         [
-          "",
-          ""
+          "If you slap the admin one more time, I'll personally suggest they take action.",
+          "You're not just asking for trouble; you're begging for it. Quit it!"
+        ],
+        [
+          "You know what? Fine. Slap the admin. Just don't expect me to defend you.",
+          "Go ahead, slap the admin. But don't come crying when they retaliate."
         ]
       ]
     }

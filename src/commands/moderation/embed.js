@@ -270,7 +270,7 @@ module.exports = {
     }
   ],
   permissionsRequired: [PermissionFlagsBits.Administrator],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     await interaction.deferReply();
     const embedAction = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;

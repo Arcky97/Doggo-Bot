@@ -1,9 +1,9 @@
 const setActivity = require("../../utils/setActivity");
 
-module.exports = (client) => {
+module.exports = () => {
   console.log(
     `'${client.user.username}' is ready!\n` + 
     '-----------------------------------'
   );
-  setActivity(client);
+  setActivity();
 };

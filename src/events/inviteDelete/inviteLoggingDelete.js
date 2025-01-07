@@ -3,10 +3,10 @@ const getLogChannel = require('../../utils/logging/getLogChannel');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
-module.exports = async (client, invite) => {
+module.exports = async (invite) => {
   const guildId = invite.guild.id;
   try {
-    const logChannel = await getLogChannel(client, invite.guild.id, 'server');
+    const logChannel = await getLogChannel(invite.guild.id, 'server');
     if (!logChannel) return;
 
     const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', option: 'updates'});

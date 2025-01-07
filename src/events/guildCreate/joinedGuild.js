@@ -4,7 +4,7 @@ const { setLevelSettings } = require('../../../database/levelSystem/setLevelSett
 const { resetDeletionDate } = require('../../handlers/dataBaseCleanUp');
 const sendMessageToDevServer = require('../../utils/sendMessageToDevServer');
 
-module.exports = async (client, guild) => {
+module.exports = async (guild) => {
   try {
     console.log(`✅ Joined a new guild: ${guild.name} (${guild.id}).`);
     setLevelSettings({ id: guild.id });
@@ -14,7 +14,7 @@ module.exports = async (client, guild) => {
     } else {
       console.log(`No Data marked for deletion found for guild ${guild.id}`);
     }
-    await setActivity(client);
+    await setActivity();
 
     const embed = new EmbedBuilder()
       .setColor('Green')
@@ -42,7 +42,7 @@ module.exports = async (client, guild) => {
       .setTimestamp()
     
     const channelId = '1314702619196784743';
-    await sendMessageToDevServer(client, channelId, { embeds: [embed] });
+    await sendMessageToDevServer(channelId, { embeds: [embed] });
   } catch (error) {
     console.error(`❌ Failed to join the guild: ${guild.name} (${guild.id}).`, error);
   }

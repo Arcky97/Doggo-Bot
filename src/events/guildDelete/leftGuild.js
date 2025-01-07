@@ -5,14 +5,14 @@ const moment = require("moment");
 const formatTime = require('../../utils/formatTime');
 const sendMessageToDevServer = require('../../utils/sendMessageToDevServer');
 
-module.exports = async (client, guild) => {
+module.exports = async (guild) => {
   const deletionDate = new Date();
   deletionDate.setDate(deletionDate.getDate() + 11); // 11 days from now
   try {
     console.log(`✅ Left the guild: ${guild.name} (${guild.id}).`);
     await setDeletionDate(guild.id, deletionDate);
     console.log(`Data for guild ${guild.id} marked for deletion on ${deletionDate}`);
-    await setActivity(client);
+    await setActivity();
 
     const joinedAt = moment(client.joinedAt).format('MMMM Do YYYY, h:mm:ss a');
     const leftAt = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -47,7 +47,7 @@ module.exports = async (client, guild) => {
       .setTimestamp()
     
     const channelId = '1314702619196784743';
-    await sendMessageToDevServer(client, channelId, { embeds: [embed] });
+    await sendMessageToDevServer(channelId, { embeds: [embed] });
   } catch (error) {
     console.error(`❌ Failed to be removed from the guild: ${guild.name} (${guild.id}).`, error);
   }

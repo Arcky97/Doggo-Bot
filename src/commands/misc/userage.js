@@ -13,7 +13,7 @@ module.exports = {
       type: ApplicationCommandOptionType.Mentionable
     }
   ],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const member = interaction.options.getMember('user');
     console.log(member.user.createdAt);
     const age = await formatTime(member.user.createdAt, true);

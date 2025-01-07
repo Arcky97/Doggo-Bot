@@ -6,10 +6,10 @@ const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const getNsfwLevelName = require('../../utils/logging/getNsfwLevelName');
 const getPreferredLocaleName = require('../../utils/logging/getPreferredLocaleName');
 
-module.exports = async (client, oldGuild, newGuild) => {
+module.exports = async (oldGuild, newGuild) => {
   const guildId = oldGuild.id
   try {
-    const logChannel = await getLogChannel(client, guildId, 'server');
+    const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 
     const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', option: 'updates' });

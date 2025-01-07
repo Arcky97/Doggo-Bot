@@ -2,14 +2,14 @@ const { Client, User, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 
-module.exports = async (client, oldUser, newUser) => {
+module.exports = async (oldUser, newUser) => {
   try {
     // Loop through all guilds to find where the user exists
     for (const guild of client.guilds.cache.values()) {
       const member = await guild.members.fetch(newUser.id).catch(() => null);
       if (!member) continue; // Skip guilds where the user is not a member
 
-      const logChannel = await getLogChannel(client, guild.id, 'member');
+      const logChannel = await getLogChannel(guild.id, 'member');
       if (!logChannel) continue;
 
       const oldUserName = oldUser.username || 'No Name';

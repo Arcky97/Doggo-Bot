@@ -1,9 +1,9 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { addReply } = require("../../utils/replies/addReply");
-const { updateReply } = require("../../utils/replies/updateReply");
-const { removeReply } = require("../../utils/replies/removeReply");
-const { checkReply } = require("../../utils/replies/checkReply");
-const { listReply } = require("../../utils/replies/listReply");
+const addReply = require("./subCommands/addReply");
+const updateReply = require("./subCommands/updateReply");
+const removeReply = require("./subCommands/removeReply");
+const checkReply = require("./subCommands/checkReply");
+const listReply = require("./subCommands/listReply");
 
 module.exports = {
   name: 'reply',
@@ -106,23 +106,33 @@ module.exports = {
       description: 'Show a list of all Replies with their id.'
     }
   ],
-  callback: async (client, interaction) => {
-    const subCommand = interaction.options.getSubcommand();
-    const subCommandGroup = interaction.options.getSubcommandGroup();
-    if (subCommand === 'add') {
-      await addReply(interaction);
-    } else if (subCommandGroup === 'update') {
-      if (subCommand === 'trigger') {
-        await updateReply(interaction, 'trigger');
-      } else if (subCommand === 'response') {
-        await updateReply(interaction, 'response');
-      }
-    } else if (subCommand === 'remove') {
-      await removeReply(interaction);
-    } else if (subCommand === 'check') {
-      await checkReply(interaction)
-    } else if (subCommand === 'list') {
-      await listReply(interaction)
+  callback: async (interaction) => {
+    const subCmd = interaction.options.getSubcommand();
+    const subCmdGroup = interaction.options.getSubcommandGroup();
+
+    await interaction.deferReply();
+    let embed;
+
+    switch(subCmdGroup) {
+      case 'update':
+        embed = await updateReply(interaction, subCommand);
+        break;
+      default:
+        switch(subCmd) {
+          case 'add':
+            embed = await addReply(interaction);
+            break;
+          case 'remove':
+            embed = await removeReply(interaction);
+            break;
+          case 'check':
+            embed = await checkReply(interaction);
+            break;
+          case 'list':
+            await listReply(interaction);
+            break;
+        }
     }
+    if (embed) interaction.editReply({ embeds: [embed] });
   }
 };

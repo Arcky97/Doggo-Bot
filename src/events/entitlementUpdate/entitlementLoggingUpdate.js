@@ -2,7 +2,7 @@
 const { Client, Entitlement, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 
-module.exports = async (client, oldEntitlement, newEntitlement) => {
+module.exports = async (oldEntitlement, newEntitlement) => {
   try {
 
   } catch (error) {

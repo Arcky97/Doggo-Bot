@@ -1,5 +1,5 @@
-module.exports = async (bot, channel) => {
-  const botPermissions = channel.permissionsFor(bot.user);
+module.exports = async (channel) => {
+  const botPermissions = channel.permissionsFor(client.user);
   const permissions = [
     'ViewChannel',
     'SendMessages',

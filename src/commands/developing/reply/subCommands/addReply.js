@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('@discordjs/builders');
-const { setBotReplies } = require('../../../database/botReplies/setBotReplies');
-const { createErrorEmbed } = require('../embeds/createReplyEmbed');
+const { setBotReplies } = require('../../../../../database/botReplies/setBotReplies');
+const { createErrorEmbed } = require('../../../../utils/embeds/createReplyEmbed');
 
-const addReply = async (interaction) => {
+module.exports = async (interaction) => {
   let trigger = interaction.options.getString('trigger');
   let response = interaction.options.getString('response');
   if (trigger.includes(';')) {
@@ -19,12 +19,12 @@ const addReply = async (interaction) => {
   let embed;
   try {
     if (typeof message === 'object') {
-      let triggerArray = JSON.parse(message.triggers);
-      let triggerString = triggerArray.join('\n-  ');
-      let trig = triggerArray.length > 1 ? 'Triggers:' : 'Trigger:'
-      let responseArray = JSON.parse(message.responses);
-      let responseString = responseArray.join('\n- ');
-      let resp = responseArray.length > 1 ? 'Responses:' : 'Response:'
+      const triggerArray = JSON.parse(message.triggers);
+      const triggerString = triggerArray.join('\n-  ');
+      const trig = triggerArray.length > 1 ? 'Triggers:' : 'Trigger:';
+      const responseArray = JSON.parse(message.responses);
+      const responseString = responseArray.join('\n- ');
+      const resp = responseArray.length > 1 ? 'Responses:' : 'Response:';
       embed = new EmbedBuilder()
         .setColor(0x57F287)
         .setTitle('Reply Added')
@@ -42,10 +42,8 @@ const addReply = async (interaction) => {
     } else {
       embed = createErrorEmbed({ int: interaction, descr: message });
     } 
-    await interaction.reply({ embeds: [embed] });
+    return embed;
   } catch (error) {
     console.error('Error generating AddReply embed:', error)
   }
 }
-
-module.exports = { addReply }

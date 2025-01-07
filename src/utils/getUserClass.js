@@ -1,7 +1,7 @@
 const { PermissionFlagsBits } = require("discord.js");
 const { devs } = require('../../config.json');
 
-module.exports = (client, input) => {
+module.exports = (input) => {
   let output = [];
   input.forEach(i => {
     let type;

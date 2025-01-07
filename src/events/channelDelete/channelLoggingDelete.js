@@ -6,10 +6,10 @@ const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings
 const { setChannelOrRoleArray } = require('../../utils/setArrayValues');
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
 
-module.exports = async (client, channel) => {
+module.exports = async (channel) => {
   const guildId = channel.guild.id;
   try {
-    const logChannel = await getLogChannel(client, guildId, 'server');
+    const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 
     const loggingConfig = await checkLogTypeConfig({guildId: guildId, type: 'server', cat: 'channels', option: 'deletes' });

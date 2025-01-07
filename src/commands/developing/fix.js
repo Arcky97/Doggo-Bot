@@ -4,8 +4,9 @@ const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("..
 module.exports = {
   name: 'fix',
   description: 'fix some stuff in the database.',
+  deleted: true,
   devOnly: true,
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     let embed;
     if (interaction.user.id === '763287145615982592') {
       embed = createWarningEmbed({

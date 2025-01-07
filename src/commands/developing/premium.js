@@ -50,7 +50,7 @@ module.exports = {
     }
   ],
   devOnly: true,
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const subCmd = interaction.options.getSubcommand();
     let embed;
     await interaction.deferReply();

@@ -1,7 +1,7 @@
 const { getGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
 const checkChannelPermissions = require("../permissions/checkChannelPermissions");
 
-module.exports = async (client, guildId, log) => {
+module.exports = async (guildId, log) => {
   const logChannels = await getGuildSettings(guildId);
   if (!logChannels) return;
 
@@ -29,7 +29,7 @@ module.exports = async (client, guildId, log) => {
 
   if (!channel) return;
   
-  const hasPermissions = await checkChannelPermissions(client, channel);
+  const hasPermissions = await checkChannelPermissions(channel);
 
   if (hasPermissions) return channel;
 }

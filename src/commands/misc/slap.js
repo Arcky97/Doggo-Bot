@@ -23,7 +23,7 @@ module.exports = {
       required: true 
     }
   ],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const guildId = interaction.guild.id;
     const user = interaction.member;
     const userId = interaction.member.id;
@@ -31,7 +31,7 @@ module.exports = {
     const object = interaction.options.getString('object');
     let embed, responseArray, response;
     try {
-      const [userClass, targetClass] = getUserClass(client, [user, target]);
+      const [userClass, targetClass] = getUserClass([user, target]);
       
       let replies = commandReplies['slap']?.[targetClass]?.[userClass];
       let userAttempts = await getUserAttempts(guildId, userId);

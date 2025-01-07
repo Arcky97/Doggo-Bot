@@ -9,7 +9,7 @@ const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
 const { getGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
 
-module.exports = async (client, member) => {
+module.exports = async (member) => {
   const guildId = member.guild.id;
   try {
 
@@ -22,7 +22,7 @@ module.exports = async (client, member) => {
       await channel.send({ embeds: [welcome] });
     }
 
-    const logChannel = await getLogChannel(client, guildId, 'joinleave');
+    const logChannel = await getLogChannel(guildId, 'joinleave');
     if(!logChannel) return;
 
     const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'joinLeave', option: 'joins'});
@@ -64,7 +64,7 @@ module.exports = async (client, member) => {
 
     await setEventTimeOut('joinleave', member.id, embed, logChannel);
  
-    await setActivity(client);
+    await setActivity();
   } catch (error) {
     console.error('Failed to update Activity!', error)
   }

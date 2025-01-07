@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require("discord.js");
-const pagination = require("../../handlers/pagination");
-const { getReplies } = require("../../../database/botReplies/setBotReplies");
+const pagination = require("../../../../handlers/pagination");
+const { getReplies } = require("../../../../../database/botReplies/setBotReplies");
 
-const listReply = async (interaction) => {
+module.exports = async (interaction) => {
   const embeds = [];
   const pageSize = 9;
   try {
@@ -48,5 +48,3 @@ const listReply = async (interaction) => {
     console.error('Error generating pages for the embed:', error);
   }
 };
-
-module.exports = { listReply };

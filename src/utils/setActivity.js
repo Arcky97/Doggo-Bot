@@ -1,7 +1,7 @@
 const { ActivityType } = require('discord.js');
 const sendMessageToDevServer = require('./sendMessageToDevServer');
 
-module.exports = async (client) => {
+module.exports = async () => {
   let serverCount = totalMembers = 0;
   client.guilds.cache.forEach(guild => {
     totalMembers += guild.memberCount - 1;
@@ -16,5 +16,5 @@ module.exports = async (client) => {
 
 
   const channelId = '1273771024801861734';
-  await sendMessageToDevServer(client, channelId, 'Bot has started/restarted successfully!');
+  await sendMessageToDevServer(channelId, 'Bot has started/restarted successfully!');
 }

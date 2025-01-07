@@ -3,10 +3,10 @@ const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 
-module.exports = async (client, emoji) => {
+module.exports = async (emoji) => {
   const guildId = emoji.guild.id;
   try {
-    const logChannel = await getLogChannel(client, emoji.guild.id, 'server');
+    const logChannel = await getLogChannel(emoji.guild.id, 'server');
     if (!logChannel) return;
 
     const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'emojis', option: 'deletes' });

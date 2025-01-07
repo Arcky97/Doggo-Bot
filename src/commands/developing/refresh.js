@@ -4,9 +4,9 @@ const setActivity = require("../../utils/setActivity")
 module.exports = {
   name: 'refresh',
   description: 'Refreshes the bot',
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     try {
-      await setActivity(client);
+      await setActivity();
       const embed = createInfoEmbed({
         int: interaction,
         title: 'Doggo Bot Refreshed',

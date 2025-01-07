@@ -25,7 +25,7 @@ module.exports = {
     PermissionFlagsBits.KickMembers,
     PermissionFlagsBits.Administrator
   ],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const member = interaction.options.getMember('member');
     const reason = interaction.options.getString('reason') || 'No reason provided';
     let embed;

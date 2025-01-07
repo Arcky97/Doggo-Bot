@@ -11,7 +11,7 @@ module.exports = {
       type: ApplicationCommandOptionType.String
     }
   ],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const message = interaction.options.getString('message');
     await interaction.reply(message);
   }

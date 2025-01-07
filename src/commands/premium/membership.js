@@ -14,7 +14,7 @@ module.exports = {
     }
   ],
   premiumOnly: true,
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const subCmd = interaction.options.getSubcommand();
     const isPremium = await getPremiumById(interaction.user.id);
     let embed;

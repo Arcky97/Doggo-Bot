@@ -1,4 +1,4 @@
-module.exports = async (client, channelId, message) => {
+module.exports = async (channelId, message) => {
   const channel = client.channels.cache.get(channelId);
 
   if (channel) {

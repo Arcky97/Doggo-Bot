@@ -6,7 +6,7 @@ const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
 const sendAnnounceMessage = require('../../utils/levels/sendAnnounceMessage');
 const generateUserInfo = require('../../utils/levels/generateUserInfo');
 
-module.exports = async (client, message) => {
+module.exports = async (message) => {
   const guildId = message.guild.id;
   if (!message.inGuild() || message.author.bot || cooldowns.has(guildId + message.author.id)) return;
   try{
@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
     const userInfo = await generateUserInfo(guildId, message.author, xpToGive, xpSettings);
 
     if (userInfo) {
-      await sendAnnounceMessage(client, message, message.author, userInfo);
+      await sendAnnounceMessage(message, message.author, userInfo);
       await giveUserLevelRole(guildId, message.member, userInfo);
     }
   } catch (error) {

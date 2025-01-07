@@ -5,7 +5,7 @@ const calculateXpByLevel = require("./calculateXpByLevel");
 const createAnnounceEmbed = require("./createAnnounceEmbed");
 const giveUserLevelRole = require("./giveUserLevelRole");
 
-module.exports = async (client, guildId, user, userLevelInfo, xpSettings, xpToGive) => {
+module.exports = async (guildId, user, userLevelInfo, xpSettings, xpToGive) => {
   let newLevel = 0;
   let newXp = 0;
   const channel = client.channels.cache.get(await getAnnounceChannel(guildId));

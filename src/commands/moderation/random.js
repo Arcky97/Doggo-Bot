@@ -29,7 +29,7 @@ module.exports = {
       minValue: 1
     }
   ],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const messageId = interaction.options.getString('messageid');
     const emoji = interaction.options.getString('emoji');
     const channel = interaction.options.getChannel('channel') || interaction.channel;

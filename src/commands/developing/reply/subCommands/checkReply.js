@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
-const { setBotReplies } = require("../../../database/botReplies/setBotReplies");
+const { setBotReplies } = require("../../../../../database/botReplies/setBotReplies");
 
-const checkReply = async (interaction) => {
+module.exports = async (interaction) => {
   const trigger = interaction.options.getString('trigger');
   const message = await setBotReplies({trigger: trigger, action: 'check'});
   try {
@@ -25,10 +25,8 @@ const checkReply = async (interaction) => {
         }
       )
       .setTimestamp()
-    await interaction.reply({ embeds: [embed] });
+    return embed;
   } catch (error) {
     console.log('Error generating CheckReply embed:', error);
   }
 };
-
-module.exports = { checkReply };

@@ -137,7 +137,7 @@ module.exports = {
       ]
     }
   ],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const subCommand = interaction.options.getSubcommand();
     const subCommandGroup = interaction.options.getSubcommandGroup();
     if (subCommand === 'add') {

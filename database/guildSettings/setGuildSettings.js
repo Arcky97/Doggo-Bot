@@ -75,6 +75,11 @@ async function getIgnoreLoggingChannels(guildId) {
   }
 }
 
+/**
+ * Get the mute role for the guild.
+ * @param {String} guildId - The ID of the guild. 
+ * @returns {Promise<String>} - The ID of the mute role.
+ */
 async function getMuteRole(guildId) {
   try {
     const data = await getGuildSettings(guildId);

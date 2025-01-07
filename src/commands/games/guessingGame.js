@@ -29,7 +29,7 @@ module.exports = {
       
     }
   ],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const userId = interaction.member.id;
     const userGuess = interaction.options.getInteger('input');
 

@@ -18,7 +18,7 @@ module.exports = {
       description: 'Shows information about Doggo Bot.'
     }
   ],
-  callback: async (client, interaction) => {
+  callback: async (interaction) => {
     const subCmd = interaction.options.getSubcommand();
     const uptime = await formatTime(botStartTime, true);
     let embed;

@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const { getReactionRoles } = require('../../../database/reactionRoles/setReactionRoles');
 
-module.exports = async (client, reaction, user) => {
+module.exports = async (reaction, user) => {
   const guild = reaction.message.guild;
   const guildId = reaction.message.guildId;
   const channelId = reaction.message.channelId;

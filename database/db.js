@@ -71,7 +71,7 @@ async function initDatabase() {
           roleReplace BOOLEAN DEFAULT false,
           announceChannel VARCHAR(100) DEFAULT 'not set',
           announcePing BOOLEAN DEFAULT false,
-          announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!}", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }',
+          announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }',
           announceLevelMessages JSON DEFAULT '[]',
           roleMultipliers JSON DEFAULT '[]',
           channelMultipliers JSON DEFAULT '[]',
@@ -163,23 +163,24 @@ async function initDatabase() {
           date TIMESTAMP NOT NULL 
         )
       `,
-      TestTable: `
-        CREATE TABLE IF NOT EXISTS TestTable (
-          id VARCHAR(100) NOT NULL PRIMARY KEY,
-          name VARCHAR(100) NOT NULL
-        )
-      `,
       ModerationLogs: `
         CREATE TABLE IF NOT EXISTS ModerationLogs (
           id INT AUTO_INCREMENT PRIMARY KEY,
           guildId VARCHAR(100) NOT NULL,
           userId VARCHAR(100) NOT NULL,
           modId VARCHAR(100) NOT NULL,
+          timeoutId VARCHAR(100) DEFAULT NULL,
           action VARCHAR(100) NOT NULL,
-          reason TEXT DEFAULT 'No reason provided.',
+          reason VARCHAR(1024) DEFAULT 'No reason provided.',
+          status enum('completed', 'pending', 'scheduled', 'failed') DEFAULT 'completed',
+          formatDuration VARCHAR(100) DEFAULT NULL,
+          logging BOOLEAN DEFAULT true,
+          logChannel VARCHAR(100) DEFAULT NULL,
           date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
           endTime TIMESTAMP NULL,
-          deletionDate TIMESTAMP NULL
+          deletionDate TIMESTAMP NULL,
+          INDEX idx_status (status),
+          INDEX idx_endTime (endTime)
         )
       `
     };
@@ -228,93 +229,6 @@ async function checkTableUpdates(tableName) {
   console.log(`No changes made to table "${tableName}".`);
 }
 
-async function getExistingColumns(tableName) {
-  try {
-    const [columns] = await query(
-      `SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = ? AND table_schema = ?`,
-      [tableName, process.env.DB_NAME]
-    );
-
-    return columns.map(col => col.COLUMN_NAME);
-  } catch (error) {
-    console.error(`Error getting Existing Table "${tableName}":`, error);
-  }
-}
-
-async function addColumn(tableName, columnName, columnDefinition) {
-  try {
-    const existingColumns = await getExistingColumns(tableName);
-
-    if (!existingColumns.includes(columnName)) {
-      await query(
-      `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${columnDefinition}`
-      );
-      console.log(`Column "${columnName}" added to Table "${tableName}".`);
-    } else {
-      console.log(`Column "${columnName}" already exists in Table "${tableName}"`);
-    }
-  } catch(error) {
-    console.error(`Error when Adding Column "${columnName}" in Table "${tableName}":`, error);
-  }
-}
-
-async function modifyColumn(tableName, columnName, newDefinition) {
-  try {
-    const existingColumns = await getExistingColumns(tableName);
-
-    if (!existingColumns.includes(columnName)) {
-      await query(
-        `ALTER TABLE ${tableName} MODIFY COLUMN ${columnName} ${newDefinition}`
-      );
-      console.log(`Column "${columnName}" Modified in Table "${tableName}".`);
-    } else {
-      console.log(`Column "${columnName}" does not Exist in Table "${tableName}".`);
-    }
-  } catch (error) {
-    console.error(`Error when Modyfying Column "${columnName}" in Table "${tableName}":`, error);
-  }
-}
-
-async function removeColumn(tableName, columnName) {
-  try {
-    const existingColumns = await getExistingColumns(tableName);
-
-    if (!existingColumns.includes(columnName)) {
-      await query(
-        `ALTER TABLE ${tableName} DROP COLUMN ${columnName}`
-      );
-      console.log(`Column "${columnName}" Removed from Table "${tableName}".`);
-    } else {
-      console.log(`Column "${tableName}" does not Exist in Table "${tableName}".`);
-    }
-  } catch (error) {
-    console.log(`Error when Removing Column "${columnName}" from Table "${tableName}":`, error);
-  }
-}
-
-async function resetTable(tableName, createQuery) {
-  try {
-    await query(`DROP TABLE IF EXISTS ${tableName}`);
-    console.log(`Table "${tableName}" has been Resetted.`);
-
-    if (createQuery) {
-      await query(createQuery);
-      console.log(`Table "${tableName}" Recreated.`);
-    }
-  } catch (error) {
-    console.error(`Error Resetting Table "${tableName}":`, error);
-  }
-}
-
-async function deleteTable(tableName) {
-  try {
-    await query(`DROP TABLE IF EXISTS ${tableName}`);
-    console.log(`Table "${tableName}" Removed.`);
-  } catch (error) {
-    console.error(`Error Removing Table "${tableName}":`, error);
-  }
-}
-
 // Function to execute queries
 async function query(sql, params) {
   const connection = await pool.getConnection();
@@ -327,4 +241,4 @@ async function query(sql, params) {
 }
 
 // Export the functions and connection
-module.exports = { initDatabase, query, resetTable };
+module.exports = { initDatabase, query };
