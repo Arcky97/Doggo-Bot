@@ -3,6 +3,7 @@ const setActivity = require('../../utils/setActivity');
 const { setLevelSettings } = require('../../../database/levelSystem/setLevelSettings');
 const { resetDeletionDate } = require('../../handlers/dataBaseCleanUp');
 const sendMessageToDevServer = require('../../utils/sendMessageToDevServer');
+const formatTime = require('../../utils/formatTime');
 
 module.exports = async (guild) => {
   try {
@@ -27,7 +28,7 @@ module.exports = async (guild) => {
         },
         {
           name: 'Owner',
-          value: `<@${guild.ownerId}` 
+          value: `<@${guild.ownerId}>` 
         },
         {
           name: 'Server Age',
