@@ -1,5 +1,6 @@
 module.exports = (channel, reqPerms) => {
   const perms = channel.permissionsFor(client.user);
+  console.log(`This channel gives Doggo Bot folowing permissions:`, perms.join(', '));
   if (!perms) {
     console.log('Could not retrieve permissions for this channel.');
     return false;
