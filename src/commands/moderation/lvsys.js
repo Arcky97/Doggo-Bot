@@ -786,7 +786,7 @@ module.exports = {
                   embed = createWarningEmbed({
                     int: interaction, 
                     title: 'Missing required permissions',
-                    descr: `I do not have the required permissions in <#${channel.id}> to send Level Announcement Messages. \nMissing Permissions: \n- ${missingPerms.join('- ')}`
+                    descr: `I do not have the required permissions in <#${channel.id}> to send Level Announcement Messages. \nMissing Permissions: \n- ${missingPerms.join('\n- ')}`
                   });
                 }
               }

@@ -15,7 +15,6 @@ module.exports = {
   ],
   callback: async (interaction) => {
     const member = interaction.options.getMember('user');
-    console.log(member.user.createdAt);
     const age = await formatTime(member.user.createdAt, true);
     try {
       let embed = createSuccessEmbed({int: interaction, title: 'User Age', descr: `${member.user.username}'s account is ${age} old.`, footer: false});

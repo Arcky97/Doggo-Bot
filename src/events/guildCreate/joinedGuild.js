@@ -32,7 +32,7 @@ module.exports = async (guild) => {
         },
         {
           name: 'Server Age',
-          value: `${guild.createdTimestamp}`
+          value: `${await formatTime(guild.createdAt)}`
         },
         {
           name: 'Members',

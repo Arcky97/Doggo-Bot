@@ -5,6 +5,7 @@ const { getUserAttempts, setUserAttempts } = require("../../../database/userStat
 const getUserClass = require("../../utils/getUserClass");
 const cooldowns = new Set();
 const commandReplies = require('../../../data/commandReplies.json');
+const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 
 module.exports = {
   name: 'slap',
@@ -80,7 +81,18 @@ module.exports = {
           embed = createInfoEmbed({ 
             int: interaction,
             title: 'But it failed!',
-            descr: response.replace('{object}', getVowel(object))
+            descr: response.replace(/\{(.*?)\}/g, (_, placeholder) => {
+              switch (placeholder) {
+                case 'object':
+                  return getVowel(object);
+                case 'f-object':
+                  return firstLetterToUpperCase(getVowel(object));
+                case 'object-nv':
+                  return `${object}`
+                default:
+                  return `{${placeholder}}`;
+              }
+            })
           });
         } else {
           embed = createInfoEmbed({ 

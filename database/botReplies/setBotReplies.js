@@ -41,7 +41,6 @@ async function getIDs() {
 }
 
 async function findClosestMatch(target, array) {
-  console.log(array);
   if (array.length < 1) return;
 
   const flattenedArray = array.flat();

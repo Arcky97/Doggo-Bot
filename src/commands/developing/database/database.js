@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { query } = require("../../../database/db");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { query } = require("../../../../database/db");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../../utils/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'database',
