@@ -6,7 +6,7 @@ module.exports = (channel, reqPerms) => {
   
   //const isPrivate = channel.permissionsFor(client.guild.id);
 
-  if (isPrivate) console.log('The channel is a private channel');
+  //if (isPrivate) console.log('The channel is a private channel');
 
   if (!perms) {
     console.log('Could not retrieve permissions for this channel.');
