@@ -4,6 +4,7 @@ const { createInfoEmbed, createSuccessEmbed } = require("../../utils/embeds/crea
 module.exports = {
   name: 'random',
   description: 'Get a range of random members from the reactions of a specified message.',
+  deleted: true,
   options: [
     {
       type: ApplicationCommandOptionType.String,

@@ -2,17 +2,25 @@ const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { getGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js');
 const { createErrorEmbed } = require("../../utils/embeds/createReplyEmbed.js");
 const createListFromArray = require("../../utils/settings/createListFromArray.js");
+const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed.js");
 
 module.exports = {
   name: 'settings',
   description: 'Shows the settings of the bot.',
-  permissionsRequired: [PermissionFlagsBits.Administrator],
+  permissionsRequired: [
+    PermissionFlagsBits.Administrator
+  ],
   callback: async (interaction) => {
     try {
-      await interaction.deferReply();
       const settings = await getGuildSettings(interaction.guild.id);
       const ignoreLogging = JSON.parse(settings.ignoreLogging);
       const joinRoles = JSON.parse(settings.joinRoles);
+
+      await interaction.deferReply();
+
+      const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
+      if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
+      
       let embed;
       if (settings) {
         embed = new EmbedBuilder()

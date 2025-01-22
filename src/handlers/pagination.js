@@ -1,13 +1,12 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require("discord.js");
+const createMissingPermissionsEmbed = require("../utils/createMissingPermissionsEmbed");
 
 module.exports = async (interaction, pages, time = 30 * 1000) => {
   try {
     if (!interaction || !pages || pages.length === 0) throw new Error('[PAGINATION] Invalid args');
 
-    //await interaction.deferReply();
-
     if (pages.length === 1) {
-      return await interaction.editReply({ embeds: pages, components: [], fetchReply: true });
+      return interaction.editReply({ embeds: pages, components: [], fetchReply: true });
     }
 
     let index = 0;
@@ -79,13 +78,17 @@ module.exports = async (interaction, pages, time = 30 * 1000) => {
       }
 
       const updatedButtons = updateButtons();
-
       await msg.edit({ embeds: [pages[index]], components: [updatedButtons] }).catch(console.error);
+
       collector.resetTimer();
     });
 
     collector.on('end', async () => {
-      await msg.edit({ embeds: [pages[index]], components: [] }).catch(console.error);
+      try {
+        await msg.edit({ embeds: [pages[index]], components: [] }).catch(console.error);
+      } catch (error) {
+        console.error('error editing message again...', error);
+      }
     });
 
     return msg;

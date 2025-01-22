@@ -1,9 +1,10 @@
 const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandSubcommandBuilder } = require("discord.js");
-const { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig } = require("../../../database/guildSettings/setGuildSettings");
+const { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig, convertSetupCommand } = require("../../../database/guildSettings/setGuildSettings");
 const { createErrorEmbed, createSuccessEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
 const createLoggingMenu = require("../../utils/menus/createLoggingMenu");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 const loggingTypes = require('../../../data/loggingTypes.json');
+const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
 
 module.exports = {
   name: 'setup',
@@ -199,21 +200,24 @@ module.exports = {
       ]
     }
   ],
-  permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (interaction) => {
     const subCmd = interaction.options.getSubcommand();
     const channel = interaction.options.getChannel('channel');
     const role = interaction.options.getRole('role');
     const guildId = interaction.guild.id;
     let embed, title, description, choice;
+
     await interaction.deferReply();
-  
+
+    let permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
+    if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
+
     try {
       switch (subCmd) {
         case 'mute-role':
           if (role.id === interaction.guild.id) {
             embed = createInfoEmbed({ int: interaction, title: 'Mute Role not Set!', descr: `${role} cannot be set as the Mute Role! Please try again.`});
-            await interaction.editReply({ embeds: [embed] });
+            interaction.editReply({ embeds: [embed] });
             return;
           } else {
             [title, description] = await setGuildSettings(guildId, subCmd, role);
@@ -221,9 +225,8 @@ module.exports = {
           break;
         case 'join-role':
           if (role.id === interaction.guild.id) {
-            
             embed = createInfoEmbed({ int: interaction, title: 'Join Role not Set!', descr: `${role} cannot be set as the Join Role! Please try again.`});
-            await interaction.editReply({ embeds: [embed] });
+            interaction.editReply({ embeds: [embed] });
             return;
           } else {
             [title, description] = await setGuildSettings(guildId, subCmd, role);
@@ -233,10 +236,16 @@ module.exports = {
           choice = interaction.options.getString('type');
           break;
         default:
-          [title, description] = await setGuildSettings(guildId, subCmd, channel);
+          const missingChanPermEmbed = await createMissingPermissionsEmbed(interaction, null, [], channel);
+          if (!missingChanPermEmbed) {
+            [title, description] = await setGuildSettings(guildId, subCmd, channel);
+          } else {
+            console.log('we do this?');
+            missingChanPermEmbed.setDescription(`Unable to set the ${subCmd === 'bot-chat' ? '**Bot Chat Channel**' : `Channel for **${convertSetupCommand(subCmd)} Logging**`} to ${channel} as following permissions are missing:`);
+            return interaction.editReply({ embeds: [missingChanPermEmbed] });
+          }
           break;
       }
-  
       if (subCmd === 'events') {
         await interaction.editReply({ components: createLoggingMenu(choice) });
   
@@ -350,7 +359,7 @@ module.exports = {
           }
         });
   
-        collector.on('end', async (collected, reason) => {
+        collector.on('end', async (_, reason) => {
           if (reason === 'time') {
             embed = createInfoEmbed({ int: interaction, title: 'Logging Preferences not Updated', descr: `Time ran out and no Changes have been made for ${firstLetterToUpperCase(choice)} Logging.`});
             await interaction.editReply({

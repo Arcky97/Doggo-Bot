@@ -4,6 +4,7 @@ const { createInfoEmbed, createWarningEmbed, createSuccessEmbed } = require("../
 module.exports = {
   name: 'kick',
   description: 'Kick a member from the Server!',
+  deleted: true,
   options: [
     {
       name: 'member',

@@ -8,13 +8,13 @@ const getUniq = (table, messageOrType) => {
   return table === 'GeneratedEmbeds' ? { messageId: messageOrType } : { type: messageOrType }
 }
 
-async function setEmbed(table, guild, channel, messageOrType, data) {
+async function setEmbed(table, guildId, channel, messageOrType, data) {
   const keys = {
-    guildId: guild,
+    guildId: guildId,
     channelId: channel,
     ...getUniq(table, messageOrType)
   };
-  await setEmbedData(table, guild.id, keys, data);
+  await setEmbedData(table, guildId, keys, data);
 }
 
 async function getOrDeleteEmbed(table, action, guildId, messageOrType) {
@@ -31,6 +31,7 @@ async function getOrDeleteEmbed(table, action, guildId, messageOrType) {
 }
 
 async function setEmbedData(table, guildId, keys, data) {
+  //console.log(guildId);
   const dataExist = await selectData(table, keys);
   try {
     if (!dataExist) {
@@ -45,10 +46,10 @@ async function setEmbedData(table, guildId, keys, data) {
 }
 
 module.exports = { 
-  setGeneratedEmbed: (guild, channel, message, data) => setEmbed('GeneratedEmbeds', guild, channel, message, data),
-  getGeneratedEmbed: (guild, message) => getOrDeleteEmbed('GeneratedEmbeds', 'get', guild, message),
-  deleteGeneratedEmbed: (guild, message) => getOrDeleteEmbed('GeneratedEmbeds', 'delete', guild, message),
-  setEventEmbed: (guild, channel, type, data) => setEmbed('EventEmbeds', guild, channel, type, data),
-  getEventEmbed: (guild, type) => getOrDeleteEmbed('EventEmbeds', 'get', guild, type),
-  deleteEventEmbed: (guild, type) => getOrDeleteEmbed('EventEmbeds', 'delete', guild, type)
+  setGeneratedEmbed: (guildId, channel, message, data) => setEmbed('GeneratedEmbeds', guildId, channel, message, data),
+  getGeneratedEmbed: (guildId, message) => getOrDeleteEmbed('GeneratedEmbeds', 'get', guildId, message),
+  deleteGeneratedEmbed: (guildId, message) => getOrDeleteEmbed('GeneratedEmbeds', 'delete', guildId, message),
+  setEventEmbed: (guildId, channel, type, data) => setEmbed('EventEmbeds', guildId, channel, type, data),
+  getEventEmbed: (guildId, type) => getOrDeleteEmbed('EventEmbeds', 'get', guildId, type),
+  deleteEventEmbed: (guildId, type) => getOrDeleteEmbed('EventEmbeds', 'delete', guildId, type)
  };

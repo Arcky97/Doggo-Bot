@@ -81,7 +81,8 @@ async function initDatabase() {
           blackListChannels JSON DEFAULT '[]',
           blackListCategories JSON DEFAULT '[]',
           xpCooldown INT DEFAULT 30,
-          xpSettings JSON DEFAULT '{ "step": 40, "min": 15, "max": 25 }',
+          xpSettings JSON DEFAULT '{ "step": 40, "min": 15, "max": 25, "minLength": 15, "maxLength": 115 }',
+          xpType enum('random', 'length') DEFAULT 'random',
           clearOnLeave BOOLEAN DEFAULT false,
           voiceEnable BOOLEAN DEFAULT false,
           voiceMultiplier INT DEFAULT 1,
@@ -152,7 +153,7 @@ async function initDatabase() {
         CREATE TABLE IF NOT EXISTS UserStats (
           guildId VARCHAR(100) NOT NULL,
           memberId VARCHAR(100) NOT NULL,
-          attempts JSON DEFAULT '{ "slap": { "dev": 0, "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "kick": { "dev": 0, "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "ban": { "dev": 0, "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }, "mute": { "dev": 0, "client": 0, "owner": 0, "self": 0, "admins": {}, "members": {}, "bots": {} }}',
+          attempts JSON DEFAULT '{ "slap": { }, "kick": { }, "ban": { }, "mute": { }, "warn": { }, "timeout": { } }',
           PRIMARY KEY (guildId, memberId)
         )
       `,

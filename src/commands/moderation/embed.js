@@ -1,9 +1,8 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
+const { ApplicationCommandOptionType } = require("discord.js");
 const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } = require("../../../database/embeds/setEmbedData");
-const getOrConvertColor = require("../../utils/getOrConvertColor");
-const embedPlaceholders = require("../../utils/embeds/embedPlaceholders");
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
 const { createGeneratedEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
+const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
 
 module.exports = {
   name: 'embed',
@@ -269,13 +268,16 @@ module.exports = {
       ]
     }
   ],
-  permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (interaction) => {
-    await interaction.deferReply();
     const embedAction = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
     const channel = interaction.options.getChannel('channel');
     const type = interaction.options.getString('type');
+
+    await interaction.deferReply();
+
+    const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild'], channel);
+    if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
 
     // Default options
     let embedOptions = {
@@ -307,9 +309,11 @@ module.exports = {
       }
 
       if (!embedData) {
-        embed = createErrorEmbed({int: interaction, descr: `No embed found with the specified ${embedAction === 'edit' ? 'message ID' : 'type'}.`});
-        interaction.editReply({embeds: [embed]}); 
-        return;
+        embed = createErrorEmbed({
+          int: interaction, 
+          descr: `No embed found with the specified ${embedAction === 'edit' ? 'message ID' : 'type'}.`});
+        return interaction.editReply({embeds: [embed]}); 
+        
       }
 
       // Merge the fetched embed data into embedOptions (filling default values)
@@ -358,20 +362,18 @@ module.exports = {
           }
         }
         embed = createSuccessEmbed({int: interaction, title: 'Hoorray!', descr: replyMessage});
-        interaction.editReply({embeds: [embed]});
       } else {
         const messageId = interaction.options.getString('messageid');
         let message;
+        const oldEmbed = await getGeneratedEmbed(guildId, messageId);
+        const channel = client.channels.cache.get(oldEmbed?.channelId);
         try {
-          const oldEmbed = await getGeneratedEmbed(guildId, messageId);
-          const channel = client.channels.cache.get(oldEmbed.channelId);
           if (messageId && channel) {
             try {
               message = await channel.messages.fetch(messageId);
             } catch (error) {
               if (error.code === 10008) { // Discord API error code for "Unknown Message"
                 await deleteGeneratedEmbed(guildId, messageId); // Optionally remove the embed from the database
-                
                 replyMessage = 'The specified message has already been deleted.';
               } else {
                 console.error('Error fetching the message:', error);
@@ -382,8 +384,7 @@ module.exports = {
           }
         } catch (error) {
           embed = createErrorEmbed({ int: interaction, descr: `The Embed Message with ID: ${messageId} was not found. \nPlease check if this Message hasn't been deleted already or is from this Server.`});
-          interaction.editReply({embeds: [embed]});
-          return
+          return interaction.editReply({embeds: [embed]});
         }
         if (embedAction === 'edit') {
           if (type === 'regular') {
@@ -395,7 +396,6 @@ module.exports = {
             await setEventEmbed(guildId, channel.id, type, embedOptions);
           }
           embed = createSuccessEmbed({int: interaction, title: 'Embed Updated!', descr: replyMessage});
-          interaction.editReply({embeds: [embed]});
         } else if (embedAction === 'delete') {
           if (oldEmbed) {
             if (message) await message.delete();
@@ -405,17 +405,16 @@ module.exports = {
               await deleteEventEmbed(guildId, type);
             }
             embed = createSuccessEmbed({int: interaction, title: 'Embed Deleted!', descr: `The embed with message ID: ${messageId} in <#${channel.id}> was deleted succesfully.`});
-            interaction.editReply({embeds: [embed]})
           } else {
             embed = createWarningEmbed({int: interaction, descr: `The embed with message ID: ${messageId} does not exist. \nPlease check the message ID again.`});
-            interaction.editReply({embeds: [embed]});
+            
           }
         }
       }
     } catch (error) {
       console.error(`There was an error while trying to ${embedAction} the embed:`, error);
       embed = createErrorEmbed({int: interaction, descr: `Something went wrong while trying to ${embedAction} the embed. \nPlease try again later.`});
-      interaction.editReply({embeds: [embed]});
     }
+    interaction.editReply({embeds: [embed]});
   }
 };

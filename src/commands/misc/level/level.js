@@ -4,6 +4,7 @@ const { getXpSettings } = require("../../../../database/levelSystem/setLevelSett
 const levelColor = require("./subCommands/levelColor");
 const levelLeaderboard = require("./subCommands/levelLeaderboard");
 const levelShow = require("./subCommands/levelShow");
+const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
 
 module.exports = {
   name: 'level',
@@ -47,6 +48,10 @@ module.exports = {
     const userLevel = await getUserLevel(interaction.guild.id, user.id);
     const guildUsers = await getAllUsersLevel(interaction.guild.id);
     const xpSettings = await getXpSettings(interaction.guild.id);
+
+    const permEmbed = await createMissingPermissionsEmbed(interaction, user, ['AttachFiles']);
+    if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
+    
     guildUsers.sort((a, b) => {
       if (a.level === b.level) {
         return b.xp - a.xp;

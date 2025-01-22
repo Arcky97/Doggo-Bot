@@ -88,6 +88,7 @@ async function getMuteRole(guildId) {
     console.error('Error fetching mute role data from GuildSettings:', error);
   }
 }
+
 async function getJoinRoles(guildId) {
   try {
     const data = await getGuildSettings(guildId);
@@ -96,6 +97,7 @@ async function getJoinRoles(guildId) {
     console.error('Error fetching join roles data from GuildSettings:', error);
   }
 }
+
 async function setGuildSettings(guildId, settingName, value) {
   const column = convertSetupCommand(settingName);
   if (!column) return;
@@ -133,22 +135,30 @@ async function setGuildSettings(guildId, settingName, value) {
       if (dataExist[column] && settingName !== 'Ignore' && settingName !== 'Join-role') {
         if (dataExist[column] === data[column]) {
           await deleteData('GuildSettings', key, data);
-          if (settingName !== 'Mute-role') {
-            title = `${settingName} Logging Resetted!`;
-            descr = `The channel for **${settingName} Logging** has been resetted!`;
+          if (settingName !== 'Mute-role' && settingName !== 'Bot-chat') {
+            title = `${settingName} ${logOrChan} Resetted!`;
+            descr = `The channel for **${settingName} ${logOrChan}** has been resetted!`;
+          } else if (settingName === 'Bot-chat') {
+            title = 'Bot Chat Channel Resetted!';
+            descr = `The Bot Chat Channel has been resetted!`;
           } else {
             title= `Mute Role Removed!`;
             descr = `The Mute Role has been removed.`;
           }
         } else {
-          await updateData('GuildSettings', key, data);
           if (settingName !== 'Mute-role') {
-            title = `${settingName} Logging Updated!`;
-            descr = `The channel for **${settingName} Logging** has been updated to ${value}!`;
+            if (settingName === 'Bot-chat') {
+              title = 'Bot Chat Channel Updated!';
+              descr = `The Bot Chat Channel has been updated to ${value}!`;
+            } else {
+              title = `${settingName} ${logOrChan} Updated!`;
+              descr = `The channel for **${settingName} ${logOrChan}** has been updated to ${value}!`;
+            }
           } else {
             title = `Mute Role Updated!`;
             descr = `The Mute Role has been updated to ${value}`;
           }
+          await updateData('GuildSettings', key, data);
         }
       } else {
         if (settingName !== 'Ignore' && settingName !== 'Join-role') {
@@ -158,8 +168,13 @@ async function setGuildSettings(guildId, settingName, value) {
             await insertData('GuildSettings', key, data);
           }
           if (settingName !== 'Mute-role') {
-            title = `${settingName} Logging Set!`;
-            descr = `The channel for **${settingName} Logging** has been set to ${value}!`;
+            if (settingName === 'Bot-chat') {
+              title = 'Bot Chat Channel Set!';
+              descr = `The Bot Chat Channel has been set to ${value}!`;
+            } else {
+              title = `${settingName} ${logOrChan} Set!`;
+              descr = `The channel for **${settingName} ${logOrChan}** has been set to ${value}!`;  
+            }
           } else {
             title = `Mute Role Set!`;
             descr = `The Mute Role has been set to ${value}`;

@@ -1,4 +1,4 @@
-const { PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
+const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../utils/setArrayValues");
 const createListFromArray = require("../../utils/settings/createListFromArray");
@@ -19,7 +19,7 @@ const calculateLevelByXp = require("../../utils/levels/calculateLevelByXp");
 const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
 const calculateMultiplierXp = require("../../utils/levels/calculateMultiplierXp");
 const getMemberRoles = require("../../utils/logging/getMemberRoles");
-const checkClientPermissions = require("../../utils/checkClientPermissions");
+const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
 
 module.exports = {
   name: 'lvsys',
@@ -411,6 +411,43 @@ module.exports = {
               required: true,
               minValue: 1,
               maxValue: 100
+            },
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'min-length',
+              description: 'Messages of this min length and shorter will earn the min XP.',
+              minValue: 1,
+              maxValue: 250
+            },
+            {
+              type: ApplicationCommandOptionType.Number,
+              name: 'max-length',
+              description: 'Message of this max length and longer will earn the max XP.',
+              minValue: 1,
+              maxValue: 250
+            }
+          ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'type',
+          description: 'Choose between random XP or message length based XP for each message sent.',
+          options: [
+            {
+              type: ApplicationCommandOptionType.String,
+              name: 'value',
+              description: 'The type of XP earning.',
+              choices: [
+                {
+                  name: 'Message length',
+                  value: 'length',
+                },
+                {
+                  name: 'Random',
+                  value: 'random'
+                }
+              ],
+              required: true
             }
           ]
         }
@@ -665,13 +702,15 @@ module.exports = {
       ]
     }
   ],
-  permissionsRequired: [PermissionFlagsBits.Administrator],
   callback: async (interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
 
     await interaction.deferReply();
+
+    const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
+    if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
 
     let levSettings, embed, globalMult, roleMults, channelMults, categoryMults, levelRoles, annMess, blackListRoles, blackListChannels, blackListCategories;
     try {
@@ -767,8 +806,8 @@ module.exports = {
             case 'channel':
               existingSetting = levSettings.announceChannel;
               channel = interaction.options.getChannel('name');
-              const missingPerms = checkClientPermissions(channel, ['SendMessages', 'EmbedLinks']);
-              if (missingPerms && missingPerms.length === 0) {
+              const missingChanPermEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, [], channel);
+              if (!missingChanPermEmbed) {
                 if (existingSetting !== channel.id) {
                   setting = { 'announceChannel': channel.id };
                   embed = createSuccessEmbed({int: interaction, title: `Level Up Announce Channel ${existingSetting ? 'Updated' : 'Set'}!`, descr: `The Level Up Announce Channel has been ${existingSetting ? 'updated' : 'set'} to ${channel}.`});
@@ -776,19 +815,8 @@ module.exports = {
                   embed = createInfoEmbed({ int: interaction, descr: `The Level Up Announce Channel has already been set to <#${existingSetting}>.`});
                 }
               } else {
-                if (!missingPerms) {
-                  embed = createWarningEmbed({
-                    int: interaction,
-                    title: 'Something went wrong',
-                    descr: `I was unable to retrieve the permissions for <#${channel.id}>`
-                  });
-                } else {
-                  embed = createWarningEmbed({
-                    int: interaction, 
-                    title: 'Missing required permissions',
-                    descr: `I do not have the required permissions in <#${channel.id}> to send Level Announcement Messages. \nMissing Permissions: \n- ${missingPerms.join('\n- ')}`
-                  });
-                }
+                missingChanPermEmbed.setDescription(`Unable to set ${channel} as the Announcement Channel as following permissions are missing:`);
+                embed = missingChanPermEmbed;
               }
               break;
             case 'ping':
@@ -848,10 +876,11 @@ module.exports = {
               const userLevelInfo = {
                 "guildId": guildId,
                 "memberId": interaction.user.id,
-                "level": level || userInfo.level,
+                "level": (level || userInfo.level),
                 "xp": calculateLevelByXp((level || userInfo.level), xpSettings),
                 "color": userInfo.color
               };
+              if (userLevelInfo.level === 0) userLevelInfo = 1;
               embed = await createAnnounceEmbed(guildId, interaction, userLevelInfo);
               break;
             case 'placeholders':
@@ -1062,9 +1091,16 @@ module.exports = {
               existingSetting = levSettings.xpCooldown;
               if (existingSetting !== value) {
                 setting = { 'xpCooldown' : value };
-                embed = createSuccessEmbed({int: interaction, title: 'Xp Cooldown Updated!', descr: `The XP Cooldown has been updated to \`${value} ${value > 1 ? 'seconds' : 'second'}\`!`});
+                embed = createSuccessEmbed({
+                  int: interaction, 
+                  title: 'Xp Cooldown Updated!', 
+                  descr: `The XP Cooldown has been updated to \`${value} ${value > 1 ? 'seconds' : 'second'}\`!`
+                });
               } else {
-                embed = createInfoEmbed({int: interaction, descr: `The XP Cooldown has already been set to \`${value} ${value > 1 ? 'seconds' : 'second'}\`!`});
+                embed = createInfoEmbed({
+                  int: interaction, 
+                  descr: `The XP Cooldown has already been set to \`${value} ${value > 1 ? 'seconds' : 'second'}\`!`
+                });
               }
               break;
             case 'values':
@@ -1123,7 +1159,22 @@ module.exports = {
                   descr: `The given step (\`${value.step}\`), min xp (\`${value.min}\`) and max xp (\`${value.max}\`) are the same as they were already set.`});
               }
               break;
-          }
+            case 'type':
+              existingSetting = levSettings.xpType;
+              if (existingSetting !== value) {
+                setting = { 'xpType' : value };
+                embed = createSuccessEmbed({
+                  int: interaction,
+                  title: 'Xp Type Updated!',
+                  descr: `The XP Type has been updated to \`${value === 'random' ? 'Random' : 'Message Length Based' }\``
+                });
+              } else {
+                embed = createInfoEmbed({
+                  int: interaction,
+                  descr: `The XP Type has already been set to \`${value === 'random' ? 'Random' : 'Message Length Basded' }\``
+                });
+              }
+            }
           interaction.editReply({ embeds: [embed] });
           break;
         case 'modify':

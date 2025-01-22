@@ -2,17 +2,21 @@ const { EmbedBuilder } = require("discord.js");
 const setEventTimeOut = require("../handlers/setEventTimeOut");
 
 async function sendModerationLogEvent (guild, channel, color, title, fields) {
-  if (!channel) return;
-  const embed = new EmbedBuilder()
-    .setColor(color)
-    .setTitle(`Moderation ${title}`)
-    .addFields(fields)
-    .setFooter({
-      text: guild.name,
-      iconURL: typeof guild.iconURL === 'function' ? guild.iconURL() : guild.iconURL || null
-    })
-    .setTimestamp()
-  await setEventTimeOut(`moderation`, guild.id, embed, channel);
+  try {
+    if (!channel) return;
+    const embed = new EmbedBuilder()
+      .setColor(color)
+      .setTitle(`Moderation ${title}`)
+      .addFields(fields)
+      .setFooter({
+        text: guild.name,
+        iconURL: typeof guild.iconURL === 'function' ? guild.iconURL() : guild.iconURL || null
+      })
+      .setTimestamp()
+    await setEventTimeOut(`moderation`, guild.id, embed, channel);
+  } catch (error) {
+    console.error('Error while trying to create the Moderation Log Embed');
+  }
 }
 
 module.exports = {

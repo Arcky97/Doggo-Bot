@@ -13,7 +13,7 @@ console.log(
 );
 
 // Run Scheduled task every day at midnight.
-cron.schedule('41 21 * * *', async () => {
+cron.schedule('51 20 * * *', async () => {
   await checkModerationTasks('pending');
 });
 

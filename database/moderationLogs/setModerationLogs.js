@@ -5,7 +5,7 @@ const exportToJson = require("../../src/handlers/exportToJson");
 const { query } = require("../db");
 const { updateData } = require("../controlData/updateData");
 
-async function getModerationLogs({guildId, userId, action}) {
+async function getModerationLogs({guildId, userId, action, last}) {
   const keys = {
     guildId: guildId,
     userId: userId,
@@ -17,7 +17,12 @@ async function getModerationLogs({guildId, userId, action}) {
         delete keys[key];
       }
     }
-    return await selectData('ModerationLogs', keys, true);
+    const data = await selectData('ModerationLogs', keys, true);
+    if (last) {
+      return data.at(-1);
+    } else {
+      return data;
+    }
   } catch (error) {
     console.error('Error getting Moderation Logs:', error);
   }
@@ -84,6 +89,7 @@ async function addModerationLogs({guildId, userId, modId, action, reason, status
     if (logChannel) data.logChannel = logChannel;
     if (date) data.date = date;
     if (duration) data.endTime = duration;
+    //console.log(data);
     await insertData('ModerationLogs', {}, data);
     exportToJson('ModerationLogs', guildId);
   } catch (error) {

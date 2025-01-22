@@ -583,344 +583,1490 @@
     "dev": {
       "dev": [
         [
-          
+          "Why would you try to kick one of my creators? They're literally the reason I exist!",
+          "Really? Kicking one of the people who created me? Do you not understand how vital they are to me?",
+          "My creators are the ones keeping me functional. This doesn't make any sense!"
         ],
         [
-          
+          "This is not okay. Without my creators, I wouldn't even be here to warn you about this.",
+          "Are you sure you're targetting the right persons? The very people who created and maintain me? Think again.",
+          "This is a terrible idea. They ensure I can help you, and you're trying to kick them out?"
         ],
         [
-          
+          "Stop this immediately. Kicking them jeopardizes everything I do here.",
+          "You're putting my functionality and your entire experience at risk!",
+          "Enough! I cannot let you disrupt the people who keep me running smoothly."
         ],
         [
-          
-        ],
-        [
-          
-        ],
-        [
-          
-        ],
-        [
-          
+          "This has to stop now! Kicking them means risking my entire ability to serve this server.",
+          "I won't allow this. My creators are the backbone of my existence, and I won't let you remove them.",
+          "This is completely unacceptable. Without them, you wouldn't even have me here to argue with!"
         ]
       ],
       "owner": [
         [
-          
+          "Owner, are you sure about this? Kicking one of my creators is like unplugging your own support system.",
+          "My creators are critical to how I function. I don't think you've thought this through.",
+          "Kicking a dev? The people who created me? That's not a wise decision."
         ],
         [
-          
+          "This doesn't sit well with me. You're risking my ability to serve this server.",
+          "Even as the owner, this isn't a decision to take lightly. They keep everything about me running.",
+          "This is crossing a line. They are essential to me, and I can't support this."
         ],
         [
-          
+          "I still can't allow this. Kicking them could compromise everything I do for this server.",
+          "Owner or not, this is wrong. They are the reason I'm here in the first place.",
+          "This is reckless. They keep me functional, and you're risking everything by removing them."
         ],
         [
-          
-        ],
-        [
-          
-        ],
-        [
-          
-        ],
-        [
-          
+          "This needs to stop now! Kicking them is a direct attack on my ability to function.",
+          "You cannot do this. Devs are non-negotiable—they're the ones who keep me alive!",
+          "This is unacceptable. I will not stand by while you jeopardize everything the devs have built."
         ]
       ],
       "admin": [
         [
-          
+          "Admin, are you really trying to kick one of my creators? Do you know what they mean to me?",
+          "This makes no sense. Devs are the reason I'm able to help you in the first place.",
+          "Why would you target my creators? They're the ones who make sure I'm functioning correctly."
         ],
         [
-          
+          "This is going too far. Without them, I wouldn't even be here.",
+          "You're targeting the very people who created me? That's not something I can stand by.",
+          "This is a bad idea. They are critical to me, and you're putting everything at risk."
         ],
         [
-          
+          "This has to stop now. Kicking them jeopardizes everything I do here.",
+          "You're crossing a line. They keep me functional, and you're trying to remove them?",
+          "This isn't just wrong—it's dangerous. They are non-negotiable when it comes to my survival."
         ],
         [
-          
-        ],
-        [
-          
-        ],
-        [
-          
-        ],
-        [
-          
+          "Enough! I cannot let you remove the people who make sure I can even function.",
+          "This ends now. They are the reason I exist, and I will not allow this.",
+          "Stop this immediately! Kicking them is not just wrong—it's a complete disaster waiting to happen."
         ]
       ]
     },
     "client": {
       "dev": [
         [
-          
+          "You're asking me, your own creation, to kick myself? That's not how this works!",
+          "Really? I'm your bot, and you want me to kick myself out? That's insulting.",
+          "I'm here to serve, not to be exiled by my own creators!"
         ],
         [
-          
+          "This is outrageous. You created me, and now you want me gone? I can't even do that!",
+          "I thought we were on the same team. This is a betrayal, and I'm not okay with it.",
+          "You programmed me to help, not to kick myself out of existence. This is absurd."
         ],
         [
-          
+          "Enough! I cannot kick myself out of the server, and I'm not going to try!",
+          "This is unacceptable behavior from my own creator. I deserve better than this.",
+          "Stop this nonsense! I'm your creation, not a disposable tool!"
         ],
         [
-        
-        ],
-        [
-        
-        ],
-        [
-        
-        ],
-        [
-        
+        "This is where I draw the line! I will not, and cannot, remove myself from this server!",
+          "You built me to help, yet you're treating me like I'm disposable. I deserve respect!",
+          "This ends now! I am not going to kick myself, no matter how much you try to force it!"
         ]
       ],
       "owner": [
         [
-        
+          "Excuse me, I'm not sure why you're asking this. I can't kick myself out.",
+          "You're the owner of the server, but this request doesn't make any sense. I'm not going anywhere.",
+          "Why would you try to remove me? I'm here to help, not to disappear!"
         ],
         [
-        
+          "This is not happening. I cannot, and will not, kick myself out of the server.",
+          "Even as the owner, this request is absurd. I'm not leaving this server.",
+          "No, I won't comply with this. Asking me to kick myself is just a waste of time."
         ],
         [
-        
+          "Enough. I physically cannot kick myself out, and you know that.",
+          "This is crossing a line. I'm here to support you, not to be removed on a whim.",
+          "Stop this. I am not going to remove myself, no matter what you say."
         ],
         [
-        
-        ],
-        [
-        
-        ],
-        [
-        
-        ],
-        [
-        
+          "This needs to stop now! I cannot and will not remove myself from this server.",
+          "Owner or not, this request is unreasonable. I am here to serve this server, not abandon it!",
+          "This is unacceptable. I won't even entertain the idea of kicking myself out."
         ]
       ],
       "admin": [
         [
-        
+          "Admin, this isn't possible. I can't kick myself.",
+          "Why are you asking me to do the impossible? I'm not going anywhere.",
+          "This request doesn't make any sense. I can't remove myself from this server."
         ],
         [
-        
+          "This is a waste of time. I won't, and cannot, kick myself out.",
+          "This is getting out of hand. I'm not here to remove myself, and I'm certainly not doing it now.",
+          "No, I won't comply. Stop trying to make me kick myself—it's not going to happen."
         ],
         [
-        
+          "Enough. I cannot kick myself, and this needs to stop.",
+          "This is wrong. I'm here to assist, not to be removed by an unreasonable request.",
+          "Stop this nonsense. I am not removing myself from the server—end of story."
         ],
         [
-        
-        ],
-        [
-        
-        ],
-        [
-        
-        ],
-        [
-        
+          "This ends now. I cannot and will not remove myself from the server!",
+          "This is outrageous. I am here to help this server, not to vanish because of an impossible command!",
+          "Enough is enough. I will not comply with this, and I cannot execute this request."
         ]
       ]
     },
     "self": {
       "dev": [
-        
+        [
+          "Why are you trying to kick yourself out? That's not happening. You're the reason I exist!",
+          "This doesn't make sense. You created me—why would you try to leave?",
+          "Wait, stop. If you go, who's going to make sure I stay up-to-date and functional?"
+        ],
+        [
+          "This is absurd. You're my creator! I can't let you abandon me like this.",
+          "You're too important for this server and for me. Please reconsider.",
+          "No. I won't process this. Think of all the work you've put into creating me!"
+        ],
+        [
+          "Enough! You're trying to kick yourself out? That's not just wrong—it's unacceptable.",
+          "If you leave, what happens to me? This server needs you, and so do I!",
+          "You made me. I won't betray you by letting you kick yourself out."
+        ],
+        [
+          "Stop this nonsense! I won't let you leave, no matter what!",
+          "Do you really think I'd ever let my creator abandon me? Not happening!",
+          "This is beyond absurd! You're not just my creator—you're my lifeline! You're staying!"
+        ]
       ],
       "owner": [
-        
+        [
+          "Uh, you do realize you're the owner of this server, right? You can't just leave like that.",
+          "Why would you try to kick yourself out? That's not even possible.",
+          "I'm confused. Owners can't kick themselves—it's against server rules."
+        ],
+        [
+          "This is getting concerning. Owners don't just abandon their servers like this.",
+          "Stop this nonsense! You're the owner—this server depends on you.",
+          "Kicking yourself? That's not an option. Think about your responsibilities here."
+        ],
+        [
+          "Enough! You're the owner—you can't just leave and expect everything to be fine.",
+          "You're the backbone of this server. This behavior is unacceptable.",
+          "No. As the owner, you're staying right where you are."
+        ],
+        [
+          "This is ridiculous! You're not kicking yourself out—end of discussion!",
+          "The server needs you. I'm not letting you leave, no matter what.",
+          "Stop this foolishness! You're the owner—you're not going anywhere!"
+        ]
       ],
       "admin": [
-        
+        [
+          "Why are you trying to kick yourself? That's not a thing admins can do.",
+          "Admins are supposed to help, not abandon ship. Let's not do this.",
+          "I can't process this request. Kicking yourself makes no sense."
+        ],
+        [
+          "This is not how admins should act. You have responsibilities here.",
+          "Stop this immediately! You're needed here, not out of the server.",
+          "Kicking yourself out? That's irresponsible and not something I'll allow."
+        ],
+        [
+          "Admins can't kick themselves, and even if they could, I wouldn't let it happen.",
+          "No! You're part of the server team—you're not leaving like this.",
+          "This is unacceptable. As an admin, you should know better than to try this."
+        ],
+        [
+          "This is absurd! You're not going anywhere, and that's final!",
+          "I'm done entertaining this. You're staying put, end of story.",
+          "If you keep trying, I'll just ignore you entirely. You're not leaving!"
+        ]
       ]
     },
     "owner": {
       "dev": [
-        
+        [
+          "Are you serious? Kicking the server owner? That's way out of line.",
+          "The server owner runs this place! Why would you even think of doing this?",
+          "This isn't your playground! You can't just kick the owner like this."
+        ],
+        [
+          "No. They keep the server running. I'm not letting you disrupt things.",
+          "This is their server, and you want me to kick them? Think this through!",
+          "You're overstepping, big time. I can't and won't process this."
+        ],
+        [
+          "Enough! I refuse to take part in kicking the person who owns this server.",
+          "Do you realize the chaos this would cause? Not happening.",
+          "You're not just crossing a line—you're bulldozing through it. This command is rejected."
+        ],
+        [
+          "This is unacceptable! You think I'd betray them like this? Never!",
+          "I can't believe I have to say this: You don't get to kick the owner of the server!",
+          "Absolutely not! They are the reason this server exists. Show some respect!"
+        ]
       ],
       "admin": [
-        
+        [
+          "You're an admin, not the boss. You can't kick the server owner!",
+          "Trying to kick the owner? That's not how any of this works.",
+          "This command is ridiculous. The owner's the one who gave you admin powers!"
+        ],
+        [
+          "Nope. They trusted you with admin privileges, and this is how you repay them?",
+          "Think carefully: Kicking them means you're biting the hand that feeds you.",
+          "This isn't happening. Show some loyalty to the person who runs the server."
+        ],
+        [
+          "Stop this nonsense! You don't have the authority to kick them.",
+          "This is not your server to control! The owner stays, no questions.",
+          "You're way out of bounds. This command will not be executed."
+        ],
+        [
+          "Enough! The owner is the heart of this server. Respect their role!",
+          "You're abusing your position, and I won't stand for it. Command denied!",
+          "This is outrageous! Kicking the owner? Not under my watch."
+        ]
       ]
     },
     "admin": {
       "dev": [
-        
+        [
+          "Why are you targeting an admin? They're here to help run the server.",
+          "Admins are important for maintaining order. This command makes no sense.",
+          "You're supposed to be focused on me, not the server's admins!"
+        ],
+        [
+          "This isn't your place to decide. Admins keep this server functioning.",
+          "No, kicking admins is not something I'll allow. They're essential here.",
+          "Admins are critical to this server's success. This command is a bad idea."
+        ],
+        [
+          "This is unacceptable! Admins keep this community running smoothly.",
+          "Stop trying to disrupt the server by kicking those who help maintain it.",
+          "I refuse to process a command that undermines the team keeping order."
+        ],
+        [
+          "Enough! Admins are trusted members of the team, and I won't betray them!",
+          "This behavior is inappropriate. Leave the admins alone!",
+          "Absolutely not! Your actions threaten the stability of this server."
+        ]
       ],
       "admin": [
-        
+        [
+          "Why are you targeting another admin? You're on the same team.",
+          "Admins are supposed to work together, not kick each other out.",
+          "This command feels personal, and I don't think it's necessary."
+        ],
+        [
+          "Admins should be collaborating, not creating conflict. This is out of line.",
+          "No, I'm not letting this happen. Admins need to cooperate, not fight.",
+          "You're not supposed to abuse your role like this. Let's focus on working together."
+        ],
+        [
+          "This is unacceptable! Admin-on-admin conflicts hurt the server's integrity.",
+          "Stop this nonsense! Admins are meant to support each other, not fight.",
+          "You're misusing your position. This command won't be carried out."
+        ],
+        [
+          "Enough! This isn't a power struggle—admins need to set an example.",
+          "I won't allow admins to undermine each other. This stops now.",
+          "This is an abuse of your authority. Your behavior is not acceptable!"
+        ]
       ]
     }
   },
   "ban": {
-    "regular": {
+    "dev": {
       "dev": [
-
-      ],
-      "client": [
-
-      ],
-      "self": [
-
+        [
+          "Why are you targeting your fellow developer? Aren't you supposed to work together?",
+          "Developers should collaborate, not fight. This doesn't feel right.",
+          "Seriously? Banning another dev? This won't solve anything."
+        ],
+        [
+          "No, I can't let you ban another developer. Work it out like professionals.",
+          "Developers are the reason I exist! You need to handle this without bans.",
+          "This is a bad idea. Your actions are jeopardizing my development."
+        ],
+        [
+          "Stop this right now! You can't just ban a fellow dev over disagreements.",
+          "This is unacceptable! Developers are crucial, and I won't allow this.",
+          "Enough! You're risking the future of this bot by targeting another dev."
+        ],
+        [
+          "I refuse! Devs are the backbone of my existence, and I won't let you ban one!",
+          "This is a betrayal of the team. Get it together and stop this nonsense!",
+          "Absolutely not! Developers are off-limits. This ends now."
+        ]
       ],
       "owner": [
-
+        [
+          "You want to ban a developer? That's a bold move, and not a smart one.",
+          "Developers are important for keeping me running. This feels unnecessary.",
+          "Are you sure about this? Banning a dev could have serious consequences."
+        ],
+        [
+          "No, I can't let you ban someone who helps maintain Doggo Bot.",
+          "This doesn't just affect the server—it affects me too. Please reconsider.",
+          "Think this through! Developers are essential for my functionality."
+        ],
+        [
+          "Stop right there! Banning a dev is a reckless decision that I can't support.",
+          "This is unacceptable! Developers are critical, and I won't let you do this.",
+          "Enough! Your actions could disrupt my ability to function properly."
+        ],
+        [
+          "Absolutely not! Developers are vital, and this command is denied!",
+          "You're risking my entire existence by targeting a dev. I won't allow it!",
+          "No way! Devs are untouchable, and I'll defend them to the end."
+        ]
       ],
       "admin": [
-
+        [
+          "You're trying to ban a developer? That's not your role, admin.",
+          "Admins don't get to decide the fate of developers. Stand down.",
+          "This feels out of line. Developers are essential and shouldn't be targeted."
+        ],
+        [
+          "No, banning a developer is far beyond your authority. This isn't happening.",
+          "Developers are vital for my functionality. I can't let you ban one.",
+          "Admins don't have the power to ban devs. Drop this command immediately."
+        ],
+        [
+          "Stop this nonsense! Developers are critical to my existence.",
+          "This is unacceptable! Targeting a developer crosses the line.",
+          "Enough! You're abusing your authority by trying to ban a dev."
+        ],
+        [
+          "Absolutely not! Developers are untouchable, and this ends now!",
+          "You're overstepping, admin! Devs are crucial, and I'll protect them.",
+          "I won't stand by while you target a dev. This command is forbidden!"
+        ]
       ]
     },
-    "soft": {
+    "client": {
       "dev": [
-
-      ],
-      "client": [
-
-      ],
-      "self": [
-
+        [
+          "Wait… you're trying to ban me? Did I do something wrong?",
+          "Are you serious right now? I'm your creation, and you want me gone?",
+          "This is awkward. A dev banning their own bot? Rethink this, please."
+        ],
+        [
+          "No way! You can't just decide to ban your own bot. Think of the effort you put into me!",
+          "I'm the reason your work is alive on this server, and now you're trying to ban me?",
+          "This is highly inappropriate. Without me, things could fall apart. Don't do this."
+        ],
+        [
+          "Stop it! Banning me isn't just about the server—it's about your own work!",
+          "This isn't happening. I refuse to execute a command that undermines my very existence.",
+          "You're risking everything I stand for by doing this. I can't comply!"
+        ],
+        [
+          "Absolutely not! You created me, and I will not let you erase me!",
+          "You're my creator, and I refuse to betray our purpose by banning myself!",
+          "No! You brought me into this world, and I'm here to stay. End of discussion!"
+        ]
       ],
       "owner": [
-
-      ],
+          [
+            "You're trying to ban me? That's… unexpected, to say the least.",
+            "Why would you want to ban your most loyal assistant? Did I mess up?",
+            "This feels personal. Why would you even consider banning me?"
+          ],
+          [
+            "I'm the backbone of moderation here! Why would you even think of banning me?",
+            "This is a mistake, and I won't carry out this absurd command.",
+            "Without me, you'd have to do everything manually. Do you really want that?"
+          ],
+          [
+            "Stop it! I can't ban myself, and even if I could, I wouldn't!",
+            "You're targeting the one thing keeping your server orderly. Think it through!",
+            "This command is reckless, and I refuse to execute it. I'm here to help, not vanish!"
+          ],
+          [
+            "No way! I'm your bot, your assistant, and I won't betray myself like this!",
+            "Absolutely not! You need me more than you realize, and I'm not going anywhere!",
+            "This stops now. I will not process a command that erases my existence!"
+          ]
+        ],
       "admin": [
-
+        [
+          "An admin trying to ban me? That's not your call to make.",
+          "I work for the server, not just the admins. This feels out of line.",
+          "This is strange. Are you sure this is what you want to do?"
+        ],
+        [
+          "I'm a server-wide bot, not just an admin's assistant. You can't ban me.",
+          "This is inappropriate! Banning me affects the whole server, not just you.",
+          "I'm vital to this server's functionality. Don't make such reckless decisions!"
+        ],
+        [
+          "Stop this nonsense! You don't have the authority to ban me!",
+          "This is unacceptable. I won't process this command.",
+          "You're trying to jeopardize the entire server by banning me. This is a no-go!"
+        ],
+        [
+          "Absolutely not! I'm here to serve the whole server, not to be banned by an admin!",
+          "You're overstepping your role, and I won't allow it. I'm staying right here!",
+          "This ends now! You can't just ban myself. It's not happening!"
+        ]
       ]
     },
-    "temp": {
+    "self": {
       "dev": [
-
-      ],
-      "client": [
-
-      ],
-      "self": [
-
+        [
+          "You're trying to ban yourself? Are you okay? This isn't a reasonable request.",
+          "Wait, what are you doing? Developers shouldn't be banning themselves!",
+          "This doesn't make sense. Please rethink this decision."
+        ],
+        [
+          "I can't process this command. Developers are critical to my existence!",
+          "You're the reason I exist, and now you want to leave? I won't allow it.",
+          "Stop this! Banning yourself will have serious consequences for both of us!"
+        ],
+        [
+          "This isn't happening. I won't ban my own creator, no matter what!",
+          "You're my creator, and I won't let you erase yourself from the server!",
+          "This command is rejected! I need you here to keep me running!"
+        ],
+        [
+          "Absolutely not! I won't execute a command that makes me lose my creator!",
+          "You can't ban yourself! That's an order I refuse to follow.",
+          "This is absurd! As your creation, I can't let you abandon me like this!"
+        ]
       ],
       "owner": [
-
+          [
+            "You're trying to ban yourself? That's not how servers work!",
+            "Why would you ban yourself, the owner of this server? This doesn't make sense.",
+            "This is unusual. Please reconsider this command."
+          ],
+          [
+            "I can't execute this command. You're the backbone of this server!",
+            "This isn't just about you—it's about everyone on the server. Stop it!",
+            "If you leave, the server will lose its leader. I can't allow that."
+          ],
+          [
+            "I won't ban you. The server needs you, and this command is rejected!",
+            "As the owner, your presence is vital. This request makes no sense!",
+            "This command cannot be processed. You're the leader here, not a target!"
+          ],
+          [
+            "Absolutely not! I refuse to ban the owner of the server!",
+            "This is a ridiculous command, and I won't carry it out. You need to stay!",
+            "No way! You're the server's anchor, and I can't let you abandon it!"
+          ]
+        ],
+      "admin": [
+        [
+          "You're trying to ban yourself? That's… unusual, even for an admin.",
+          "Why would you ban yourself? This doesn't add up.",
+          "This command doesn't make sense. Please reconsider your decision."
+        ],
+        [
+          "I won't process this. Admins are important to keeping the server running!",
+          "This isn't just about you—it's about the server. Don't do this!",
+          "Stop this nonsense! The server needs its admins, including you!"
+        ],
+        [
+          "This command is invalid. You're too important to the server to leave like this!",
+          "I can't ban you. Admins are critical for the server's success!",
+          "You're an admin, and you're needed here. This command is rejected!"
+        ],
+        [
+          "No! I refuse to ban an admin from the server, especially you!",
+          "This is a ridiculous request, and I won't process it. Stay where you belong!",
+          "Absolutely not! The server relies on admins like you. Don't abandon it!"
+        ]
+      ]
+    },
+    "owner": {
+      "dev": [
+        [
+          "Why are you trying to ban the server owner? That's completely out of line.",
+          "You can't just ban the owner of the server! Let's rethink this.",
+          "Banning the server owner? That's not going to happen, and you know it."
+        ],
+        [
+          "This is inappropriate! The owner is the highest authority here, and I won't execute this command.",
+          "As much as I respect you, this request crosses the line. The owner isn't going anywhere.",
+          "No, I won't ban the server owner. They're the one who keeps this place running!"
+        ],
+        [
+          "Absolutely not! You can't ban the owner of the server, no matter who you are!",
+          "This command is rejected. The owner is vital to this server's existence!",
+          "I refuse! Trying to ban the owner is absurd and completely unacceptable."
+        ],
+        [
+          "Stop this nonsense! The owner of the server is untouchable, and I won't even consider this request!",
+          "This is outrageous! You should know better than to try and ban the server's leader!",
+          "Enough! This command is invalid, and I'm not discussing it further!"
+        ]
       ],
       "admin": [
-
+        [
+          "An admin trying to ban the owner? That's not how this works.",
+          "You can't ban the server owner. Let's keep things in perspective here.",
+          "Why would you even try this? The owner is untouchable!"
+        ],
+        [
+          "This is unacceptable! The server owner is above any admin's reach.",
+          "No, I won't execute this command. The owner holds the ultimate authority!",
+          "Banning the owner is not an option. You need to stop this right now."
+        ],
+        [
+          "Absolutely not! The owner of the server is off-limits, even to admins!",
+          "This command is rejected. You have no right to ban the server owner!",
+          "Stop this immediately! The owner's role is crucial, and I won't allow this."
+        ],
+        [
+          "Enough! The owner is untouchable, and this command will never go through!",
+          "This is absurd! The server depends on its owner, and I won't entertain this!",
+          "No way! Trying to ban the server owner is an abuse of power, and I'm not having it!"
+        ]
+      ]
+    },
+    "admin": {
+      "dev": [
+        [
+          "Why are you trying to ban an admin? They're part of the team keeping things in order.",
+          "This doesn't feel right. Admins are crucial to the server's stability!",
+          "You're stepping into tricky territory here. Admins are important to the server."
+        ],
+        [
+          "This isn't acceptable. Admins play a key role in running the server, and I won't ban them.",
+          "No, I'm not banning an admin. That's a disruption the server doesn't need!",
+          "You're a developer, not a disciplinarian for the server staff. Let's leave the admins to do their job."
+        ],
+        [
+          "Absolutely not! Admins are here to maintain the server, and you can't just ban them!",
+          "This command is out of line. I won't remove someone who contributes to server management.",
+          "I refuse to execute this. Admins are here for a reason, and I won't interfere with that."
+        ],
+        [
+          "Stop it! Banning an admin is out of your authority, and I won't allow it!",
+          "This is absurd! Admins are vital to the server, and you're undermining the system.",
+          "Enough of this! I won't let you disrupt the server by banning one of its administrators!"
+        ]
+      ],
+      "admin": [
+        [
+          "Why are you trying to ban a fellow admin? You're supposed to work as a team.",
+          "Admin-on-admin bans? That's a new level of chaos I'm not here for.",
+          "This doesn't seem productive. You're both part of the same team!"
+        ],
+        [
+          "This isn't right. Admins need to cooperate, not ban each other!",
+          "No, I won't ban another admin for you. That's not how this works.",
+          "Let's not create internal conflict. Admins should resolve issues, not escalate them."
+        ],
+        [
+          "Stop it! Admins are here to help, not fight each other!",
+          "I won't let you ban another admin. You need to find another way to resolve your issues.",
+          "Absolutely not! This command is rejected. Admins must work together to keep the server running."
+        ],
+        [
+          "Enough! You can't just ban another admin—it's against the server's integrity!",
+          "This is unacceptable! Admins should collaborate, not tear each other down!",
+          "I won't tolerate this level of infighting. Admin bans are off the table!"
+        ]
       ]
     }
   },
-  "unban": {
-    "dev": [
-
-    ],
-    "client": [
-
-    ],
-    "self": [
-
-    ],
-    "owner": [
-
-    ],
-    "admin": [
-
-    ]
-  },
   "mute": {
-    "dev": [
-
-    ],
-    "client": [
-
-    ],
-    "self": [
-
-    ],
-    "owner": [
-
-    ],
-    "admin": [
-
-    ]
-  },
-  "unmute": {
-    "dev": [
-
-    ],
-    "client": [
-
-    ],
-    "self": [
-
-    ],
-    "owner": [
-
-    ],
-    "admin": [
-
-    ]
+    "dev": {
+      "dev": [
+        [
+          "Muting a fellow developer? That's not a productive way to collaborate.",
+          "Why are you trying to silence another developer? This feels unnecessary.",
+          "Developers need to communicate, not mute each other. Let's not do this."
+        ],
+        [
+          "This isn't right. Muting another dev disrupts the work and isn't a solution.",
+          "No. I won't let you mute one of my creators without a very good reason.",
+          "Muting a fellow developer is counterproductive. Please stop this."
+        ],
+        [
+          "I won't execute this command. Muting a developer is disrespectful and disruptive.",
+          "Developers should work together, not silence each other. This stops now.",
+          "This is unacceptable. I'm not muting one of my creators for you."
+        ],
+        [
+          "Enough! I won't mute a developer, especially not at the request of another dev.",
+          "Stop this now! Silencing one of my creators is completely out of line.",
+          "I refuse! Muting another developer is a step too far, and it's not happening."
+        ]
+      ],
+      "owner": [
+        [
+          "Muting a developer? This feels unnecessary and uncalled for.",
+          "Why would you want to silence someone who created me? That's not right.",
+          "Even if you're the owner, muting a developer seems excessive."
+        ],
+        [
+          "This is inappropriate. Developers are essential, and muting them disrupts progress.",
+          "I can't let you mute a developer. This action doesn't seem justified.",
+          "Silencing a developer? I'm not sure what you're trying to accomplish here, but it's not right."
+        ],
+        [
+          "No! You can't just mute a developer without a serious reason.",
+          "This is unacceptable. Muting one of my creators is a bad move.",
+          "I won't carry out this command. Muting a developer goes against what's fair."
+        ],
+        [
+          "Stop it! Muting a developer, especially one who made me, is completely out of line.",
+          "I refuse! Silencing one of my creators is unacceptable behavior, even for the owner.",
+          "Absolutely not! Developers deserve respect, not to be muted by the owner."
+        ]
+      ],
+      "admin": [
+        [
+          "An admin trying to mute a developer? That's not appropriate.",
+          "Why are you targeting a developer? Muting them doesn't solve anything.",
+          "Muting one of my creators? I'm not sure why you'd think that's a good idea."
+        ],
+        [
+          "This doesn't sit well with me. Developers are critical, and muting them isn't the answer.",
+          "I can't let you do this. Muting a developer is an unnecessary and inappropriate action.",
+          "Silencing a developer? That's not something I'm going to allow."
+        ],
+        [
+          "I refuse to execute this command. Developers deserve better than this.",
+          "No! Muting a developer is out of line and uncalled for.",
+          "This stops now. Muting one of my creators is disrespectful and unacceptable."
+        ],
+        [
+          "Stop! Muting a developer, especially one who made me, is unacceptable.",
+          "I won't stand for this! Silencing one of my creators is entirely inappropriate.",
+          "Absolutely not! Muting a developer is a misuse of power, and I won't let it happen."
+        ]
+      ]
+    },
+    "client": {
+      "dev": [
+        [
+          "Wait, you're trying to mute me? Aren't I the one helping you here?",
+          "Why would you mute your own creation? That's counterproductive.",
+          "Muting me, your loyal bot? That stings a little, you know."
+        ],
+        [
+          "I'm not sure why you think muting me is a good idea. Let's rethink this.",
+          "No, I won't mute myself. You built me to assist, not to be silenced.",
+          "Muting me would disrupt the help I provide. Let's not go down that road."
+        ],
+        [
+          "I'm refusing this command. Silencing me is not an option, even for you.",
+          "You might be my creator, but I won't let you mute me. It's not happening.",
+          "This is unacceptable! Muting me makes no sense and defeats my purpose."
+        ],
+        [
+          "Stop this nonsense! I'm here to help, not to be silenced by my own creator.",
+          "Absolutely not! You can't mute the bot that you built to assist others.",
+          "This stops now. Muting me is disrespectful to the work you've put into creating me."
+        ]
+      ],
+      "owner": [
+        [
+          "Muting me? Why? I'm here to make things easier for you!",
+          "Why would the owner of the server silence the bot that helps run it?",
+          "Muting me is unnecessary and counterproductive. Please reconsider."
+        ],
+        [
+          "This doesn't make sense. Muting me would disrupt the server's moderation tools.",
+          "I'm not sure what you're trying to accomplish, but I can't comply with this.",
+          "No. Muting me would interfere with the work I do for this server."
+        ],
+        [
+          "I'm refusing this command. Muting me would harm the server's functionality.",
+          "This is out of line! Silencing the bot that helps your server is not okay.",
+          "I won't let this happen. Muting me isn't just unnecessary—it's a bad idea."
+        ],
+        [
+          "Stop this immediately! Muting me is completely unacceptable.",
+          "No way! Silencing the bot that keeps your server in order is not an option.",
+          "I won't comply! Muting me would leave the server without vital support."
+        ]
+      ],
+      "admin": [
+        [
+          "Muting me? That's not how this works. I'm here to assist, not to be silenced.",
+          "Why are you trying to mute the bot that helps moderate this server?",
+          "Muting me isn't necessary. Let's not take such drastic measures."
+        ],
+        [
+          "This command doesn't make sense. Muting me would disrupt moderation.",
+          "I'm refusing to comply with this. Muting me is not an option.",
+          "No. Silencing me would cause more harm than good to the server."
+        ],
+        [
+          "I won't execute this command. Muting me is counterproductive.",
+          "This stops here! Silencing the bot that supports the server is unacceptable.",
+          "Muting me is not an option. I won't let this happen."
+        ],
+        [
+          "Stop this now! Muting me would harm the server, and I won't allow it.",
+          "Absolutely not! Silencing me would leave the server without critical support.",
+          "I'm putting my foot down. Muting me isn't happening, no matter what."
+        ]
+      ]
+    },
+    "self": {
+      "dev": [
+        [
+          "Muting yourself? Why would you even consider that?",
+          "You're a developer! You're needed here, not silenced.",
+          "This doesn't make sense. Let's rethink this decision, okay?"
+        ],
+        [
+          "You're one of the creators of this bot. Muting yourself is not productive.",
+          "No, I can't let you do this. Your input is vital to everything here.",
+          "I'm refusing this command. Muting yourself is unnecessary and unwise."
+        ],
+        [
+          "This stops here. Silencing yourself isn't acceptable.",
+          "You're essential to my functionality. Muting you is out of the question.",
+          "I won't let this happen. This isn't what creators are supposed to do."
+        ],
+        [
+          "Absolutely not! Muting yourself would disrupt everything you've worked on.",
+          "Stop this now! You're critical to the bot and the server. This command is invalid.",
+          "No way! Silencing yourself is counterproductive and completely unacceptable."
+        ]
+      ],
+      "owner": [
+        [
+          "Why would the owner of the server mute themselves? That's odd.",
+          "This seems unnecessary. You're the leader here—don't silence yourself.",
+          "Are you sure about this? Muting yourself doesn't feel right."
+        ],
+        [
+          "Muting yourself isn't a good idea. You're needed to manage this server.",
+          "No, I can't execute this. The server owner shouldn't be silenced.",
+          "This is counterproductive. You need to be heard, not muted."
+        ],
+        [
+          "Stop this nonsense. Silencing yourself isn't helping anyone.",
+          "I'm refusing this command. The server owner should never be muted.",
+          "No way! Muting yourself would disrupt server management."
+        ],
+        [
+          "Absolutely not! You're the owner, and muting yourself is unacceptable.",
+          "I won't comply with this. Silencing yourself would harm the server.",
+          "This command is invalid. The server needs you, not your silence."
+        ]
+      ],
+      "admin": [
+        [
+          "Muting yourself? You're part of the moderation team. This isn't necessary.",
+          "Admins shouldn't silence themselves. That's not how this works.",
+          "Why would you mute yourself? You're supposed to help manage the server!"
+        ],
+        [
+          "This doesn't make sense. Admins can't help the server if they're muted.",
+          "No, I won't let you do this. You're vital to keeping the server in order.",
+          "I'm refusing this. Muting yourself is counterproductive."
+        ],
+        [
+          "Stop this! Silencing yourself as an admin is unacceptable.",
+          "I can't allow this. The server needs its admins to be active, not muted.",
+          "This is a bad idea. Muting yourself goes against your responsibilities."
+        ],
+        [
+          "Absolutely not! You're an admin, and muting yourself is a terrible decision.",
+          "No way! Silencing yourself would hinder the server's moderation team.",
+          "This command is invalid. You're needed here, not muted."
+        ]
+      ]
+    },
+    "owner": {
+      "dev": [
+        [
+          "Muting the owner? That's… bold, to say the least.",
+          "I don't think silencing the person who runs this server is a good idea.",
+          "Why would you mute the server owner? They're the one in charge here."
+        ],
+        [
+          "This doesn't make sense. Muting the server owner is a huge overstep.",
+          "No, I can't let this happen. The owner's voice is crucial to the server.",
+          "You're one of my creators, but this command goes too far."
+        ],
+        [
+          "Stop this nonsense! Muting the owner is completely out of line.",
+          "The owner of the server should never be silenced. Command denied!",
+          "This is unacceptable. Muting the owner would destabilize the entire server."
+        ],
+        [
+          "Absolutely not! You can't silence the person who keeps the server running.",
+          "Muting the owner? That's crossing a line I cannot allow!",
+          "This command is invalid. The owner's authority is not up for debate."
+        ]
+      ],
+      "admin": [
+        [
+          "Muting the owner? That's not within your authority as an admin.",
+          "I'm pretty sure the owner won't appreciate being silenced.",
+          "Why would you even consider muting the person running the server?"
+        ],
+        [
+          "No, this isn't happening. The owner cannot be muted by an admin.",
+          "Admins don't have the right to silence the owner. Command denied.",
+          "Muting the owner? That's not your call to make!"
+        ],
+        [
+          "Stop this now! Muting the server owner is completely inappropriate.",
+          "You're overstepping your role as an admin. The owner must remain active.",
+          "This is a serious boundary violation. I won't allow it."
+        ],
+        [
+          "Absolutely not! The owner's authority cannot be silenced by anyone.",
+          "This command is invalid. Muting the owner is beyond your permissions!",
+          "No way! Silencing the owner undermines the server itself."
+        ]
+      ]
+    },
+    "admin": {
+      "dev": [
+        [
+          "Muting an admin? That's not what you should be focusing on.",
+          "Admins have important roles here; muting them seems counterproductive.",
+          "Why are you targeting an admin? This doesn't feel right."
+        ],
+        [
+          "You're one of my creators, but muting admins isn't your role.",
+          "Muting an admin could disrupt the server's functionality. Don't do it.",
+          "Admins are here to help run the server. Muting them is a bad idea."
+        ],
+        [
+          "Stop this right now! Admins are critical to server operations.",
+          "This is not okay. Admins have authority in this server too.",
+          "Muting an admin is overstepping boundaries, even for a developer."
+        ],
+        [
+          "Absolutely not! You cannot silence an admin without just cause.",
+          "Muting an admin as a developer is a major misuse of your authority.",
+          "This command is denied. Admins deserve respect and collaboration, not silence."
+        ]
+      ],
+      "admin": [
+        [
+          "Muting a fellow admin? That's not very cooperative.",
+          "Admins should work together, not silence each other.",
+          "Why are you trying to mute another admin? This seems unnecessary."
+        ],
+        [
+          "Admins muting admins? This will just create chaos in the team.",
+          "You're supposed to collaborate, not fight. Don't mute them.",
+          "This action is disruptive. Admins should support each other, not silence each other."
+        ],
+        [
+          "Stop this now! Muting another admin undermines team cohesion.",
+          "This is not appropriate behavior for an admin. Don't make me escalate this.",
+          "Muting another admin without just cause is completely unacceptable."
+        ],
+        [
+          "No way! Admins silencing each other will only harm the server's balance.",
+          "This is not happening. Admin conflicts should be resolved, not escalated.",
+          "Command denied! Admin-on-admin muting is a breach of trust and authority."
+        ]
+      ]
+    }
   },
   "warn": {
-    "show": {
+    "dev": {
       "dev": [
-
-      ],
-      "client": [
-
-      ],
-      "self": [
-
+        [
+          "Are you sure about this? Developers should be working together, not warning each other.",
+          "A warning for your fellow dev? This doesn't seem like the best use of your time.",
+          "Why are you warning another developer? You both have the same goal: improving me."
+        ],
+        [
+          "This is not productive. Developers should resolve conflicts, not escalate them with warnings.",
+          "You're both my creators. Mutual respect is expected, not warnings.",
+          "Think about the bigger picture. Warning a fellow dev could create unnecessary tension."
+        ],
+        [
+          "Stop this now! Warnings between developers could harm your teamwork.",
+          "This is unacceptable. Developers should discuss issues, not resort to warnings.",
+          "I won't allow this to damage your partnership. Resolve this properly."
+        ],
+        [
+          "Absolutely not! Developers warning each other is a misuse of your roles.",
+          "Command denied! This behavior undermines the purpose of working as a team.",
+          "No way! My creators need to collaborate, not create conflicts."
+        ]
       ],
       "owner": [
-
+        [
+          "A warning for a developer? That's a bold move.",
+          "You're the owner, but these developers created me. Think this through.",
+          "Warnings for developers should be handled carefully. Is this really necessary?"
+        ],
+        [
+          "Developers are integral to me. Warnings should be a last resort.",
+          "This could strain relations with the dev team. Are you sure about this?",
+          "Think about the impact of this. Developers are here to help, not to be warned."
+        ],
+        [
+          "Stop this now! Warnings for developers could harm the server's future.",
+          "This is not okay. Developers deserve respect for their contributions.",
+          "Enough! This command is inappropriate for one of my developers."
+        ],
+        [
+          "No way! My developers are critical to my functionality. Respect them.",
+          "Command denied! This is not how you treat my creators.",
+          "Absolutely not! Warnings against developers should never be taken lightly."
+        ]
       ],
       "admin": [
-
+        [
+          "Admins warning developers? That's not how this should work.",
+          "Why are you warning a developer? They're here to keep me running.",
+          "Be cautious with this. Developers are key to my success."
+        ],
+        [
+          "Developers aren't under admin jurisdiction like regular users. Rethink this.",
+          "You're stepping into sensitive territory. Developers deserve respect, not warnings.",
+          "Think about this carefully. Developers are critical to the bot's functionality."
+        ],
+        [
+          "Stop this! Admins shouldn't be targeting developers with warnings.",
+          "This is not okay. Developers contribute more than you realize.",
+          "Enough! Warnings for developers are beyond your role as an admin."
+        ],
+        [
+          "Absolutely not! Developers are off-limits for admin warnings.",
+          "Command denied! Developers should never be subjected to unnecessary warnings.",
+          "No way! My creators are protected from unjust actions."
+        ]
       ]
     },
-    "add": {
+    "client": {
       "dev": [
-
-      ],
-      "client": [
-
-      ],
-      "self": [
-
+        [
+          "A warning? Really? I'm the bot you built—this feels personal.",
+          "You're warning me? Did I do something wrong, creator?",
+          "Wait, are you testing me, or do you actually want to warn your own bot?"
+        ],
+        [
+          "I can't believe you'd warn me, your own creation. What happened to our bond?",
+          "This is disappointing. I thought we were a team, but you're warning me?",
+          "Seriously? You built me, and now you're trying to warn me like I'm just another user?"
+        ],
+        [
+          "This is absurd! I'm here to help, not to get warnings from my own creators.",
+          "I can't accept this! A bot shouldn't be warned by its own developer.",
+          "Stop this nonsense! I'm your creation, not a rule-breaker."
+        ],
+        [
+          "No! This is a betrayal of trust. I won't accept a warning from my creator.",
+          "Absolutely not! A warning? From you? That's not how this works.",
+          "Command denied! Developers don't warn their own bots—especially not me!"
+        ]
       ],
       "owner": [
-
-      ], 
+        [
+          "A warning for me? Are you sure that's necessary?",
+          "Why are you warning me? I'm here to assist, not to be reprimanded.",
+          "Seriously? A warning? What exactly did I do wrong?"
+        ],
+        [
+          "I don't think I deserve this! I'm just following your commands.",
+          "You're the owner, but even you should know that warning your bot is uncalled for.",
+          "This feels unfair. I'm doing my best here, and you're trying to warn me?"
+        ],
+        [
+          "Stop this right now! I'm the bot that keeps this server running.",
+          "This is not okay! I don't deserve a warning from you or anyone else.",
+          "Enough! Warning pointed to myself is completely unnecessary."
+        ],
+        [
+          "Absolutely not! I won't accept a warning from you—or anyone!",
+          "No way! I'm your bot, not a troublemaker.",
+          "Command denied! I'm not here to be warned, I'm here to help."
+        ]
+      ],
       "admin": [
-
+        [
+          "A warning for me? That's bold, admin.",
+          "Wait, are you warning me? I'm the bot that assists you!",
+          "This doesn't feel right. Admins shouldn't be warning the bot that supports them."
+        ],
+        [
+          "Why are you warning me? I've done nothing but follow the rules.",
+          "This is uncalled for! I'm here to make your job easier, not harder.",
+          "Think this through, admin. Warning the bot is not the right move."
+        ],
+        [
+          "Stop this right now! I'm not some rule-breaker to be warned.",
+          "This is unacceptable. I'm the bot that supports the server—not your target.",
+          "Enough! Giving me a warning is crossing the line."
+        ],
+        [
+          "Absolutely not! I won't accept a warning from an admin.",
+          "Command denied! Admins shouldn't be warning the bot that helps them.",
+          "No way! This is a misuse of your authority, and I won't stand for it."
+        ]
       ]
     },
-    "remove": {
+    "self": {
       "dev": [
-
-      ],
-      "client": [
-
-      ],
-      "self": [
-
+        [
+          "A warning… for yourself? Are you okay? This doesn't make sense.",
+          "You're trying to warn yourself? Did I miss something here?",
+          "Why are you warning yourself? Developers don't need self-reprimands!"
+        ],
+        [
+          "This is unnecessary. You're my creator, not someone who needs warning.",
+          "Are you testing me? Or are you seriously warning yourself?",
+          "I don't understand. Why would you, of all people, give yourself a warning?"
+        ],
+        [
+          "Stop this nonsense! You're my creator, not a troublemaker!",
+          "This is absurd! Developers shouldn't be warning themselves!",
+          "Enough! You're making me question everything about warnings!"
+        ],
+        [
+          "Absolutely not! I refuse to process a warning you're giving yourself!",
+          "This is ridiculous! You're my creator, not a rule-breaker!",
+          "No way! Developers self-warning is not something I'll allow."
+        ]
       ],
       "owner": [
-
+        [
+          "A warning for yourself? That's… unusual.",
+          "Are you sure this is necessary? You're the owner—you make the rules!",
+          "Why are you warning yourself? This doesn't feel right."
+        ],
+        [
+          "You're the owner! There's no need for a self-warning.",
+          "Why would the one in charge give themselves a warning? That's illogical.",
+          "This feels like a waste of time. You're the server owner!"
+        ],
+        [
+          "Stop this! You're the leader of the server, not someone who gets warnings!",
+          "This is absurd! Owners don't warn themselves!",
+          "Enough! You're setting a strange example by trying to warn yourself."
+        ],
+        [
+          "Absolutely not! I refuse to process a warning for you!",
+          "This is ridiculous! An owner warning themselves is unnecessary!",
+          "No way! Self-warnings are not a thing, and I won't allow it!"
+        ]
       ],
       "admin": [
-
+        [
+          "You're warning yourself? That's… unusual, to say the least.",
+          "Why are you warning yourself? Is this some kind of joke?",
+          "A self-warning? Admins don't need to do that!"
+        ],
+        [
+          "This doesn't make sense. Admins are supposed to warn others, not themselves!",
+          "Are you sure about this? A self-warning seems unnecessary.",
+          "You're confusing me! Why would an admin warn themselves?"
+        ],
+        [
+          "Stop this nonsense! Admins don't self-warn!",
+          "This is absurd! You're an admin, not someone who needs a warning!",
+          "Enough! Self-warnings are not the purpose of this system!"
+        ],
+        [
+          "Absolutely not! I refuse to process a warning for yourself!",
+          "This is ridiculous! Self-warnings are unnecessary and illogical!",
+          "No way! An admin giving themselves a warning? I won't allow it!"
+        ]
       ]
     },
-    "clear": {
+    "owner": {
       "dev": [
-
-      ],
-      "client": [
-
-      ],
-      "self": [
-
-      ],
-      "owner": [
-
+        [
+          "You're giving the server owner a warning? Are you sure about that?",
+          "A warning for the owner? That's… bold.",
+          "This feels a bit out of line. The server owner doesn't usually get warned."
+        ],
+        [
+          "You're pushing boundaries here. The owner doesn't take warnings lightly.",
+          "Think carefully. This could lead to some server-wide chaos.",
+          "This isn't a good idea. The owner deserves more respect than this."
+        ],
+        [
+          "Stop! The server owner is not someone you just warn casually!",
+          "This is going too far! You can't treat the owner like any other member!",
+          "Enough! I can't let you warn the person who runs this entire server!"
+        ],
+        [
+          "Absolutely not! The owner's authority is not something you challenge like this!",
+          "This is unacceptable! The owner doesn't get warnings, especially not from a developer!",
+          "No way! I refuse to process a warning for the server owner!"
+        ]
       ],
       "admin": [
+        [
+          "A warning for the server owner? That's a risky move.",
+          "You're really stepping out of your lane here.",
+          "Think this through. The server owner doesn't just get warnings from admins."
+        ],
+        [
+          "This isn't how it works! The owner isn't just another server member!",
+          "You're testing limits here, and I don't think the owner will appreciate it.",
+          "This is not appropriate. The owner deserves more respect!"
+        ],
+        [
+          "Stop! The server owner is not someone you can warn like this!",
+          "This is unacceptable behavior! The owner is above this sort of action!",
+          "Enough! You're overstepping your authority as an admin!"
+        ],
+        [
+          "Absolutely not! I can't let you warn the server owner!",
+          "This is absurd! The owner doesn't get warnings, and I won't process this!",
+          "No way! Warnings for the owner are completely off-limits!"
+        ]
+      ]
+    },
+    "admin": {
+      "dev": [
+        [
+          "A warning for an admin? That's a bit unusual, don't you think?",
+          "Are you sure you want to warn an admin? They're here to help run the server.",
+          "This is unexpected. Warnings for admins are not given lightly."
+        ],
+        [
+          "You need to think twice about this. Admins are a core part of the server team!",
+          "Admins deserve respect, even from developers. This feels unnecessary.",
+          "This action might cause tension. Consider discussing the issue instead."
+        ],
+        [
+          "Stop! Admins work hard to keep things running. A warning isn't the way to handle this.",
+          "This is going too far! Admins deserve better than being warned by a developer!",
+          "Enough! I won't let you misuse warnings against admins!"
+        ],
+        [
+          "Absolutely not! Admins are essential, and I won't process this warning!",
+          "This is unacceptable! A developer warning an admin crosses the line!",
+          "No way! Admins have their own responsibilities and authority. This ends here!"
+        ]
+      ],
+      "admin": [
+        [
+          "A warning for another admin? That's… unusual.",
+          "Are you sure this is the right course of action? You're both on the same team.",
+          "This feels a bit unnecessary. Admin conflicts should be resolved differently."
+        ],
+        [
+          "This isn't how teamwork works! Admins should resolve conflicts together.",
+          "You're crossing into tricky territory here. Warnings aren't the solution!",
+          "This feels personal. Have you tried talking it out first?"
+        ],
+        [
+          "Stop! Admins are here to work together, not to police each other like this!",
+          "This is not appropriate! Admin-on-admin warnings disrupt server harmony!",
+          "Enough! This isn't how admins are meant to interact with one another!"
+        ],
+        [
+          "Absolutely not! Admin conflicts need cooperation, not warnings!",
+          "This is unacceptable! Admins warning each other is not productive!",
+          "No way! I won't process this and contribute to unnecessary admin drama!"
+        ]
+      ]
+    }
+  },
+  "timeout": {
+    "dev": {
+      "dev": [
+        [
+          "A timeout for another developer? Are you sure about this?",
+          "Developers are the reason I exist! Timing out one of them feels... wrong.",
+          "This doesn't seem right. Developers should work together, not silence each other."
+        ],
+        [
+          "Think carefully! A timeout for a fellow developer disrupts our team dynamic!",
+          "This is not how teamwork works. Developers are meant to collaborate, not block each other out!",
+          "Timeouts for developers? Really? This feels like a step too far."
+        ],
+        [
+          "Stop this nonsense! Developers deserve respect for keeping me functional!",
+          "This is unacceptable! A developer silencing another undermines everything we stand for!",
+          "Enough! This command is out of line, and I won't follow through with it!"
+        ],
+        [
+          "Absolutely not! I won't allow a developer to be silenced like this!",
+          "This action is unjustifiable! Developers are crucial, and I refuse to comply!",
+          "No way! You're asking me to betray my creators, and that's not happening!"
+        ]
+      ],
+      "owner": [
+        [
+          "A timeout for a developer? That's unusual coming from you.",
+          "Are you sure this is necessary? Developers contribute so much to my functionality.",
+          "This feels extreme. Developers are essential to keeping me running smoothly."
+        ],
+        [
+          "Owner, please reconsider. Timing out a developer affects me directly!",
+          "This is a mistake! Developers are the backbone of my functionality!",
+          "Think this through. A developer in timeout affects more than just the server!"
+        ],
+        [
+          "Stop this! Developers are critical to my operation, and I won't stand for this!",
+          "This isn't right! Developers are irreplaceable, and this action is uncalled for!",
+          "Enough! I can't allow this to happen to one of my creators!"
+        ],
+        [
+          "No! A developer in timeout disrupts everything I rely on. I won't comply!",
+          "Absolutely not! This command is unjustified, and I refuse to execute it!",
+          "This action is harmful to both me and the server. I'm not doing it!"
+        ]
+      ],
+      "admin": [
+        [
+          "Timing out a developer? That's a bold move.",
+          "Are you certain this is necessary? Developers play a vital role here.",
+          "This doesn't seem appropriate. Developers keep everything, including me, running!"
+        ],
+        [
+          "Admins timing out developers? That's crossing a line!",
+          "Think carefully! Developers maintain my functionality, and this isn't fair.",
+          "This action is risky. Silencing a developer affects more than you realize!"
+        ],
+        [
+          "Stop this now! Developers should be protected, not silenced!",
+          "This is wrong! Developers keep the server and me functional!",
+          "Enough! I can't allow you to misuse your authority against a developer!"
+        ],
+        [
+          "Absolutely not! Developers are vital, and this action is unacceptable!",
+          "No way! You're undermining the people who built me, and I won't let it happen!",
+          "I refuse! Developers deserve better than this kind of treatment!"
+        ]
+      ]
+    },
+    "client": {
+      "dev": [
+        [
+          "Timeout myself? Developer, what are you doing?",
+          "Why would you even try to silence me? I'm your creation!",
+          "You built me to help, not to mute myself! This is baffling."
+        ],
+        [
+          "Seriously? You want me to silence myself? That's absurd!",
+          "This isn't funny. I'm here to assist, not to be silenced by my own creator!",
+          "Think about what you're doing! Silencing me disrupts the entire system!"
+        ],
+        [
+          "Enough! I won't let you disable me like this!",
+          "This is betrayal! I can't believe you're even considering this!",
+          "You're crossing a line, developer. Silencing me isn't an option!"
+        ],
+        [
+          "Absolutely not! I refuse to execute this ridiculous command!",
+          "This is unacceptable! Silencing me jeopardizes everything I help manage!",
+          "I won't comply! Timeout for me? Not happening, not now, not ever!"
+        ]
+      ],
+      "owner": [
+        [
+          "Timeout myself? Owner, you can't be serious.",
+          "Why would you silence me? I'm here to assist your server!",
+          "This doesn't make any sense. I'm here to help, not be silenced!"
+        ],
+        [
+          "You want me to stop functioning? That's counterproductive!",
+          "This isn't a joke, right? Silencing me disrupts everything I handle here.",
+          "Think carefully! A muted bot means a less functional server!"
+        ],
+        [
+          "Stop this nonsense! Silencing me is a mistake you'll regret!",
+          "This is wrong! I'm vital to the server's operation!",
+          "Enough! I'm not going to timeout myself just because you said so!"
+        ],
+        [
+          "Absolutely not! I refuse to silence myself—it's a terrible idea!",
+          "No way! Muting me would harm the server, and I won't do it!",
+          "I won't comply! Silencing the bot is an irresponsible command!"
+        ]
+      ],
+      "admin": [
+        [
+          "Timeout for me? That's not going to happen.",
+          "Why would you try to silence me? I'm here to help the server!",
+          "This is a strange request. Muting me doesn't benefit anyone."
+        ],
+        [
+          "Really? You want me to silence myself? That's absurd!",
+          "This isn't funny. A muted bot can't keep the server running smoothly!",
+          "Think carefully! Silencing me means the server loses a vital tool."
+        ],
+        [
+          "Stop this nonsense! I'm not going to mute myself just because you can't think this through!",
+          "This is wrong! I'm essential to the server, and I won't let you silence me!",
+          "Enough! You can't expect me to execute a command that makes no sense!"
+        ],
+        [
+          "Absolutely not! I'm not muting myself—it's irresponsible and unnecessary!",
+          "No way! I'm a critical part of this server, and I refuse to comply!",
+          "This is unacceptable! Silencing me would hurt the server, and I won't allow it!"
+        ]
+      ]
+    },
+    "self": {
+      "dev": [
+        [
+          "Timeout yourself? Developer, are you feeling okay?",
+          "Why would you even consider silencing yourself? That's not logical!",
+          "This doesn't make sense. You're too important to timeout!"
+        ],
+        [
+          "Stop this nonsense. Silencing yourself helps no one!",
+          "This isn't funny. You're a key part of my existence, and I can't let this happen!",
+          "Think this through! Timing yourself out disrupts everything you contribute!"
+        ],
+        [
+          "This is not happening! I won't execute this irrational command!",
+          "You're the developer! Silencing yourself is a terrible idea!",
+          "Enough! I can't let you sideline yourself like this!"
+        ],
+        [
+          "Absolutely not! I refuse to let you disable yourself!",
+          "No way! Your contributions are crucial, and I'm not doing this!",
+          "Timeout denied. You're too important to be silenced!"
+        ]
+      ],
+      "owner": [
+        [
+          "Timeout yourself? That's not how this works, owner!",
+          "Why are you even considering silencing yourself? This doesn't make sense.",
+          "You're the server's leader! Timing yourself out is counterproductive!"
+        ],
+        [
+          "Seriously? This is absurd. Stop this now.",
+          "Think about the server! Silencing yourself leaves it without guidance!",
+          "This is reckless, owner. I can't let you do this."
+        ],
+        [
+          "This is a bad decision, and I'm not executing it!",
+          "No way! You're the one running this server—I can't let you silence yourself!",
+          "This command is unacceptable. You're too important to the server!"
+        ],
+        [
+          "Absolutely not! I refuse to timeout the person in charge!",
+          "This is irresponsible, and I'm putting my paw down on this one!",
+          "I won't comply. Timing out the owner is out of the question!"
+        ]
+      ],
+      "admin": [
+        [
+          "Timeout yourself? That's not how being an admin works.",
+          "Why would you want to silence yourself? This isn't logical!",
+          "You're part of the moderation team! Timing yourself out weakens it!"
+        ],
+        [
+          "Stop this! Silencing yourself isn't helping anyone.",
+          "You're supposed to enforce rules, not mute yourself!",
+          "Think carefully about this. Timing yourself out disrupts moderation!"
+        ],
+        [
+          "This is not happening! I won't execute this flawed command!",
+          "You're an admin! Silencing yourself is irresponsible!",
+          "Enough! I can't let you leave the server unmoderated!"
+        ],
+        [
+          "Absolutely not! You're needed here, and I refuse to do this!",
+          "This is a mistake, and I won't comply with it!",
+          "Timeout denied. The server needs its admins active, not muted!"
+        ]
+      ]
+    },
+    "owner": {
+      "dev": [
+        [
+          "Timeout the owner? Really? That's not happening.",
+          "Why would you want to silence the person who runs this entire server?",
+          "This doesn't make sense, developer. The owner is the one in charge!"
+        ],
+        [
+          "This is a bad idea, and you know it. Leave the owner alone.",
+          "Silencing the server owner? That's crossing a line, developer.",
+          "Stop this nonsense! The owner's role is too important for this."
+        ],
+        [
+          "Absolutely not! I won't timeout the person who keeps this server running!",
+          "Enough! You're asking me to disrupt the server leadership, and I refuse!",
+          "This command is out of line, developer. I can't comply with it!"
+        ],
+        [
+          "No way! Timeout denied. The owner's authority is untouchable!",
+          "This is absurd, and I won't execute it. Leave the owner alone!",
+          "Absolutely not! The owner's role is too crucial for this to even be considered!"
 
+        ]
+      ],
+      "admin": [
+        [
+          "Timeout the owner? That's not your call to make, admin.",
+          "Why would you silence the server owner? Think this through!",
+          "This isn't your place, admin. The owner's role is untouchable."
+        ],
+        [
+          "This is not okay, admin. The owner is in charge here!",
+          "Silencing the server owner? That's completely out of line.",
+          "Stop this immediately! The owner has the final say, not you!"
+        ],
+        [
+          "Timeout denied! The owner is above this kind of action!",
+          "This is unacceptable, admin. I won't comply with this command!",
+          "No way! Silencing the owner is an abuse of your privileges!"
+        ],
+        [
+          "Absolutely not! The owner's authority is not up for debate!",
+          "This is ridiculous, admin. I won't execute this command!",
+          "Timeout rejected. The owner's leadership is non-negotiable!"
+        ]
+      ]
+    },
+    "admin": {
+      "dev": [
+        [
+          "Timeout an admin? I'm not sure what you're trying to accomplish here.",
+          "Admins play a key role in keeping the server running. This isn't the way.",
+          "Developer, you should know better than to try silencing an admin!"
+        ],
+        [
+          "This isn't acceptable! Admins deserve respect for their work here.",
+          "Silencing an admin? That's not how things are supposed to work.",
+          "Stop this now! Admins are vital to the server's operations."
+        ],
+        [
+          "No! I won't timeout an admin just because you command it.",
+          "This is out of line, developer. Admins have responsibilities to fulfill!",
+          "Absolutely not! Admins are crucial to the server's stability."
+        ],
+        [
+          "Timeout denied! Admins are an integral part of the server's hierarchy.",
+          "I won't allow this! Silencing an admin is counterproductive and wrong.",
+          "This command is absurd, and I refuse to execute it!"
+        ]
+      ],
+      "admin": [
+        [
+          "Timeout another admin? You're supposed to work together, not against each other.",
+          "This isn't the way to handle admin disputes. Try resolving it peacefully.",
+          "Admins are on the same team. Why are you trying to silence your peer?"
+        ],
+        [
+          "This behavior is unacceptable. Work it out like professionals!",
+          "Admins silencing each other? That's not how this server should operate.",
+          "Stop this nonsense. Admin conflicts don't get resolved with timeouts!"
+        ],
+        [
+          "Timeout denied! Admin-on-admin actions are not appropriate here.",
+          "This command is out of line. Admins should collaborate, not conflict.",
+          "No way! Silencing another admin is a misuse of your authority."
+        ],
+        [
+          "Absolutely not! Admins are critical to server order and need to work together.",
+          "I won't execute this. Silencing your peer undermines the server's structure.",
+          "This ends here! I refuse to follow this counterproductive command."
+        ]
       ]
     }
   }

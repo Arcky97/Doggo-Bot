@@ -1,7 +1,7 @@
 const { getGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
-const checkChannelPermissions = require("../permissions/checkChannelPermissions");
+const { checkChannelPermissions } = require("../permissions/checkPermissions");
 
-module.exports = async (guildId, log) => {
+module.exports = async (guildId, log, returnMissing = false) => {
   const logChannels = await getGuildSettings(guildId);
   if (!logChannels) return;
 
@@ -28,8 +28,11 @@ module.exports = async (guildId, log) => {
   }
 
   if (!channel) return;
-  
-  const hasPermissions = await checkChannelPermissions(channel);
-
-  if (hasPermissions) return channel;
+  const perms = await checkChannelPermissions(channel, ['EmbedLinks']);
+  if (!perms.hasAll && returnMissing) {
+    // missing permissions
+    return { ...channel, ...perms };
+  } else {
+    return channel;
+  }
 }

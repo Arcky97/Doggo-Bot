@@ -4,8 +4,8 @@ const path = require('path');
 const exportToDatabaseLogging = require("./exportToDatabaseLogging.js");
 
 module.exports = async (table, guildId) => {
+  const botRepliesOrPremium = (table === 'BotReplies' || table === 'PremiumUsersAndGuilds');
   try {
-    const botRepliesOrPremium = table === 'BotReplies' || table === 'PremiumUsersAndGuilds'
     // Query data for the specific guild, unless it's the BotReplies Table.
     const queryCondition = botRepliesOrPremium ? '' : ' WHERE guildId = ?';
     const [rows] = await query(`SELECT * FROM ${table}${queryCondition}`, botRepliesOrPremium ? [] : [guildId] );
@@ -24,7 +24,8 @@ module.exports = async (table, guildId) => {
       for (const key in row) {
         if (row.hasOwnProperty(key)) {
           const value = row[key];
-          if (typeof value === 'string' && (value.startsWith('{') || value.startsWith('['))) {
+          const validPlaceholder = ['{user name}', '{user avatar}', '{server name}', '{server icon}'];
+          if (typeof value === 'string' && (value.startsWith('{') || value.startsWith('[')) && !validPlaceholder.includes(value)) {
             try {
               row[key] = JSON.parse(value);
             } catch (error) {

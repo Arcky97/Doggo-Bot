@@ -2,6 +2,7 @@ const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.j
 const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setReactionOrRoleLimit } = require("../../../database/reactionRoles/setReactionRoles");
 const exportToJson = require("../../handlers/exportToJson");
 const setMessageReactions = require("../../utils/setMessageReactions");
+const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
 
 module.exports = {
   name: 'reaction',
@@ -136,7 +137,14 @@ module.exports = {
       ]
     }
   ],
-  permissionsRequired: [PermissionFlagsBits.Administrator],
+  permissionsRequired: [
+    PermissionFlagsBits.Administrator,
+    PermissionFlagsBits.ManageRoles
+  ],
+  botPermissions: [
+    PermissionFlagsBits.Administrator,
+    PermissionFlagsBits.ManageRoles
+  ],
   callback: async (interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
@@ -150,6 +158,9 @@ module.exports = {
 
     await interaction.deferReply();
 
+    const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
+    if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
+    
     if (subCmd === 'create' || subCmd === 'edit') {
       const emojiRoles = interaction.options.getString('emojiroles');
       const splitEmojiRoles = emojiRoles.split(';').map(s => s.trim());   
