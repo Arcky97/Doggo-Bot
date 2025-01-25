@@ -21,6 +21,7 @@ const calculateMultiplierXp = require("../../../utils/levels/calculateMultiplier
 const getMemberRoles = require("../../../utils/logging/getMemberRoles");
 const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
 const { getPremiumById } = require("../../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds");
+const showXpSettings = require("../../../utils/levels/showXpSettings");
 
 module.exports = {
   name: 'lvsys',
@@ -451,6 +452,11 @@ module.exports = {
               required: true
             }
           ]
+        },
+        {
+          type: ApplicationCommandOptionType.Subcommand,
+          name: 'settings',
+          description: 'Shows the values set for the XP Settings of the Level System.',
         }
       ]
     },
@@ -1214,6 +1220,11 @@ module.exports = {
                   descr: 'A Premium Subscription for the Server is required to change the XP Type.'
                 });
               }
+              break;
+            case 'settings':
+              embed = showXpSettings(levSettings, PremiumServer);
+              interaction.editReply({ embeds: [embed] });
+              break;
             }
           interaction.editReply({ embeds: [embed] });
           break;
