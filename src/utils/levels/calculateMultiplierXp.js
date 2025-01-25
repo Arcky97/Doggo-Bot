@@ -24,12 +24,10 @@ module.exports = ({settings, user, channel, roles, notRandom, message, premiumSe
 
   let baseXP;
   if (premiumServer && settings.xpType === 'length') {
-    console.log('normally your message is:', message.content.length);
     message.content = message.content
       .replace(/https?:\/\/[^\s]+/g, '')
       .replace(/(.)\1{3,}/g, '$1$1$1')
       .replace(/\s/g, '');
-    console.log('but it has been reduced to:', message.content.length);
     if (message.content.length === 0) return 0;
     const msgLength = message.content.length;
     baseXP = Math.ceil((msgLength - minLength) / (maxLength - minLength) * (maxXp - minXp) + minXp);
