@@ -1,6 +1,6 @@
 const getMemberRoles = require("../logging/getMemberRoles")
 
-module.exports = ({settings, user, channel, roles, notRandom}) => {
+module.exports = ({settings, user, channel, roles, notRandom, message, premiumServer}) => {
   // if roles are given, use roles, otherwise get the user roles.
   const userRoles = roles ? roles : getMemberRoles(user);
   const globMult = settings.globalMultiplier;
@@ -15,13 +15,29 @@ module.exports = ({settings, user, channel, roles, notRandom}) => {
 
   const minXp = JSON.parse(settings.xpSettings).min;
   const maxXp = JSON.parse(settings.xpSettings).max;
+  const minLength = JSON.parse(settings.xpSettings).minLength;
+  const maxLength = JSON.parse(settings.xpSettings).maxLength;
 
   if (catBlkList.some(item => item.categoryId === channel.parent?.id)) return notRandom ? [0, 0] : 0;
   if (chanBlkList.some(item => item.channelId === channel.id)) return notRandom ? [0, 0] : 0;
   if (roleBlkList.some(item => userRoles.some(role => role === item.roleId))) return notRandom ? [0, 0] : 0;
 
-  const random = Math.floor(Math.random() * (maxXp - minXp + 1)) + minXp;
-  let totalXp = random;
+  let baseXP;
+  if (premiumServer && settings.xpType === 'length') {
+    console.log('normally your message is:', message.content.length);
+    message.content = message.content
+      .replace(/https?:\/\/[^\s]+/g, '')
+      .replace(/(.)\1{3,}/g, '$1$1$1')
+      .replace(/\s/g, '');
+    console.log('but it has been reduced to:', message.content.length);
+    if (message.content.length === 0) return 0;
+    const msgLength = message.content.length;
+    baseXP = Math.ceil((msgLength - minLength) / (maxLength - minLength) * (maxXp - minXp) + minXp);
+  } else {
+    baseXP = Math.floor(Math.random() * (maxXp - minXp + 1)) + minXp;
+  }
+    
+  let totalXp = baseXP;
   let totalMinXp = minXp;
   let totalMaxXp = maxXp;
 

@@ -7,9 +7,6 @@ const createMissingPermissionsEmbed = require("../../utils/createMissingPermissi
 module.exports = {
   name: 'settings',
   description: 'Shows the settings of the bot.',
-  permissionsRequired: [
-    PermissionFlagsBits.Administrator
-  ],
   callback: async (interaction) => {
     try {
       const settings = await getGuildSettings(interaction.guild.id);

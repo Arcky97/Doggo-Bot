@@ -1,3 +1,4 @@
+const exportToJson = require("../../src/handlers/exportToJson");
 const { deleteData } = require("../controlData/deleteData");
 const { insertData } = require("../controlData/insertData");
 const { selectData } = require("../controlData/selectData");
@@ -29,6 +30,7 @@ async function insertReactionRoles(guild, channel, message, input) {
   const data = stringifyReactionRoles(input);
 
   await insertData('ReactionRoles', keys, data);
+
 }
 
 async function updateReactionRoles(guild, channel, message, input) {

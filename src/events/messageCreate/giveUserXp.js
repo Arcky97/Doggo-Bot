@@ -5,14 +5,17 @@ const calculateMultiplierXp = require('../../utils/levels/calculateMultiplierXp'
 const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
 const sendAnnounceMessage = require('../../utils/levels/sendAnnounceMessage');
 const generateUserInfo = require('../../utils/levels/generateUserInfo');
+const { getPremiumById } = require('../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds');
 
 module.exports = async (message) => {
   const guildId = message.guild.id;
   if (!message.inGuild() || message.author.bot || cooldowns.has(guildId + message.author.id)) return;
+
   try{
+    const premiumServer = await getPremiumById(guildId);
     const levelSettings = await getLevelSettings(guildId);
     const xpSettings = await getXpSettings(guildId);
-    const xpToGive = calculateMultiplierXp({settings: levelSettings, user: message.member, channel: message.channel});
+    const xpToGive = calculateMultiplierXp({settings: levelSettings, user: message.member, channel: message.channel, message: message, premiumServer: premiumServer });
     const xpCooldown = await getXpCoolDown(guildId) * 1000;
     
     if (xpToGive === 0) return;

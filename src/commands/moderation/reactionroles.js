@@ -137,14 +137,6 @@ module.exports = {
       ]
     }
   ],
-  permissionsRequired: [
-    PermissionFlagsBits.Administrator,
-    PermissionFlagsBits.ManageRoles
-  ],
-  botPermissions: [
-    PermissionFlagsBits.Administrator,
-    PermissionFlagsBits.ManageRoles
-  ],
   callback: async (interaction) => {
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
@@ -158,7 +150,7 @@ module.exports = {
 
     await interaction.deferReply();
 
-    const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
+    const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild', 'ManageRoles', 'AddReactions']);
     if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
     
     if (subCmd === 'create' || subCmd === 'edit') {
@@ -216,6 +208,6 @@ module.exports = {
         await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxReactions: limit } );
       }
     }
-    exportToJson('ReactionRoles', guildId);
+    await exportToJson('ReactionRoles', guildId);
   }
 }

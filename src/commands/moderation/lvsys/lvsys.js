@@ -1,25 +1,26 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
-const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../utils/setArrayValues");
-const createListFromArray = require("../../utils/settings/createListFromArray");
-const showMultiplierSettings = require("../../utils/levels/showMultiplierSettings");
-const showLevelSystemSettings = require("../../utils/levels/showLevelSystemSettings");
-const getOrConvertColor = require("../../utils/getOrConvertColor");
-const showAnnouncementSettings = require("../../utils/levels/showAnnouncementSettings");
-const embedPlaceholders = require("../../utils/embeds/embedPlaceholders");
-const showBlacklistSettings = require("../../utils/levels/showBlacklistSettings");
-const showVoiceSettings = require("../../utils/levels/showVoiceSettings");
-const { resetLevelSystem, getAllUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../database/levelSystem/setLevelSystem");
-const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
-const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
-const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
-const getVowel = require("../../utils/getVowel");
-const createAnnounceEmbed = require("../../utils/levels/createAnnounceEmbed");
-const calculateLevelByXp = require("../../utils/levels/calculateLevelByXp");
-const calculateXpByLevel = require("../../utils/levels/calculateXpByLevel");
-const calculateMultiplierXp = require("../../utils/levels/calculateMultiplierXp");
-const getMemberRoles = require("../../utils/logging/getMemberRoles");
-const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../../database/levelSystem/setLevelSettings");
+const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../../utils/setArrayValues");
+const createListFromArray = require("../../../utils/settings/createListFromArray");
+const showMultiplierSettings = require("../../../utils/levels/showMultiplierSettings");
+const showLevelSystemSettings = require("../../../utils/levels/showLevelSystemSettings");
+const getOrConvertColor = require("../../../utils/getOrConvertColor");
+const showAnnouncementSettings = require("../../../utils/levels/showAnnouncementSettings");
+const embedPlaceholders = require("../../../utils/embeds/embedPlaceholders");
+const showBlacklistSettings = require("../../../utils/levels/showBlacklistSettings");
+const showVoiceSettings = require("../../../utils/levels/showVoiceSettings");
+const { resetLevelSystem, getAllUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../../database/levelSystem/setLevelSystem");
+const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../../utils/embeds/createReplyEmbed");
+const getChannelTypeName = require("../../../utils/logging/getChannelTypeName");
+const firstLetterToUpperCase = require("../../../utils/firstLetterToUpperCase");
+const getVowel = require("../../../utils/getVowel");
+const createAnnounceEmbed = require("../../../utils/levels/createAnnounceEmbed");
+const calculateLevelByXp = require("../../../utils/levels/calculateLevelByXp");
+const calculateXpByLevel = require("../../../utils/levels/calculateXpByLevel");
+const calculateMultiplierXp = require("../../../utils/levels/calculateMultiplierXp");
+const getMemberRoles = require("../../../utils/logging/getMemberRoles");
+const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
+const { getPremiumById } = require("../../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds");
 
 module.exports = {
   name: 'lvsys',
@@ -709,9 +710,10 @@ module.exports = {
 
     await interaction.deferReply();
 
-    const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
+    const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild', 'AddReactions']);
     if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
 
+    const PremiumServer = await getPremiumById(guildId);
     let levSettings, embed, globalMult, roleMults, channelMults, categoryMults, levelRoles, annMess, blackListRoles, blackListChannels, blackListCategories;
     try {
       levSettings = await getLevelSettings(guildId);
@@ -1108,10 +1110,32 @@ module.exports = {
               value = {
                 step: interaction.options.getNumber('step'),
                 min: interaction.options.getNumber('min'),
-                max: interaction.options.getNumber('max')
-              }
-              if (JSON.stringify(existingSetting) !== JSON.stringify(value)) {
-                const warningEmbed = createWarningEmbed({int: interaction, title: 'Warning: Level Reset Required', descr: `Changing XP values will reset all user levels to prevent XP discrepancies. \nDo you want to proceed?\n\n**New Values:**\n- Step: \`${value.step}\`\n- Min XP: \`${value.min}\`\n- Max XP: \`${value.max}\`\n\n**React with:** \n- ✅ to confirm \n- ❌ to cancel \n(You have 45 seconds to respond)`});
+                max: interaction.options.getNumber('max'),
+                minLength: interaction.options.getNumber('min-length'),
+                maxLength: interaction.options.getNumber('max-length')
+              }              
+              if ((value.minLength || value.maxLength)) {
+                if (!PremiumServer) {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    title: 'Premium Required!',
+                    descr: 'A Premium Subscription for the Server is required to set the minimum and maximum values for the Message Length Based XP.'
+                  });
+                } else if (levSettings.xpType === 'random') {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    descr: `The XP Type is set to \`Random\` so the values for Message Length Based XP will have no effect. \nUse \`/lvsys xp type\` to change the XP Type first.`
+                  });
+                }
+                if (embed) return interaction.editReply({ embeds: [embed] });
+              } 
+              
+              if (existingSetting.step !== value.step || existingSetting.min !== value.min || existingSetting.max !== value.max) {
+                const warningEmbed = createWarningEmbed({
+                  int: interaction, 
+                  title: 'Warning: Level Reset Required', 
+                  descr: `Changing XP values will reset all user levels to prevent XP discrepancies. \nDo you want to proceed?\n\n**New Values:**\n- Step: \`${value.step}\`\n- Min XP: \`${value.min}\`\n- Max XP: \`${value.max}\`${value.minLength ? `\n- Min Length: \`${value.minLength}\`` : ''}${value.maxLength ? `\n- Max Length: \`${value.maxLength}\`` : ''}\n\n**React with:** \n- ✅ to confirm \n- ❌ to cancel \n(You have 45 seconds to respond)`
+                });
 
                 interaction.editReply({ embeds: [warningEmbed] });
                 const warningMessage = await interaction.fetchReply();
@@ -1153,25 +1177,41 @@ module.exports = {
                 } catch (error) {
                   console.error('Failed to remove reactions:', error);
                 }
+              } else if (existingSetting.minLength !== value.minLength || existingSetting.maxLength !== value.maxLength) {
+                setting = { 'xpSettings': JSON.stringify(value) };
+                embed = createSuccessEmbed({
+                  int: interaction,
+                  title: 'XP Message Based Values Updated!',
+                  descr: `The XP Message Based Values have been updated:\n- **Min Length:** \`${existingSetting.minLength}\` => \`${value.minLength}\`\n- **Max Length:** \`${existingSetting.maxLength}\` => \`${value.maxLength}\``
+                });
               } else {
                 embed = createWarningEmbed({
                   int: interaction,
-                  descr: `The given step (\`${value.step}\`), min xp (\`${value.min}\`) and max xp (\`${value.max}\`) are the same as they were already set.`});
+                  descr: `The given step (\`${value.step}\`), min xp (\`${value.min}\`), max xp (\`${value.max}\`), min length (\`${value.minLength}\`) and max length (\`${value.maxLength}\`) are the same as they were already set.`});
               }
               break;
             case 'type':
-              existingSetting = levSettings.xpType;
-              if (existingSetting !== value) {
-                setting = { 'xpType' : value };
-                embed = createSuccessEmbed({
-                  int: interaction,
-                  title: 'Xp Type Updated!',
-                  descr: `The XP Type has been updated to \`${value === 'random' ? 'Random' : 'Message Length Based' }\``
-                });
+              // Premium required
+              if (PremiumServer) {
+                existingSetting = levSettings.xpType;
+                if (existingSetting !== value) {
+                  setting = { 'xpType' : value };
+                  embed = createSuccessEmbed({
+                    int: interaction,
+                    title: 'Xp Type Updated!',
+                    descr: `The XP Type has been updated to \`${value === 'random' ? 'Random' : 'Message Length Based' }\`!`
+                  });
+                } else {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    descr: `The XP Type has already been set to \`${value === 'random' ? 'Random' : 'Message Length Basded' }\`!`
+                  });
+                }
               } else {
                 embed = createInfoEmbed({
                   int: interaction,
-                  descr: `The XP Type has already been set to \`${value === 'random' ? 'Random' : 'Message Length Basded' }\``
+                  title: 'Premium Required!',
+                  descr: 'A Premium Subscription for the Server is required to change the XP Type.'
                 });
               }
             }

@@ -115,7 +115,7 @@ module.exports = {
 
     switch(subCmdGroup) {
       case 'update':
-        embed = await updateReply(interaction, subCommand);
+        embed = await updateReply(interaction, subCmd);
         break;
       default:
         switch(subCmd) {

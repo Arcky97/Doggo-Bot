@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { query } = require("../../../../database/db");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../../utils/embeds/createReplyEmbed");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createInfoEmbed } = require("../../../utils/embeds/createReplyEmbed");
+const exportToJson = require("../../../handlers/exportToJson");
 
 module.exports = {
   name: 'database',
@@ -244,6 +245,19 @@ module.exports = {
           ]
         }
       ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'export',
+      description: 'Export The Entire Database or a Table to a JSON file.',
+      options: [
+        {
+          type: ApplicationCommandOptionType.String,
+          name: 'table',
+          description: 'The Table Name to Export.',
+          required: true
+        }
+      ]
     }
   ],
   devOnly: true,
@@ -325,6 +339,24 @@ module.exports = {
                 break;
             }
             break;
+          default:
+            const result = await exportToJson(table, null, true);
+            if (result) {
+              const { buffer, fileName } = result;
+              embed = createSuccessEmbed({
+                int: interaction,
+                title: `${table} Table Exported`,
+                descr: `The ${table} Table has been exported to a JSON file.`
+              });
+              return interaction.editReply({ embeds: [embed], files: [{ attachment: buffer, name: fileName }] });
+            } else {
+              embed = createInfoEmbed({
+                int: interaction,
+                title: 'Table does not Exist',
+                descr: `The ${table} Table does not exist in the Database.`
+              });
+              return interaction.editReply({ embeds: [embed] });
+            }
         }
         embed = createSuccessEmbed({
           int: interaction,
