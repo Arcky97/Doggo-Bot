@@ -16,7 +16,6 @@ module.exports = async (interaction, guild, member, mod, reason, nextId, formatD
   let fields = [];
 
   const permEmbed = await createMissingPermissionsEmbed(interaction, mod, ['ManageRoles']);
-
   if (permEmbed) {
     embeds.push(permEmbed);
     return { embeds };

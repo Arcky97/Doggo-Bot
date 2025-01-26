@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { botStartTime } = require("../..");
-const { createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { createSuccessEmbed, createUnfinishedEmbed } = require("../../utils/embeds/createReplyEmbed");
 const formatTime = require("../../utils/formatTime")
 
 module.exports = {
@@ -31,7 +31,6 @@ module.exports = {
           embed = createUnfinishedEmbed(interaction);
           break;
       }
-      
     } catch (error) {
       console.error('There was an error with the bot command', error);
     }

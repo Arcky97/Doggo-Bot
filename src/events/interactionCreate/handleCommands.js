@@ -15,10 +15,8 @@ module.exports = async (interaction) => {
   const cmdName = commandObject.name;
   //const subCmdGroup = interaction.options?.getSubcommandGroup();
   //const subCmd = interaction.options?.getSubcommand();
-
+  let embed;
   try {
-    let embed;
-
     if (!commandObject) return;
 
     if (commandObject.devOnly) {
@@ -90,7 +88,10 @@ module.exports = async (interaction) => {
     await commandObject.callback(interaction);
   } catch (error) {
     console.log(`There was an error running the '${cmdName}' command: ${error}.`);
-    embed = createErrorEmbed({int: interaction, descr: `Something went wrong while running this Command. Please try again later.`});
-    interaction.reply({ embeds: [embed] });
+    embed = createErrorEmbed({
+      int: interaction, 
+      descr: `Something went wrong while running this Command. Please try again later.`
+    });
+    interaction.editReply({ embeds: [embed] });
   }
 };

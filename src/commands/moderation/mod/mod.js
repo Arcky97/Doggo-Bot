@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
+const { ApplicationCommandOptionType } = require("discord.js");
 const { nextModerationLogId } = require("../../../../database/moderationLogs/setModerationLogs");
 const { createSuccessEmbed, createInfoEmbed } = require("../../../utils/embeds/createReplyEmbed");
 const convertNumberInTime = require("../../../utils/convertNumberInTime");
@@ -8,7 +8,6 @@ const formatTime = require("../../../utils/formatTime");
 const { getMuteRole } = require("../../../../database/guildSettings/setGuildSettings");
 const { createTimeoutUUID } = require("../../../handlers/moderationTasks");
 const timeUntilTomorrow = require("../../../utils/timeUntilTomorrow");
-const getUserClass = require("../../../utils/getUserClass");
 const modKick = require("./subCommands/modKick");
 const modUnban = require("./subCommands/modUnban");
 const modMute = require("./subCommands/modMute");
@@ -382,7 +381,7 @@ module.exports = {
                 title: 'No Mute Role',
                 descr: 'You haven\'t setup a Mute Role for this Server yet. \nUse `setup mute-role` to set one up.'
               });
-              break;
+              return interaction.editReply({ embeds: [embed] });
             }
           }
           switch(subCmd) {
@@ -428,7 +427,7 @@ module.exports = {
     if (modAction?.usePagination && modAction.usePagination) {
       await pagination(interaction, modAction.embeds);
     } else {
-      interaction.editReply({embeds: modAction.embeds});
+      interaction.editReply({embeds: modAction.embeds, ephemeral: modAction?.ephemeral });
     }
   }
 };

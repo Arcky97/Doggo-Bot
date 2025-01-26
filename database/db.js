@@ -36,7 +36,7 @@ async function initDatabase() {
           joinLeaveLogging VARCHAR(100) DEFAULT NULL,
           joinLeaveConfig JSON DEFAULT '{"joins": true, "leaves": true }',
           moderationLogging VARCHAR(100) DEFAULT NULL,
-          modearationConfig JSON DEFAULT '{ "warns": { "adds": true, "removes": true, "clears": true }, "mutes": true, "unmutes": true, "timeouts": { "adds": true, "removes": true }, "kicks": true, "bans": { "regulars": true, "softs": true, "temps": true }, "unbans": true }',
+          moderationConfig JSON DEFAULT '{ "warns": { "adds": true, "removes": true, "clears": true }, "mutes": true, "unmutes": true, "timeouts": { "adds": true, "removes": true }, "kicks": true, "bans": { "regulars": true, "softs": true, "temps": true }, "unbans": true }',
           reportLogging VARCHAR(100) DEFAULT NULL,
           ignoreLogging JSON DEFAULT '[]',
           muteRole VARCHAR(100) DEFAULT NULL,
