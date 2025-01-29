@@ -1,9 +1,13 @@
 const { Client, Message, EmbedBuilder } = require("discord.js");
 const getLogChannel = require("../../utils/logging/getLogChannel");
 const ignoreLogging = require("../../utils/logging/ignoreLogging");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = async (bulk) => {
+  const guildId = bulk.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'messageDeleteBulk' });
+
     const logChannel = await getLogChannel(bulk.first().guild.id, 'message');
     if (!logChannel) return;
 

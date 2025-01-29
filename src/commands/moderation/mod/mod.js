@@ -16,6 +16,7 @@ const modWarn = require("./subCommands/modWarn");
 const modTimeout = require("./subCommands/modTimeout");
 const modBan = require("./subCommands/modBan");
 const pagination = require("../../../handlers/pagination");
+const { setBotStats } = require("../../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'mod',
@@ -429,5 +430,6 @@ module.exports = {
     } else {
       interaction.editReply({embeds: modAction.embeds, ephemeral: modAction?.ephemeral });
     }
+    await setBotStats(guild.id, 'command', { category: 'moderation', command: 'mod' });
   }
 };

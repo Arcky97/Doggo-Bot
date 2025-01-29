@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { getPremiumById, setPremium, removePremium } = require("../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds");
 const { createInfoEmbed, createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'premium',
@@ -51,6 +52,7 @@ module.exports = {
   ],
   devOnly: true,
   callback: async (interaction) => {
+    const guildId = interaction.guild.id;
     const subCmd = interaction.options.getSubcommand();
     let embed;
     await interaction.deferReply();
@@ -112,6 +114,7 @@ module.exports = {
           descr: `No ${interaction.user}! Don't use this command!`
         });
       }
+      await setBotStats(guildId, 'command', { category: 'developing', command: 'premium' });
     } catch (error) {
       console.error(`Error when trying to ${subCmd} Membership for ${userOrGuild} with ID: ${id}:`, error);
       embed = createErrorEmbed({

@@ -37,6 +37,5 @@ module.exports = (input) => {
     }
     output.push(type);
   }
-  console.log(output);
   return output;
 }

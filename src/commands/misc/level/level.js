@@ -5,6 +5,8 @@ const levelColor = require("./subCommands/levelColor");
 const levelLeaderboard = require("./subCommands/levelLeaderboard");
 const levelShow = require("./subCommands/levelShow");
 const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
+const { setBotStats } = require("../../../../database/BotStats/setBotStats");
+const { createErrorEmbed } = require("../../../utils/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'level',
@@ -42,36 +44,47 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
-    await interaction.deferReply();
     const subCmnd = interaction.options.getSubcommand();
     const user = interaction.options.getMember('user') || interaction.user;
-    const userLevel = await getUserLevel(interaction.guild.id, user.id);
-    const guildUsers = await getAllUsersLevel(interaction.guild.id);
-    const xpSettings = await getXpSettings(interaction.guild.id);
-
-    const permEmbed = await createMissingPermissionsEmbed(interaction, user, ['AttachFiles']);
-    if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
-    
-    guildUsers.sort((a, b) => {
-      if (a.level === b.level) {
-        return b.xp - a.xp;
-      } else {
-        return b.level - a.level;
-      }
-    });
 
     let embed; 
+    
+    await interaction.deferReply();
 
-    switch (subCmnd) {
-      case 'show':
-        embed = await levelShow(interaction, userLevel, xpSettings, user, guildUsers);
-        break;
-      case 'color':
-        embed = await levelColor(interaction, userLevel);
-        break;
-      case 'leaderboard':
-        embed = await levelLeaderboard(interaction, guildUsers, xpSettings);
-        break;
+    try {
+      const userLevel = await getUserLevel(interaction.guild.id, user.id);
+      const guildUsers = await getAllUsersLevel(interaction.guild.id);
+      const xpSettings = await getXpSettings(interaction.guild.id);
+
+      const permEmbed = await createMissingPermissionsEmbed(interaction, user, ['AttachFiles']);
+      if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
+      
+      guildUsers.sort((a, b) => {
+        if (a.level === b.level) {
+          return b.xp - a.xp;
+        } else {
+          return b.level - a.level;
+        }
+      });
+      switch (subCmnd) {
+        case 'show':
+          embed = await levelShow(interaction, userLevel, xpSettings, user, guildUsers);
+          break;
+        case 'color':
+          embed = await levelColor(interaction, userLevel);
+          break;
+        case 'leaderboard':
+          embed = await levelLeaderboard(interaction, guildUsers, xpSettings);
+          break;
+      }
+      
+      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'level' });
+    } catch (error) {
+      console.error('Error with the Level Command:', error);
+      embed = createErrorEmbed({
+        int: interaction,
+        descr: 'There was an error with the Level Command. Please try again later.'
+      });
     }
     if (embed) interaction.editReply({ embeds: [embed] });
   }

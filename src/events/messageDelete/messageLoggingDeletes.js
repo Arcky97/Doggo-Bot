@@ -4,12 +4,15 @@ const truncateText = require("../../utils/truncateText");
 const ignoreLogging = require("../../utils/logging/ignoreLogging");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = async (message) => {
   if (!message.inGuild() || !message.author || message.author.bot) return;
   
   const guildId = message.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'messageDelete' });
+
     const logChannel = await getLogChannel(guildId, 'message');
     if (!logChannel) return;
 

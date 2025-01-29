@@ -150,64 +150,71 @@ module.exports = {
 
     await interaction.deferReply();
 
-    const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild', 'ManageRoles', 'AddReactions']);
-    if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
-    
-    if (subCmd === 'create' || subCmd === 'edit') {
-      const emojiRoles = interaction.options.getString('emojiroles');
-      const splitEmojiRoles = emojiRoles.split(';').map(s => s.trim());   
-  
-      for (const pair of splitEmojiRoles) {
-        const [emoji, roleId] = pair.split(',');
-    
-        if (!emoji || !roleId) {
-          return await interaction.editReply({ content: 'Invalid format for emoji-roles. Use format: :emoji:, @role', ephemeral: true });
-        }
-    
-        emojiRolePairs.push({ emoji: emoji.trim(), roleId: roleId.trim() });
-      }
-    }
-
-    let message;
     try {
-      message = await channel.messages.fetch(messageId);
-    } catch (error) {
-      return await interaction.editReply({ content: `Message with ID ${messageId} not found in ${channel}. You can specify the channel or check the Message ID again.`, ephemeral: true });
-    }
+      const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild', 'ManageRoles', 'AddReactions']);
+      if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
+      
+      if (subCmd === 'create' || subCmd === 'edit') {
+        const emojiRoles = interaction.options.getString('emojiroles');
+        const splitEmojiRoles = emojiRoles.split(';').map(s => s.trim());   
+    
+        for (const pair of splitEmojiRoles) {
+          const [emoji, roleId] = pair.split(',');
+      
+          if (!emoji || !roleId) {
+            return await interaction.editReply({ content: 'Invalid format for emoji-roles. Use format: :emoji:, @role', ephemeral: true });
+          }
+      
+          emojiRolePairs.push({ emoji: emoji.trim(), roleId: roleId.trim() });
+        }
+      }
   
-    if (reactionRolesData && !overwrite) {
-      emojiRolePairs = emojiRolePairs.concat(JSON.parse(reactionRolesData.emojiRolePairs));
+      let message;
+      try {
+        message = await channel.messages.fetch(messageId);
+      } catch (error) {
+        return await interaction.editReply({ content: `Message with ID ${messageId} not found in ${channel}. You can specify the channel or check the Message ID again.`, ephemeral: true });
+      }
+    
+      if (reactionRolesData && !overwrite) {
+        emojiRolePairs = emojiRolePairs.concat(JSON.parse(reactionRolesData.emojiRolePairs));
+      }
+  
+      if (subCmd === 'create') {
+        if (!reactionRolesData) {
+          await setMessageReactions(interaction, message, emojiRolePairs, overwrite)
+          await insertReactionRoles(guildId, channel.id, messageId, emojiRolePairs);
+          await interaction.editReply('Reaction roles have been added to the message!');
+        } else {
+          await interaction.editReply('The message with ID ' + messageId + ' already has Reaction Roles added, use `/reaction roles edit` instead to add more or edit the existing ones.');
+        }
+      } else if (subCmd === 'edit') {
+        if (overwrite) {
+          await interaction.editReply('Reaction roles have been overwritten.');
+        } else {
+          await interaction.editReply('Reaction roles have been updated.');
+        }
+        await setMessageReactions(interaction, message, emojiRolePairs, overwrite);
+        await updateReactionRoles(guildId, channel.id, messageId, emojiRolePairs);
+      } else if (subCmd === 'delete') {
+        await interaction.editReply('Reaction roles have been removed from the message.');
+        await message.reactions.removeAll()
+        await removeReactionRoles(guildId, channel.id, messageId);
+      } else if (subCmd === 'limit') {
+        if (subCmdGroup === 'roles') {
+          await interaction.editReply(`Reaction role limit has been set to ${limit} for message with ID ${messageId}.`);
+          await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxRoles: limit } );
+        } else {
+          await interaction.editReply(`Reaction limit has been set to ${limit} for message with ID ${messageId}.`);
+          await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxReactions: limit } );
+        }
+      }
+      await exportToJson('ReactionRoles', guildId);
+      await setBotStats(guildId, 'command', { category: 'moderation', command: 'reactionroles' });
     }
-
-    if (subCmd === 'create') {
-      if (!reactionRolesData) {
-        await setMessageReactions(interaction, message, emojiRolePairs, overwrite)
-        await insertReactionRoles(guildId, channel.id, messageId, emojiRolePairs);
-        await interaction.editReply('Reaction roles have been added to the message!');
-      } else {
-        await interaction.editReply('The message with ID ' + messageId + ' already has Reaction Roles added, use `/reaction roles edit` instead to add more or edit the existing ones.');
-      }
-    } else if (subCmd === 'edit') {
-      if (overwrite) {
-        await interaction.editReply('Reaction roles have been overwritten.');
-      } else {
-        await interaction.editReply('Reaction roles have been updated.');
-      }
-      await setMessageReactions(interaction, message, emojiRolePairs, overwrite);
-      await updateReactionRoles(guildId, channel.id, messageId, emojiRolePairs);
-    } else if (subCmd === 'delete') {
-      await interaction.editReply('Reaction roles have been removed from the message.');
-      await message.reactions.removeAll()
-      await removeReactionRoles(guildId, channel.id, messageId);
-    } else if (subCmd === 'limit') {
-      if (subCmdGroup === 'roles') {
-        await interaction.editReply(`Reaction role limit has been set to ${limit} for message with ID ${messageId}.`);
-        await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxRoles: limit } );
-      } else {
-        await interaction.editReply(`Reaction limit has been set to ${limit} for message with ID ${messageId}.`);
-        await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxReactions: limit } );
-      }
+    catch (error) {
+      console.log('Error with the Reactionroles Command:', error);
+      return;
     }
-    await exportToJson('ReactionRoles', guildId);
   }
 }

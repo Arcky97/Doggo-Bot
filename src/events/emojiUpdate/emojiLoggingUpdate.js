@@ -2,10 +2,13 @@ const { Client, GuildEmoji, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (oldEmoji, newEmoji) => {
   const guildId = oldEmoji.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'emojiUpdate' });
+
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

@@ -3,10 +3,13 @@ const getMemberRoles = require('../../utils/logging/getMemberRoles');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const { getGuildLoggingConfig } = require('../../../database/guildSettings/setGuildSettings');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (oldMember, newMember) => {
   const guildId = oldMember.guild.id
   try {
+    await setBotStats(guildId, 'event', { event: 'guildMemberUpdate' });
+
     if (client.user.id === oldMember.user.id) return;
 
     const logChannel = await getLogChannel(guildId, 'member');

@@ -2,6 +2,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
 const { getPremiumById } = require("../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds");
 const formatTime = require("../../utils/formatTime");
 const { createSuccessEmbed, createInfoEmbed, createErrorEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'membership',
@@ -17,6 +18,7 @@ module.exports = {
   callback: async (interaction) => {
     const subCmd = interaction.options.getSubcommand();
     const isPremium = await getPremiumById(interaction.user.id);
+    const guildId = interaction.guild.id;
     let embed;
     await interaction.deferReply();
     try {
@@ -32,6 +34,8 @@ module.exports = {
           descr: `You have been a Premium Member for ${uptime}!`
         })
       }
+
+      await setBotStats(guildId, 'command', { category: 'premium', command: 'membership' });
     } catch (error) {
       console.error('There was an Error getting the Premium Time:', error);
       embed = createErrorEmbed({

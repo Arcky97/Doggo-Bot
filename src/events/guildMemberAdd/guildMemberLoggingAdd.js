@@ -8,10 +8,12 @@ const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedE
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
 const { getGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = async (member) => {
   const guildId = member.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'guildMemberAdd' });
 
     if (member.user.id === client.user.id) return;
 

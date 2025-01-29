@@ -4,6 +4,7 @@ const truncateText = require('../../utils/truncateText');
 const ignoreLogging = require('../../utils/logging/ignoreLogging');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (oldMessage, newMessage) => {
   if (!oldMessage.inGuild() || 
@@ -17,6 +18,8 @@ module.exports = async (oldMessage, newMessage) => {
 
   const guildId = oldMessage.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'messageUpdate' });
+
     const logChannel = await getLogChannel(guildId, 'message');
     if (!logChannel) return;
 

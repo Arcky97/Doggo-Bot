@@ -1,7 +1,8 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { botStartTime } = require("../..");
-const { createSuccessEmbed, createUnfinishedEmbed } = require("../../utils/embeds/createReplyEmbed");
-const formatTime = require("../../utils/formatTime")
+const { createSuccessEmbed, createUnfinishedEmbed, createErrorEmbed } = require("../../utils/embeds/createReplyEmbed");
+const formatTime = require("../../utils/formatTime");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'bot',
@@ -21,7 +22,9 @@ module.exports = {
   callback: async (interaction) => {
     const subCmd = interaction.options.getSubcommand();
     const uptime = await formatTime(botStartTime, true);
+
     let embed;
+    
     try {
       switch (subCmd) {
         case 'uptime':
@@ -31,8 +34,14 @@ module.exports = {
           embed = createUnfinishedEmbed(interaction);
           break;
       }
+      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'bot' });
     } catch (error) {
       console.error('There was an error with the bot command', error);
+
+      embed = createErrorEmbed({
+        int: interaction,
+        descr: 'There was an error with the Bot Command. Please try again later.'
+      });
     }
     await interaction.reply({ embeds: [embed] });
   }

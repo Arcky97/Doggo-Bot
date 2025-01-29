@@ -3,6 +3,7 @@ const { getGuildSettings } = require('../../../database/guildSettings/setGuildSe
 const { createErrorEmbed } = require("../../utils/embeds/createReplyEmbed.js");
 const createListFromArray = require("../../utils/settings/createListFromArray.js");
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed.js");
+const { setBotReplies } = require("../../../database/botReplies/setBotReplies.js");
 
 module.exports = {
   name: 'settings',
@@ -89,6 +90,7 @@ module.exports = {
           .setTimestamp()
         }
         interaction.editReply({ embeds: [embed] })
+        await setBotReplies(guildId, 'command', { category: 'moderation', command: 'setting' });
     } catch (error) {
       console.error(`Error getting Settings for guild ${interaction.guild.id}:`, error);
       embed = createErrorEmbed({ int: interaction, descr: 'Oh no, I couldn\'t retrieve the Settings for your Server. \nPlease try again later.'});

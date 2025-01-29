@@ -4,6 +4,8 @@ const updateReply = require("./subCommands/updateReply");
 const removeReply = require("./subCommands/removeReply");
 const checkReply = require("./subCommands/checkReply");
 const listReply = require("./subCommands/listReply");
+const { createErrorEmbed } = require("../../../utils/embeds/createReplyEmbed");
+const { setBotStats } = require("../../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'reply',
@@ -112,26 +114,34 @@ module.exports = {
 
     await interaction.deferReply();
     let embed;
-
-    switch(subCmdGroup) {
-      case 'update':
-        embed = await updateReply(interaction, subCmd);
-        break;
-      default:
-        switch(subCmd) {
-          case 'add':
-            embed = await addReply(interaction);
-            break;
-          case 'remove':
-            embed = await removeReply(interaction);
-            break;
-          case 'check':
-            embed = await checkReply(interaction);
-            break;
-          case 'list':
-            await listReply(interaction);
-            break;
-        }
+    try {
+      switch(subCmdGroup) {
+        case 'update':
+          embed = await updateReply(interaction, subCmd);
+          break;
+        default:
+          switch(subCmd) {
+            case 'add':
+              embed = await addReply(interaction);
+              break;
+            case 'remove':
+              embed = await removeReply(interaction);
+              break;
+            case 'check':
+              embed = await checkReply(interaction);
+              break;
+            case 'list':
+              await listReply(interaction);
+              break;
+          }
+      }
+      await setBotStats(interaction.guild.id, 'command', { category: 'developing', command: 'reply' });
+    } catch (error) {
+      console.error('Error with the Reply Command:', error);
+      embed = createErrorEmbed({
+        int: interaction,
+        descr: 'There was an error with the Reply Command...'
+      });
     }
     if (embed) interaction.editReply({ embeds: [embed] });
   }

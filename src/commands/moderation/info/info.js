@@ -7,6 +7,11 @@ module.exports = {
   options: [
     {
       type: ApplicationCommandOptionType.Subcommand,
+      name: 'bot',
+      description: 'View Info about Doggo Bot.'
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
       name: 'server',
       description: 'View Info about the Server.',
     },
@@ -18,7 +23,7 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Channel,
           name: 'name',
-          description: 'The Channel or Category name.',
+          description: 'The Channel or Category to check info from.',
           required: true 
         }
       ]
@@ -31,7 +36,7 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.Role,
           name: 'name',
-          description: 'The Role name.',
+          description: 'The Role to check info from.',
           required: true 
         }
       ]
@@ -44,10 +49,26 @@ module.exports = {
         {
           type: ApplicationCommandOptionType.User,
           name: 'name',
-          description: 'The User name.',
+          description: 'The User to check info from.',
           required: true 
         }
       ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'emoji',
+      description: 'View Info about an Emoji.',
+      opions: [
+        {
+          type: ApplicationCommandOptionType.String,
+          name: 'name',
+          description: 'The Emoji to check info from.',
+          required: true
+        }
+      ]
     }
-  ]
-}
+  ],
+  callback: async (interaction) => {
+    
+  }
+};

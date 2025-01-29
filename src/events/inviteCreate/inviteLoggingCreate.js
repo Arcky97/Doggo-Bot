@@ -3,10 +3,13 @@ const getLogChannel = require('../../utils/logging/getLogChannel');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const convertNumberInTime = require('../../utils/convertNumberInTime');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (invite) => {
   const guildId = invite.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'inviteCreate' });
+    
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

@@ -8,10 +8,13 @@ const formatTime = require('../../utils/formatTime');
 const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
 const sendAnnounceMessage = require('../../utils/levels/sendAnnounceMessage');
 const generateUserInfo = require('../../utils/levels/generateUserInfo');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 const voiceActivity = new Map();
 
 module.exports = async (oldState, newState) => {
   try {
+    await setBotStats(guild.id, 'event', { event: 'voiceActivity' });
+
     const logChannel = await getLogChannel(oldState.guild.id, 'voice');
     if (!logChannel) return;
 

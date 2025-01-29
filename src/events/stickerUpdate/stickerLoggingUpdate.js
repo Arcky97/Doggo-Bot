@@ -2,10 +2,13 @@ const { Client, Sticker, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (oldSticker, newSticker) => {
   const guildId = oldSticker.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'stickerUpdate' });
+    
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

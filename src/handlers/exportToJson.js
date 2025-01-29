@@ -66,7 +66,7 @@ module.exports = async (table, guildId, returnFile = false) => {
         : `Data for guild ${guildId} exported to ${filePath}`
     );
   } catch (error) {
-    console.error('Error exporting data to JSON:', error);    
+    //console.error('Error exporting data to JSON:', error);    
     exportToDatabaseLogging(
       exportEntireTable
         ? `Error exporting data from ${table} to JSON.`

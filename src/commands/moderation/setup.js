@@ -5,6 +5,7 @@ const createLoggingMenu = require("../../utils/menus/createLoggingMenu");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 const loggingTypes = require('../../../data/loggingTypes.json');
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'setup',
@@ -372,6 +373,7 @@ module.exports = {
         embed = createSuccessEmbed({ int: interaction, title: title, descr: description });
         await interaction.editReply({ embeds: [embed] });
       }
+      await setBotStats(guildId, 'command', { category: 'moderation', command: 'setup' });
     } catch (error) {
       console.error('Error setting channel:', error);
       embed = createErrorEmbed({ int: interaction, descr: 'There was an error setting the channel. Please try again later.'});

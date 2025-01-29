@@ -1,13 +1,12 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits, MembershipScreeningFieldType } = require("discord.js");
-const { createSuccessEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { ApplicationCommandOptionType } = require("discord.js");
+const { createSuccessEmbed, createInfoEmbed, createErrorEmbed } = require("../../utils/embeds/createReplyEmbed");
 const getVowel = require("../../utils/getVowel");
-const { getUserAttempts, resetUserAttempts, updateUserAttempts } = require("../../../database/userStats/setUserStats");
+const { updateUserAttempts } = require("../../../database/userStats/setUserStats");
 const getUserClass = require("../../utils/getUserClass");
-const cooldowns = new Set();
 const commandReplies = require('../../../data/commandReplies.json');
-const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 const getCmdReplyKey = require("../../utils/getCmdReplyKey");
 const getCommandReply = require("../../utils/getCommandReply");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'slap',
@@ -32,7 +31,11 @@ module.exports = {
     const userId = interaction.member.id;
     const target = interaction.options.getMentionable('target');
     const object = interaction.options.getString('object');
+    
     let embed;
+
+    await interaction.deferReply();
+    
     try {
       const [userClass, targetClass] = getUserClass([{ member: user }, { member: target }]);
       
@@ -61,10 +64,15 @@ module.exports = {
         });
       } 
       
-      await interaction.reply({embeds: [embed]});
-
+      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'slap' });
     } catch (error) {
-      console.error('Error processing slap command:', error);
+      console.error('Error with the Slap Command:', error);
+
+      embed = createErrorEmbed({
+        int: interaction,
+        descr: 'There was an error with the Slap Command. Please try again later.'
+      });
     }
+    interaction.editReply({embeds: [embed]});
   }
 };

@@ -5,10 +5,13 @@ const getChannelTypeName = require('../../utils/logging/getChannelTypeName');
 const formatOverwrite = require('../../utils/permissions/formatOverwrite');
 const comparePermissions = require('../../utils/permissions/comparePermissions');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (channel) => {
   const guildId = channel.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'channelCreate' });
+
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

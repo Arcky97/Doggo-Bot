@@ -3,10 +3,13 @@ const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const categorizedPermissions = require('./../../../data/loggingPermissions.json');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (oldRole, newRole) => {
   const guildId = oldRole.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'roleUpdate' });
+
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

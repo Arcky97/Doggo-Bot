@@ -4,17 +4,24 @@ const { setLevelSettings } = require('../../../database/levelSystem/setLevelSett
 const { resetDeletionDate } = require('../../handlers/dataBaseCleanUp');
 const sendMessageToDevServer = require('../../utils/sendMessageToDevServer');
 const formatTime = require('../../utils/formatTime');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (guild) => {
   try {
+    await setBotStats(guildId, 'event', { event: 'guildCreate' });
+
     console.log(`✅ Joined a new guild: ${guild.name} (${guild.id}).`);
+
     setLevelSettings({ id: guild.id });
+
     const result = await resetDeletionDate(guild.id);
+
     if (result) {
       console.log(`Data for guild ${guild.id} is no longer marked for deletion.`);
     } else {
       console.log(`No Data marked for deletion found for guild ${guild.id}`);
     }
+
     await setActivity();
 
     const embed = new EmbedBuilder()
@@ -43,6 +50,7 @@ module.exports = async (guild) => {
       .setTimestamp()
     
     const channelId = '1314702619196784743';
+
     await sendMessageToDevServer(channelId, { embeds: [embed] });
   } catch (error) {
     console.error(`❌ Failed to join the guild: ${guild.name} (${guild.id}).`, error);

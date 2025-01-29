@@ -2,10 +2,13 @@ const { Client, GuildBan, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (ban) => {
   const guildId = ban.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'guildBanAdd' });
+
     const logChannel = await getLogChannel(guildId, 'member');
     if (!logChannel) return;
 

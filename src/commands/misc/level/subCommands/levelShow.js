@@ -2,6 +2,7 @@ const { AttachmentBuilder } = require("discord.js");
 const calculateXpByLevel = require("../../../../utils/levels/calculateXpByLevel");
 const { Font, RankCardBuilder } = require("canvacord");
 const { createErrorEmbed, createInfoEmbed } = require("../../../../utils/embeds/createReplyEmbed");
+const { setBotStats } = require("../../../../../database/BotStats/setBotStats");
 
 module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) => {
   const member = interaction.guild.members.cache.get(user.id);
@@ -107,6 +108,7 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
       xp: 'Exp:',
       rank: 'Rank:' 
     });
+    await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'level' });
   try {
     const data = await rank.build();
     const attachment = new AttachmentBuilder(data);

@@ -1,3 +1,4 @@
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 const exportToJson = require("../../handlers/exportToJson");
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
 
@@ -7,6 +8,7 @@ module.exports = {
   deleted: true,
   devOnly: true,
   callback: async (interaction) => {
+    const guildId = interaction.guild.id;
     let embed;
     if (interaction.user.id === '763287145615982592') {
       embed = createWarningEmbed({
@@ -28,5 +30,6 @@ module.exports = {
       }
     }
     await interaction.reply({ embeds: [embed] });
+    await setBotStats(guildId, 'command', { category: 'developing', command: 'fix' });
   }
 }

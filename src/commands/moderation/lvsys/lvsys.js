@@ -22,6 +22,7 @@ const getMemberRoles = require("../../../utils/logging/getMemberRoles");
 const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
 const { getPremiumById } = require("../../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds");
 const showXpSettings = require("../../../utils/levels/showXpSettings");
+const { setBotStats } = require("../../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'lvsys',
@@ -1390,6 +1391,7 @@ module.exports = {
           setting
         });
       }
+      await setBotStats(guildId, 'command', { category: 'moderation', command: 'lvsys' });
     } catch (error) {
       console.error('Error with the levels command:', error);
       embed = createErrorEmbed({int: interaction, descr: 'There was an error...'});

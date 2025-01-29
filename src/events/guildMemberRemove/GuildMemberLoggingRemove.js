@@ -10,11 +10,13 @@ const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
 const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
 const setEventTimeOut = require("../../handlers/setEventTimeOut");
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = async (member) => {
   const guildId = member.guild.id;
   try {
-    
+    await setBotStats(guildId, 'event', { event: 'guildMemberRemove' });
+
     if(member.user.id === client.user.id) return;
     
     const embedData = await getEventEmbed(guildId, 'leave');

@@ -6,12 +6,15 @@ const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
 const sendAnnounceMessage = require('../../utils/levels/sendAnnounceMessage');
 const generateUserInfo = require('../../utils/levels/generateUserInfo');
 const { getPremiumById } = require('../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (message) => {
   const guildId = message.guild.id;
   if (!message.inGuild() || message.author.bot || cooldowns.has(guildId + message.author.id)) return;
 
-  try{
+  try {
+    await setBotStats(guildId, 'event', { event: 'messageCreate' });
+
     const premiumServer = await getPremiumById(guildId);
     const levelSettings = await getLevelSettings(guildId);
     const xpSettings = await getXpSettings(guildId);

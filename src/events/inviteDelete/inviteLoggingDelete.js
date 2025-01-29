@@ -2,10 +2,13 @@ const { Client, Invite, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (invite) => {
   const guildId = invite.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'inviteDelete' });
+
     const logChannel = await getLogChannel(invite.guild.id, 'server');
     if (!logChannel) return;
 

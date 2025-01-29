@@ -3,6 +3,7 @@ const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbe
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
 const { createGeneratedEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'embed',
@@ -411,6 +412,7 @@ module.exports = {
           }
         }
       }
+      await setBotStats(guildId, 'command', { category: 'moderation', command: 'embed' });
     } catch (error) {
       console.error(`There was an error while trying to ${embedAction} the embed:`, error);
       embed = createErrorEmbed({int: interaction, descr: `Something went wrong while trying to ${embedAction} the embed. \nPlease try again later.`});

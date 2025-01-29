@@ -6,10 +6,13 @@ const convertNumberInTime = require('../../utils/convertNumberInTime');
 const formatOverwrite = require('../../utils/permissions/formatOverwrite');
 const comparePermissions = require('../../utils/permissions/comparePermissions');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (oldChannel, newChannel) => {
   const guildId = oldChannel.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'channelUpdate' });
+
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

@@ -5,10 +5,13 @@ const convertNumberInTime = require('../../utils/convertNumberInTime');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
 const getNsfwLevelName = require('../../utils/logging/getNsfwLevelName');
 const getPreferredLocaleName = require('../../utils/logging/getPreferredLocaleName');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (oldGuild, newGuild) => {
   const guildId = oldGuild.id
   try {
+    await setBotStats(guildId, 'event', { event: 'guildUpdate' });
+
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

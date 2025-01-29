@@ -5,10 +5,13 @@ const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
 const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
 const { setChannelOrRoleArray } = require('../../utils/setArrayValues');
 const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = async (channel) => {
   const guildId = channel.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'channelDelete' });
+
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

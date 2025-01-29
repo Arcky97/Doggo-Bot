@@ -12,9 +12,10 @@ module.exports = async (interaction, guildUsers, xpSettings) => {
     let rank = 1;
     let description = '';
     for (const user of guildUsers) {
+      if (rank > 10) break;
       description += `\n\n**#${rank}**: <@${user.memberId}>` +
-                    `\n   **Lv.** \`${user.level}\`` +
-                    `\n   **Xp:** \`${user.xp}/${calculateXpByLevel(user.level + 1, xpSettings)}\`` 
+      `\n   **Lv.** \`${user.level}\`` +
+      `\n   **Xp:** \`${user.xp}/${calculateXpByLevel(user.level + 1, xpSettings)}\`` 
       rank ++;
     }
     embed.setDescription(description);

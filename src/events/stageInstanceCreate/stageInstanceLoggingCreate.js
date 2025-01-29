@@ -2,10 +2,12 @@ const { Client, StageInstance, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (stageInstance) => {
   const guildId = stageInstance.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'stageInstanceCreate' });
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 

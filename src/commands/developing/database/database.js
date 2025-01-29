@@ -2,6 +2,7 @@ const { ApplicationCommandOptionType } = require("discord.js");
 const { query } = require("../../../../database/db");
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createInfoEmbed } = require("../../../utils/embeds/createReplyEmbed");
 const exportToJson = require("../../../handlers/exportToJson");
+const { setBotStats } = require("../../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'database',
@@ -341,6 +342,7 @@ module.exports = {
             break;
           default:
             const result = await exportToJson(table, null, true);
+            await setBotStats(interaction.guild.id, 'command', { category: 'developing', command: 'database' });
             if (result) {
               const { buffer, fileName } = result;
               embed = createSuccessEmbed({
@@ -371,8 +373,9 @@ module.exports = {
           descr: `No ${interaction.user}! Don't use this command!`
         });
       }
+      await setBotStats(interaction.guild.id, 'command', { category: 'developing', command: 'database' });
     } catch (error) {
-      console.error(`Error executing the ${subCmdGroup} ${subCmd} command.`, error);
+      //console.error(`Error executing the ${subCmdGroup} ${subCmd} command.`, error);
       embed = createErrorEmbed({
         int: interaction, 
         descr: `There was an error with the \`database ${subCmdGroup} ${subCmd}\` command: \`${error.message.split('\n')[0]}\`.`

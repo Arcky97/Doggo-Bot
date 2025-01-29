@@ -1,5 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { createInfoEmbed, createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { setBotStats } = require("../../../database/BotStats/setBotStats");
 
 module.exports = {
   name: 'random',
@@ -56,6 +57,7 @@ module.exports = {
         embed = createInfoEmbed({ int: interaction, title: 'No Reactions Found!', descr: `No reactions found for the emoji "${emoji}".`});
       }
       interaction.editReply({ embeds: [embed] });
+      await setBotStats(guildId, 'command', { category: 'moderation', command: 'random' });
     } catch (error) {
       console.error('Error retrieving message hash', error);
     }

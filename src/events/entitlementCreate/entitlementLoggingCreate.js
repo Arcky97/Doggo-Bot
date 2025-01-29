@@ -2,9 +2,12 @@
 const { Client, Entitlement, EmbedBuilder } = require('discord.js');
 const getEntitlementTypeName = require('../../utils/logging/getEntitlementTypeName');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (entitlement) => {
+  const guildId = entitlement.guild.id;
   try {
+    await setBotStats(guildId, 'event', { event: 'entitlementCreate' });
     // return if entitlement is not for client.
     if (entitlement.applicationId !== client.id) return;
     // Only Main Server 
