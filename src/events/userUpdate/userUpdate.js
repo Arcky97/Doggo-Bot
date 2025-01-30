@@ -1,6 +1,7 @@
 const { Client, User, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../utils/logging/getLogChannel');
 const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const { setBotStats } = require('../../../database/BotStats/setBotStats');
 
 module.exports = async (oldUser, newUser) => {
   try {
