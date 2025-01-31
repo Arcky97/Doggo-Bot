@@ -12,8 +12,9 @@ const { setBotStats } = require('../../../database/BotStats/setBotStats');
 const voiceActivity = new Map();
 
 module.exports = async (oldState, newState) => {
+  const guildId = oldState.guild.id;
   try {
-    await setBotStats(guild.id, 'event', { event: 'voiceActivity' });
+    await setBotStats(guildId, 'event', { event: 'voiceActivity' });
 
     const logChannel = await getLogChannel(oldState.guild.id, 'voice');
     if (!logChannel) return;
