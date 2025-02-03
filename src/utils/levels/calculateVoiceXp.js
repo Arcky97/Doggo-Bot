@@ -18,7 +18,7 @@ module.exports = async (guildId, channel, timeSpent) => {
   const minXp = xpSettings.min;
   const maxXp = xpSettings.max;
 
-  if (catBlkList.som(item => item.categoryId === channel.parent.id)) return 0;
+  if (catBlkList.some(item => item.categoryId === channel.parent.id)) return 0;
   if (chanBlkList.some(item => item.channelId === channel.id)) return 0;
   
   let totalXp = 0;
