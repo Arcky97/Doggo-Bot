@@ -8,7 +8,7 @@ const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (guild) => {
   try {
-    await setBotStats(guildId, 'event', { event: 'guildCreate' });
+    await setBotStats(guild.id, 'event', { event: 'guildCreate' });
 
     console.log(`✅ Joined a new guild: ${guild.name} (${guild.id}).`);
 

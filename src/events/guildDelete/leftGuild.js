@@ -10,7 +10,7 @@ module.exports = async (guild) => {
   const deletionDate = new Date();
   deletionDate.setDate(deletionDate.getDate() + 11); // 11 days from now
   try {
-    await setBotStats(guildId, 'event', { event: 'guildDelete' });
+    await setBotStats(guild.id, 'event', { event: 'guildDelete' });
 
     console.log(`✅ Left the guild: ${guild.name} (${guild.id}).`);
 
