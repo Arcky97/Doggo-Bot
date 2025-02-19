@@ -1,12 +1,12 @@
 const { Client, GuildChannel, EmbedBuilder } = require('discord.js');
-const getLogChannel = require("../../utils/logging/getLogChannel");
-const setEventTimeOut = require("../../handlers/setEventTimeOut");
-const getChannelTypeName = require('../../utils/logging/getChannelTypeName');
+const getLogChannel = require("../../managers/logging/getLogChannel");
+const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
+const getChannelTypeName = require('../../managers/logging/getChannelTypeName');
 const convertNumberInTime = require('../../utils/convertNumberInTime');
-const formatOverwrite = require('../../utils/permissions/formatOverwrite');
-const comparePermissions = require('../../utils/permissions/comparePermissions');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const formatOverwrite = require('../../middleware/permissions/formatOverwrite');
+const comparePermissions = require('../../middleware/permissions/comparePermissions');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (oldChannel, newChannel) => {
   const guildId = oldChannel.guild.id;
@@ -158,7 +158,7 @@ module.exports = async (oldChannel, newChannel) => {
     .setTimestamp()
 
     if (!embed.data.fields) return;
-    await setEventTimeOut('channel', newChannel.id, embed, logChannel);
+    await eventTimeoutHandler('channel', newChannel.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Channel Update!', error);

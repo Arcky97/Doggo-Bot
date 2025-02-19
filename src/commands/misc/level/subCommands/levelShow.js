@@ -1,8 +1,8 @@
 const { AttachmentBuilder } = require("discord.js");
-const calculateXpByLevel = require("../../../../utils/levels/calculateXpByLevel");
+const getXpFromLevel = require("../../../../managers/levels/getXpFromLevel");
 const { Font, RankCardBuilder } = require("canvacord");
-const { createErrorEmbed, createInfoEmbed } = require("../../../../utils/embeds/createReplyEmbed");
-const { setBotStats } = require("../../../../../database/BotStats/setBotStats");
+const { createErrorEmbed, createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
+const { setBotStats } = require("../../../../managers/botStatsManager");
 
 module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) => {
   const member = interaction.guild.members.cache.get(user.id);
@@ -14,8 +14,8 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
   }
   const targetAvatarURL = user.displayAvatarURL({ size: 256 })
   const color = userLevel.color;
-  const startLevelXp = calculateXpByLevel(userLevel.level, xpSettings);
-  const endLevelXp = calculateXpByLevel(userLevel.level + 1, xpSettings);
+  const startLevelXp = getXpFromLevel(userLevel.level, xpSettings);
+  const endLevelXp = getXpFromLevel(userLevel.level + 1, xpSettings);
 
   let currentRank = guildUsers.findIndex(lvl => lvl.memberId === user.id) + 1;
   

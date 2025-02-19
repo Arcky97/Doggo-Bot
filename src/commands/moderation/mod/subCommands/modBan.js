@@ -1,14 +1,14 @@
-const { addModerationLogs } = require("../../../../../database/moderationLogs/setModerationLogs");
-const { createInfoEmbed, createErrorEmbed } = require("../../../../utils/embeds/createReplyEmbed");
+const { addModerationLogs } = require("../../../../managers/moderationLogsManager");
+const { createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
 const convertNumberInTime = require("../../../../utils/convertNumberInTime");
 const calculateEndTime = require('../../../../utils/calculateEndTime');
-const checkLogTypeConfig = require("../../../../utils/logging/checkLogTypeConfig");
-const { createRegularBanLogEmbed, createSoftBanLogEmbed, createTempBanLogEmbed } = require("../../../../utils/sendModerationLogEvent");
-const { addModerationTask } = require("../../../../handlers/moderationTasks");
+const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
+const { createRegularBanLogEmbed, createSoftBanLogEmbed, createTempBanLogEmbed } = require("../../../../services/moderationLogService");
+const { addModerationTask } = require("../../../../tasks/moderationTasks");
 const createMissingPermissionsEmbed = require("../../../../utils/createMissingPermissionsEmbed");
 const getUserClass = require("../../../../utils/getUserClass");
 const getCmdReplyKey = require("../../../../utils/getCmdReplyKey");
-const { updateUserAttempts } = require("../../../../../database/userStats/setUserStats");
+const { updateUserAttempts } = require("../../../../managers/userStatsManager");
 const getCommandReply = require("../../../../utils/getCommandReply");
 const commandReplies = require("../../../../../data/commandReplies.json");
 module.exports = async (interaction, guild, user, mod, reason, nextId, formatDuration, logChannel, beginTime, endTime, durationMs, timeoutUUID, durationToTomorrow, subCmd) => {

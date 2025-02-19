@@ -1,4 +1,4 @@
-const { query } = require("../../../database/db");
+const { query } = require("../../managers/databaseManager");
 
 module.exports = {
   name: 'test',

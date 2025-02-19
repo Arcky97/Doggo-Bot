@@ -1,10 +1,10 @@
 
-const { addModerationLogs, getModerationLogs } = require("../../../../../database/moderationLogs/setModerationLogs");
-const { createInfoEmbed, createErrorEmbed } = require("../../../../utils/embeds/createReplyEmbed");
-const checkLogTypeConfig = require("../../../../utils/logging/checkLogTypeConfig");
-const {  createUnmuteLogEmbed } = require("../../../../utils/sendModerationLogEvent");
+const { addModerationLogs, getModerationLogs } = require("../../../../managers/moderationLogsManager");
+const { createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
+const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
+const {  createUnmuteLogEmbed } = require("../../../../services/moderationLogService");
 const formatTime = require("../../../../utils/formatTime");
-const { removeModerationTask } = require("../../../../handlers/moderationTasks");
+const { removeModerationTask } = require("../../../../tasks/moderationTasks");
 const createMissingPermissionsEmbed = require("../../../../utils/createMissingPermissionsEmbed");
 
 module.exports = async (interaction, guild, member, mod, reason, nextId, logChannel, beginTime, muteRole) => {

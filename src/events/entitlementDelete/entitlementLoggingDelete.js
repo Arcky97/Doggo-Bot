@@ -1,8 +1,8 @@
 // Premium Access 
 const { Client, Entitlement, EmbedBuilder } = require('discord.js');
-const getEntitlementTypeName = require('../../utils/logging/getEntitlementTypeName');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const getEntitlementTypeName = require('../../managers/logging/getEntitlementTypeName');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (entitlement) => {
   const guildId = entitlement.guild.id;
@@ -37,7 +37,7 @@ module.exports = async (entitlement) => {
       })
       .setTimestamp()
     
-    await setEventTimeOut('Entitlement', entitlement.id, embed, logChannel);
+    await eventTimeoutHandler('Entitlement', entitlement.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Entitlement Delete!',error);

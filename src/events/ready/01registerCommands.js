@@ -1,7 +1,7 @@
-const areCommandsDifferent = require('../../utils/commands/areCommandsDifferent');
-const getApplicationCommands = require('../../utils/commands/getApplicationCommands');
-const getLocalCommands = require('../../utils/commands/getLocalCommands');
-const validateCommandProperties = require('../../utils/commands/validateCommandProperties');
+const areCommandsDifferent = require('../../handlers/commands/areCommandsDifferent');
+const getApplicationCommands = require('../../handlers/commands/getApplicationCommands');
+const getLocalCommands = require('../../handlers/commands/getLocalCommands');
+const validateCommandProperties = require('../../handlers/commands/validateCommandProperties');
 
 module.exports = async (guild) => {
   try {

@@ -1,12 +1,12 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { getUserLevel, getAllUsersLevel } = require("../../../../database/levelSystem/setLevelSystem")
-const { getXpSettings } = require("../../../../database/levelSystem/setLevelSettings");
+const { getUserLevel, getAllUsersLevel } = require("../../../managers/levelSystemManager")
+const { getXpSettings } = require("../../../managers/levelSettingsManager");
 const levelColor = require("./subCommands/levelColor");
 const levelLeaderboard = require("./subCommands/levelLeaderboard");
 const levelShow = require("./subCommands/levelShow");
 const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
-const { setBotStats } = require("../../../../database/BotStats/setBotStats");
-const { createErrorEmbed } = require("../../../utils/embeds/createReplyEmbed");
+const { createErrorEmbed } = require("../../../services/embeds/createReplyEmbed");
+const { setBotStats } = require("../../../managers/botStatsManager");
 
 module.exports = {
   name: 'level',

@@ -1,9 +1,9 @@
 const { Client, Invite, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
 const convertNumberInTime = require('../../utils/convertNumberInTime');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (invite) => {
   const guildId = invite.guild.id;
@@ -39,7 +39,7 @@ module.exports = async (invite) => {
       )
       .setTimestamp()
 
-    await setEventTimeOut('server', guildId, embed, logChannel);
+    await eventTimeoutHandler('server', guildId, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Invite Create!', error);

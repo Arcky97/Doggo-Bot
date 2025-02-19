@@ -1,0 +1,409 @@
+Folder PATH listing
+Volume serial number is F294-13B5
+C:.
+|   .env
+|   .gitignore
+|   config.json
+|   global.d.ts
+|   nodemon.json
+|   package-lock.json
+|   package.json
+|   README.md
+|   structure.txt
+|   
++---data
+|       commandReplies.json
+|       images.json
+|       loggingPermissions.json
+|       loggingTypes.json
++---database
+|   |   db.js
+|   |   
+|   +---botReplies
+|   |       setBotReplies.js
+|   |       
+|   +---BotStats
+|   |       setBotStats.js
+|   |       
+|   +---controlData
+|   |   |   deleteData.js
+|   |   |   insertData.js
+|   |   |   selectData.js
+|   |   |   updateData.js
+|   |   |   
+|   |   \---visualDatabase
+|   |       |   databaseCount.json
+|   |       |   databaseLogging.txt
+|   |       |   
+|   |       +---BotReplies
+|   |       |       BotReplies.json
+|   |       |       
+|   |       +---BotStats
+|   |       |       BotStats_1263545537303416863.json
+|   |       |       
+|   |       +---EventEmbeds
+|   |       |       EventEmbeds_1263545537303416863.json
+|   |       |       
+|   |       +---GeneratedEmbeds
+|   |       |       GeneratedEmbeds_1263545537303416863.json
+|   |       |       
+|   |       +---GuildSettings
+|   |       |       GuildSettings_1263545537303416863.json
+|   |       |       
+|   |       +---LevelSettings
+|   |       |       LevelSettings_1263545537303416863.json
+|   |       |       
+|   |       +---LevelSystem
+|   |       |       LevelSystem_1263545537303416863.json
+|   |       |       
+|   |       +---ModerationLogs
+|   |       |       ModerationLogs_1263545537303416863.json
+|   |       |       
+|   |       +---PremiumUsersAndGuilds
+|   |       |       PremiumUsersAndGuilds.json
+|   |       |       
+|   |       +---ReactionRoles
+|   |       |       ReactionRoles_1263545537303416863.json
+|   |       |       
+|   |       \---UserStats
+|   |               UserStats_1263545537303416863.json
+|   |               
+|   +---embeds
+|   |       setEmbedData.js
+|   |       
+|   +---guildSettings
+|   |       setGuildSettings.js
+|   |       
+|   +---levelSystem
+|   |       setLevelSettings.js
+|   |       setLevelSystem.js
+|   |       
+|   +---moderationLogs
+|   |       setModerationLogs.js
+|   |       
+|   +---PremiumUsersAndGuilds
+|   |       setPremiumUsersAndGuilds.js
+|   |       
+|   +---reactionRoles
+|   |       setReactionRoles.js
+|   |       
+|   \---userStats
+|           setUserStats.js
+|           
++---images
+|       DoggoBotAnnoyed.png
+|       DoggoBotBusy.png
+|       DoggoBotHappy.png
+|       DoggoBotIdle.png
+|       DoggoBotNeutral.png
+|       DoggoBotOffline.png
+|       DoggoBotOnline.png
+|       DoggoBotSad.png
+|       DoggoBotShocked.png
+|       DoggoBotSleepy.png
+|       DoggoBotStream.png
+|       
++---node_modules                  
+\---src
+    |   index.js
+    |   
+    +---cache
+    +---commands
+    |   +---developing
+    |   |   |   fix.js
+    |   |   |   premium.js
+    |   |   |   refresh.js
+    |   |   |   test.js
+    |   |   |   todo.js
+    |   |   |   
+    |   |   +---database
+    |   |   |   |   database.js
+    |   |   |   |   
+    |   |   |   \---subCommands
+    |   |   \---reply
+    |   |       |   reply.js
+    |   |       |   
+    |   |       \---subCommands
+    |   |               addReply.js
+    |   |               checkReply.js
+    |   |               listReply.js
+    |   |               removeReply.js
+    |   |               updateReply.js
+    |   |               
+    |   +---games
+    |   |       guessingGame.js
+    |   |       
+    |   +---misc
+    |   |   |   bark.js
+    |   |   |   bot.js
+    |   |   |   pat.js
+    |   |   |   ping.js
+    |   |   |   say.js
+    |   |   |   slap.js
+    |   |   |   userage.js
+    |   |   |   
+    |   |   \---level
+    |   |       |   level.js
+    |   |       |   
+    |   |       \---subCommands
+    |   |               levelColor.js
+    |   |               levelLeaderboard.js
+    |   |               levelShow.js
+    |   |               
+    |   +---moderation
+    |   |   |   embed.js
+    |   |   |   random.js
+    |   |   |   reactionroles.js
+    |   |   |   settings.js
+    |   |   |   setup.js
+    |   |   |   
+    |   |   +---info
+    |   |   |   |   info.js
+    |   |   |   |   
+    |   |   |   \---subCommands
+    |   |   +---lvsys
+    |   |   |   |   lvsys.js
+    |   |   |   |   
+    |   |   |   \---subCommands
+    |   |   |           lvsysAnnounce.js
+    |   |   |           lvsysBlacklist.js
+    |   |   |           lvsysCalculator.js
+    |   |   |           lvsysModify.js
+    |   |   |           lvsysMultiplier.js
+    |   |   |           lvsysReset.js
+    |   |   |           lvsysRoles.js
+    |   |   |           lvsysSettings.js
+    |   |   |           lvsysVoice.js
+    |   |   |           lvsysXp.js
+    |   |   |           
+    |   |   \---mod
+    |   |       |   mod.js
+    |   |       |   
+    |   |       \---subCommands
+    |   |               modBan.js
+    |   |               modKick.js
+    |   |               modMute.js
+    |   |               modTimeout.js
+    |   |               modUnban.js
+    |   |               ModUnmute.js
+    |   |               modWarn.js
+    |   |               
+    |   \---premium
+    |           membership.js
+    |           
+    +---config
+    +---controllers
+    +---events
+    |   +---channelCreate
+    |   |       channelLoggingCreate.js
+    |   |       
+    |   +---channelDelete
+    |   |       channelLoggingDelete.js
+    |   |       
+    |   +---channelUpdate
+    |   |       channelLoggingUpdate.js
+    |   |       
+    |   +---emojiCreate
+    |   |       emojiLoggingCreate.js
+    |   |       
+    |   +---emojiDelete
+    |   |       emojiLoggingDelete.js
+    |   |       
+    |   +---emojiUpdate
+    |   |       emojiLoggingUpdate.js
+    |   |       
+    |   +---entitlementCreate
+    |   |       entitlementLoggingCreate.js
+    |   |       
+    |   +---entitlementDelete
+    |   |       entitlementLoggingDelete.js
+    |   |       
+    |   +---entitlementUpdate
+    |   |       entitlementLoggingUpdate.js
+    |   |       
+    |   +---guildBanAdd
+    |   |       guildBanLoggingAdd.js
+    |   |       
+    |   +---guildBanRemove
+    |   |       guildBanLoggingRemove.js
+    |   |       
+    |   +---guildCreate
+    |   |       joinedGuild.js
+    |   |       
+    |   +---guildDelete
+    |   |       leftGuild.js
+    |   |       
+    |   +---guildMemberAdd
+    |   |       guildMemberLoggingAdd.js
+    |   |       
+    |   +---guildMemberRemove
+    |   |       GuildMemberLoggingRemove.js
+    |   |       
+    |   +---guildMemberUpdate
+    |   |       guildMemberLoggingUpdate.js
+    |   |       
+    |   +---guildUpdate
+    |   |       guildLoggingUpdate.js
+    |   |       
+    |   +---interactionCreate
+    |   |       handleCommands.js
+    |   |       
+    |   +---inviteCreate
+    |   |       inviteLoggingCreate.js
+    |   |       
+    |   +---inviteDelete
+    |   |       inviteLoggingDelete.js
+    |   |       
+    |   +---messageCreate
+    |   |       giveUserXp.js
+    |   |       sendResponse.js
+    |   |       
+    |   +---messageDelete
+    |   |       messageLoggingDeletes.js
+    |   |       
+    |   +---messageDeleteBulk
+    |   |       messageLoggingDeleteBulks.js
+    |   |       
+    |   +---messageReactionAdd
+    |   |       addRoleOnReactionAdd.js
+    |   |       
+    |   +---messageReactionRemove
+    |   |       removeRoleonReactionRemove.js
+    |   |       
+    |   +---messageUpdate
+    |   |       iSeeYou.js
+    |   |       messageLoggingEdits.js
+    |   |       
+    |   +---ready
+    |   |       01registerCommands.js
+    |   |       consoleLog.js
+    |   |       
+    |   +---roleCreate
+    |   |       roleLoggingCreate.js
+    |   |       
+    |   +---roleDelete
+    |   |       roleLoggingDelete.js
+    |   |       
+    |   +---roleUpdate
+    |   |       roleLoggingUpdate.js
+    |   |       
+    |   +---stageInstanceCreate
+    |   |       stageInstanceLoggingCreate.js
+    |   |       
+    |   +---stageInstanceDelete
+    |   |       stageInstanceLoggingDelete.js
+    |   |       
+    |   +---stageInstanceUpdate
+    |   |       stageInstanceLoggingUpdate.js
+    |   |       
+    |   +---stickerCreate
+    |   |       stickerLoggingCreate.js
+    |   |       
+    |   +---stickerDelete
+    |   |       stickerLoggingDelete.js
+    |   |       
+    |   +---stickerUpdate
+    |   |       stickerLoggingUpdate.js
+    |   |       
+    |   +---userUpdate
+    |   |       userUpdate.js
+    |   |       
+    |   \---voiceStateUpdate
+    |           voiceActivity.js
+    |           
+    +---handlers
+    |       databaseCleanup.js
+    |       DatabaseCount.js
+    |       eventHandler.js
+    |       exportToDatabaseLogging.js
+    |       exportToJson.js
+    |       moderationTasks.js
+    |       pagination.js
+    |       setEventTimeOut.js
+    |       
+    +---managers
+    +---middleware
+    +---services
+    +---tasks
+    \---utils
+        |   calculateEndTime.js
+        |   checkRequiredPermissions.js
+        |   convertNumberInTime.js
+        |   createMissingPermissionsEmbed.js
+        |   firstLetterToUpperCase.js
+        |   flattenObject.js
+        |   formatTime.js
+        |   getCmdReplyKey.js
+        |   getCommandReply.js
+        |   getOrConvertColor.js
+        |   getOrdinalSuffix.js
+        |   getPresentParticle.js
+        |   getUserClass.js
+        |   getVowel.js
+        |   sendMessageToDevServer.js
+        |   sendModerationLogEvent.js
+        |   setActivity.js
+        |   setArrayValues.js
+        |   setMessageReactions.js
+        |   timeUntilTomorrow.js
+        |   truncateText.js
+        |   
+        +---commands
+        |       areCommandsDifferent.js
+        |       getAllFiles.js
+        |       getApplicationCommands.js
+        |       getLocalCommands.js
+        |       validateCommandProperties.js
+        |       
+        +---embeds
+        |       createDynamicEmbed.js
+        |       createReplyEmbed.js
+        |       parseEmbedPlaceholders.js
+        |       
+        +---levels
+        |       getAnnounceEmbed.js
+        |       getAnnouncementSettings.js
+        |       getBlacklistSettings.js
+        |       getLevelFromXp.js
+        |       getLevelSystemSettings.js
+        |       getLevelXpRequirement.js
+        |       getMaxLevelFromXp.js
+        |       getMultiplierSettings.js
+        |       getRolesSettings.js
+        |       getUserInfo.js
+        |       getUserLevelInfo.js
+        |       getVoiceSettings.js
+        |       getVoiceXp.js
+        |       getXpFromLevel.js
+        |       getXpMultiplier.js
+        |       getXpSettings.js
+        |       giveUserLevelRole.js
+        |       sendAnnounceMessage.js
+        |       
+        +---logging
+        |       checkLogTypeConfig.js
+        |       getChannelTypeName.js
+        |       getEntitlementTypeName.js
+        |       getLogChannel.js
+        |       getMemberRoles.js
+        |       getNsfwLevelName.js
+        |       getPreferredLocaleName.js
+        |       ignoreLogging.js
+        |       
+        +---menus
+        |       createLoggingMenu.js
+        |       
+        +---permissions
+        |       checkPermissions.js
+        |       comparePermissions.js
+        |       formatOverwrite.js
+        |       
+        +---settings
+        |       createListFromArray.js
+        |       
+        \---tasks
+                addTask.js
+                completeTask.js
+                removeTask.js
+                ShowTask.js
+                updateTask.js

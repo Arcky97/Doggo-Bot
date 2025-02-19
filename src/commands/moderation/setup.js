@@ -1,11 +1,11 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits, SlashCommandSubcommandBuilder } = require("discord.js");
-const { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig, convertSetupCommand } = require("../../../database/guildSettings/setGuildSettings");
-const { createErrorEmbed, createSuccessEmbed, createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
-const createLoggingMenu = require("../../utils/menus/createLoggingMenu");
+const { ApplicationCommandOptionType } = require("discord.js");
+const { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig, convertSetupCommand } = require("../../managers/guildSettingsManager.js");
+const { createErrorEmbed, createSuccessEmbed, createInfoEmbed } = require("../../services/embeds/createReplyEmbed");
+const createLoggingMenu = require("../../handlers/loggingMenuHandler.js");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 const loggingTypes = require('../../../data/loggingTypes.json');
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = {
   name: 'setup',

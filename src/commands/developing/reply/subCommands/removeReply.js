@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
-const { setBotReplies } = require("../../../../../database/botReplies/setBotReplies");
-const { createErrorEmbed } = require('../../../../utils/embeds/createReplyEmbed');
+const { createErrorEmbed } = require('../../../../services/embeds/createReplyEmbed');
+const { setBotReplies } = require("../../../../managers/botRepliesManager");
 
 module.exports = async (interaction) => {
   const replyID = interaction.options.getString('id');

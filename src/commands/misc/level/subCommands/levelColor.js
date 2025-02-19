@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
-const { addUserColor } = require("../../../../../database/levelSystem/setLevelSystem");
+const { addUserColor } = require("../../../../managers/levelSystemManager");
 const getOrConvertColor = require("../../../../utils/getOrConvertColor");
-const { createErrorEmbed, createInfoEmbed } = require("../../../../utils/embeds/createReplyEmbed");
+const { createErrorEmbed, createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
 
 module.exports = async (interaction, userLevel) => {
   if (userLevel) {

@@ -1,12 +1,12 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { createSuccessEmbed, createInfoEmbed, createErrorEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { createSuccessEmbed, createInfoEmbed, createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
 const getVowel = require("../../utils/getVowel");
-const { updateUserAttempts } = require("../../../database/userStats/setUserStats");
+const { updateUserAttempts } = require("../../managers/userStatsManager");
 const getUserClass = require("../../utils/getUserClass");
 const commandReplies = require('../../../data/commandReplies.json');
 const getCmdReplyKey = require("../../utils/getCmdReplyKey");
 const getCommandReply = require("../../utils/getCommandReply");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = {
   name: 'slap',

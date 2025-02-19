@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { createInfoEmbed, createSuccessEmbed } = require("../../utils/embeds/createReplyEmbed");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const { createInfoEmbed, createSuccessEmbed } = require("../../services/embeds/createReplyEmbed");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = {
   name: 'random',

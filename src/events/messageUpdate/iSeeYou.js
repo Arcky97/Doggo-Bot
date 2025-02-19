@@ -1,5 +1,5 @@
 const { Client, Message } = require('discord.js');
-const { selectData } = require('../../../database/controlData/selectData');
+const { selectData } = require('../../services/database/selectData');
 
 module.exports = async (message) => {
   if (!message.inGuild() || !message.author || message.author.bot || message.guild.id !== '925765418545741854') return;

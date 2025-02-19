@@ -1,5 +1,4 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require("discord.js");
-const createMissingPermissionsEmbed = require("../utils/createMissingPermissionsEmbed");
 
 module.exports = async (interaction, pages, time = 30 * 1000) => {
   try {

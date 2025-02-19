@@ -1,14 +1,14 @@
 const { Client, VoiceState, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const ignoreLogging = require('../../utils/logging/ignoreLogging');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const { getLevelSettings, getXpSettings } = require('../../../database/levelSystem/setLevelSettings');
-const calculateVoiceXp = require('../../utils/levels/calculateVoiceXp');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const ignoreLogging = require('../../managers/logging/ignoreLogging');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const { getLevelSettings, getXpSettings } = require('../../managers/levelSettingsManager');
+const getVoiceXp = require('../../managers/levels/getVoiceXp');
 const formatTime = require('../../utils/formatTime');
-const giveUserLevelRole = require('../../utils/levels/giveUserLevelRole');
-const sendAnnounceMessage = require('../../utils/levels/sendAnnounceMessage');
-const generateUserInfo = require('../../utils/levels/generateUserInfo');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const giveUserLevelRole = require('../../managers/levels/giveUserLevelRole');
+const sendAnnounceMessage = require('../../managers/levels/sendAnnounceMessage');
+const getUserInfo = require('../../managers/levels/getUserInfo');
+const { setBotStats } = require('../../managers/botStatsManager');
 const voiceActivity = new Map();
 
 module.exports = async (oldState, newState) => {
@@ -50,9 +50,9 @@ module.exports = async (oldState, newState) => {
         voiceActivity.delete(newState.guild.id + newState.member.id);
         const secondsSpent = Math.floor(timeSpent / 1000); // convert to seconds
         if (levelSettings.voiceEnable && newState.guild.afkChannelId !== oldState.channel.id) {
-          const xpToGive = await calculateVoiceXp(newState.guild.id, oldState.channel, secondsSpent);
+          const xpToGive = await getVoiceXp(newState.guild.id, oldState.channel, secondsSpent);
           const xpSettings = await getXpSettings(newState.guild.id);
-          const userInfo = await generateUserInfo(newState.guild.id, newState.member, xpToGive, xpSettings);
+          const userInfo = await getUserInfo(newState.guild.id, newState.member, xpToGive, xpSettings);
           if (userInfo) {
             await sendAnnounceMessage(newState, newState.member, userInfo);
             await giveUserLevelRole(newState.guild.id, newState.member, userInfo);
@@ -95,7 +95,7 @@ module.exports = async (oldState, newState) => {
     } 
     
 
-    await setEventTimeOut('voice', newState.member.user.id, embed, logChannel);
+    await eventTimeoutHandler('voice', newState.member.user.id, embed, logChannel);
   } catch (error) {
     console.error('Failed to log Voice Activity', error);
   }

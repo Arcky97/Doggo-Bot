@@ -1,6 +1,6 @@
 const { Client, Message } = require('discord.js');
-const { selectData } = require('../../../database/controlData/selectData');
-const { getReplies, findClosestMatch, getTriggers } = require('../../../database/botReplies/setBotReplies');
+const { selectData } = require('../../services/database/selectData');
+const { getReplies, findClosestMatch, getTriggers } = require('../../managers/botRepliesManager');
 
 module.exports = async (message) => {
   if (!message.inGuild() || message.author.bot) return;

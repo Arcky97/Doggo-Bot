@@ -1,7 +1,7 @@
 const { devs, testServer } = require('../../../config.json');
-const { getPremiumById } = require('../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds');
-const getLocalCommands = require('../../utils/commands/getLocalCommands');
-const { createInfoEmbed, createWarningEmbed, createErrorEmbed } = require('../../utils/embeds/createReplyEmbed');
+const { getPremiumById } = require('../../managers/premiumManager');
+const getLocalCommands = require('../../handlers/commands/getLocalCommands');
+const { createInfoEmbed, createWarningEmbed, createErrorEmbed } = require('../../services/embeds/createReplyEmbed');
 
 module.exports = async (interaction) => {
   if (!interaction.isChatInputCommand()) return;

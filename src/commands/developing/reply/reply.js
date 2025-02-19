@@ -4,8 +4,8 @@ const updateReply = require("./subCommands/updateReply");
 const removeReply = require("./subCommands/removeReply");
 const checkReply = require("./subCommands/checkReply");
 const listReply = require("./subCommands/listReply");
-const { createErrorEmbed } = require("../../../utils/embeds/createReplyEmbed");
-const { setBotStats } = require("../../../../database/BotStats/setBotStats");
+const { createErrorEmbed } = require("../../../services/embeds/createReplyEmbed");
+const { setBotStats } = require("../../../managers/botStatsManager");
 
 module.exports = {
   name: 'reply',

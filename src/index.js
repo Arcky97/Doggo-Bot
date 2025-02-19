@@ -1,9 +1,9 @@
 require('dotenv').config();
-require('./handlers/dataBaseCleanUp');
+require('./tasks/databaseCleanUp.js');
 const { Client, IntentsBitField, Partials } = require('discord.js');
 const eventHandler = require('./handlers/eventHandler');
-const database = require('./../database/db.js');
-const { checkModerationTasks } = require('./handlers/moderationTasks.js');
+const { initDatabase } = require('./managers/databaseManager.js');
+const { checkModerationTasks } = require('./tasks/moderationTasks.js');
 
 global.client = new Client({
   intents: [
@@ -29,7 +29,7 @@ global.client = new Client({
 async function startBot() {
   try {
     eventHandler();
-    await database.initDatabase();
+    await initDatabase();
     await client.login(process.env.CLIENT_TOKEN);
     await checkModerationTasks('scheduled');
   } catch (error) {

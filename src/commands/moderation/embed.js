@@ -1,9 +1,9 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } = require("../../../database/embeds/setEmbedData");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
-const { createGeneratedEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
+const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } = require("../../managers/embedDataManager");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../services/embeds/createReplyEmbed");
+const { createGeneratedEmbed } = require("../../services/embeds/createDynamicEmbed");
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = {
   name: 'embed',

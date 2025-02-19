@@ -1,5 +1,5 @@
-const { createWarningEmbed } = require("./embeds/createReplyEmbed");
-const { checkClientPermissions, checkUserPermissions } = require("./permissions/checkPermissions")
+const { createWarningEmbed } = require("../services/embeds/createReplyEmbed");
+const { checkClientPermissions, checkUserPermissions } = require("../middleware/permissions/checkPermissions")
 
 module.exports = async (interaction, user, perms, channel) => {
 

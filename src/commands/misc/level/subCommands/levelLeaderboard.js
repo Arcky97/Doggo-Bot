@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
-const calculateXpByLevel = require("../../../../utils/levels/calculateXpByLevel");
-const { createInfoEmbed } = require("../../../../utils/embeds/createReplyEmbed");
+const getXpFromLevel = require("../../../../managers/levels/getXpFromLevel");
+const { createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
 
 module.exports = async (interaction, guildUsers, xpSettings) => {
   if (guildUsers.length > 0) {
@@ -15,7 +15,7 @@ module.exports = async (interaction, guildUsers, xpSettings) => {
       if (rank > 10) break;
       description += `\n\n**#${rank}**: <@${user.memberId}>` +
       `\n   **Lv.** \`${user.level}\`` +
-      `\n   **Xp:** \`${user.xp}/${calculateXpByLevel(user.level + 1, xpSettings)}\`` 
+      `\n   **Xp:** \`${user.xp}/${getXpFromLevel(user.level + 1, xpSettings)}\`` 
       rank ++;
     }
     embed.setDescription(description);

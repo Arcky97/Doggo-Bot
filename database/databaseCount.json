@@ -1,0 +1,80 @@
+{
+  "LevelSystem": {
+    "selects": 0,
+    "inserts": 16,
+    "updates": 329,
+    "deletes": 11
+  },
+  "LevelSettings": {
+    "selects": 0,
+    "inserts": 2,
+    "updates": 56,
+    "deletes": 3
+  },
+  "GuildSettings": {
+    "selects": 2,
+    "inserts": 3,
+    "updates": 106,
+    "deletes": 16
+  },
+  "ReactionRoles": {
+    "selects": 0,
+    "inserts": 4,
+    "updates": 8,
+    "deletes": 2
+  },
+  "GeneratedEmbeds": {
+    "selects": 0,
+    "inserts": 10,
+    "updates": 13,
+    "deletes": 2
+  },
+  "EventEmbeds": {
+    "selects": 0,
+    "inserts": 0,
+    "updates": 2,
+    "deletes": 0
+  },
+  "UserStats": {
+    "selects": 2,
+    "inserts": 18,
+    "updates": 328,
+    "deletes": 0
+  },
+  "PremiumUsersAndGuilds": {
+    "selects": 0,
+    "inserts": 13,
+    "updates": 0,
+    "deletes": 11
+  },
+  "ModerationLogs": {
+    "selects": 5,
+    "inserts": 450,
+    "updates": 742,
+    "deletes": 66
+  },
+  "ModerationActiveTimeouts": {
+    "selects": 0,
+    "inserts": 23,
+    "updates": 0,
+    "deletes": 46
+  },
+  "ModerationIdsToCheck": {
+    "selects": 0,
+    "inserts": 31,
+    "updates": 0,
+    "deletes": 19
+  },
+  "BotReplies": {
+    "selects": 0,
+    "inserts": 4,
+    "updates": 2,
+    "deletes": 1
+  },
+  "BotStats": {
+    "selects": 6,
+    "inserts": 13,
+    "updates": 352,
+    "deletes": 0
+  }
+}

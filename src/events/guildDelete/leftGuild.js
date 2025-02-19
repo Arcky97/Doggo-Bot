@@ -1,10 +1,10 @@
 const { Client, Guild, EmbedBuilder } = require('discord.js');
-const setActivity = require('../../utils/setActivity');
-const { setDeletionDate } = require('../../handlers/dataBaseCleanUp');
+const botActivityService = require('../../services/botActivityService');
+const { setDeletionDate } = require('../../tasks/databaseCleanUp');
 const moment = require("moment");
 const formatTime = require('../../utils/formatTime');
-const sendMessageToDevServer = require('../../utils/sendMessageToDevServer');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const devServerService = require('../../services/devServerService');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (guild) => {
   const deletionDate = new Date();
@@ -18,7 +18,7 @@ module.exports = async (guild) => {
 
     console.log(`Data for guild ${guild.id} marked for deletion on ${deletionDate}`);
     
-    await setActivity();
+    await botActivityService();
 
     const joinedAt = moment(client.joinedAt).format('MMMM Do YYYY, h:mm:ss a');
     const leftAt = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -55,7 +55,7 @@ module.exports = async (guild) => {
     
     const channelId = '1314702619196784743';
 
-    await sendMessageToDevServer(channelId, { embeds: [embed] });
+    await devServerService(channelId, { embeds: [embed] });
   } catch (error) {
     console.error(`❌ Failed to be removed from the guild: ${guild.name} (${guild.id}).`, error);
   }

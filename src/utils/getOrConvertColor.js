@@ -1,5 +1,5 @@
 const ntc = require("ntc");
-const { findClosestMatch } = require("../../database/botReplies/setBotReplies");
+const { findClosestMatch } = require("../managers/botRepliesManager");
 
 module.exports = async (input, output = false) => {
   let hexColor;

@@ -1,8 +1,8 @@
-const { addModerationLogs, removeModerationLogs, getModerationLogs, clearModerationLogs, getModerationLogsById } = require("../../../../../database/moderationLogs/setModerationLogs");
-const { createSuccessEmbed, createInfoEmbed, createErrorEmbed } = require("../../../../utils/embeds/createReplyEmbed");
-const { createWarningAddLogEmbed, createWarningRemoveLogEmbed, createWarningClearLogEmbed } = require("../../../../utils/sendModerationLogEvent");
-const { updateUserAttempts } = require("../../../../../database/userStats/setUserStats");
-const checkLogTypeConfig = require("../../../../utils/logging/checkLogTypeConfig");
+const { addModerationLogs, removeModerationLogs, getModerationLogs, clearModerationLogs, getModerationLogsById } = require("../../../../managers/moderationLogsManager");
+const { createSuccessEmbed, createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
+const { createWarningAddLogEmbed, createWarningRemoveLogEmbed, createWarningClearLogEmbed } = require("../../../../services/moderationLogService");
+const { updateUserAttempts } = require("../../../../managers/userStatsManager");
+const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
 const getUserClass = require("../../../../utils/getUserClass");
 const getCmdReplyKey = require("../../../../utils/getCmdReplyKey");
 const getCommandReply = require("../../../../utils/getCommandReply");

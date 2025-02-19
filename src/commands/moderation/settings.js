@@ -1,9 +1,9 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { getGuildSettings } = require('../../../database/guildSettings/setGuildSettings.js');
-const { createErrorEmbed } = require("../../utils/embeds/createReplyEmbed.js");
-const createListFromArray = require("../../utils/settings/createListFromArray.js");
+const { EmbedBuilder } = require("discord.js");
+const { getGuildSettings } = require('../../managers/guildSettingsManager.js');
+const { createErrorEmbed } = require("../../services/embeds/createReplyEmbed.js");
+const createListFromArray = require("../../utils/createListFromArray.js");
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed.js");
-const { setBotReplies } = require("../../../database/botReplies/setBotReplies.js");
+const { setBotReplies } = require("../../managers/botRepliesManager.js");
 
 module.exports = {
   name: 'settings',

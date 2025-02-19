@@ -1,9 +1,9 @@
 const { Client, Role, EmbedBuilder, PermissionsBitField } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
 const categorizedPermissions = require('./../../../data/loggingPermissions.json');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (oldRole, newRole) => {
   const guildId = oldRole.guild.id;
@@ -102,7 +102,7 @@ module.exports = async (oldRole, newRole) => {
 
     if (oldRole.position !== newRole.position && embed.addFields.length < 1) return;
     
-    await setEventTimeOut('role', newRole.id, embed, logChannel);
+    await eventTimeoutHandler('role', newRole.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Role Update!', error);

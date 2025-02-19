@@ -1,0 +1,60 @@
+[
+  {
+    "guildId": "1263545537303416863",
+    "totalCount": {
+      "current": 28,
+      "total": 28
+    },
+    "eventCount": {
+      "current": {
+        "messageCreate": 7,
+        "messageUpdate": 1
+      },
+      "total": {
+        "messageCreate": 7,
+        "messageUpdate": 1
+      }
+    },
+    "commandCount": {
+      "current": {
+        "developing": {
+          "database": 1,
+          "reply": 1
+        },
+        "misc": {
+          "bark": 2,
+          "level": 5,
+          "userage": 3
+        },
+        "moderation": {
+          "lvsys": 1
+        }
+      },
+      "total": {
+        "developing": {
+          "database": 1,
+          "reply": 1
+        },
+        "misc": {
+          "bark": 2,
+          "level": 5,
+          "userage": 3
+        },
+        "moderation": {
+          "lvsys": 1
+        }
+      }
+    },
+    "levelSystemCount": {
+      "current": {
+        "xp": 65,
+        "levels": 1
+      },
+      "total": {
+        "xp": 65,
+        "levels": 1
+      }
+    },
+    "deletionDate": null
+  }
+]

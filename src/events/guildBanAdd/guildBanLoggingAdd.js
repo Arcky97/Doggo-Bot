@@ -1,8 +1,8 @@
 const { Client, GuildBan, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (ban) => {
   const guildId = ban.guild.id;
@@ -33,7 +33,7 @@ module.exports = async (ban) => {
       })
       .setTimestamp()
 
-      await setEventTimeOut('member', ban.user.id, embed, logChannel);
+      await eventTimeoutHandler('member', ban.user.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Member Ban!', error);

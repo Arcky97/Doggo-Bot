@@ -1,11 +1,11 @@
 const { Client, GuildChannel, EmbedBuilder } = require("discord.js");
-const getLogChannel = require("../../utils/logging/getLogChannel");
-const setEventTimeOut = require("../../handlers/setEventTimeOut");
-const getChannelTypeName = require("../../utils/logging/getChannelTypeName");
-const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
+const getLogChannel = require("../../managers/logging/getLogChannel");
+const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
+const getChannelTypeName = require("../../managers/logging/getChannelTypeName");
+const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require("../../managers/levelSettingsManager");
 const { setChannelOrRoleArray } = require('../../utils/setArrayValues');
-const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const checkLogTypeConfig = require("../../managers/logging/checkLogTypeConfig");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = async (channel) => {
   const guildId = channel.guild.id;
@@ -52,7 +52,7 @@ module.exports = async (channel) => {
       [_, setData] = setChannelOrRoleArray({ type: 'channel', data: chanMults, id: channel.id, remove: true });
       await setLevelSettings({ id: channel.guild.id, setting: { 'channelMultipliers': setData } });  
     }
-    await setEventTimeOut('channel', channel.id, embed, logChannel);
+    await eventTimeoutHandler('channel', channel.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Channel Delete!', error);

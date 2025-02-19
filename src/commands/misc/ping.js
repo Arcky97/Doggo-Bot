@@ -1,5 +1,5 @@
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
-const { createSuccessEmbed, createErrorEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { setBotStats } = require("../../managers/botStatsManager");
+const { createSuccessEmbed, createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'ping',

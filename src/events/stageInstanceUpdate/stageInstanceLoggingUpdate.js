@@ -1,8 +1,8 @@
 const { Client, StageInstance, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (oldStageInstance, newStageInstance) => {
   const guildId = oldStageInstance.guild.id;
@@ -57,7 +57,7 @@ module.exports = async (oldStageInstance, newStageInstance) => {
 
     if (embed.addFields.length < 1) return;
     
-    await setEventTimeOut('server', oldStageInstance.id, embed, logChannel);
+    await eventTimeoutHandler('server', oldStageInstance.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Stage Instance Update!', error);

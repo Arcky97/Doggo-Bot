@@ -1,14 +1,14 @@
 const { EmbedBuilder } = require("discord.js");
-const setActivity = require("../../utils/setActivity");
-const getLogChannel = require("../../utils/logging/getLogChannel");
+const botActivityService = require("../../services/botActivityService");
+const getLogChannel = require("../../managers/logging/getLogChannel");
 const formatTime = require("../../utils/formatTime");
 const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
-const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
-const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
-const setEventTimeOut = require("../../handlers/setEventTimeOut");
-const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
-const { getGuildSettings } = require("../../../database/guildSettings/setGuildSettings");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const { getEventEmbed } = require("../../managers/embedDataManager");
+const { createEventEmbed } = require("../../services/embeds/createDynamicEmbed");
+const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
+const checkLogTypeConfig = require("../../managers/logging/checkLogTypeConfig");
+const { getGuildSettings } = require("../../managers/guildSettingsManager.js");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = async (member) => {
   const guildId = member.guild.id;
@@ -64,9 +64,9 @@ module.exports = async (member) => {
         text: `User ID: ${member.id}`
       });
 
-    await setEventTimeOut('joinleave', member.id, embed, logChannel);
+    await eventTimeoutHandler('joinleave', member.id, embed, logChannel);
  
-    await setActivity();
+    await botActivityService();
   } catch (error) {
     console.error('Failed to update Activity!', error)
   }

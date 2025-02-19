@@ -1,10 +1,10 @@
 const { Client, Role, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require('../../../database/levelSystem/setLevelSettings');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require('../../managers/levelSettingsManager');
 const { setChannelOrRoleArray } = require('../../utils/setArrayValues');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (role) => {
   const guildId = role.guild.id;
@@ -53,7 +53,7 @@ module.exports = async (role) => {
     [_, setData] = setChannelOrRoleArray({ type: 'role', data: roleMults, id: role.id, remove: true });
     await setLevelSettings({ id: guildId, setting: { 'roleMultipliers': setData } })
 
-    await setEventTimeOut('role', role.id, embed, logChannel);
+    await eventTimeoutHandler('role', role.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Role Delete!', error);

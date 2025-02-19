@@ -1,8 +1,8 @@
 const { Client, StageInstance, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (stageInstance) => {
   const guildId = stageInstance.guild.id;
@@ -37,7 +37,7 @@ module.exports = async (stageInstance) => {
       })
       .setTimestamp()
 
-    await setEventTimeOut('server', stageInstance.id, embed, logChannel);
+    await eventTimeoutHandler('server', stageInstance.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Stage Instance Delete', error);

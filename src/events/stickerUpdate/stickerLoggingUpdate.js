@@ -1,8 +1,8 @@
 const { Client, Sticker, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (oldSticker, newSticker) => {
   const guildId = oldSticker.guild.id;
@@ -52,7 +52,7 @@ module.exports = async (oldSticker, newSticker) => {
 
     if (embed.addFields.length < 1) return;
 
-    await setEventTimeOut('server', oldSticker.id, embed, logChannel);
+    await eventTimeoutHandler('server', oldSticker.id, embed, logChannel);
     
   } catch (error) {
     console.error('Failed to log Sticker Update!', error);

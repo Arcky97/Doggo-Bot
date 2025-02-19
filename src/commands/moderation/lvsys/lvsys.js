@@ -1,28 +1,28 @@
 const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../../database/levelSystem/setLevelSettings");
+const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../managers/levelSettingsManager");
 const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../../utils/setArrayValues");
-const createListFromArray = require("../../../utils/settings/createListFromArray");
-const showMultiplierSettings = require("../../../utils/levels/showMultiplierSettings");
-const showLevelSystemSettings = require("../../../utils/levels/showLevelSystemSettings");
+const createListFromArray = require("../../../utils/createListFromArray");
+const getMultiplierSettings = require("../../../managers/levels/getMultiplierSettings");
+const getLevelSystemSettings = require("../../../managers/levels/getLevelSystemSettings");
 const getOrConvertColor = require("../../../utils/getOrConvertColor");
-const showAnnouncementSettings = require("../../../utils/levels/showAnnouncementSettings");
-const embedPlaceholders = require("../../../utils/embeds/embedPlaceholders");
-const showBlacklistSettings = require("../../../utils/levels/showBlacklistSettings");
-const showVoiceSettings = require("../../../utils/levels/showVoiceSettings");
-const { resetLevelSystem, getAllUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../../database/levelSystem/setLevelSystem");
-const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../../utils/embeds/createReplyEmbed");
-const getChannelTypeName = require("../../../utils/logging/getChannelTypeName");
+const getAnnouncementSettings = require("../../../managers/levels/getAnnouncementSettings");
+const parseEmbedPlaceholders = require("../../../services/embeds/parseEmbedPlaceholders");
+const getBlacklistSettings = require("../../../managers/levels/getBlacklistSettings");
+const getVoiceSettings = require("../../../managers/levels/getVoiceSettings");
+const { resetLevelSystem, getAllUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../managers/levelSystemManager");
+const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../../services/embeds/createReplyEmbed");
+const getChannelTypeName = require("../../../managers/logging/getChannelTypeName");
 const firstLetterToUpperCase = require("../../../utils/firstLetterToUpperCase");
 const getVowel = require("../../../utils/getVowel");
-const createAnnounceEmbed = require("../../../utils/levels/createAnnounceEmbed");
-const calculateLevelByXp = require("../../../utils/levels/calculateLevelByXp");
-const calculateXpByLevel = require("../../../utils/levels/calculateXpByLevel");
-const calculateMultiplierXp = require("../../../utils/levels/calculateMultiplierXp");
-const getMemberRoles = require("../../../utils/logging/getMemberRoles");
+const getAnnounceEmbed = require("../../../managers/levels/getAnnounceEmbed");
+const getLevelFromXp = require("../../../managers/levels/getLevelFromXp");
+const getXpFromLevel = require("../../../managers/levels/getXpFromLevel");
+const getXpMultiplier = require("../../../managers/levels/getXpMultiplier");
+const getMemberRoles = require("../../../managers/logging/getMemberRoles");
 const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
-const { getPremiumById } = require("../../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds");
-const showXpSettings = require("../../../utils/levels/showXpSettings");
-const { setBotStats } = require("../../../../database/BotStats/setBotStats");
+const { getPremiumById } = require("../../../managers/premiumManager");
+const getXpSettings = require("../../../managers/levels/getXpSettings");
+const { setBotStats } = require("../../../managers/botStatsManager");
 
 module.exports = {
   name: 'lvsys',
@@ -804,7 +804,7 @@ module.exports = {
               }
               break;
             case 'settings':
-              embed = showMultiplierSettings(levSettings, globalMult, roleMults, channelMults, categoryMults);
+              embed = getMultiplierSettings(levSettings, globalMult, roleMults, channelMults, categoryMults);
               break;
           }
           interaction.editReply({ embeds: [embed] });
@@ -872,7 +872,7 @@ module.exports = {
               }
               break;
             case 'settings':
-              embed = showAnnouncementSettings(levSettings);
+              embed = getAnnouncementSettings(levSettings);
               break;
             case 'show':
               level = interaction.options.getInteger('level');
@@ -886,11 +886,11 @@ module.exports = {
                 "guildId": guildId,
                 "memberId": interaction.user.id,
                 "level": (level || userInfo.level),
-                "xp": calculateLevelByXp((level || userInfo.level), xpSettings),
+                "xp": getLevelFromXp((level || userInfo.level), xpSettings),
                 "color": userInfo.color
               };
               if (userLevelInfo.level === 0) userLevelInfo = 1;
-              embed = await createAnnounceEmbed(guildId, interaction, userLevelInfo);
+              embed = await getAnnounceEmbed(guildId, interaction, userLevelInfo);
               break;
             case 'placeholders':
               const fieldObject = {
@@ -934,7 +934,7 @@ module.exports = {
                 .setTimestamp()
               for (const [key, placeholders] of Object.entries(fieldObject)) {
                 const values = await Promise.all(
-                  placeholders.map(async (placeholder) => `\`${placeholder.split('}')[0] + '}'}\` = **${await embedPlaceholders(placeholder, interaction)}`)
+                  placeholders.map(async (placeholder) => `\`${placeholder.split('}')[0] + '}'}\` = **${await parseEmbedPlaceholders(placeholder, interaction)}`)
                 );
                 const valueString = values.join('\n - ').trim();
                 embed.addFields(
@@ -976,7 +976,7 @@ module.exports = {
               embed = createSuccessEmbed({int: interaction, title: `Role ${action}!`, descr: `${role} has been ${action} to the Black List.`});
               break;
             case 'settings':
-              embed = showBlacklistSettings(blackListRoles, blackListChannels, blackListCategories);
+              embed = getBlacklistSettings(blackListRoles, blackListChannels, blackListCategories);
               break;
           }
           interaction.editReply({ embeds: [embed] });
@@ -1046,7 +1046,7 @@ module.exports = {
               }
               break;
             case 'settings':
-              embed = showVoiceSettings(levSettings);
+              embed = getVoiceSettings(levSettings);
               break;
           }
           interaction.editReply({ embeds: [embed] });
@@ -1223,7 +1223,7 @@ module.exports = {
               }
               break;
             case 'settings':
-              embed = showXpSettings(levSettings, PremiumServer);
+              embed = getXpSettings(levSettings, PremiumServer);
               interaction.editReply({ embeds: [embed] });
               break;
             }
@@ -1253,13 +1253,13 @@ module.exports = {
                   break;
                 case 'set':
                   levelToGive = level;
-                  if (level === userLevelInfo.level && calculateXpByLevel(level, xpSettings) === userLevelInfo.xp) {
+                  if (level === userLevelInfo.level && getXpFromLevel(level, xpSettings) === userLevelInfo.xp) {
                     embed = createInfoEmbed({ int: interaction, title: 'User Level not Modified!', descr: `${user}'s Level was not modified because the Level and XP are the same!`});
                   }
                   break;
               }
               if (!embed) {
-                xpToGive = calculateXpByLevel(levelToGive, xpSettings)
+                xpToGive = getXpFromLevel(levelToGive, xpSettings)
                 await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive });
                 embed = createSuccessEmbed({ int: interaction, title: 'User Level Modified!', descr: `${user}'s Level has been modified to Lv. ${levelToGive}!`});
               }
@@ -1279,7 +1279,7 @@ module.exports = {
                   }
                   break;
               }
-              levelToGive = calculateLevelByXp(xpToGive, xpSettings);
+              levelToGive = getLevelFromXp(xpToGive, xpSettings);
               if (levelToGive > 999) {
                 embed = createInfoEmbed({ int: interaction, title: 'User XP not Modified!', descr: `${user}'s XP has not been modified because it exceeds the maximum level of 999!`});
               }
@@ -1343,7 +1343,7 @@ module.exports = {
           const userBlackListRoles = roleBlackList.filter(data => userRoles.includes(data.roleId));
           const blackListRolesString = createListFromArray(userBlackListRoles, '  - <@&${roleId}>: blacklisted', false);
           roleString = `${usedRoleMults !== 'none' ? `\n  ${usedRoleMults}` : '' } ${blackListRolesString !== 'none' ? `\n  ${blackListRolesString}` : ''}`;
-          const [minXp, maxXp] = calculateMultiplierXp(xpObject);
+          const [minXp, maxXp] = getXpMultiplier(xpObject);
           const multiplierString =  `- **Global:** \`${levSettings.globalMultiplier}%\`\n` +
                                     `- **Category:** ${catString}\n` + 
                                     `- **Channel:** ${chanString}\n` +
@@ -1369,7 +1369,7 @@ module.exports = {
               } else if (startLevel === level) {
                 embed = createInfoEmbed({ int: interaction, title: 'Message Calculator!', descr: `${user}'s level is already equal to **lv. ${level}**. \nMessage Calculation is not possible.`});
               } else {
-                const totalXp = calculateXpByLevel((level - startLevel), xpSettings);
+                const totalXp = getXpFromLevel((level - startLevel), xpSettings);
                 const minMess = Math.ceil(totalXp / maxXp);
                 const maxMess = Math.ceil(totalXp / minXp);
                 description = `${user} can gain **lv. ${level}** by sending between **${minMess} - ${maxMess} messages** starting at **lv. ${startLevel}** with following **Conditions** and **Multipliers:**\n ${multiplierString}`
@@ -1381,7 +1381,7 @@ module.exports = {
           break;
           
         default: // lvsys settings
-          embed = showLevelSystemSettings(interaction, levSettings, globalMult, roleMults, categoryMults, channelMults,  levelRoles, blackListRoles, blackListCategories, blackListChannels, annMess)
+          embed = getLevelSystemSettings(interaction, levSettings, globalMult, roleMults, categoryMults, channelMults,  levelRoles, blackListRoles, blackListCategories, blackListChannels, annMess)
           interaction.editReply({ embeds: [embed] });
           break;
       }

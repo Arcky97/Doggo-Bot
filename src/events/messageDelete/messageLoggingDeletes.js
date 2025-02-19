@@ -1,10 +1,10 @@
 const { Client, Message, EmbedBuilder, GuildWidgetStyle } = require("discord.js");
-const getLogChannel = require("../../utils/logging/getLogChannel");
+const getLogChannel = require("../../managers/logging/getLogChannel");
 const truncateText = require("../../utils/truncateText");
-const ignoreLogging = require("../../utils/logging/ignoreLogging");
-const setEventTimeOut = require("../../handlers/setEventTimeOut");
-const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const ignoreLogging = require("../../managers/logging/ignoreLogging");
+const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
+const checkLogTypeConfig = require("../../managers/logging/checkLogTypeConfig");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = async (message) => {
   if (!message.inGuild() || !message.author || message.author.bot) return;
@@ -43,7 +43,7 @@ module.exports = async (message) => {
         text: `User ID: ${message.author.id}`
       });
 
-    await setEventTimeOut('message', 'delete', embed, logChannel);
+    await eventTimeoutHandler('message', 'delete', embed, logChannel);
 
   } catch (error) {
     console.error('There was an error sending the embed:', error);

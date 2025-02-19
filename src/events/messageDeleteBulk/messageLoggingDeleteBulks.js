@@ -1,7 +1,7 @@
 const { Client, Message, EmbedBuilder } = require("discord.js");
-const getLogChannel = require("../../utils/logging/getLogChannel");
-const ignoreLogging = require("../../utils/logging/ignoreLogging");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const getLogChannel = require("../../managers/logging/getLogChannel");
+const ignoreLogging = require("../../managers/logging/ignoreLogging");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = async (bulk) => {
   const guildId = bulk.guild.id;

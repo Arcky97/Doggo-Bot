@@ -1,8 +1,8 @@
 const { Client, GuildEmoji, EmbedBuilder } = require('discord.js');
-const getLogChannel = require("../../utils/logging/getLogChannel");
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const getLogChannel = require("../../managers/logging/getLogChannel");
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (emoji) => {
   const guildId = emoji.guild.id;
@@ -30,7 +30,7 @@ module.exports = async (emoji) => {
       })
       .setTimestamp()
     
-    await setEventTimeOut('server', emoji.id, embed, logChannel);
+    await eventTimeoutHandler('server', emoji.id, embed, logChannel);
     
   } catch (error) {
     console.error('Failed to log Emoji Create!', error);

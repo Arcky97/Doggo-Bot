@@ -1,8 +1,8 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { botStartTime } = require("../..");
-const { createSuccessEmbed, createUnfinishedEmbed, createErrorEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { createSuccessEmbed, createUnfinishedEmbed, createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
 const formatTime = require("../../utils/formatTime");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = {
   name: 'bot',

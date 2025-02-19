@@ -1,7 +1,7 @@
 //Premium Access
 const { Client, Entitlement, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (oldEntitlement, newEntitlement) => {
   try {

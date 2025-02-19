@@ -1,5 +1,5 @@
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
-const { createErrorEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { setBotStats } = require("../../managers/botStatsManager");
+const { createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'pat',

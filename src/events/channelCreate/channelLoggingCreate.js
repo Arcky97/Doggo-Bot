@@ -1,11 +1,11 @@
 const { Client, GuildChannel, EmbedBuilder } = require('discord.js');
 const getLogChannel = require("../../utils//logging/getLogChannel");
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const getChannelTypeName = require('../../utils/logging/getChannelTypeName');
-const formatOverwrite = require('../../utils/permissions/formatOverwrite');
-const comparePermissions = require('../../utils/permissions/comparePermissions');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const getChannelTypeName = require('../../managers/logging/getChannelTypeName');
+const formatOverwrite = require('../../middleware/permissions/formatOverwrite');
+const comparePermissions = require('../../middleware/permissions/comparePermissions');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (channel) => {
   const guildId = channel.guild.id;
@@ -81,7 +81,7 @@ module.exports = async (channel) => {
         }
       }
 
-    await setEventTimeOut('server', channel.id, embed, logChannel);
+    await eventTimeoutHandler('server', channel.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Channel Create!', error);

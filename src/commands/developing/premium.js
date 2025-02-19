@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { getPremiumById, setPremium, removePremium } = require("../../../database/PremiumUsersAndGuilds/setPremiumUsersAndGuilds");
-const { createInfoEmbed, createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const { getPremiumById, setPremium, removePremium } = require("../../managers/premiumManager");
+const { createInfoEmbed, createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../services/embeds/createReplyEmbed");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = {
   name: 'premium',

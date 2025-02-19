@@ -1,5 +1,5 @@
 const path = require('path');
-const getAllFiles = require("../utils/commands/getAllFiles");
+const getAllFiles = require("../handlers/commands/getAllFiles");
 
 module.exports = () => {
   const eventFolders = getAllFiles(path.join(__dirname, '..', 'events'), true);

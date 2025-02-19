@@ -1,6 +1,6 @@
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
-const { createInfoEmbed } = require("../../utils/embeds/createReplyEmbed");
-const setActivity = require("../../utils/setActivity")
+const { setBotStats } = require("../../managers/botStatsManager");
+const { createInfoEmbed } = require("../../services/embeds/createReplyEmbed");
+const setActivity = require("../../services/botActivityService")
 
 module.exports = {
   name: 'refresh',

@@ -1,12 +1,12 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { nextModerationLogId } = require("../../../../database/moderationLogs/setModerationLogs");
-const { createSuccessEmbed, createInfoEmbed } = require("../../../utils/embeds/createReplyEmbed");
+const { nextModerationLogId } = require("../../../managers/moderationLogsManager.js");
+const { createSuccessEmbed, createInfoEmbed } = require("../../../services/embeds/createReplyEmbed");
 const convertNumberInTime = require("../../../utils/convertNumberInTime");
 const calculateEndTime = require('../../../utils/calculateEndTime');
-const getLogChannel = require("../../../utils/logging/getLogChannel");
+const getLogChannel = require("../../../managers/logging/getLogChannel");
 const formatTime = require("../../../utils/formatTime");
-const { getMuteRole } = require("../../../../database/guildSettings/setGuildSettings");
-const { createTimeoutUUID } = require("../../../handlers/moderationTasks");
+const { getMuteRole } = require("../../../managers/guildSettingsManager.js");
+const { createTimeoutUUID } = require("../../../tasks/moderationTasks");
 const timeUntilTomorrow = require("../../../utils/timeUntilTomorrow");
 const modKick = require("./subCommands/modKick");
 const modUnban = require("./subCommands/modUnban");
@@ -16,7 +16,7 @@ const modWarn = require("./subCommands/modWarn");
 const modTimeout = require("./subCommands/modTimeout");
 const modBan = require("./subCommands/modBan");
 const pagination = require("../../../handlers/pagination");
-const { setBotStats } = require("../../../../database/BotStats/setBotStats");
+const { setBotStats } = require("../../../managers/botStatsManager");
 
 module.exports = {
   name: 'mod',

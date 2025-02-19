@@ -1,10 +1,10 @@
 const { Client, Guild, EmbedBuilder } = require('discord.js');
-const setActivity = require('../../utils/setActivity');
-const { setLevelSettings } = require('../../../database/levelSystem/setLevelSettings');
-const { resetDeletionDate } = require('../../handlers/dataBaseCleanUp');
-const sendMessageToDevServer = require('../../utils/sendMessageToDevServer');
+const botActivityService = require('../../services/botActivityService');
+const { setLevelSettings } = require('../../managers/levelSettingsManager');
+const { resetDeletionDate } = require('../../tasks/databaseCleanUp');
+const devServerService = require('../../services/devServerService');
 const formatTime = require('../../utils/formatTime');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (guild) => {
   try {
@@ -22,7 +22,7 @@ module.exports = async (guild) => {
       console.log(`No Data marked for deletion found for guild ${guild.id}`);
     }
 
-    await setActivity();
+    await botActivityService();
 
     const embed = new EmbedBuilder()
       .setColor('Green')
@@ -51,7 +51,7 @@ module.exports = async (guild) => {
     
     const channelId = '1314702619196784743';
 
-    await sendMessageToDevServer(channelId, { embeds: [embed] });
+    await devServerService(channelId, { embeds: [embed] });
   } catch (error) {
     console.error(`❌ Failed to join the guild: ${guild.name} (${guild.id}).`, error);
   }

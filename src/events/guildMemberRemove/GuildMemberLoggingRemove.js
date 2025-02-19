@@ -1,16 +1,16 @@
 const { EmbedBuilder } = require("discord.js");
-const setActivity = require("../../utils/setActivity");
+const botActivityService = require("../../services/botActivityService");
 const moment = require("moment");
-const getLogChannel = require("../../utils/logging/getLogChannel");
-const getMemberRoles = require("../../utils/logging/getMemberRoles");
+const getLogChannel = require("../../managers/logging/getLogChannel");
+const getMemberRoles = require("../../managers/logging/getMemberRoles");
 const formatTime = require("../../utils/formatTime");
-const { getLevelSettings } = require("../../../database/levelSystem/setLevelSettings");
-const { resetLevelSystem } = require("../../../database/levelSystem/setLevelSystem");
-const { getEventEmbed } = require("../../../database/embeds/setEmbedData");
-const { createEventEmbed } = require("../../utils/embeds/createEventOrGeneratedEmbed");
-const setEventTimeOut = require("../../handlers/setEventTimeOut");
-const checkLogTypeConfig = require("../../utils/logging/checkLogTypeConfig");
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
+const { getLevelSettings } = require("../../managers/levelSettingsManager");
+const { resetLevelSystem } = require("../../managers/levelSystemManager");
+const { getEventEmbed } = require("../../managers/embedDataManager");
+const { createEventEmbed } = require("../../services/embeds/createDynamicEmbed");
+const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
+const checkLogTypeConfig = require("../../managers/logging/checkLogTypeConfig");
+const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = async (member) => {
   const guildId = member.guild.id;
@@ -80,9 +80,9 @@ module.exports = async (member) => {
         text: `User ID: ${member.id}`
       });
 
-    await setEventTimeOut('joinleave', member.id, embed, logChannel);
+    await eventTimeoutHandler('joinleave', member.id, embed, logChannel);
 
-    await setActivity();
+    await botActivityService();
   } catch (error) {
     console.error('Failed to update Activity!', error)
   }

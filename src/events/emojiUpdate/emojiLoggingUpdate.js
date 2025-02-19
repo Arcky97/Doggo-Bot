@@ -1,8 +1,8 @@
 const { Client, GuildEmoji, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const getLogChannel = require('../../managers/logging/getLogChannel');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (oldEmoji, newEmoji) => {
   const guildId = oldEmoji.guild.id;
@@ -34,7 +34,7 @@ module.exports = async (oldEmoji, newEmoji) => {
       })
       .setTimestamp()
 
-    await setEventTimeOut('server', newEmoji.id, embed, logChannel);
+    await eventTimeoutHandler('server', newEmoji.id, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Emoji Update!', error);

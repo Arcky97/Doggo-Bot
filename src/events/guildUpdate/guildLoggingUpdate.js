@@ -1,11 +1,11 @@
 const { Client, Guild, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../utils/logging/getLogChannel');
-const checkLogTypeConfig = require('../../utils/logging/checkLogTypeConfig');
+const getLogChannel = require('../../managers/logginging/getLogChannel');
+const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
 const convertNumberInTime = require('../../utils/convertNumberInTime');
-const setEventTimeOut = require('../../handlers/setEventTimeOut');
-const getNsfwLevelName = require('../../utils/logging/getNsfwLevelName');
-const getPreferredLocaleName = require('../../utils/logging/getPreferredLocaleName');
-const { setBotStats } = require('../../../database/BotStats/setBotStats');
+const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
+const getNsfwLevelName = require('../../managers/logging/getNsfwLevelName');
+const getPreferredLocaleName = require('../../managers/logging/getPreferredLocaleName');
+const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (oldGuild, newGuild) => {
   const guildId = oldGuild.id
@@ -147,7 +147,7 @@ module.exports = async (oldGuild, newGuild) => {
     if (thumbnail) embed.setThumbnail(thumbnail);
     if (image) embed.setImage(image);
 
-    await setEventTimeOut('server', guildId, embed, logChannel);
+    await eventTimeoutHandler('server', guildId, embed, logChannel);
 
   } catch (error) {
     console.error('Failed to log Server Update!', error);

@@ -1,6 +1,6 @@
-const { setBotStats } = require("../../../database/BotStats/setBotStats");
-const exportToJson = require("../../handlers/exportToJson");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../utils/embeds/createReplyEmbed");
+const { setBotStats } = require("../../managers/botStatsManager");
+const exportToJson = require("../../services/database/exportDataToJson");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../services/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'fix',

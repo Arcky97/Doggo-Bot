@@ -1,12 +1,12 @@
-const { addModerationLogs } = require("../../../../../database/moderationLogs/setModerationLogs");
-const { updateUserAttempts } = require("../../../../../database/userStats/setUserStats");
+const { addModerationLogs } = require("../../../../managers/moderationLogsManager");
+const { updateUserAttempts } = require("../../../../managers/userStatsManager");
 const createMissingPermissionsEmbed = require("../../../../utils/createMissingPermissionsEmbed");
-const { createInfoEmbed, createErrorEmbed } = require("../../../../utils/embeds/createReplyEmbed");
+const { createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
 const getCmdReplyKey = require("../../../../utils/getCmdReplyKey");
 const getCommandReply = require("../../../../utils/getCommandReply");
 const getUserClass = require("../../../../utils/getUserClass");
-const checkLogTypeConfig = require("../../../../utils/logging/checkLogTypeConfig");
-const { createKickLogEmbed } = require("../../../../utils/sendModerationLogEvent");
+const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
+const { createKickLogEmbed } = require("../../../../services/moderationLogService");
 const commandReplies = require("../../../../../data/commandReplies.json");
 
 module.exports = async (interaction, guild, member, mod, reason, nextId, logChannel, beginTime) => {

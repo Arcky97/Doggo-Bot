@@ -1,0 +1,35 @@
+[
+  {
+    "id": "12409262301",
+    "triggers": [
+      "im suffering"
+    ],
+    "responses": [
+      "Don't be suffering!",
+      "Oh, what's wrong?"
+    ]
+  },
+  {
+    "id": "51968821288",
+    "triggers": [
+      "hello",
+      "hello!"
+    ],
+    "responses": [
+      "Hello!",
+      "Hey!",
+      "Hi!"
+    ]
+  },
+  {
+    "id": "65886778970",
+    "triggers": [
+      "who's a good doggo"
+    ],
+    "responses": [
+      "I am Woof!",
+      "Me! I am a good Doggo!",
+      "*sits*"
+    ]
+  }
+]

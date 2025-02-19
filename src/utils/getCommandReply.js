@@ -1,4 +1,4 @@
-const { getUserAttempts, resetUserAttempts } = require("../../database/userStats/setUserStats");
+const { getUserAttempts, resetUserAttempts } = require("../managers/userStatsManager");
 const firstLetterToUpperCase = require("./firstLetterToUpperCase");
 const getPresentParticle = require("./getPresentParticle");
 const getVowel = require("./getVowel");

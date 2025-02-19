@@ -1,9 +1,9 @@
-const { addModerationLogs } = require("../../../../../database/moderationLogs/setModerationLogs");
-const { createInfoEmbed, createErrorEmbed } = require("../../../../utils/embeds/createReplyEmbed");
-const { createMuteLogEmbed } = require("../../../../utils/sendModerationLogEvent");
-const { updateUserAttempts } = require("../../../../../database/userStats/setUserStats");
-const { addModerationTask } = require("../../../../handlers/moderationTasks");
-const checkLogTypeConfig = require("../../../../utils/logging/checkLogTypeConfig");
+const { addModerationLogs } = require("../../../../managers/moderationLogsManager");
+const { createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
+const { createMuteLogEmbed } = require("../../../../services/moderationLogService");
+const { updateUserAttempts } = require("../../../../managers/userStatsManager");
+const { addModerationTask } = require("../../../../tasks/moderationTasks");
+const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
 const getUserClass = require("../../../../utils/getUserClass");
 const getCmdReplyKey = require("../../../../utils/getCmdReplyKey");
 const getCommandReply = require("../../../../utils/getCommandReply");
