@@ -4,7 +4,7 @@ const moment = require("moment");
 
 module.exports = async (event) => {
   try {
-    const dirPath = path.resolve(__dirname, "../../database/");
+    const dirPath = path.resolve(__dirname, "../../../database");
     const filePath = path.join(dirPath, "databaseLogging.txt");
 
     const logEntry = `${moment().local().format('YYYY-MM-DD HH:mm:ss')}: ${event}\n`;
