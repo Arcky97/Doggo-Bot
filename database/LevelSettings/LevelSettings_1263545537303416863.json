@@ -27,7 +27,11 @@
       "channel": true
     },
     "blackListRoles": [],
-    "blackListChannels": [],
+    "blackListChannels": [
+      {
+        "channelId": "1311747771144998942"
+      }
+    ],
     "blackListCategories": [],
     "xpCooldown": 5,
     "xpSettings": {

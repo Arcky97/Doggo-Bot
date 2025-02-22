@@ -18,7 +18,6 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
   const endLevelXp = getXpFromLevel(userLevel.level + 1, xpSettings);
 
   let currentRank = guildUsers.findIndex(lvl => lvl.memberId === user.id) + 1;
-  
   Font.loadDefault();
   const rank = new RankCardBuilder()
     .setAvatar(targetAvatarURL)
@@ -37,24 +36,16 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
           style: {
             fontSize: "50px",
             fontWeight: "bold",
-            color: color
+            color: color,
+            marginTop: "-25px",
           }
         }
       },
       statistics: {
-        xp: {
-          value: {
-            style: {
-              fontSize: "40px",
-              fontWeight: "bold",
-              color: color 
-            }
-          },
-          text: {
-            style: {
-              fontSize: "30px",
-              color: "white",
-            }
+        container: {
+          style: {
+            bottom: "45px",
+            left: "-5px"
           }
         },
         level: {
@@ -72,7 +63,54 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
             }
           }
         },
+        xp: {
+          container: {
+            style: {
+              left: "60px"
+            }
+          },
+          value: {
+            style: {
+              fontSize: "40px",
+              fontWeight: "bold",
+              color: color 
+            }
+          },
+          text: {
+            style: {
+              fontSize: "30px",
+              color: "white",
+            }
+          }
+        },
         rank: {
+          container: {
+            style: {
+              top: "60px",
+              right: "405px"
+            }
+          },
+          value: {
+            style: {
+              fontSize: "40px",
+              fontWeight: "bold",
+              color: color 
+            }
+          },
+          text: {
+            style: {
+              fontSize: "30px",
+              color: "white",
+            }
+          }
+        },
+        global: {
+          container: {
+            style: {
+              top: "60px",
+              right: "345px"
+            }
+          },
           value: {
             style: {
               fontSize: "40px",
@@ -89,6 +127,12 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
         }
       },
       progressbar: {
+        container: {
+          style: {
+            top: "140px",
+            right: "240px"
+          }
+        },
         thumb: {
           style: {
             backgroundColor: color
@@ -98,7 +142,7 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
       avatar: {
         image: {
           style: {
-            border: `6px solid ${color}`,
+            border: `6px solid ${color}`
           }
         }
       }
@@ -106,7 +150,8 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
     .setTextStyles({
       level: 'Level:',
       xp: 'Exp:',
-      rank: 'Rank:' 
+      rank: 'Rank:',
+      global: 'Global:'
     });
     await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'level' });
   try {

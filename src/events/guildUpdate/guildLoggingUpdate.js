@@ -1,5 +1,5 @@
 const { Client, Guild, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logginging/getLogChannel');
+const getLogChannel = require('../../managers/logging/getLogChannel');
 const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
 const convertNumberInTime = require('../../utils/convertNumberInTime');
 const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');

@@ -49,7 +49,7 @@ module.exports = async (table, guildId, returnFile = false) => {
     }
 
     // Define the directory path for the table.
-    const directoryPath = path.join(__dirname, `../../database/${table}`);
+    const directoryPath = path.join(__dirname, `../../../database/${table}`);
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: true });
     }

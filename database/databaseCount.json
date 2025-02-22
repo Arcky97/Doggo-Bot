@@ -2,13 +2,13 @@
   "LevelSystem": {
     "selects": 0,
     "inserts": 16,
-    "updates": 329,
+    "updates": 364,
     "deletes": 11
   },
   "LevelSettings": {
     "selects": 0,
     "inserts": 2,
-    "updates": 56,
+    "updates": 57,
     "deletes": 3
   },
   "GuildSettings": {
@@ -74,7 +74,7 @@
   "BotStats": {
     "selects": 6,
     "inserts": 13,
-    "updates": 352,
+    "updates": 775,
     "deletes": 0
   }
 }
