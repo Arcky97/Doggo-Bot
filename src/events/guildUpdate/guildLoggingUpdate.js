@@ -57,7 +57,7 @@ module.exports = async (oldGuild, newGuild) => {
       image = newBanner;
     }
 
-    if (oldAfkChannel.id !== newAfkChannel.id) {
+    if (oldAfkChannel?.id !== newAfkChannel?.id) {
       title = !title ? 'Server AFK Channel Updated' : 'Server Updated';
       fields.push({ name: 'AFK Channel Before:', value: `${oldAfkChannel}`});
       fields.push({ name: 'AFK Channel after:', value: `${newAfkChannel}`});
