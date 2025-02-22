@@ -46,7 +46,6 @@ module.exports = {
   callback: async (interaction) => {
     const subCmnd = interaction.options.getSubcommand();
     const user = interaction.options.getUser('user') || interaction.user;
-    console.log(user);
     let embed; 
     
     await interaction.deferReply();

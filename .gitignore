@@ -3,5 +3,5 @@ node_modules
 .DS_Store
 database
 run_bot.sh
-databaseCount.json
-databaseLogging.txt
+database/databaseCount.json
+database/databaseLogging.txt

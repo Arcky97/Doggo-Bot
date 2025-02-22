@@ -41,6 +41,7 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
             fontWeight: "bold",
             color: color,
             marginTop: "-25px",
+            left: "40px"
           }
         }
       },
@@ -48,7 +49,7 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
         container: {
           style: {
             bottom: "45px",
-            left: "-5px"
+            left: "40px",
           }
         },
         level: {
@@ -56,33 +57,37 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
             style: {
               fontSize: "40px",
               fontWeight: "bold",
-              color: color 
-            }
-          },
-          text: {
-            style: {
-              fontSize: "30px",
-              color: "white"
-            }
-          }
-        },
-        xp: {
-          container: {
-            style: {
-              left: "60px"
-            }
-          },
-          value: {
-            style: {
-              fontSize: "40px",
-              fontWeight: "bold",
-              color: color 
+              color: color,
+              textAlign: "left"
             }
           },
           text: {
             style: {
               fontSize: "30px",
               color: "white",
+              textAlign: "left"
+            }
+          }
+        },
+        xp: {
+          container: {
+            style: {
+              left: "110px"
+            }
+          },
+          value: {
+            style: {
+              fontSize: "40px",
+              fontWeight: "bold",
+              color: color,
+              textAlign: "left"
+            }
+          },
+          text: {
+            style: {
+              fontSize: "30px",
+              color: "white",
+              textAlign: "left"
             }
           }
         },
@@ -90,20 +95,22 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
           container: {
             style: {
               top: "60px",
-              right: "405px"
+              right: "340px"
             }
           },
           value: {
             style: {
               fontSize: "40px",
               fontWeight: "bold",
-              color: color 
+              color: color,
+              textAlign: "left"
             }
           },
           text: {
             style: {
               fontSize: "30px",
               color: "white",
+              textAlign: "left"
             }
           }
         },
@@ -111,20 +118,22 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
           container: {
             style: {
               top: "60px",
-              right: "345px"
+              right: "245px"
             }
           },
           value: {
             style: {
               fontSize: "40px",
               fontWeight: "bold",
-              color: color 
+              color: color,
+              textAlign: "left"
             }
           },
           text: {
             style: {
               fontSize: "30px",
-              color: "white" 
+              color: "white",
+              textAlign: "left"
             }
           }
         }
