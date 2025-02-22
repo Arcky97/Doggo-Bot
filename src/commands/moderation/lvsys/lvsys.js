@@ -9,7 +9,7 @@ const getAnnouncementSettings = require("../../../managers/levels/getAnnouncemen
 const parseEmbedPlaceholders = require("../../../services/embeds/parseEmbedPlaceholders");
 const getBlacklistSettings = require("../../../managers/levels/getBlacklistSettings");
 const getVoiceSettings = require("../../../managers/levels/getVoiceSettings");
-const { resetLevelSystem, getAllUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../managers/levelSystemManager");
+const { resetLevelSystem, getAllGuildUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../managers/levelSystemManager");
 const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../../services/embeds/createReplyEmbed");
 const getChannelTypeName = require("../../../managers/logging/getChannelTypeName");
 const firstLetterToUpperCase = require("../../../utils/firstLetterToUpperCase");
@@ -1082,7 +1082,7 @@ module.exports = {
                   }
                 }
               } else {
-                levelData = await getAllUsersLevel(guildId);
+                levelData = await getAllGuildUsersLevel(guildId);
                 if (levelData.length > 0) {
                   embed = createSuccessEmbed({int: interaction, title: 'All levels resetted!', descr: 'All levels have been resetted!'});
                   await resetLevelSystem(guildId, member);
@@ -1159,7 +1159,7 @@ module.exports = {
                   const reaction = collected.first();
 
                   if (reaction.emoji.name === '✅') {
-                    let levelData = await getAllUsersLevel(guildId);
+                    let levelData = await getAllGuildUsersLevel(guildId);
                     setting = { 'xpSettings' : JSON.stringify(value) };
                     embed = createSuccessEmbed({
                       int: interaction,

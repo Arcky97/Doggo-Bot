@@ -2,17 +2,19 @@
   {
     "guildId": "1263545537303416863",
     "totalCount": {
-      "current": 451,
-      "total": 451
+      "current": 495,
+      "total": 495
     },
     "eventCount": {
       "current": {
-        "messageCreate": 31,
-        "messageUpdate": 1
+        "messageCreate": 32,
+        "messageUpdate": 1,
+        "guildUpdate": 4
       },
       "total": {
-        "messageCreate": 31,
-        "messageUpdate": 1
+        "messageCreate": 32,
+        "messageUpdate": 1,
+        "guildUpdate": 4
       }
     },
     "commandCount": {
@@ -23,11 +25,13 @@
         },
         "misc": {
           "bark": 2,
-          "level": 367,
+          "level": 401,
           "userage": 3
         },
         "moderation": {
-          "lvsys": 19
+          "lvsys": 19,
+          "setup": 4,
+          "setting": 1
         }
       },
       "total": {
@@ -37,11 +41,13 @@
         },
         "misc": {
           "bark": 2,
-          "level": 367,
+          "level": 401,
           "userage": 3
         },
         "moderation": {
-          "lvsys": 19
+          "lvsys": 19,
+          "setup": 4,
+          "setting": 1
         }
       }
     },

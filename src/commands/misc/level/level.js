@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { getUserLevel, getAllUsersLevel } = require("../../../managers/levelSystemManager")
+const { getUserLevel, getAllGuildUsersLevel, getAllGlobalUsersLevel } = require("../../../managers/levelSystemManager")
 const { getXpSettings } = require("../../../managers/levelSettingsManager");
 const levelColor = require("./subCommands/levelColor");
 const levelLeaderboard = require("./subCommands/levelLeaderboard");
@@ -45,15 +45,16 @@ module.exports = {
   ],
   callback: async (interaction) => {
     const subCmnd = interaction.options.getSubcommand();
-    const user = interaction.options.getMember('user') || interaction.user;
-
+    const user = interaction.options.getUser('user') || interaction.user;
+    console.log(user);
     let embed; 
     
     await interaction.deferReply();
 
     try {
       const userLevel = await getUserLevel(interaction.guild.id, user.id);
-      const guildUsers = await getAllUsersLevel(interaction.guild.id);
+      const guildUsers = await getAllGuildUsersLevel(interaction.guild.id);
+      const globalUsers = await getAllGlobalUsersLevel();
       const xpSettings = await getXpSettings(interaction.guild.id);
 
       const permEmbed = await createMissingPermissionsEmbed(interaction, user, ['AttachFiles']);
@@ -68,7 +69,7 @@ module.exports = {
       });
       switch (subCmnd) {
         case 'show':
-          embed = await levelShow(interaction, userLevel, xpSettings, user, guildUsers);
+          embed = await levelShow(interaction, userLevel, xpSettings, user, guildUsers, globalUsers);
           break;
         case 'color':
           embed = await levelColor(interaction, userLevel);

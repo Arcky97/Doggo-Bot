@@ -69,8 +69,8 @@ module.exports = async (oldGuild, newGuild) => {
       fields.push({ name: 'AFK Timeout After:', value: newAfkTimeout});
     }
     
-    const oldOwnerId = oldGuild.fetchOwner();
-    const newOwnerId = newGuild.fetchOwner();
+    const oldOwnerId = await oldGuild.fetchOwner();
+    const newOwnerId = await newGuild.fetchOwner();
 
     if (oldOwnerId !== newOwnerId) {
       title = 'Server Owner Changed';

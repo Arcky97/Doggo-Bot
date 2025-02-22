@@ -3,16 +3,17 @@ const { getGuildSettings } = require('../../managers/guildSettingsManager.js');
 const { createErrorEmbed } = require("../../services/embeds/createReplyEmbed.js");
 const createListFromArray = require("../../utils/createListFromArray.js");
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed.js");
-const { setBotReplies } = require("../../managers/botRepliesManager.js");
+const { setBotStats } = require("../../managers/botStatsManager.js");
 
 module.exports = {
   name: 'settings',
   description: 'Shows the settings of the bot.',
   callback: async (interaction) => {
+    const guildId = interaction.guild.id;
     try {
-      const settings = await getGuildSettings(interaction.guild.id);
+      const settings = await getGuildSettings(guildId);
       const ignoreLogging = JSON.parse(settings.ignoreLogging);
-      const joinRoles = JSON.parse(settings.joinRoles);
+      const joinRoles = JSON.parse(settings.joinRole);
 
       await interaction.deferReply();
 
@@ -90,9 +91,9 @@ module.exports = {
           .setTimestamp()
         }
         interaction.editReply({ embeds: [embed] })
-        await setBotReplies(guildId, 'command', { category: 'moderation', command: 'setting' });
+        await setBotStats(guildId, 'command', { category: 'moderation', command: 'setting' });
     } catch (error) {
-      console.error(`Error getting Settings for guild ${interaction.guild.id}:`, error);
+      console.error(`Error getting Settings for guild ${guildId}:`, error);
       embed = createErrorEmbed({ int: interaction, descr: 'Oh no, I couldn\'t retrieve the Settings for your Server. \nPlease try again later.'});
       interaction.editReply({ embeds: [embed]})
     }

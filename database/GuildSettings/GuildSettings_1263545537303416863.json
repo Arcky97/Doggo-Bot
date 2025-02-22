@@ -32,7 +32,7 @@
         "removes": true
       }
     },
-    "serverLogging": null,
+    "serverLogging": "1311748211936858142",
     "serverConfig": {
       "channels": {
         "creates": true,

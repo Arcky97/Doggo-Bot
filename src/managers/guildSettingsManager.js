@@ -52,7 +52,7 @@ async function setGuildLoggingConfig(guildId, type, data) {
 
 async function getGuildSettings(guildId) {
   try {
-    let data = await selectData('GuildSettings', { guildId: guildId })
+    let data = await selectData('GuildSettings', { guildId: guildId });
     if (!data) {
       await insertData('GuildSettings', { guildId: guildId });
       data = await selectData('GuildSettings', { guildId: guildId });
@@ -132,6 +132,7 @@ async function setGuildSettings(guildId, settingName, value) {
     let title, descr;
     settingName = firstLetterToUpperCase(settingName);
     try {
+      const logOrChan = settingName === 'Ignore' ? 'Channel' : 'Log Channel';
       if (dataExist[column] && settingName !== 'Ignore' && settingName !== 'Join-role') {
         if (dataExist[column] === data[column]) {
           await deleteData('GuildSettings', key, data);

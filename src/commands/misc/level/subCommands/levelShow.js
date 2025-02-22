@@ -4,7 +4,7 @@ const { Font, RankCardBuilder } = require("canvacord");
 const { createErrorEmbed, createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
 const { setBotStats } = require("../../../../managers/botStatsManager");
 
-module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) => {
+module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, globalUsers) => {
   const member = interaction.guild.members.cache.get(user.id);
   let embed;
 
@@ -18,10 +18,13 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
   const endLevelXp = getXpFromLevel(userLevel.level + 1, xpSettings);
 
   let currentRank = guildUsers.findIndex(lvl => lvl.memberId === user.id) + 1;
+  let globalRank = globalUsers.findIndex(lvl => lvl.userId === user.id) + 1;
+
   Font.loadDefault();
   const rank = new RankCardBuilder()
     .setAvatar(targetAvatarURL)
     .setRank(currentRank)
+    .setGlobalRank(globalRank)
     .setLevel(userLevel.level)
     .setCurrentXP(userLevel.xp)
     .setRequiredXP(endLevelXp)

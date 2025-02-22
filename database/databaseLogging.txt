@@ -7713,3 +7713,157 @@
 2025-02-21 23:02:24: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
 2025-02-21 23:02:25: Data Updated in BotStats table.
 2025-02-21 23:02:25: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:32:40: Data Updated in BotStats table.
+2025-02-22 18:32:40: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:33:20: Data Updated in BotStats table.
+2025-02-22 18:33:20: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:33:48: Data Updated in GuildSettings table.
+2025-02-22 18:33:48: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\GuildSettings\GuildSettings_1263545537303416863.json
+2025-02-22 18:33:58: Data Updated in BotStats table.
+2025-02-22 18:33:58: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:36:03: Data Updated in GuildSettings table.
+2025-02-22 18:36:03: Data Updated in BotStats table.
+2025-02-22 18:36:03: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:38:07: Data Deleted from GuildSettings table.
+2025-02-22 18:38:07: Data Updated in BotStats table.
+2025-02-22 18:38:07: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:40:21: Data Updated in GuildSettings table.
+2025-02-22 18:40:21: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\GuildSettings\GuildSettings_1263545537303416863.json
+2025-02-22 18:40:21: Data Updated in BotStats table.
+2025-02-22 18:40:21: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:45:05: Error Selecting data from BotReplies table.
+2025-02-22 18:45:05: Data exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotReplies\BotReplies.json.
+2025-02-22 18:45:22: Data Updated in BotStats table.
+2025-02-22 18:45:22: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:46:16: Data Updated in BotStats table.
+2025-02-22 18:46:16: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:46:35: Data Updated in BotStats table.
+2025-02-22 18:46:35: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:46:50: Error Selecting data from BotReplies table.
+2025-02-22 18:46:50: Data exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotReplies\BotReplies.json.
+2025-02-22 18:48:45: Data Updated in BotStats table.
+2025-02-22 18:48:45: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:49:56: Data Updated in BotStats table.
+2025-02-22 18:49:56: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 18:49:57: Data Updated in BotStats table.
+2025-02-22 18:49:57: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:03:48: Data Inserted in BotStats table.
+2025-02-22 19:03:48: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:03:48: Data Updated in BotStats table.
+2025-02-22 19:03:48: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:03:48: Data Inserted in LevelSettings table.
+2025-02-22 19:03:48: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\LevelSettings\LevelSettings_1300066465709424650.json
+2025-02-22 19:03:48: Data Inserted in LevelSystem table.
+2025-02-22 19:03:48: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\LevelSystem\LevelSystem_1300066465709424650.json
+2025-02-22 19:03:48: Data Updated in BotStats table.
+2025-02-22 19:03:48: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:03:54: Data Updated in BotStats table.
+2025-02-22 19:03:54: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:03:55: Data Updated in BotStats table.
+2025-02-22 19:03:55: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:12:07: Data Updated in BotStats table.
+2025-02-22 19:12:07: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:12:07: Data Updated in BotStats table.
+2025-02-22 19:12:07: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:13:38: Data Updated in BotStats table.
+2025-02-22 19:13:38: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:13:39: Data Updated in BotStats table.
+2025-02-22 19:13:39: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:14:42: Data Updated in BotStats table.
+2025-02-22 19:14:42: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:14:43: Data Updated in BotStats table.
+2025-02-22 19:14:43: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:15:05: Data Updated in BotStats table.
+2025-02-22 19:15:05: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:15:06: Data Updated in BotStats table.
+2025-02-22 19:15:06: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:15:31: Data Updated in BotStats table.
+2025-02-22 19:15:31: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:15:31: Data Updated in BotStats table.
+2025-02-22 19:15:31: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:17:00: Data Updated in BotStats table.
+2025-02-22 19:17:00: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:17:01: Data Updated in BotStats table.
+2025-02-22 19:17:01: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:18:26: Data Updated in BotStats table.
+2025-02-22 19:18:26: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:18:26: Data Updated in BotStats table.
+2025-02-22 19:18:26: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:20:38: Data Updated in BotStats table.
+2025-02-22 19:20:38: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:20:39: Data Updated in BotStats table.
+2025-02-22 19:20:39: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:21:05: Data Updated in BotStats table.
+2025-02-22 19:21:05: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:21:05: Data Updated in BotStats table.
+2025-02-22 19:21:05: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:22:07: Data Updated in BotStats table.
+2025-02-22 19:22:07: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:22:07: Data Updated in LevelSystem table.
+2025-02-22 19:22:07: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\LevelSystem\LevelSystem_1300066465709424650.json
+2025-02-22 19:22:07: Data Updated in BotStats table.
+2025-02-22 19:22:07: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:24:16: Data Updated in BotStats table.
+2025-02-22 19:24:16: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:24:17: Data Updated in BotStats table.
+2025-02-22 19:24:17: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:24:46: Data Updated in BotStats table.
+2025-02-22 19:24:46: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:24:47: Data Updated in BotStats table.
+2025-02-22 19:24:47: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:24:57: Data Updated in BotStats table.
+2025-02-22 19:24:57: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:24:58: Data Updated in BotStats table.
+2025-02-22 19:24:58: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:25:15: Data Updated in BotStats table.
+2025-02-22 19:25:15: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:25:15: Data Updated in BotStats table.
+2025-02-22 19:25:15: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:25:28: Data Updated in BotStats table.
+2025-02-22 19:25:28: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:25:28: Data Inserted in LevelSystem table.
+2025-02-22 19:25:28: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\LevelSystem\LevelSystem_1300066465709424650.json
+2025-02-22 19:25:28: Data Updated in BotStats table.
+2025-02-22 19:25:28: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:25:42: Data Updated in BotStats table.
+2025-02-22 19:25:42: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:25:53: Data Updated in BotStats table.
+2025-02-22 19:25:53: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:26:00: Data Updated in BotStats table.
+2025-02-22 19:26:00: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:26:00: Data Updated in LevelSystem table.
+2025-02-22 19:26:00: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\LevelSystem\LevelSystem_1300066465709424650.json
+2025-02-22 19:26:00: Data Updated in BotStats table.
+2025-02-22 19:26:00: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:26:07: Data Updated in BotStats table.
+2025-02-22 19:26:07: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:26:07: Data Updated in BotStats table.
+2025-02-22 19:26:07: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:27:02: Data Updated in BotStats table.
+2025-02-22 19:27:02: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:27:02: Data Updated in BotStats table.
+2025-02-22 19:27:02: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:27:57: Data Updated in BotStats table.
+2025-02-22 19:27:57: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:27:58: Data Updated in BotStats table.
+2025-02-22 19:27:58: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:29:09: Data Updated in BotStats table.
+2025-02-22 19:29:09: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:29:10: Data Updated in BotStats table.
+2025-02-22 19:29:10: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:29:20: Data Updated in BotStats table.
+2025-02-22 19:29:20: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:29:20: Data Updated in BotStats table.
+2025-02-22 19:29:20: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:29:44: Data Updated in BotStats table.
+2025-02-22 19:29:44: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:29:44: Data Updated in BotStats table.
+2025-02-22 19:29:44: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:30:02: Data Updated in BotStats table.
+2025-02-22 19:30:02: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:30:02: Data Updated in BotStats table.
+2025-02-22 19:30:02: Data for guild 1263545537303416863 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1263545537303416863.json
+2025-02-22 19:30:16: Data Updated in BotStats table.
+2025-02-22 19:30:16: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json
+2025-02-22 19:30:16: Data Updated in BotStats table.
+2025-02-22 19:30:16: Data for guild 1300066465709424650 exported to C:\Users\arcky\Dropbox\Doggo Bot (Discord.js)\database\BotStats\BotStats_1300066465709424650.json

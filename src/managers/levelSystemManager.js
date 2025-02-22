@@ -4,11 +4,33 @@ const { updateData } = require("../services/database/updateData");
 const { deleteData } = require("../services/database/deleteData");
 const exportToJson = require("../services/database/exportDataToJson");
 
-async function getAllUsersLevel(guildId) {
+async function getAllGuildUsersLevel(guildId) {
   try {
     return await selectData('LevelSystem', {guildId: guildId }, true);
   } catch (error) {
     console.error('Error fetching users from LevelSystem:', error);
+    return [];
+  }
+}
+
+async function getAllGlobalUsersLevel() {
+  try {
+    let data = await Promise.all(client.guilds.cache.map(async guild => {
+      return await getAllGuildUsersLevel(guild.id);
+    }));
+
+    const merged = data.flat().reduce((acc, { memberId, xp}) => {
+      if (!acc[memberId]) {
+        acc[memberId] = { userId: memberId, xp: 0 };
+      }
+      acc[memberId].xp += xp;
+      return acc;
+    }, {});
+    const result = Object.values(merged).sort((a, b) => b.xp - a.xp);
+
+    return result;
+  } catch (error) {
+    console.error('Error fetching all users from LevelSystem:', error);
     return [];
   }
 }
@@ -46,7 +68,8 @@ async function resetLevelSystem(id, member) {
 }
 
 module.exports = { 
-  getAllUsersLevel, 
+  getAllGuildUsersLevel, 
+  getAllGlobalUsersLevel,
   getUserLevel, 
   addUserColor, 
   setUserLevelInfo, 
