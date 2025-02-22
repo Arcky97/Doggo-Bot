@@ -1,7 +1,5 @@
 node_modules
 .env
 .DS_Store
-database
+database/*
 run_bot.sh
-database/databaseCount.json
-database/databaseLogging.txt
