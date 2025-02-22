@@ -22,7 +22,6 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers) =>
   const rank = new RankCardBuilder()
     .setAvatar(targetAvatarURL)
     .setRank(currentRank)
-    .setGlobalRank(currentRank + 1000)
     .setLevel(userLevel.level)
     .setCurrentXP(userLevel.xp)
     .setRequiredXP(endLevelXp)
