@@ -5,7 +5,6 @@ const dirPath = path.resolve(__dirname, "../../database/");
 const filePath = path.join(dirPath, "databaseCount.json");
 
 function addToDatabaseCount (table, action) {
-  if (client.user.id !== '1265675649759182868') return;
   try {
 
     let databaseCount = {};
