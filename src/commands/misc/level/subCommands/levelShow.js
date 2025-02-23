@@ -34,80 +34,102 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
       return ((currentXP - startLevelXp) / (endLevelXp - startLevelXp)) * 100;
     })
     .setStyles({
+      container: {
+        style: {
+          top: "140px",
+        }
+      },
       username: {
         handle: {
           style: {
             fontSize: "50px",
             fontWeight: "bold",
             color: color,
-            marginTop: "-25px",
             left: "40px"
           }
         }
       },
       statistics: {
-        container: {
-          style: {
-            top: "30px",
-            right: "225px"
-          }
-        },
         level: {
+          container: {
+            style: {
+              bottom: "70px", 
+              left: "40px"
+            }
+          },
           value: {
             style: {
-              fontSize: "40px",
+              fontSize: "35px",
               fontWeight: "bold",
               color: color,
             }
           },
           text: {
             style: {
-              fontSize: "30px",
+              fontSize: "25px",
               color: "white",
             }
           }
         },
         xp: {
+          container: {
+            style: {
+              bottom: "165px",
+              left: "280px"
+            }
+          },
           value: {
             style: {
-              fontSize: "40px",
+              fontSize: "35px",
               fontWeight: "bold",
               color: color
             }
           },
           text: {
             style: {
-              fontSize: "30px",
+              fontSize: "25px",
               color: "white"
             }
           }
         },
         rank: {
+          container: {
+            style: {
+              bottom: "206px",
+              left: "40px"
+            }
+          },
           value: {
             style: {
-              fontSize: "40px",
+              fontSize: "35px",
               fontWeight: "bold",
               color: color,
             }
           },
           text: {
             style: {
-              fontSize: "30px",
+              fontSize: "25px",
               color: "white",
             }
           }
         },
         global: {
+          container: {
+            style: {
+              bottom: "297px",
+              left: "280px"
+            }
+          },
           value: {
             style: {
-              fontSize: "40px",
+              fontSize: "35px",
               fontWeight: "bold",
               color: color,
             }
           },
           text: {
             style: {
-              fontSize: "30px",
+              fontSize: "25px",
               color: "white",
             }
           }
@@ -116,7 +138,7 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
       progressbar: {
         container: {
           style: {
-            top: "140px",
+            top: "138px",
             right: "240px"
           }
         },
@@ -130,12 +152,12 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
         image: {
           style: {
             border: `6px solid ${color}`,
-            bottom: "35px"
+            bottom: "13px"
           }
         },
         status: {
           style: {
-            bottom: "35px"
+            bottom: "13px"
           }
         }
       }
