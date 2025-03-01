@@ -11,6 +11,7 @@ const getCmdReplyKey = require("../../../../utils/getCmdReplyKey");
 const { updateUserAttempts } = require("../../../../managers/userStatsManager");
 const getCommandReply = require("../../../../utils/getCommandReply");
 const commandReplies = require("../../../../../data/commandReplies.json");
+
 module.exports = async (interaction, guild, user, mod, reason, nextId, formatDuration, logChannel, beginTime, endTime, durationMs, timeoutUUID, durationToTomorrow, subCmd) => {
   const embeds = [];
   let title, description;

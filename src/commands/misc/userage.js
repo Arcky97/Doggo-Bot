@@ -17,7 +17,6 @@ module.exports = {
   callback: async (interaction) => {
     const member = interaction.options.getUser('user');
     
-
     let embed;
 
     await interaction.deferReply();

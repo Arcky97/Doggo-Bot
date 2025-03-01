@@ -4,6 +4,7 @@ module.exports = {
   name: 'test',
   description: 'Let\'s you test code that you are not sure it\'ll work.',
   devOnly: true,
+  deleted: true,
   callback: async (interaction) => {
     const guildId = interaction.guild.id;
     const now = new Date();

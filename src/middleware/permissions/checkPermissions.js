@@ -30,7 +30,8 @@ const permissionDependencies = {
 };
 
 async function checkPermissions (channel, perms, member) {
-  if (!member) return { hasAll: true, array: [] };
+
+  if (!member || member.guild.ownerId === member.id) return { hasAll: true, array: [] };
   // get the permissions for the user in the channel
   const memberChannelPermissions = channel.permissionsFor(member);
 

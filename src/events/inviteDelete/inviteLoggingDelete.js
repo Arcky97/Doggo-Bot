@@ -20,7 +20,7 @@ module.exports = async (invite) => {
       .setTitle('Invite Removed')
       .setFields(
         {
-          name: 'url',
+          name: 'URL',
           value: invite.code
         },
         {

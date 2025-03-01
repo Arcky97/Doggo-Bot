@@ -25,7 +25,7 @@ module.exports = async (invite) => {
           value: `${invite.inviter}`
         },
         {
-          name: 'url',
+          name: 'URL',
           value: invite.url
         },
         {

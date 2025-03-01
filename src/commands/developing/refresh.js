@@ -5,6 +5,7 @@ const setActivity = require("../../services/botActivityService")
 module.exports = {
   name: 'refresh',
   description: 'Refreshes the bot',
+  devOnly: true,
   callback: async (interaction) => {
     const guildId = interaction.guild.id;
     try {
