@@ -4,7 +4,8 @@ const ignoreLogging = require("../../managers/logging/ignoreLogging");
 const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = async (bulk) => {
-  const guildId = bulk.guild.id;
+  return;
+  const guildId = bulk[0].guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'messageDeleteBulk' });
 
