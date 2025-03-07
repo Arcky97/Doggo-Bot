@@ -40,7 +40,7 @@ async function initDatabase() {
           reportLogging VARCHAR(100) DEFAULT NULL,
           ignoreLogging JSON DEFAULT '[]',
           muteRole VARCHAR(100) DEFAULT NULL,
-          joinRole JSON DEFAULT '[]',
+          joinRoles JSON DEFAULT '[]',
           deletionDate TIMESTAMP NULL
         );
       `,

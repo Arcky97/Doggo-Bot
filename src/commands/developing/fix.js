@@ -5,7 +5,6 @@ const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("..
 module.exports = {
   name: 'fix',
   description: 'fix some stuff in the database.',
-  deleted: true,
   devOnly: true,
   callback: async (interaction) => {
     const guildId = interaction.guild.id;
