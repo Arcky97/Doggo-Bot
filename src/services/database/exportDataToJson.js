@@ -5,7 +5,7 @@ const databaseLogging = require("../logging/databaseLogging.js");
 
 module.exports = async (table, guildId, returnFile = false) => {
   // Skip exporting data for the Main Bot.
-  if (client.user.id === '1265675649759182868') return;
+  //if (client.user.id === '1265675649759182868') return;
   
   const exportEntireTable = (table === 'BotReplies' || table === 'PremiumUsersAndGuilds' || returnFile);
   try {
