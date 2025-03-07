@@ -13,7 +13,7 @@ module.exports = {
     try {
       const settings = await getGuildSettings(guildId);
       const ignoreLogging = JSON.parse(settings.ignoreLogging);
-      const joinRoles = JSON.parse(settings.joinRole);
+      const joinRoles = JSON.parse(settings.joinRoles);
 
       await interaction.deferReply();
 
