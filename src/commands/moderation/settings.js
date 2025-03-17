@@ -10,6 +10,7 @@ module.exports = {
   description: 'Shows the settings of the bot.',
   callback: async (interaction) => {
     const guildId = interaction.guild.id;
+    let embed;
     try {
       const settings = await getGuildSettings(guildId);
       const ignoreLogging = JSON.parse(settings.ignoreLogging);
@@ -20,7 +21,6 @@ module.exports = {
       const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
       if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
       
-      let embed;
       if (settings) {
         embed = new EmbedBuilder()
           .setColor('Aqua')
@@ -90,12 +90,11 @@ module.exports = {
           .setDescription('No Settings available')
           .setTimestamp()
         }
-        interaction.editReply({ embeds: [embed] })
         await setBotStats(guildId, 'command', { category: 'moderation', command: 'setting' });
     } catch (error) {
       console.error(`Error getting Settings for guild ${guildId}:`, error);
       embed = createErrorEmbed({ int: interaction, descr: 'Oh no, I couldn\'t retrieve the Settings for your Server. \nPlease try again later.'});
-      interaction.editReply({ embeds: [embed]})
     }
+    interaction.editReply({ embeds: [embed]});
   }
 }

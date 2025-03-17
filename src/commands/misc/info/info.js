@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
 const infoBot = require("./subCommands/infoBot");
+const { createErrorEmbed } = require("../../../services/embeds/createReplyEmbed");
 
 module.exports = {
   name: "info",
@@ -39,7 +40,7 @@ module.exports = {
       }
     } catch (error) {
       console.error('Error with the Info command:', error);
-      return;
+      embed = createErrorEmbed({int: interaction, descr: `Something went wrong with the \`/info ${subCmdGroup} ${subCmd}\` command. Please try again later.`});
     }
     await interaction.editReply({ embeds: [embed] });
   } 

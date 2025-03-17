@@ -6,7 +6,7 @@ module.exports = async (time, full = false) => {
   const years = Math.abs(duration.years());
   const months = Math.abs(duration.months());
   const weeks = Math.abs(duration.weeks());
-  const days = Math.abs(duration.days());
+  const days = Math.abs(duration.days() - (weeks * 7));
   const hours = Math.abs(duration.hours());
   const minutes = Math.abs(duration.minutes());
   const seconds = Math.abs(duration.seconds());

@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("@discordjs/builders");
 const { botStartTime } = require("../../../..");
-const { createSuccessEmbed } = require("../../../../services/embeds/createReplyEmbed");
+const { createSuccessEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
 const formatTime = require("../../../../utils/formatTime")
 
 module.exports = async (interaction, subCmd) => {
@@ -14,7 +14,6 @@ module.exports = async (interaction, subCmd) => {
           title: 'Doggo Bot Up Time', 
           descr: `Doggo Bot has been online for ${upTime}.`
         });
-        console.log(embed)
         break;
       case "show":
         const botMember = interaction.guild.members.cache.get(client.user.id);
@@ -55,6 +54,7 @@ module.exports = async (interaction, subCmd) => {
     }
   } catch (error) {
     console.error(error);
+    embed = createErrorEmbed({ int: interaction, descr: `Something went wrong with the \`/info ${subCmd}\` command. Please try again later.`});
   }
   return embed;
 }
