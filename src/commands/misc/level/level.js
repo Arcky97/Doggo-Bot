@@ -46,6 +46,8 @@ module.exports = {
   callback: async (interaction) => {
     const subCmnd = interaction.options.getSubcommand();
     const user = interaction.options.getUser('user') || interaction.user;
+    const member = interaction.options.getMember('user') || interaction.member;
+    console.log(member);
     let embed; 
     
     await interaction.deferReply();
@@ -56,7 +58,7 @@ module.exports = {
       const globalUsers = await getAllGlobalUsersLevel();
       const xpSettings = await getXpSettings(interaction.guild.id);
 
-      const permEmbed = await createMissingPermissionsEmbed(interaction, user, ['AttachFiles']);
+      const permEmbed = await createMissingPermissionsEmbed(interaction, member, ['AttachFiles']);
       if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
       
       guildUsers.sort((a, b) => {

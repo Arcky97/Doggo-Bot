@@ -131,8 +131,10 @@
       }
     },
     "updates": {
-      "name": "Server Update Events",
-      "description": "Server Updates."
+      "all": {
+        "name": "Server Update Events",
+        "description": "Server Updates."
+      }
     },
     "emojis": {
       "all": {

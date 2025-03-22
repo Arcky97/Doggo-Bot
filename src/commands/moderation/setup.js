@@ -241,7 +241,6 @@ module.exports = {
           if (!missingChanPermEmbed) {
             [title, description] = await setGuildSettings(guildId, subCmd, channel);
           } else {
-            console.log('we do this?');
             missingChanPermEmbed.setDescription(`Unable to set the ${subCmd === 'bot-chat' ? '**Bot Chat Channel**' : `Channel for **${convertSetupCommand(subCmd)} Logging**`} to ${channel} as following permissions are missing:`);
             return interaction.editReply({ embeds: [missingChanPermEmbed] });
           }
@@ -249,7 +248,6 @@ module.exports = {
       }
       if (subCmd === 'events') {
         await interaction.editReply({ components: createLoggingMenu(choice) });
-  
         const filter = (i) =>
           (i.customId === `${firstLetterToUpperCase(choice)} Logging Menu` ||
            i.customId === 'confirm' || i.customId === 'cancel') &&
@@ -332,7 +330,8 @@ module.exports = {
             Object.keys(loggingType).forEach(category => {
               if (typeof loggingConfig[category] === 'object') {
                 Object.entries(loggingType[category]).forEach(([subCat, option]) => {
-                  if (subCat !== 'all') {
+                  console.log(loggingType[category]);
+                  if (subCat !== 'all' || (Object.keys(loggingType[category]).length === 1 && subCat === 'all')) {
                     values.push(`${option.name}: **${loggingConfig[category][subCat] ? 'enabled': 'disabled'}**`);
                   }
                 });
