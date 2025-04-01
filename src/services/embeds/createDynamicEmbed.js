@@ -20,6 +20,15 @@ async function createEmbed(input, embedData) {
     embed.setAuthor(authorObj);
   }
 
+  const fields = JSON.parse(embedData.fields) || [];
+  for (const field of fields) {
+    embed.addFields({
+      name: await parseEmbedPlaceholders(field.name),
+      value: await parseEmbedPlaceholders(field.value),
+      inline: field.inline 
+    });
+  }
+
   const image = await parseEmbedPlaceholders(embedData.imageUrl, input);
   if (embedData.imageUrl && image && !image.startsWith('{')) embed.setImage(image);
   

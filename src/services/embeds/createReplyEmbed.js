@@ -18,7 +18,7 @@ function createReplyEmbed(interaction, color, title, description, footer = true,
     const embed = new EmbedBuilder()
     .setColor(color)
     .setTitle(embedTitle)
-    .setDescription(description)
+    .setDescription(description || "no description given")
     .setThumbnail(botMood[`${mood}`])
     if (footer) {
       embed.setFooter({

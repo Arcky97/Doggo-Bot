@@ -1,5 +1,8 @@
 const { setBotStats } = require("../../managers/botStatsManager");
+const { setLevelSettings } = require("../../managers/levelSettingsManager");
 const exportToJson = require("../../services/database/exportDataToJson");
+const { selectData } = require("../../services/database/selectData");
+const { updateData } = require("../../services/database/updateData");
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../services/embeds/createReplyEmbed");
 
 module.exports = {
@@ -17,18 +20,69 @@ module.exports = {
       });
     } else {
       try {
-        const tables = ['BotReplies', 'EventEmbeds', 'GeneratedEmbeds', 'GuildSettings', 'LevelSettings', 'LevelSystem', 'ModerationLogs', 'PremiumUsersAndGuilds', 'ReactionRoles', 'UserStats'];
+        const [levelSystemData, generatedEmbedsData, eventEmbedsData] = await Promise.all([selectData('LevelSettings', {}, true), selectData('GeneratedEmbeds', {}, true), selectData('EventEmbeds', {}, true)]);
         for (const guild of client.guilds.cache.values()) {
-          tables.forEach(async table => {
-            exportToJson(table, guild.id);
-          });
+/*          const guildLevelSystemData = levelSystemData.find(data => data.guildId === guild.id);
+          if (guildLevelSystemData) {
+            let announceDefaultMessage = JSON.parse(guildLevelSystemData.announceDefaultMessage);
+            announceDefaultMessage = renameKeyPreserveOrder(announceDefaultMessage, "imageURL", "imageUrl");
+            const setting = { 'announceDefaultMessage': JSON.stringify(announceDefaultMessage)}
+            await setLevelSettings({ id: guild.id, setting});
+            exportToJson('LevelSettings', guild.id);
+          }*/
+          
+          const guildGeneratedEmbedsData = generatedEmbedsData.filter(data => data.guildId === guild.id);
+          if (guildGeneratedEmbedsData) {
+            const convertedData = {
+              ...guildGeneratedEmbedsData,
+              author: guildGeneratedEmbedsData.author || guildGeneratedEmbedsData.authorUrl || guildGeneratedEmbedsData.authorIconUrl
+                ? {
+                    name: guildGeneratedEmbedsData.author,
+                    url: guildGeneratedEmbedsData.authorUrl,
+                    iconUrl: guildGeneratedEmbedsData.authorIconUrl
+                  }
+                : null,
+              footer: guildGeneratedEmbedsData.footer || guildGeneratedEmbedsData.footerIconUrl
+                  ? {
+                      text: guildGeneratedEmbedsData.footer,
+                      iconUrl: guildGeneratedEmbedsData.footerIconUrl
+                    }
+                  : null 
+            };
+
+            delete convertedData.authorUrl;
+            delete convertedData.authorIconUrl;
+            delete convertedData.footerIconUrl;
+            JSON.stringify(convertedData.author);
+            JSON.stringify(convertedData.footer);
+            console.log(convertedData)
+            //await setGeneratedEmbed(guildId, channel.id, message.id, embedOptions);
+          }
+
+          const guildEventEmbedsData = eventEmbedsData.find(data => data.guildId === guild.id);
+          if (guildEventEmbedsData) {
+
+          }
+          
         }
-        embed = createSuccessEmbed({ int: interaction, title: 'Database Tables Exported.', descr: 'Each Table from the Database has been exported by Guild Id to a json file.'});
+        embed = createSuccessEmbed({ 
+          int: interaction, 
+          title: 'Table Data Fixed', 
+          descr: 'The following table data has been fixed successfully: \n- LevelSettings \n- GeneratedEmbeds \n- EventEmbeds'
+        });
       } catch (error) {
-        embed = createErrorEmbed({int: interaction, description: 'Something went wrong fixing the Database! Try again later!'});
+        embed = createErrorEmbed({int: interaction, descr: `Something went wrong fixing the Database! Try again later! ${error}`});
       }
     }
     await interaction.reply({ embeds: [embed] });
     await setBotStats(guildId, 'command', { category: 'developing', command: 'fix' });
   }
 }
+
+const renameKeyPreserveOrder = (obj, oldKey, newKey) => {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) =>
+      key === oldKey ? [newKey, value] : [key, value]
+    )
+  );
+};

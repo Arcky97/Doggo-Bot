@@ -330,7 +330,6 @@ module.exports = {
             Object.keys(loggingType).forEach(category => {
               if (typeof loggingConfig[category] === 'object') {
                 Object.entries(loggingType[category]).forEach(([subCat, option]) => {
-                  console.log(loggingType[category]);
                   if (subCat !== 'all' || (Object.keys(loggingType[category]).length === 1 && subCat === 'all')) {
                     values.push(`${option.name}: **${loggingConfig[category][subCat] ? 'enabled': 'disabled'}**`);
                   }

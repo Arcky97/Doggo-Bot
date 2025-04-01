@@ -47,7 +47,6 @@ module.exports = {
     const subCmnd = interaction.options.getSubcommand();
     const user = interaction.options.getUser('user') || interaction.user;
     const member = interaction.options.getMember('user') || interaction.member;
-    console.log(member);
     let embed; 
     
     await interaction.deferReply();

@@ -31,7 +31,6 @@ async function getOrDeleteEmbed(table, action, guildId, messageOrType) {
 }
 
 async function setEmbedData(table, guildId, keys, data) {
-  //console.log(guildId);
   const dataExist = await selectData(table, keys);
   try {
     if (!dataExist) {

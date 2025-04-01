@@ -81,8 +81,6 @@ async function checkPermissions (channel, perms, member) {
     return missingPerm;
   });
 
-  //console.log('Missing Permissions:', missingPermsArray.join(', '));
-
   return {
     hasAll: missingPerms.length === 0,
     array: missingPermsArray

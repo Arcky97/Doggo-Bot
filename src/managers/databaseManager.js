@@ -71,7 +71,7 @@ async function initDatabase() {
           roleReplace BOOLEAN DEFAULT false,
           announceChannel VARCHAR(100) DEFAULT 'not set',
           announcePing BOOLEAN DEFAULT false,
-          announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageURL": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }',
+          announceDefaultMessage JSON DEFAULT '{ "title": "{user global} leveled up!", "description": "Congrats, {user global}, you leveled up to lv. {level}!", "color": "{user color}", "thumbnailUrl": "{user avatar}", "imageUrl": null, "footer": { "text": "{server name}", "iconUrl": "{server icon}" }, "timeStamp": true }',
           announceLevelMessages JSON DEFAULT '[]',
           roleMultipliers JSON DEFAULT '[]',
           channelMultipliers JSON DEFAULT '[]',
@@ -194,6 +194,29 @@ async function initDatabase() {
           deletionDate TIMESTAMP NULL, 
           INDEX idx_guildId (guildId)
         )
+      `,
+      DoggoBoardSettings: `
+        CREATE TABLE IF NOT EXISTS DoggoBoardSettings (
+          guildId VARCHAR(100) NOT NULL PRIMARY KEY,
+          pinChannel VARCHAR(100) NOT NULL,
+          emojiId JSON DEFAULT '[":dog:"]',
+          requiredReactions INT DEFAULT 3,
+          messageAgeHour INT DEFAULT 1,
+          pinAgeDay INT DEFAULT 1,
+          updateTimeMin INT DEFAULT 1,
+          reactionSettings enum('and', 'or', 'sum') DEFAULT 'or',
+          deletionData TIMESTAMP NULL
+        )
+      `,
+      DoggoBoardPins: `
+        CREATE TABLE IF NOT EXISTS DoggoBoardPins (
+          guildId VARCHAR(100) NOT NULL,
+          messageId VARCHAR(100) NOT NULL,
+          pinMessageId VARCHAR(100) DEFAULT NULL,
+          reactionAmount INT DEFAULT 3,
+          deletionData TIMESTAMP NULL,
+          PRIMARY KEY (guildId, messageId)
+        )
       `
     };
     
@@ -209,8 +232,6 @@ async function initDatabase() {
         console.log(`New table "${tableName}" created.`);
         await pool.query(createQuery);
       } else {
-        //console.log(`Table "${tableName}" already exists. Checking for updates...`);
-        // Voeg hier logica toe om bestaande tabellen te controleren op wijzigingen
         await checkTableUpdates(tableName);
       }
     }

@@ -92,6 +92,8 @@ module.exports = async (interaction) => {
       int: interaction, 
       descr: `Something went wrong while running this Command. Please try again later.`
     });
-    interaction.editReply({ embeds: [embed] });
+    if (interaction) {
+      interaction.reply({ embeds: [embed] });
+    }
   }
 };

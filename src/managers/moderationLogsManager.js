@@ -89,7 +89,6 @@ async function addModerationLogs({guildId, userId, modId, action, reason, status
     if (logChannel) data.logChannel = logChannel;
     if (date) data.date = date;
     if (duration) data.endTime = duration;
-    //console.log(data);
     await insertData('ModerationLogs', {}, data);
     exportToJson('ModerationLogs', guildId);
   } catch (error) {

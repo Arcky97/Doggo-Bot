@@ -4,6 +4,7 @@ const { findClosestMatch } = require("../managers/botRepliesManager");
 module.exports = async (input, output = false) => {
   let hexColor;
   let message;
+  if (!input) return;
   if (input.toLowerCase() === 'random') {
     hexColor = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
     message = `Your random color is ${hexColor}`;

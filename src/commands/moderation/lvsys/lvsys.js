@@ -842,7 +842,7 @@ module.exports = {
               embedOptions = {
                 title: interaction.options.getString('title') || '{user global} has leveled up!',
                 description: interaction.options.getString('description') || 'Congrats you leveled up to lv. {level}!',
-                color: color?.startsWith('{') ? color : await getOrConvertColor(color) || '{user color}',
+                color: !color ? '{user color}' : color.startsWith('{') ? color : await getOrConvertColor(color),
                 thumbnailUrl: interaction.options.getBoolean('thumbnailurl') ? '{user avatar}' : null,
                 imageUrl: interaction.options.getString('imageurl'),
                 footer: {

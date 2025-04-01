@@ -8,6 +8,7 @@ const { setBotStats } = require("../../managers/botStatsManager");
 module.exports = {
   name: 'embed',
   description: 'Create embeds and send them to a channel of your choice.',
+  deleted: true,
   options: [
     {
       type: ApplicationCommandOptionType.Subcommand,
@@ -335,6 +336,24 @@ module.exports = {
         if (value) {
           if (typeof value === 'boolean' && option.name === 'authoriconurl') {
             embedOptions[name] = '{user avatar}';
+          } else if (option.name === "fields") {
+            const fields = value;
+            const fieldArray = fields.split(';');
+
+            const parseField = (fieldEl) => {
+              const nameMatch = fieldEl.match(/name:\s*([^:]+?)(?=\s+(value:|inline:|$))/);
+              const valueMatch = fieldEl.match(/value:\s*([^:]+?)(?=\s+(name:|inline:|$))/);
+              const inlineMatch = fieldEl.match(/inline:\s*(true|false)/);
+
+              return {
+                name: nameMatch ? nameMatch[1].trim() : "",
+                value: valueMatch ? valueMatch[1].trim() : "",
+                inline: inlineMatch ? inlineMatch[1] === "true" : false
+              };
+            };
+
+            const parsedFields = fieldArray.map(parseField);
+            embedOptions[name] = JSON.stringify(parsedFields);
           } else {
             embedOptions[name] = value;
           }
