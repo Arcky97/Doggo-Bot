@@ -61,42 +61,11 @@ module.exports = {
             }
             exportToJson('GeneratedEmbeds', guild.id);
           }
-
-          const guildEventEmbedsData = eventEmbedsData.find(data => data.guildId === guild.id);
-          if (guildEventEmbedsData) {
-            for (const embedData of guildEventEmbedsData) {
-              const convertedData = {
-                ...embedData,
-                author: {
-                      name: embedData.author,
-                      url: embedData.authorUrl,
-                      iconUrl: embedData.authorIconUrl
-                    },
-                footer: {
-                        text: embedData.footer,
-                        iconUrl: embedData.footerIconUrl
-                      }
-              };
-              delete convertedData.authorUrl;
-              delete convertedData.authorIconUrl;
-              delete convertedData.footerIconUrl;
-              embedData.author = JSON.stringify(convertedData.author);
-              embedData.footer = JSON.stringify(convertedData.footer);
-              delete embedData.guildId;
-              const channelId = embedData.channelId;
-              delete embedData.channelId;
-              const type = embedData.type;
-              delete embedData.type;
-              await setEventEmbed(guild.id, channelId, type, embedData);
-
-            }
-            exportToJson('EventsEmbed', guild.id);
-          }
         }
         embed = createSuccessEmbed({ 
           int: interaction, 
           title: 'Table Data Fixed', 
-          descr: 'The following table data has been fixed successfully: \n- LevelSettings \n- GeneratedEmbeds \n- EventEmbeds'
+          descr: 'The following table data has been fixed successfully: \n- LevelSettings \n- GeneratedEmbeds'
         });
       } catch (error) {
         embed = createErrorEmbed({int: interaction, descr: `Something went wrong fixing the Database! Try again later! ${error}`});
