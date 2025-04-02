@@ -14,6 +14,8 @@ async function setEmbed(table, guildId, channel, messageOrType, data) {
     channelId: channel,
     ...getUniq(table, messageOrType)
   };
+  if (typeof data.author !== 'string') data.author = JSON.stringify(data.author);
+  if (typeof data.footer !== 'string') data.footer = JSON.stringify(data.footer);
   await setEmbedData(table, guildId, keys, data);
 }
 

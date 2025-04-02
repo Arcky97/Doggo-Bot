@@ -1,8 +1,8 @@
 const { setBotStats } = require("../../managers/botStatsManager");
+const { setGeneratedEmbed, setEventEmbed } = require("../../managers/embedDataManager");
 const { setLevelSettings } = require("../../managers/levelSettingsManager");
 const exportToJson = require("../../services/database/exportDataToJson");
 const { selectData } = require("../../services/database/selectData");
-const { updateData } = require("../../services/database/updateData");
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../services/embeds/createReplyEmbed");
 
 module.exports = {
@@ -22,48 +22,76 @@ module.exports = {
       try {
         const [levelSystemData, generatedEmbedsData, eventEmbedsData] = await Promise.all([selectData('LevelSettings', {}, true), selectData('GeneratedEmbeds', {}, true), selectData('EventEmbeds', {}, true)]);
         for (const guild of client.guilds.cache.values()) {
-/*          const guildLevelSystemData = levelSystemData.find(data => data.guildId === guild.id);
+          const guildLevelSystemData = levelSystemData.find(data => data.guildId === guild.id);
           if (guildLevelSystemData) {
             let announceDefaultMessage = JSON.parse(guildLevelSystemData.announceDefaultMessage);
             announceDefaultMessage = renameKeyPreserveOrder(announceDefaultMessage, "imageURL", "imageUrl");
             const setting = { 'announceDefaultMessage': JSON.stringify(announceDefaultMessage)}
             await setLevelSettings({ id: guild.id, setting});
             exportToJson('LevelSettings', guild.id);
-          }*/
+          }
           
           const guildGeneratedEmbedsData = generatedEmbedsData.filter(data => data.guildId === guild.id);
           if (guildGeneratedEmbedsData) {
-            const convertedData = {
-              ...guildGeneratedEmbedsData,
-              author: guildGeneratedEmbedsData.author || guildGeneratedEmbedsData.authorUrl || guildGeneratedEmbedsData.authorIconUrl
-                ? {
-                    name: guildGeneratedEmbedsData.author,
-                    url: guildGeneratedEmbedsData.authorUrl,
-                    iconUrl: guildGeneratedEmbedsData.authorIconUrl
-                  }
-                : null,
-              footer: guildGeneratedEmbedsData.footer || guildGeneratedEmbedsData.footerIconUrl
-                  ? {
-                      text: guildGeneratedEmbedsData.footer,
-                      iconUrl: guildGeneratedEmbedsData.footerIconUrl
-                    }
-                  : null 
-            };
+            for (const embedData of guildGeneratedEmbedsData) {
+              const convertedData = {
+                ...embedData,
+                author: {
+                      name: embedData.author,
+                      url: embedData.authorUrl,
+                      iconUrl: embedData.authorIconUrl
+                    },
+                footer: {
+                        text: embedData.footer,
+                        iconUrl: embedData.footerIconUrl
+                      }
+              };
+              delete convertedData.authorUrl;
+              delete convertedData.authorIconUrl;
+              delete convertedData.footerIconUrl;
+              embedData.author = JSON.stringify(convertedData.author);
+              embedData.footer = JSON.stringify(convertedData.footer);
+              delete embedData.guildId;
+              const channelId = embedData.channelId;
+              delete embedData.channelId;
+              const messageId = embedData.messageId;
+              delete embedData.messageId;
+              await setGeneratedEmbed(guild.id, channelId, messageId, embedData);
 
-            delete convertedData.authorUrl;
-            delete convertedData.authorIconUrl;
-            delete convertedData.footerIconUrl;
-            JSON.stringify(convertedData.author);
-            JSON.stringify(convertedData.footer);
-            console.log(convertedData)
-            //await setGeneratedEmbed(guildId, channel.id, message.id, embedOptions);
+            }
+            exportToJson('GeneratedEmbeds', guild.id);
           }
 
           const guildEventEmbedsData = eventEmbedsData.find(data => data.guildId === guild.id);
           if (guildEventEmbedsData) {
+            for (const embedData of guildEventEmbedsData) {
+              const convertedData = {
+                ...embedData,
+                author: {
+                      name: embedData.author,
+                      url: embedData.authorUrl,
+                      iconUrl: embedData.authorIconUrl
+                    },
+                footer: {
+                        text: embedData.footer,
+                        iconUrl: embedData.footerIconUrl
+                      }
+              };
+              delete convertedData.authorUrl;
+              delete convertedData.authorIconUrl;
+              delete convertedData.footerIconUrl;
+              embedData.author = JSON.stringify(convertedData.author);
+              embedData.footer = JSON.stringify(convertedData.footer);
+              delete embedData.guildId;
+              const channelId = embedData.channelId;
+              delete embedData.channelId;
+              const type = embedData.type;
+              delete embedData.type;
+              await setEventEmbed(guild.id, channelId, type, embedData);
 
+            }
+            exportToJson('EventsEmbed', guild.id);
           }
-          
         }
         embed = createSuccessEmbed({ 
           int: interaction, 

@@ -8,7 +8,6 @@ const { setBotStats } = require("../../managers/botStatsManager");
 module.exports = {
   name: 'embed',
   description: 'Create embeds and send them to a channel of your choice.',
-  deleted: true,
   options: [
     {
       type: ApplicationCommandOptionType.Subcommand,
@@ -288,14 +287,18 @@ module.exports = {
       fields: null,
       message: null,
       color: null,
-      author: null,
-      authorUrl: null,
-      authorIconUrl: null,
-      titleUrl: null,
+      author: { 
+        name: null, 
+        url: null, 
+        iconUrl: null 
+      },
+      url: null,
       imageUrl: null,
       thumbnailUrl: null,
-      footer: null,
-      footerIconUrl: null,
+      footer: { 
+        text: null, 
+        iconUrl: null 
+      },
       timeStamp: true,
     };
 
@@ -320,6 +323,8 @@ module.exports = {
 
       // Merge the fetched embed data into embedOptions (filling default values)
       embedOptions = { ...embedOptions, ...embedData };
+      if (typeof embedOptions.author === 'string') embedOptions.author = JSON.parse(embedOptions.author);
+      if (typeof embedOptions.footer === 'string') embedOptions.footer = JSON.parse(embedOptions.footer); 
     }
 
     // Update embedOptions with user input from the command
@@ -351,9 +356,15 @@ module.exports = {
                 inline: inlineMatch ? inlineMatch[1] === "true" : false
               };
             };
-
             const parsedFields = fieldArray.map(parseField);
             embedOptions[name] = JSON.stringify(parsedFields);
+          } else if (option.name === "author" || option.name === "authorurl" || option.name === "authoriconurl" ) {
+            if (option.name === "author") embedOptions.author.name = option.value;
+            if (option.name === "authorurl") embedOptions.author.url = option.value;
+            if (option.name === "authoriconurl") embedOptions.author.iconUrl = option.value;
+          } else if (option.name === "footer" || option.name === "footericonurl") {
+            if (option.name === "footer") embedOptions.footer.text = option.value;
+            if (option.name === "footericonurl") embedOptions.footer.iconUrl = option.value;
           } else {
             embedOptions[name] = value;
           }
@@ -408,6 +419,7 @@ module.exports = {
         }
         if (embedAction === 'edit') {
           if (type === 'regular') {
+            console.log(embedOptions);
             await message.edit({ content: embedOptions.message, embeds: [embed] });
             await setGeneratedEmbed(guildId, channel.id, message.id, embedOptions);
             replyMessage = `Your embed in <#${channel.id}> has been updated successfully.`;
