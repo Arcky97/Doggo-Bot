@@ -7,93 +7,131 @@ module.exports = async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   const localCommands = getLocalCommands();
-
-  const commandObject = localCommands.find(
-    (cmd) => cmd.name === interaction.commandName
-  );
+  const commandObject = localCommands.find((cmd) => cmd.name === interaction.commandName);
+  if (!commandObject) return;
 
   const cmdName = commandObject.name;
-  //const subCmdGroup = interaction.options?.getSubcommandGroup();
-  //const subCmd = interaction.options?.getSubcommand();
   let embed;
-  try {
-    if (!commandObject) return;
 
-    if (commandObject.devOnly) {
-      if (!devs.includes(interaction.member.id)) {
-        embed = createInfoEmbed({int: interaction, descr: 'Only **Developers** are allowed to run this command.'});
-        interaction.reply({
-          embeds: [embed],
-          ephemeral: true
-        });
-        return;
+  try {
+    // Dev-only check
+    if (commandObject.devOnly && !devs.includes(interaction.member.id)) {
+      embed = createInfoEmbed({
+        int: interaction,
+        descr: 'Only **Developers** are allowed to run this command.'
+      });
+
+      if (!interaction.replied && !interaction.deferred) {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      } else {
+        await interaction.followUp({ embeds: [embed], ephemeral: true });
       }
+
+      return;
     }
 
+    // Premium-only check
     if (commandObject.premiumOnly) {
-      let isPremium = await getPremiumById(interaction.user.id);
+      const isPremium = await getPremiumById(interaction.user.id);
       if (!isPremium) {
         embed = createInfoEmbed({
           int: interaction,
           title: 'Premium Command Only',
           descr: `Sorry ${interaction.user} but this command is a Premium Only Command.`
         });
-        interaction.reply({
-          embeds: [embed],
-          ephemeral: true
-        });
-        return; 
-      }
-    }
 
-    if (commandObject.testOnly) {
-      if (interaction.guild.id !== testServer) {
-        embed = createInfoEmbed({int: interaction, descr: 'This command cannot be ran here.'});
-        interaction.reply({
-          embeds: [embed],
-          ephemeral: true,
-        });
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.reply({ embeds: [embed], ephemeral: true });
+        } else {
+          await interaction.followUp({ embeds: [embed], ephemeral: true });
+        }
+
         return;
       }
     }
 
+    // Test server-only check
+    if (commandObject.testOnly && interaction.guild.id !== testServer) {
+      embed = createInfoEmbed({
+        int: interaction,
+        descr: 'This command cannot be ran here.'
+      });
+
+      if (!interaction.replied && !interaction.deferred) {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      } else {
+        await interaction.followUp({ embeds: [embed], ephemeral: true });
+      }
+
+      return;
+    }
+
+    // User permissions check
     if (commandObject.permissionsRequired?.length) {
       for (const permission of commandObject.permissionsRequired) {
         if (!interaction.member.permissions.has(permission)) {
-          embed = createWarningEmbed({int: interaction, descr: 'You don\'t have enough permissions'});
-          interaction.reply({
-            embeds: [embed],
-            ephemeral: true,
+          embed = createWarningEmbed({
+            int: interaction,
+            descr: 'You don\'t have enough permissions.'
           });
+
+          if (!interaction.replied && !interaction.deferred) {
+            await interaction.reply({ embeds: [embed], ephemeral: true });
+          } else {
+            await interaction.followUp({ embeds: [embed], ephemeral: true });
+          }
+
           return;
         }
       }
     }
 
+    // Bot permissions check
     if (commandObject.botPermissions?.length) {
-      for (const permission of commandObject.botPermissions) {
-        const bot = interaction.guild.members.me;
+      const bot = interaction.guild.members.me;
 
+      for (const permission of commandObject.botPermissions) {
         if (!bot.permissions.has(permission)) {
-          embed = createWarningEmbed({int: interaction, descr: 'I don\'t have enough permissions.'});
-          interaction.reply({
-            embeds: [embed],
-            ephemeral: true,
+          embed = createWarningEmbed({
+            int: interaction,
+            descr: 'I don\'t have enough permissions.'
           });
+
+          if (!interaction.replied && !interaction.deferred) {
+            await interaction.reply({ embeds: [embed], ephemeral: true });
+          } else {
+            await interaction.followUp({ embeds: [embed], ephemeral: true });
+          }
+
           return;
         }
       }
     }
 
     await commandObject.callback(interaction);
+
   } catch (error) {
-    console.log(`There was an error running the '${cmdName}' command: ${error}.`);
+    console.error(`There was an error running the '${cmdName}' command:`, error);
+
+    // Handle known interaction expiry error
+    if (error.code === 10062) {
+      console.warn('Interaction expired or already acknowledged (10062).');
+      return;
+    }
+
     embed = createErrorEmbed({
-      int: interaction, 
+      int: interaction,
       descr: `Something went wrong while running this Command. Please try again later.`
     });
-    if (interaction) {
-      interaction.reply({ embeds: [embed] });
+
+    try {
+      if (!interaction.replied && !interaction.deferred) {
+        await interaction.reply({ embeds: [embed], ephemeral: true });
+      } else {
+        await interaction.followUp({ embeds: [embed], ephemeral: true });
+      }
+    } catch (innerErr) {
+      console.error('Failed to send error reply:', innerErr);
     }
   }
 };
