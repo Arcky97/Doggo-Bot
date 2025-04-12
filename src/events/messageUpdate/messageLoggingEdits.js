@@ -28,8 +28,11 @@ module.exports = async (oldMessage, newMessage) => {
 
     if (await ignoreLogging(guildId, logChannel.id)) return;
     
-    const oldContent = await truncateText(oldMessage.content, 1024) || '*No content*';
-    const newContent = await truncateText(newMessage.content, 1024) || '*No content*';
+    const oldContent = truncateText(oldMessage.content) || '*No content*';
+    const newContent = truncateText(newMessage.content) || '*No content*';
+    
+    console.log(oldContent);
+    console.log(newContent);
     const embed = new EmbedBuilder()
       .setColor('Orange')
       .setAuthor({
