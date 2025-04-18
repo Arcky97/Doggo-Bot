@@ -2,6 +2,7 @@ const { Client, User, EmbedBuilder } = require('discord.js');
 const getLogChannel = require('../../managers/logging/getLogChannel');
 const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
 const { setBotStats } = require('../../managers/botStatsManager');
+const { getGuildLoggingConfig } = require('../../managers/guildSettingsManager');
 
 module.exports = async (oldUser, newUser) => {
   try {
@@ -16,6 +17,9 @@ module.exports = async (oldUser, newUser) => {
       const logChannel = await getLogChannel(guild.id, 'member');
       if (!logChannel) continue;
 
+      const configLogging = await getGuildLoggingConfig(guild.id, 'member');
+      if (configLogging.length === 0) return;
+
       const oldUserName = oldUser.username || 'No Name';
       const newUserName = newUser.username || 'No Name';
       const oldGlobalName = oldUser.globalName || 'No Name';
@@ -26,6 +30,7 @@ module.exports = async (oldUser, newUser) => {
       let fields = [];
       
       if (oldUserIcon !== newUserIcon) {
+        if (!configLogging.avatars.globals) return;
         thumbnail = newUserIcon;
         if (!oldUserIcon) {
           action = 'added';
@@ -39,10 +44,12 @@ module.exports = async (oldUser, newUser) => {
       } else {
         let oldValue, newValue;
         if (oldUserName !== newUserName) {
+          if (!configLogging.names.users) return;
           title = 'User Name Changed';
           oldValue = oldUserName;
           newValue = newUserName;
         } else if (oldGlobalName !== newGlobalName) {
+          if (!configLogging.names.globals) return;
           title = 'Profile Name Changed';
           oldValue = oldGlobalName;
           newValue = newGlobalName;

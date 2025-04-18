@@ -16,6 +16,7 @@ module.exports = async (role) => {
 
     const configLogging = checkLogTypeConfig({ guildId: guildId, type: 'server', cat: 'roles', option: 'deletes'});
     if (!configLogging) return;
+    
     const embed = new EmbedBuilder()
       .setColor('Red')
       .setTitle(`Role Deleted: ${role.name}`)

@@ -1,5 +1,6 @@
 const { setBotStats } = require("../../managers/botStatsManager");
 const { setGeneratedEmbed, setEventEmbed } = require("../../managers/embedDataManager");
+const { getGuildSettings, setGuildLoggingConfig } = require("../../managers/guildSettingsManager");
 const { setLevelSettings } = require("../../managers/levelSettingsManager");
 const exportToJson = require("../../services/database/exportDataToJson");
 const { selectData } = require("../../services/database/selectData");
@@ -8,7 +9,6 @@ const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("..
 module.exports = {
   name: 'fix',
   description: 'fix some stuff in the database.',
-  deleted: true,
   devOnly: true,
   callback: async (interaction) => {
     const guildId = interaction.guild.id;
@@ -22,12 +22,21 @@ module.exports = {
     } else {
       try {
         for (const guild of client.guilds.cache.values()) {
-
+          const settings = await getGuildSettings(guild.id);
+          const voiceConfig = { 
+            ...JSON.parse(settings.voiceConfig),
+            mutes: false,
+            unmutes: false,
+            deafens: false,
+            undeafens: false
+          };
+          console.log(voiceConfig);
+          await setGuildLoggingConfig(guild.id, 'voice', voiceConfig);
         }
         embed = createSuccessEmbed({ 
           int: interaction, 
           title: 'Table Data Fixed', 
-          descr: 'The following table data has been fixed successfully: \n- LevelSettings \n- GeneratedEmbeds'
+          descr: 'The following table data has been fixed successfully: \n- VoiceConfig new settings'
         });
       } catch (error) {
         embed = createErrorEmbed({int: interaction, descr: `Something went wrong fixing the Database! Try again later! ${error}`});

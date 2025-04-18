@@ -15,8 +15,8 @@ module.exports = async (channel) => {
     const logChannel = await getLogChannel(guildId, 'server');
     if (!logChannel) return;
 
-    const loggingConfig = await checkLogTypeConfig({guildId: guildId, type: 'server', cat: 'channels', option: 'deletes' });
-    if (!loggingConfig) return;
+    const configLogging = await checkLogTypeConfig({guildId: guildId, type: 'server', cat: 'channels', option: 'deletes' });
+    if (!configLogging) return;
 
     const embed = new EmbedBuilder()
       .setColor('Red')

@@ -189,6 +189,22 @@
     "leaves": {
       "name": "Voice Channel Leaves",
       "description": "Voice Channel Leaves in the Server."
+    },
+    "mutes": {
+      "name": "Voice Channel Mutes",
+      "description": "Voice Channel Self and Server Mutes"
+    },
+    "unmutes": {
+      "name": "Voice Channel Unmutes",
+      "description": "Voice Channel Self and Server Unmutes"
+    },
+    "deafens": {
+      "name": "Voice Channel Deafens",
+      "description": "Voice Channel Self and Server Deafens"
+    },
+    "undeafens": {
+      "name": "Voice Channel Undeafens",
+      "description": "Voice Channel Self and Server Undeafens"
     }
   },
   "joinLeave": {

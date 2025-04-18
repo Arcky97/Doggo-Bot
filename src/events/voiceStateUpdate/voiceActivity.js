@@ -9,6 +9,8 @@ const giveUserLevelRole = require('../../managers/levels/giveUserLevelRole');
 const sendAnnounceMessage = require('../../managers/levels/sendAnnounceMessage');
 const getUserInfo = require('../../managers/levels/getUserInfo');
 const { setBotStats } = require('../../managers/botStatsManager');
+const { getGuildLoggingConfig } = require('../../managers/guildSettingsManager');
+const { botStartTime } = require('../..');
 const voiceActivity = new Map();
 
 module.exports = async (oldState, newState) => {
@@ -23,6 +25,9 @@ module.exports = async (oldState, newState) => {
 
     const levelSettings = await getLevelSettings(oldState.guild.id);
 
+    const configLogging = await getGuildLoggingConfig(guildId, 'voice');
+    if (configLogging.length === 0) return;
+
     let embed = new EmbedBuilder()
       .setAuthor({
         name: newState.member.user.globalName,
@@ -33,7 +38,9 @@ module.exports = async (oldState, newState) => {
       })
       .setTimestamp()
 
+    // VC join
     if (oldState.channelId === null && newState.channelId !== null) {
+      if (!configLogging.joins) return;
       embed.setColor('Green');
       embed.setTitle('Voice Channel Join');
       embed.setFields(
@@ -43,8 +50,9 @@ module.exports = async (oldState, newState) => {
         }
       )
       voiceActivity.set(newState.guild.id + newState.member.id, Date.now());
-    } else {
-      const joinTime = voiceActivity.get(newState.guild.id + newState.member.id);
+    // VC change or leave
+    } else if (oldState.channelId !== newState.channelId) {
+      const joinTime = voiceActivity.get(newState.guild.id + newState.member.id) || botStartTime;
       if (joinTime) {
         const timeSpent = Date.now() - joinTime;
         voiceActivity.delete(newState.guild.id + newState.member.id);
@@ -60,7 +68,9 @@ module.exports = async (oldState, newState) => {
         }
       }
       const joinDate = new Date(joinTime);
+      // VC leave
       if (oldState.channelId !== null && newState.channelId === null) {
+        if (!configLogging.leaves) return;
         embed.setColor('Red');
         embed.setTitle('Voice Channel Leave');
         embed.setFields(
@@ -73,7 +83,9 @@ module.exports = async (oldState, newState) => {
             value: await formatTime(joinDate.toISOString())
           }
         )
+      // VC change
       } else if (oldState.channelId !== newState.channelId) {
+        if (!configLogging.moves) return;
         embed.setColor('Orange');
         embed.setTitle('Voice Channel Change');
         embed.setFields(
@@ -92,9 +104,55 @@ module.exports = async (oldState, newState) => {
         )
         voiceActivity.set(newState.guild.id + newState.member.id, Date.now());
       }
-    } 
+    // (server) Deaf/mute
+    } else {
+      if (oldState.selfMute !== newState.selfMute) {
+        if (!oldState.selfMute && newState.selfMute) {
+          if (!configLogging.mutes) return;
+          embed.setColor('#ff039a');
+          embed.setTitle('Member Muted');
+        }
+        if (oldState.selfMute && !newState.selfMute) {
+          if (!configLogging.unmutes) return;
+          embed.setColor('#34eb8f');
+          embed.setTitle('Member Unmuted');
+        }
+      } else if (oldState.selfDeaf !== newState.selfDeaf) {
+        if (!oldState.selfDeaf && newState.selfDeaf ) {
+          if (!configLogging.deafens) return;
+          embed.setColor('#ff039a');
+          embed.setTitle('Member Deafened');
+        }
+        if (oldState.selfDeaf && !newState.selfDeaf) {
+          if (!configLogging.undeafens) return;
+          embed.setColor('#34eb8f');
+          embed.setTitle('Member UnDeafened');
+        }
+      } else if (oldState.serverMute !== newState.serverMute) {
+        if (!oldState.serverMute && newState.serverMute) {
+          if (!configLogging.mutes) return;
+          embed.setColor('#870051');
+          embed.setTitle('Member Server Muted');
+        } 
+        if (oldState.serverMute && !newState.serverMute) {
+          if (!configLogging.unmutes) return;
+          embed.setColor('#008736');
+          embed.setTitle('Member Server Unmuted');
+        }
+      } else if (oldState.serverDeaf !== newState.serverDeaf) {
+        if (!oldState.serverDeaf && newState.serverDeaf) {
+          if (!configLogging.deafens) return;
+          embed.setColor('#870051');
+          embed.setTitle('Member Server Deafened');
+        }
+        if (oldState.serverDeaf && !newState.serverDeaf) {
+          if (!configLogging.undeafens) return;
+          embed.setColor('#008736');
+          embed.setTitle('Member Server Undeafened');
+        }
+      }
+    }
     
-
     await eventTimeoutHandler('voice', newState.member.user.id, embed, logChannel);
   } catch (error) {
     console.error('Failed to log Voice Activity', error);

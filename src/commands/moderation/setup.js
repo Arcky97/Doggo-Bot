@@ -265,7 +265,7 @@ module.exports = {
               await i.reply({ content: 'Please make a selection before confirming.', ephemeral: true });
               return;
             }
-            let loggingConfig = await getGuildLoggingConfig(guildId, choice);
+            let configLogging = await getGuildLoggingConfig(guildId, choice);
             let description = `Your Preferences for ${firstLetterToUpperCase(choice)} Events:`;
             const loggingType = loggingTypes[choice];
             const filteredOptions = selectedOptions.filter(option => {
@@ -276,13 +276,13 @@ module.exports = {
               return !selectedOptions.includes(`${category}.all`) || option === `${category}.all`;
             });
 
-            Object.keys(loggingConfig).forEach(category => {
-              if (typeof loggingConfig[category] === 'object') {
-                Object.keys(loggingConfig[category]).forEach(subOption => {
-                  loggingConfig[category][subOption] = false
+            Object.keys(configLogging).forEach(category => {
+              if (typeof configLogging[category] === 'object') {
+                Object.keys(configLogging[category]).forEach(subOption => {
+                  configLogging[category][subOption] = false
                 });
               } else {
-                loggingConfig[category] = false;
+                configLogging[category] = false;
               }
             });
 
@@ -292,34 +292,34 @@ module.exports = {
               if (category) {
                 if (subOption === 'all') {
                   // If the category exists and is an object, set all sub-options to true
-                  if (loggingConfig[category] && typeof loggingConfig[category] === 'object') {
-                    Object.keys(loggingConfig[category]).forEach(key => {
-                      loggingConfig[category][key] = true;
+                  if (configLogging[category] && typeof configLogging[category] === 'object') {
+                    Object.keys(configLogging[category]).forEach(key => {
+                      configLogging[category][key] = true;
                     });
                   }
                 } else {
                   // Set the specific sub-option to true
-                  if (loggingConfig[category] && loggingConfig[category][subOption] !== undefined) {
-                    loggingConfig[category][subOption] = true;
+                  if (configLogging[category] && configLogging[category][subOption] !== undefined) {
+                    configLogging[category][subOption] = true;
                   }
                 }
               } else {
                 if (subOption === 'all') {
                   // Set all top-level keys to true
-                  Object.keys(loggingConfig).forEach(key => {
-                    if (typeof loggingConfig[key] === 'object') {
+                  Object.keys(configLogging).forEach(key => {
+                    if (typeof configLogging[key] === 'object') {
                       // If the value is an object, set all its keys to true
-                      Object.keys(loggingConfig[key]).forEach(subKey => {
-                        loggingConfig[key][subKey] = true;
+                      Object.keys(configLogging[key]).forEach(subKey => {
+                        configLogging[key][subKey] = true;
                       });
                     } else {
-                      loggingConfig[key] = true;
+                      configLogging[key] = true;
                     }
                   });
                 } else {
                   // Set the specific top-level key to true
-                  if (loggingConfig[subOption] !== undefined) {
-                    loggingConfig[subOption] = true;
+                  if (configLogging[subOption] !== undefined) {
+                    configLogging[subOption] = true;
                   }
                 }
               }
@@ -328,10 +328,10 @@ module.exports = {
             let values = [];
             embed = createSuccessEmbed({ int: interaction, title: 'Logging Preferences Updated', descr: description });
             Object.keys(loggingType).forEach(category => {
-              if (typeof loggingConfig[category] === 'object') {
+              if (typeof configLogging[category] === 'object') {
                 Object.entries(loggingType[category]).forEach(([subCat, option]) => {
                   if (subCat !== 'all' || (Object.keys(loggingType[category]).length === 1 && subCat === 'all')) {
-                    values.push(`${option.name}: **${loggingConfig[category][subCat] ? 'enabled': 'disabled'}**`);
+                    values.push(`${option.name}: **${configLogging[category][subCat] ? 'enabled': 'disabled'}**`);
                   }
                 });
                 embed.addFields({ 
@@ -341,17 +341,16 @@ module.exports = {
                 values = [];
               } else {
                 if (category !== 'all') {
-                  description += `\n - ${loggingType[category].name}: **${loggingConfig[category] ? 'enabled' : 'disabled'}**`;
+                  description += `\n - ${loggingType[category].name}: **${configLogging[category] ? 'enabled' : 'disabled'}**`;
                 }
               }
             })
             embed.setDescription(description);
-            await setGuildLoggingConfig(guildId, choice, loggingConfig);
+            await setGuildLoggingConfig(guildId, choice, configLogging);
 
             await i.update({ embeds: [embed], components: [] });
             collector.stop();
           } else if (i.customId === 'cancel') {
-            console.log('Canceled');
             embed = createInfoEmbed({ int: interaction, title: 'Logging Preferences not Updated', descr: `Changing Logging Preferences for ${firstLetterToUpperCase(choice)} Logging was Canceled and no changes were made.`});
             await i.update({ embeds: [embed], components: [] });
             collector.stop();

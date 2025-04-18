@@ -23,16 +23,14 @@ module.exports = async (oldMessage, newMessage) => {
     const logChannel = await getLogChannel(guildId, 'message');
     if (!logChannel) return;
 
-    const loggingConfig = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'edits' })
-    if (!loggingConfig) return;
+    const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'edits' })
+    if (!configLogging) return;
 
     if (await ignoreLogging(guildId, logChannel.id)) return;
     
     const oldContent = truncateText(oldMessage.content) || '*No content*';
     const newContent = truncateText(newMessage.content) || '*No content*';
-    
-    console.log(oldContent);
-    console.log(newContent);
+
     const embed = new EmbedBuilder()
       .setColor('Orange')
       .setAuthor({

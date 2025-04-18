@@ -16,8 +16,8 @@ module.exports = async (message) => {
     const logChannel = await getLogChannel(guildId, 'message');
     if (!logChannel) return;
 
-    const loggingConfig = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'deletes' });
-    if (!loggingConfig) return;
+    const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'message', option: 'deletes' });
+    if (!configLogging) return;
     
     if (await ignoreLogging(guildId, logChannel.id)) return;
 

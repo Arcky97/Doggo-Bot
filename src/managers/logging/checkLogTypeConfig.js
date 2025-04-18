@@ -1,10 +1,10 @@
 const { getGuildLoggingConfig } = require("../../managers/guildSettingsManager.js")
 
 module.exports = async ({guildId, type, cat, option}) => {
-  const loggingConfig = await getGuildLoggingConfig(guildId, type);
+  const configLogging = await getGuildLoggingConfig(guildId, type);
   if (cat) {
-    return loggingConfig[cat][option];
+    return configLogging[cat][option];
   } else {
-    return loggingConfig[option];
+    return configLogging[option];
   }
 }
