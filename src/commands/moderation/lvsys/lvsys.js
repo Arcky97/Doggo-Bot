@@ -1,20 +1,15 @@
-const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
-const { setLevelSettings, getRoleOrChannelMultipliers, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../managers/levelSettingsManager");
-const { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray } = require("../../../utils/setArrayValues");
+const { ApplicationCommandOptionType } = require("discord.js");
+const { setLevelSettings, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../managers/levelSettingsManager");
+const { setChannelOrRoleArray, setLevelRolesArray } = require("../../../utils/setArrayValues");
 const createListFromArray = require("../../../utils/createListFromArray");
-const getMultiplierSettings = require("../../../managers/levels/getMultiplierSettings");
 const getLevelSystemSettings = require("../../../managers/levels/getLevelSystemSettings");
-const getOrConvertColor = require("../../../utils/getOrConvertColor");
-const getAnnouncementSettings = require("../../../managers/levels/getAnnouncementSettings");
-const parseEmbedPlaceholders = require("../../../services/embeds/parseEmbedPlaceholders");
 const getBlacklistSettings = require("../../../managers/levels/getBlacklistSettings");
 const getVoiceSettings = require("../../../managers/levels/getVoiceSettings");
 const { resetLevelSystem, getAllGuildUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../managers/levelSystemManager");
-const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../../services/embeds/createReplyEmbed");
+const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
 const getChannelTypeName = require("../../../managers/logging/getChannelTypeName");
 const firstLetterToUpperCase = require("../../../utils/firstLetterToUpperCase");
 const getVowel = require("../../../utils/getVowel");
-const getAnnounceEmbed = require("../../../managers/levels/getAnnounceEmbed");
 const getLevelFromXp = require("../../../managers/levels/getLevelFromXp");
 const getXpFromLevel = require("../../../managers/levels/getXpFromLevel");
 const getXpMultiplier = require("../../../managers/levels/getXpMultiplier");
@@ -23,6 +18,10 @@ const createMissingPermissionsEmbed = require("../../../utils/createMissingPermi
 const { getPremiumById } = require("../../../managers/premiumManager");
 const getXpSettings = require("../../../managers/levels/getXpSettings");
 const { setBotStats } = require("../../../managers/botStatsManager");
+const lvsysMultiplier = require("./subCommands/lvsysMultiplier");
+const lvsysAnnounce = require("./subCommands/lvsysAnnounce");
+const lvsysBlacklist = require("./subCommands/lvsysBlacklist");
+const lvsysRoles = require("./subCommands/lvsysRoles");
 
 module.exports = {
   name: 'lvsys',
@@ -711,17 +710,22 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
-
-    await interaction.deferReply();
 
     const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild', 'AddReactions']);
     if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
 
     const PremiumServer = await getPremiumById(guildId);
     let levSettings, embed, globalMult, roleMults, channelMults, categoryMults, levelRoles, annMess, blackListRoles, blackListChannels, blackListCategories;
+
     try {
       levSettings = await getLevelSettings(guildId);
       if (levSettings && subCmd === 'settings') {
@@ -748,270 +752,23 @@ module.exports = {
     const xpSettings = JSON.parse(levSettings.xpSettings)
     let value = interaction.options.get('value')?.value;
     try {
-      let data, setting, existingSetting, action, setData, role, channel, level, user;
-
+      let data, setting, existingSetting, action, setData, role, channel, level, user, lvsysAction;
       switch(subCmdGroup) {
         case 'multiplier':
-          value = Math.round(value * 100);
-          const replace = interaction.options.getBoolean('replace') || false;
-          if (subCmd !== 'global' && subCmd !== 'settings') {
-            data = await getRoleOrChannelMultipliers({ id: guildId, type: subCmd }) || [];
-          }
-          switch(subCmd) {
-            case 'global':
-              setting = { 'globalMultiplier': value };
-              embed = createSuccessEmbed({int: interaction, title: 'Global Multiplier Set!', descr: `The Global Multiplier has been set to \`${value}%\`!`});
-              break;
-            case 'channel': // check if subCmd is 'channel'
-            case 'category': // check if subCmd is 'category'
-              channel = interaction.options.getChannel('name');
-              const channelTypeName = getChannelTypeName(channel);
-              if ([0, 2, 4].some(type => type === channel.type)) {
-                if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 0))) {
-                  embed = createWarningEmbed({int: interaction, title: 'Multiplier not Set!', descr: `${channel} is not a ${firstLetterToUpperCase(subCmd)}.\n Please use \`/lvsys ${subCmdGroup} ${subCmd === 'channel' ? 'category' : 'channel'}\` instead.`});
-                } else if (interaction.guild.afkChannelId !== channel.id) {
-                  [action, setData] = setChannelOrRoleArray({ type: subCmd, data: data, id: channel.id, value: value, replace: replace });
-                  setting = { [`${subCmd}Multipliers`]: setData };
-                  embed = createSuccessEmbed({int: interaction, title: `${firstLetterToUpperCase(subCmd)} Multiplier ${action}!`, descr: `The ${firstLetterToUpperCase(subCmd)} Multiplier for ${channel} has been ${action !== 'removed' ? `set to \`${value}%\`` : action}!\nThe ${firstLetterToUpperCase(subCmd)} Multiplier will ${replace ? 'now replace' : 'stack up with'} the ${subCmd === 'channel' ? 'Category/Global' : 'Global'} Multiplier.`});
-                } else {
-                  embed = createWarningEmbed({int: interaction, title: 'Multiplier not Set!', descr: `${channel} is set as AFK Voice Channel for this Server and can't have a multiplier. \n(You can't earn XP there anyway.)`});
-                }
-              } else {
-                embed = createWarningEmbed({int: interaction, title: 'Channel Type not supported!', descr: `Setting a Channel Multiplier for ${channelTypeName} is not supported!`});
-              }
-              break
-            case 'role':
-              role = interaction.options.getRole('name');
-              if (role.id !== guildId) {
-                [action, setData] = setChannelOrRoleArray({ type: 'role', data: data, id: role.id, value: value });
-                setting = { 'roleMultipliers': setData };
-                embed = createSuccessEmbed({int: interaction, title: `Role Multiplier ${action}!`, descr: `The ${subCmd} ${subCmdGroup} for ${role} has been ${action !== 'removed' ? `set to \`${value}%\`` : action }!`});
-              } else {
-                embed = createWarningEmbed({int: interaction, descr: `A Role Multiplier can't be set for ${role}.`});
-              }
-              break;
-            case 'replace':
-              const catRepl = interaction.options.getBoolean('category');
-              const chanRepl = interaction.options.getBoolean('channel');
-              const multRepl = JSON.parse(levSettings.multiplierReplace);
-              if (catRepl !== multRepl.category || chanRepl !== multRepl.channel) {
-                setData = JSON.stringify({
-                  'category': catRepl,
-                  'channel': chanRepl
-                });
-                setting = { 'multiplierReplace': setData };
-                embed = createSuccessEmbed({int: interaction, title: 'Multiplier Settings Updated', descr: `The Category and Channel Multiplier Replace Settings have been updated!`});
-              }
-              break;
-            case 'settings':
-              embed = getMultiplierSettings(levSettings, globalMult, roleMults, channelMults, categoryMults);
-              break;
-          }
-          interaction.editReply({ embeds: [embed] });
+          lvsysAction = await lvsysMultiplier(interaction, guildId, subCmdGroup, subCmd, value, levSettings);
+          interaction.editReply({ embeds: [lvsysAction.embed] });
           break;
         case 'announce':
-          let embedOptions;
-          switch(subCmd) {
-            case 'channel':
-              existingSetting = levSettings.announceChannel;
-              channel = interaction.options.getChannel('name');
-              const missingChanPermEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, [], channel);
-              if (!missingChanPermEmbed) {
-                if (existingSetting !== channel.id) {
-                  setting = { 'announceChannel': channel.id };
-                  embed = createSuccessEmbed({int: interaction, title: `Level Up Announce Channel ${existingSetting ? 'Updated' : 'Set'}!`, descr: `The Level Up Announce Channel has been ${existingSetting ? 'updated' : 'set'} to ${channel}.`});
-                } else {
-                  embed = createInfoEmbed({ int: interaction, descr: `The Level Up Announce Channel has already been set to <#${existingSetting}>.`});
-                }
-              } else {
-                missingChanPermEmbed.setDescription(`Unable to set ${channel} as the Announcement Channel as following permissions are missing:`);
-                embed = missingChanPermEmbed;
-              }
-              break;
-            case 'ping':
-              existingSetting = levSettings.announcePing === 1;
-              if (existingSetting !== value) {
-                setting = { 'announcePing': value};
-                embed = createSuccessEmbed({int: interaction, title: 'The Level Up Announce Ping Updated!', descr: `The ping has been ${value ? '\`enabled\`' : '\`disabled\`'}.`});
-              } else {
-                embed = createInfoEmbed({int: interaction, descr: `The Level Up Announce Ping is already ${value ? '\`enabled\`' : '\`disabled\`'}.`});
-              }
-              break;
-            case 'message':
-              const color = interaction.options.getString('color');
-              embedOptions = {
-                title: interaction.options.getString('title') || '{user global} has leveled up!',
-                description: interaction.options.getString('description') || 'Congrats you leveled up to lv. {level}!',
-                color: !color ? '{user color}' : color.startsWith('{') ? color : await getOrConvertColor(color),
-                thumbnailUrl: interaction.options.getBoolean('thumbnailurl') ? '{user avatar}' : null,
-                imageUrl: interaction.options.getString('imageurl'),
-                footer: {
-                  text: interaction.options.getString('footer') || '{server name}',
-                  iconUrl: interaction.options.getString('footericonurl') || '{server icon}'
-                },
-                timeStamp: interaction.options.getBoolean('timestamp')
-              }
-              level = interaction.options.getInteger('level');
-              if (level) {
-                [action, setData] = setAnnounceLevelArray(levSettings, {lv: level, options: embedOptions});
-                setting = { 'announceLevelMessages': setData};
-                embed = createSuccessEmbed({ int: interaction, title: `Level Up Message ${action}!`, descr: `The Level Up Message for lv. ${level} has been ${action}! \nUse \`/lvsys announce show level: ${level}\` to view it.`});
-              } else {
-                setting = { 'announceDefaultMessage': JSON.stringify(embedOptions) };
-                embed = createSuccessEmbed({int: interaction, title: 'Level Up Message Updated!', descr: 'The default Level Up Message has been updated! \nUse `/lvsys announce show ` to view it.'});
-              }
-              break;
-            case 'remove':
-              level = interaction.options.getInteger('level');
-              [action, setData] = setAnnounceLevelArray(levSettings, level);
-              setting = { 'announceLevelMessages': setData};
-              if (action !== 'error') {
-                embed = createSuccessEmbed({int: interaction, title: 'Level Up Message Removed!', descr: `The Level Up Message for lv. ${level} has been ${action}.`});
-              } else {
-                embed = createInfoEmbed({int: interaction, title: 'Level Up Message not found!', descr: `The Level Up Message for lv. ${level} does not exist!`});
-              }
-              break;
-            case 'settings':
-              embed = getAnnouncementSettings(levSettings);
-              break;
-            case 'show':
-              level = interaction.options.getInteger('level');
-              if (level) {
-                embedOptions = JSON.parse(levSettings.announceLevelMessages).find(data => data.lv === level)?.options;
-              } else {
-                embedOptions = JSON.parse(levSettings.announceDefaultMessage);
-              }
-              const userInfo = await getUserLevel(guildId, interaction.user.id);
-              const userLevelInfo = {
-                "guildId": guildId,
-                "memberId": interaction.user.id,
-                "level": (level || userInfo.level),
-                "xp": getLevelFromXp((level || userInfo.level), xpSettings),
-                "color": userInfo.color
-              };
-              if (userLevelInfo.level === 0) userLevelInfo = 1;
-              embed = await getAnnounceEmbed(guildId, interaction, userLevelInfo);
-              break;
-            case 'placeholders':
-              const fieldObject = {
-                "user": [
-                  '{user id}** (The user\'s ID)',
-                  '{user mention}** (Mention the User)',
-                  '{user name}** (The user\'s name)',
-                  '{user global}** (The user\'s Global name)',
-                  '{user nick}** (The User\'s nickname)',
-                  '{user avatar}** (The user\'s Avatar Url)',
-                  '{user color}** (The user\'s Rank Card Color)'
-                ],
-                "level and xp": [
-                  '{user xp}** (The user\'s current level XP)',
-                  '{level}** (The user\'s current level)',
-                  '{level previous}** (The user\'s previous level)',
-                  '{level previous xp}** (The user\'s previous level XP)',
-                  '{level next}** (The user\'s next level)',
-                  '{level next xp}** (The user\'s next level XP)'
-                ],
-                "level awards": [
-                  '{reward}** (The Reward Role)',
-                  '{reward role name}** (The Reward Role\'s name)',
-                  '{reward rolecount}** (The total Reward Count)',
-                  '{reward rolecount progress}** (The Reward progress in {reward rolecount progress} format)', '{reward previous} (The previous Reward Role)',
-                  '{reward next}** (The next Reward Role)'
-                ],
-                "server": [
-                  '{server id}** (The Server\'s ID)',
-                  '{server name}** (The Server\'s name)',
-                  '{server member count}** (The total Members in the Server)',
-                  '{server icon}** (The Server Icon Url)'
-                ],
-                "other" : [
-                  '{new line} (Add a new line)**'
-                ]
-              }
-              embed = new EmbedBuilder()
-                .setColor('Green')
-                .setTitle('Announce Level Up Message Placeholders')
-                .setTimestamp()
-              for (const [key, placeholders] of Object.entries(fieldObject)) {
-                const values = await Promise.all(
-                  placeholders.map(async (placeholder) => `\`${placeholder.split('}')[0] + '}'}\` = **${await parseEmbedPlaceholders(placeholder, interaction)}`)
-                );
-                const valueString = values.join('\n - ').trim();
-                embed.addFields(
-                  {
-                    name: key,
-                    value: `- ${valueString}`
-                  }
-                )
-              };
-              break;
-          }
-          interaction.editReply({ embeds: [embed] });
+          lvsysAction = await lvsysAnnounce(interaction, guildId, subCmd, value, levSettings, xpSettings);
+          interaction.editReply({ embeds: [lvsysAction.embed] });
           break;
         case 'blacklist':
-          data = await getRoleOrChannelBlacklist({id: guildId, type: subCmd }) || [];
-          switch (subCmd) {
-            case 'channel':
-            case 'category':
-              channel = interaction.options.getChannel('name');
-              const channelTypeName = getChannelTypeName(channel);
-              if ([0, 2, 4].some(type => type === channel.type)) {
-                if ((subCmd === 'channel' && channel.type === 4) || (subCmd === 'category' && (channel.type === 2 || channel.type === 0))) {
-                  embed = createWarningEmbed({int: interaction, title: 'Black List not Updated', descr: `${channel} is not a ${firstLetterToUpperCase(subCmd)}.\n Please use \`lvsys ${subCmdGroup} ${subCmd === 'channel' ? 'category' : 'channel'}\` instead.`});
-                } else if (interaction.guild.afkChannelId !== channel.id) {
-                  [action, setData] = setChannelOrRoleArray({ type: subCmd, data: data, id: channel.id });
-                  setting = { [`blackList${subCmd === 'channel' ? `${firstLetterToUpperCase(subCmd)}s` : `${subCmd.replace(/y$/, 'ies')}`}`] : setData };
-                  embed = createSuccessEmbed({int: interaction, title: `${firstLetterToUpperCase(subCmd)} ${action}!`, descr: `${channel} has been ${action} to the Black List.`});
-                } else {
-                  embed = createWarningEmbed({int: interaction, title: 'Black List not Updated', descr: `Adding ${channel} to the Black List will have no effect as this Voice Channel is set as the AFK Channel. You can't earn XP in the AFK Voice Channel anyways.`});
-                }
-              } else {
-                embed = createWarningEmbed({int: interaction, title: 'Channel Type not supported!', descr: `You can't add ${getVowel(channelTypeName)} to the ${firstLetterToUpperCase(subCmd)} Black List.`});
-              }
-              break;
-            case 'role':
-              role = interaction.options.getRole('name');
-              [action, setData] = setChannelOrRoleArray({type: 'role', data: data, id: role.id});
-              setting = { 'blackListRoles' : setData};
-              embed = createSuccessEmbed({int: interaction, title: `Role ${action}!`, descr: `${role} has been ${action} to the Black List.`});
-              break;
-            case 'settings':
-              embed = getBlacklistSettings(blackListRoles, blackListChannels, blackListCategories);
-              break;
-          }
-          interaction.editReply({ embeds: [embed] });
+          lvsysAction = await lvsysBlacklist(interaction, guildId, subCmdGroup, subCmd, levSettings);
+          interaction.editReply({ embeds: [lvsysAction.embed] });
           break;
         case 'roles':
-          data = await getLevelRoles(guildId) || [];
-          level = interaction.options.getInteger('level');
-          switch (subCmd) {
-            case 'replace':
-              existingSetting = levSettings.roleReplace === 1;
-              if (existingSetting !== value) {
-                setting = { 'roleReplace': value };
-                embed = createSuccessEmbed({int: interaction, title: 'Replace Roles Setting', descr: `The Role Replace Setting has been ${value ? '\`enabled\`. \nRoles will be replaced upon gaining.' : '\`disabled\`. \nRoles will not be replaced upon gaining.'}`});
-              } else {
-                embed = createInfoEmbed({int: interaction, descr:`The Replace Roles Setting is already ${value ? '\`enabled\`' : '\`disabled\`' }.`});
-              }
-              break;
-            case 'add':
-              role = interaction.options.getRole('role');
-              const match = data.find(dat => (dat.level !== level || dat.level === level) && dat.roleId === role.id)
-              if (match) {
-                embed = createInfoEmbed({int: interaction, title: 'Reward Role already added!', descr: `${role} has already been asigned as a reward for lv. ${match.level}.`});
-              } else {
-                [action, setData] = setLevelRolesArray(subCmd, data, level, role.id);
-                setting = { 'levelRoles': setData };
-                embed = createSuccessEmbed({int: interaction, title: `Reward Role ${action === 'set' ? 'Added' : action}!`, descr: `The Reward Role for lv. ${level} has been ${action} to ${role}.`})
-              }
-              break;
-            case 'remove':
-              [action, setData] = setLevelRolesArray(subCmd, data, level);
-              setting = { 'levelRoles': setData};
-              embed = createSuccessEmbed({int: interaction, title: `Reward Role ${action}!`, descr: `The Reward Role for lv. ${level} has been ${action}.`});
-              break;
-          }
-          interaction.editReply({ embeds: [embed] });
+          lvsysAction = await lvsysRoles(interaction, guildId, subCmd, value, levSettings);
+          interaction.editreply({ embeds: [lvsysAction.embed] });
           break;
         case 'voice':
           switch(subCmd) {
@@ -1385,10 +1142,10 @@ module.exports = {
           interaction.editReply({ embeds: [embed] });
           break;
       }
-      if (setting && subCmd !== 'settings' && subCmd !== 'show' && (subCmdGroup !== 'reset' || subCmdGroup === 'reset' && subCmd === 'leave')) {
+      if ((lvsysAction?.setting || setting) && subCmd !== 'settings' && subCmd !== 'show' && (subCmdGroup !== 'reset' || subCmdGroup === 'reset' && subCmd === 'leave')) {
         await setLevelSettings({
           id: guildId,
-          setting
+          setting: lvsysAction?.setting || setting 
         });
       }
       await setBotStats(guildId, 'command', { category: 'moderation', command: 'lvsys' });

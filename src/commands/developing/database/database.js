@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { query } = require("../../../managers/databaseManager");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createInfoEmbed } = require("../../../services/embeds/createReplyEmbed");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createInfoEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
 const exportToJson = require("../../../services/database/exportDataToJson");
 const { setBotStats } = require("../../../managers/botStatsManager");
 
@@ -263,14 +263,18 @@ module.exports = {
   ],
   devOnly: true,
   callback: async (interaction) => {
-    const subCmdGroup = interaction.options.getSubcommandGroup();
-    const subCmd = interaction.options.getSubcommand();
-
-    const table = interaction.options.getString('table');
     await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
 
     let embed, insertQuery, title, description;
     let params = [];
+    const subCmdGroup = interaction.options.getSubcommandGroup();
+    const subCmd = interaction.options.getSubcommand();
+    const table = interaction.options.getString('table');
+
     try {
       if (interaction.user.id !== '763287145615982592') {
         switch(subCmdGroup) {
@@ -373,7 +377,7 @@ module.exports = {
           descr: `No ${interaction.user}! Don't use this command!`
         });
       }
-      await setBotStats(interaction.guild.id, 'command', { category: 'developing', command: 'database' });
+      await setBotStats(interaction.guild?.id, 'command', { category: 'developing', command: 'database' });
     } catch (error) {
       //console.error(`Error executing the ${subCmdGroup} ${subCmd} command.`, error);
       embed = createErrorEmbed({

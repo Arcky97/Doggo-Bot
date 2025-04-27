@@ -30,7 +30,7 @@ module.exports = {
         footer: false
       });
 
-      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'userage' });
+      await setBotStats(interaction.guild?.id, 'command', { category: 'misc', command: 'userage' });
     } catch (error) {
       console.error('Error with the Userage Command:', error);
 

@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { getPremiumById } = require("../../managers/premiumManager");
 const formatTime = require("../../utils/formatTime");
-const { createSuccessEmbed, createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
+const { createSuccessEmbed, createErrorEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
 const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = {
@@ -16,11 +16,16 @@ module.exports = {
   ],
   premiumOnly: true,
   callback: async (interaction) => {
-    const subCmd = interaction.options.getSubcommand();
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
+    let embed;
     const isPremium = await getPremiumById(interaction.user.id);
     const guildId = interaction.guild.id;
-    let embed;
-    await interaction.deferReply();
+
     try {
       if (isPremium) {
         const date = isPremium.date;

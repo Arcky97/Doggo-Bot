@@ -9,7 +9,7 @@ const { getPremiumById } = require('../../managers/premiumManager');
 const { setBotStats } = require('../../managers/botStatsManager');
 
 module.exports = async (message) => {
-  const guildId = message.guild.id;
+  const guildId = message.guild?.id;
   if (!message.inGuild() || message.author.bot || cooldowns.has(guildId + message.author.id)) return;
 
   try {

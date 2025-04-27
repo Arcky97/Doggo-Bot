@@ -21,7 +21,7 @@ module.exports = {
     try {
       interaction.editReply(message);
 
-      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'say' });
+      await setBotStats(interaction.guild?.id, 'command', { category: 'misc', command: 'say' });
     } catch (error) {
       console.error('Error with the Say Command:', error);
 

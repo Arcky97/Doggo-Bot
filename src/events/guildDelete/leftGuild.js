@@ -18,7 +18,7 @@ module.exports = async (guild) => {
 
     console.log(`Data for guild ${guild.id} marked for deletion on ${deletionDate}`);
     
-    await botActivityService();
+    await botActivityService('Bot Status Updated');
 
     const joinedAt = moment(client.joinedAt).format('MMMM Do YYYY, h:mm:ss a');
     const leftAt = moment().format('MMMM Do YYYY, h:mm:ss a');

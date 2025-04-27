@@ -1,4 +1,5 @@
 const { ApplicationCommandOptionType } = require("discord.js");
+const { createNotDMEmbed, createUnfinishedEmbed } = require("../../../services/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'doggoboard',
@@ -118,6 +119,16 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
 
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
+    let embed;
+
+    embed = createUnfinishedEmbed(interaction);
+
+    interaction.editReply({ embeds: [embed] });
   }
-}
+};

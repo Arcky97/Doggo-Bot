@@ -10,7 +10,7 @@ module.exports = {
     try {
       interaction.editReply('Thank you for the pat!');
 
-      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'pat' });
+      await setBotStats(interaction.guild?.id, 'command', { category: 'misc', command: 'pat' });
     } catch (error) {
       console.error('Error with the Pat Command:', error);
 

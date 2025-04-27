@@ -3,6 +3,7 @@ const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReacti
 const exportToJson = require("../../services/database/exportDataToJson");
 const setMessageReactions = require("../../middleware/interactions/setMessageReactions");
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
+const { createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'reaction',
@@ -138,6 +139,12 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
@@ -147,8 +154,6 @@ module.exports = {
     const limit = interaction.options.getInteger('limit');
     const reactionRolesData = await getReactionRoles(guildId, channel.id, messageId);
     let emojiRolePairs = [];
-
-    await interaction.deferReply();
 
     try {
       const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild', 'ManageRoles', 'AddReactions']);

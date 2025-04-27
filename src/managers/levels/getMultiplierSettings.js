@@ -7,8 +7,11 @@ module.exports = (levSettings, globalMult, roleMults, channelMults, categoryMult
     .setDescription('All multipliers set in this Server are shown below.' + 
       '\nThe max stack of multipliers is `1000%`.' +
       '\n- Global + Roles Stack' +
+      '\n- Category + Roles Stack' +
       '\n- Channel + Roles Stack' +
-      '\n- Global + Channel don\'t stack')
+      '\n- Global + Category/Channel don\'t stack' +
+      '\n- Category + Channel don\'t stack'
+    )
     .setFields(
       {
         name: 'Global Multiplier',

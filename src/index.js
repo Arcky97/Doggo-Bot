@@ -17,12 +17,14 @@ global.client = new Client({
     IntentsBitField.Flags.GuildVoiceStates,
     IntentsBitField.Flags.GuildEmojisAndStickers,
     IntentsBitField.Flags.GuildModeration,
-    IntentsBitField.Flags.GuildInvites
+    IntentsBitField.Flags.GuildInvites,
+    IntentsBitField.Flags.DirectMessages
   ],
   partials: [
     Partials.Message,
     Partials.Reaction,
     Partials.User,
+    Partials.Channel
   ]
 });
 

@@ -1,5 +1,5 @@
 const { ApplicationCommandOptionType } = require("discord.js");
-const { createSuccessEmbed, createInfoEmbed, createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
+const { createSuccessEmbed, createInfoEmbed, createErrorEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
 const getVowel = require("../../utils/getVowel");
 const { updateUserAttempts } = require("../../managers/userStatsManager");
 const getUserClass = require("../../utils/getUserClass");
@@ -26,15 +26,18 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
+    let embed;
     const guildId = interaction.guild.id;
     const user = interaction.member;
     const userId = interaction.member.id;
     const target = interaction.options.getMentionable('target');
     const object = interaction.options.getString('object');
-    
-    let embed;
-
-    await interaction.deferReply();
     
     try {
       const [userClass, targetClass] = getUserClass([{ member: user }, { member: target }]);

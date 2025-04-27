@@ -16,7 +16,7 @@ module.exports = {
 
       embed = createSuccessEmbed({int: interaction, title: 'Pong!', descr: `Client ${ping /10}ms \nWebsocket: ${client.ws.ping /10}ms`, footer: false});
       
-      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'ping' });
+      await setBotStats(interaction.guild?.id, 'command', { category: 'misc', command: 'ping' });
     
     } catch (error) {
       console.error('Error with the Ping Command:', error);

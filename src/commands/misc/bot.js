@@ -7,6 +7,7 @@ const { setBotStats } = require("../../managers/botStatsManager");
 module.exports = {
   name: 'bot',
   description: 'Various Bot information commands',
+  deleted: true,
   options: [
     {
       type: ApplicationCommandOptionType.Subcommand,
@@ -20,6 +21,8 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+
+
     const subCmd = interaction.options.getSubcommand();
     const uptime = await formatTime(botStartTime, true);
 
@@ -34,7 +37,7 @@ module.exports = {
           embed = createUnfinishedEmbed(interaction);
           break;
       }
-      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'bot' });
+      await setBotStats(interaction.guild?.id, 'command', { category: 'misc', command: 'bot' });
     } catch (error) {
       console.error('There was an error with the bot command', error);
 

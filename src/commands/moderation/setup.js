@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig, convertSetupCommand } = require("../../managers/guildSettingsManager.js");
-const { createErrorEmbed, createSuccessEmbed, createInfoEmbed } = require("../../services/embeds/createReplyEmbed");
+const { createErrorEmbed, createSuccessEmbed, createInfoEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
 const createLoggingMenu = require("../../handlers/loggingMenuHandler.js");
 const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
 const loggingTypes = require('../../../data/loggingTypes.json');
@@ -202,13 +202,19 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
+    
+    let embed, title, description, choice;
     const subCmd = interaction.options.getSubcommand();
     const channel = interaction.options.getChannel('channel');
     const role = interaction.options.getRole('role');
     const guildId = interaction.guild.id;
-    let embed, title, description, choice;
 
-    await interaction.deferReply();
 
     let permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
     if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });

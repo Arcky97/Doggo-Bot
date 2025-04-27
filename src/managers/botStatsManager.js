@@ -19,6 +19,7 @@ async function getBotStats(guildId) {
 }
 
 async function setBotStats(guildId, type, data) {
+  if (!guildId) return;
   try {
     const stats = await getBotStats(guildId);
     let newData;

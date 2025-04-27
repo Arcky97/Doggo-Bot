@@ -5,5 +5,5 @@ module.exports = () => {
     `'${client.user.username}' is ready!\n` + 
     '-----------------------------------'
   );
-  botActivityService();
+  botActivityService('Bot Started');
 };

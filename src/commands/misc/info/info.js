@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
 const infoBot = require("./subCommands/infoBot");
-const { createErrorEmbed } = require("../../../services/embeds/createReplyEmbed");
+const { createErrorEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
 
 module.exports = {
   name: "info",
@@ -26,12 +26,16 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
-    const subCmdGroup = interaction.options.getSubcommandGroup();
-    const subCmd = interaction.options.getSubcommand();
-
     await interaction.deferReply();
 
-    let embed;
+    if (!interaction.inGuild()) return interaction.editReply({ 
+      embeds: [createNotDMEmbed(interaction)] 
+    });
+
+    let embed; 
+    const subCmdGroup = interaction.options.getSubcommandGroup();
+    const subCmd = interaction.options.getSubcommand();
+    
     try {
       switch(subCmdGroup) {
         case "bot":

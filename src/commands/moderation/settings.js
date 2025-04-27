@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
 const { getGuildSettings } = require('../../managers/guildSettingsManager.js');
-const { createErrorEmbed } = require("../../services/embeds/createReplyEmbed.js");
+const { createErrorEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed.js");
 const createListFromArray = require("../../utils/createListFromArray.js");
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed.js");
 const { setBotStats } = require("../../managers/botStatsManager.js");
@@ -9,14 +9,19 @@ module.exports = {
   name: 'settings',
   description: 'Shows the settings of the bot.',
   callback: async (interaction) => {
-    const guildId = interaction.guild.id;
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
     let embed;
+    const guildId = interaction.guild.id;
+
     try {
       const settings = await getGuildSettings(guildId);
       const ignoreLogging = JSON.parse(settings.ignoreLogging);
       const joinRoles = JSON.parse(settings.joinRoles);
-
-      await interaction.deferReply();
 
       const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
       if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });

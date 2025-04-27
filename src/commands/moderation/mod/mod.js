@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { nextModerationLogId } = require("../../../managers/moderationLogsManager.js");
-const { createSuccessEmbed, createInfoEmbed } = require("../../../services/embeds/createReplyEmbed");
+const { createSuccessEmbed, createInfoEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
 const convertNumberInTime = require("../../../utils/convertNumberInTime");
 const calculateEndTime = require('../../../utils/calculateEndTime');
 const getLogChannel = require("../../../managers/logging/getLogChannel");
@@ -306,6 +306,12 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+    
     const subCmdGroup = interaction.options.getSubcommandGroup();
     const subCmd = interaction.options.getSubcommand();
 
@@ -317,8 +323,6 @@ module.exports = {
 
     const duration = interaction.options.getString('duration');
     const reason = interaction.options.getString('reason') || 'No reason provided.';
-
-    await interaction.deferReply();
 
     let embed, modAction;
 

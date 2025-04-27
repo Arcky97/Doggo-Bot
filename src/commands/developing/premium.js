@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { getPremiumById, setPremium, removePremium } = require("../../managers/premiumManager");
-const { createInfoEmbed, createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../services/embeds/createReplyEmbed");
+const { createInfoEmbed, createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
 const { setBotStats } = require("../../managers/botStatsManager");
 
 module.exports = {
@@ -52,13 +52,19 @@ module.exports = {
   ],
   devOnly: true,
   callback: async (interaction) => {
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
+    let embed;
+    let userOrGuild;
     const guildId = interaction.guild.id;
     const subCmd = interaction.options.getSubcommand();
-    let embed;
-    await interaction.deferReply();
     const id = interaction.options.getString('id');
     const hasPremium = await getPremiumById(id);
-    let userOrGuild;
+    
     if (client.guilds.cache.find(guild => guild.id === id)) userOrGuild = 'Server';
     if (client.users.cache.find(user => user.id === id)) userOrGuild = 'User';
     if (userOrGuild === null) return; // id is not a user or guild.

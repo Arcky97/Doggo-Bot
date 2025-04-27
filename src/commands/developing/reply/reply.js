@@ -4,7 +4,7 @@ const updateReply = require("./subCommands/updateReply");
 const removeReply = require("./subCommands/removeReply");
 const checkReply = require("./subCommands/checkReply");
 const listReply = require("./subCommands/listReply");
-const { createErrorEmbed } = require("../../../services/embeds/createReplyEmbed");
+const { createErrorEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
 const { setBotStats } = require("../../../managers/botStatsManager");
 
 module.exports = {
@@ -109,11 +109,16 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
+    let embed;
     const subCmd = interaction.options.getSubcommand();
     const subCmdGroup = interaction.options.getSubcommandGroup();
-
-    await interaction.deferReply();
-    let embed;
+    
     try {
       switch(subCmdGroup) {
         case 'update':
@@ -135,7 +140,7 @@ module.exports = {
               break;
           }
       }
-      await setBotStats(interaction.guild.id, 'command', { category: 'developing', command: 'reply' });
+      await setBotStats(interaction.guild?.id, 'command', { category: 'developing', command: 'reply' });
     } catch (error) {
       console.error('Error with the Reply Command:', error);
       embed = createErrorEmbed({

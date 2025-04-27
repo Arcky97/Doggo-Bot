@@ -4,15 +4,22 @@ const { getGuildSettings, setGuildLoggingConfig } = require("../../managers/guil
 const { setLevelSettings } = require("../../managers/levelSettingsManager");
 const exportToJson = require("../../services/database/exportDataToJson");
 const { selectData } = require("../../services/database/selectData");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../services/embeds/createReplyEmbed");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
 
 module.exports = {
   name: 'fix',
   description: 'fix some stuff in the database.',
   devOnly: true,
   callback: async (interaction) => {
-    const guildId = interaction.guild.id;
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+
     let embed;
+    const guildId = interaction.guild.id;
+
     if (interaction.user.id === '763287145615982592') {
       embed = createWarningEmbed({
         int: interaction, 
@@ -30,7 +37,6 @@ module.exports = {
             deafens: false,
             undeafens: false
           };
-          console.log(voiceConfig);
           await setGuildLoggingConfig(guild.id, 'voice', voiceConfig);
         }
         embed = createSuccessEmbed({ 
@@ -42,7 +48,7 @@ module.exports = {
         embed = createErrorEmbed({int: interaction, descr: `Something went wrong fixing the Database! Try again later! ${error}`});
       }
     }
-    await interaction.reply({ embeds: [embed] });
+    interaction.editReply({ embeds: [embed] });
     await setBotStats(guildId, 'command', { category: 'developing', command: 'fix' });
   }
 }

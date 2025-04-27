@@ -32,7 +32,8 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
-    const userId = interaction.member.id;
+
+    const userId = interaction.user.id;
     const userGuess = interaction.options.getInteger('input');
 
     await interaction.deferReply();
@@ -55,6 +56,6 @@ module.exports = {
       embed = createSuccessEmbed({int: interaction, title: 'Try again!', descr: 'Too high! Give it another try.'});
     }
     interaction.editReply({embeds: [embed]});
-    await setBotStats(guildId, 'command', { category: 'games', command: 'guessingGame' });
+    await setBotStats(interaction.guild?.id, 'command', { category: 'games', command: 'guessingGame' });
   }
 }

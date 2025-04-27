@@ -3,13 +3,17 @@ const { selectData } = require('../../services/database/selectData');
 const { getReplies, findClosestMatch, getTriggers } = require('../../managers/botRepliesManager');
 
 module.exports = async (message) => {
-  if (!message.inGuild() || message.author.bot) return;
-  
+  if (message.author.bot) return;
   try {
-    const chatChannelId = await selectData('GuildSettings', {guildId: message.guildId });
+    let chatChannelId;
+    if (message.inGuild()) {
+      const getData = await selectData('GuildSettings', {guildId: message.guildId });
+      chatChannelId = getData['chattingChannel']
+    } else {
+      chatChannelId = message.channel.id;
+    }
     if (!chatChannelId) return;
-
-    if (chatChannelId['chattingChannel'] && message.channel.id === chatChannelId['chattingChannel']) {
+    if (chatChannelId && message.channel.id === chatChannelId) {
       try {
         let replies = await getReplies();
         let closestMatches = await findClosestMatch(message.content, await getTriggers());

@@ -22,8 +22,8 @@ function createReplyEmbed(interaction, color, title, description, footer = true,
     .setThumbnail(botMood[`${mood}`])
     if (footer) {
       embed.setFooter({
-        text: interaction.guild.name,
-        iconURL: interaction.guild.iconURL()
+        text: interaction.guild?.name || 'DM',
+        iconURL: interaction.guild?.iconURL() || null
       })
       embed.setTimestamp()
     }
@@ -38,5 +38,6 @@ module.exports = {
   createInfoEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Yellow', `${title ? title : 'Info'}`, descr, footer, !title, "sad"),
   createWarningEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Orange', `${title ? title : 'Warning'}`, descr, footer, !title, "annoyed"),
   createErrorEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Red', `${title ? title: 'Error'}`, descr, footer, !title, "shocked"),
-  createUnfinishedEmbed: (int) => createReplyEmbed(int, 'Blue', 'Unfinished', 'Sorry, this Command is not finished yet.', true, true, "Sleepy")
+  createUnfinishedEmbed: (int) => createReplyEmbed(int, 'Blue', 'Unfinished', 'Sorry, this Command is not finished yet.', true, true, "Sleepy"),
+  createNotDMEmbed: (int) => createReplyEmbed(int, 'Fuchsia', 'Not DM Command', 'This command cannot be executed in DM with the bot. Try it out in a Server instead.', true, false, "annoyed")
 }

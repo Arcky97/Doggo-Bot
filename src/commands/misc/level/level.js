@@ -5,7 +5,7 @@ const levelColor = require("./subCommands/levelColor");
 const levelLeaderboard = require("./subCommands/levelLeaderboard");
 const levelShow = require("./subCommands/levelShow");
 const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
-const { createErrorEmbed } = require("../../../services/embeds/createReplyEmbed");
+const { createErrorEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
 const { setBotStats } = require("../../../managers/botStatsManager");
 
 module.exports = {
@@ -44,12 +44,16 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
+    
+    if (!interaction.inGuild()) return interaction.editReply({ 
+      embeds: [createNotDMEmbed(interaction)] 
+    });
+
+    let embed; 
     const subCmnd = interaction.options.getSubcommand();
     const user = interaction.options.getUser('user') || interaction.user;
     const member = interaction.options.getMember('user') || interaction.member;
-    let embed; 
-    
-    await interaction.deferReply();
 
     try {
       const userLevel = await getUserLevel(interaction.guild.id, user.id);

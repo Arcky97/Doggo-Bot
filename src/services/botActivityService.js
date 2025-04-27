@@ -1,7 +1,7 @@
 const { ActivityType } = require('discord.js');
 const devServerService = require('./devServerService');
 
-module.exports = async () => {
+module.exports = async (message) => {
   let serverCount = totalMembers = 0;
   client.guilds.cache.forEach(guild => {
     totalMembers += guild.memberCount - 1;
@@ -14,7 +14,7 @@ module.exports = async () => {
     type: ActivityType.Watching,
   });
 
-
-  const channelId = '1273771024801861734';
-  await devServerService(channelId, 'Bot has started/restarted successfully!');
+  // bot-logs channel
+  const channelId = '1314702619196784743';
+  await devServerService(channelId, `${message} successfully!`);
 }

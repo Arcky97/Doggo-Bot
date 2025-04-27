@@ -82,7 +82,7 @@ module.exports = async (member) => {
 
     await eventTimeoutHandler('joinleave', member.id, embed, logChannel);
 
-    await botActivityService();
+    await botActivityService('Bot Status Updated');
   } catch (error) {
     console.error('Failed to update Activity!', error)
   }

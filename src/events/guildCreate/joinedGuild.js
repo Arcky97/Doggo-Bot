@@ -22,7 +22,7 @@ module.exports = async (guild) => {
       console.log(`No Data marked for deletion found for guild ${guild.id}`);
     }
 
-    await botActivityService();
+    await botActivityService('Bot Status Updated');
 
     const embed = new EmbedBuilder()
       .setColor('Green')

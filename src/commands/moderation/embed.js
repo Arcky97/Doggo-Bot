@@ -1,6 +1,6 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } = require("../../managers/embedDataManager");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed } = require("../../services/embeds/createReplyEmbed");
+const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
 const { createGeneratedEmbed } = require("../../services/embeds/createDynamicEmbed");
 const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
 const { setBotStats } = require("../../managers/botStatsManager");
@@ -270,12 +270,16 @@ module.exports = {
     }
   ],
   callback: async (interaction) => {
+    await interaction.deferReply();
+
+    if (!interaction.inGuild()) return interaction.editReply({
+      embeds: [createNotDMEmbed(interaction)]
+    });
+    
     const embedAction = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
     const channel = interaction.options.getChannel('channel');
     const type = interaction.options.getString('type');
-
-    await interaction.deferReply();
 
     const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild'], channel);
     if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });

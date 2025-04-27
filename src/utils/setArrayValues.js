@@ -52,22 +52,20 @@ function setAnnounceLevelArray(levSettings, newData) {
   const index = existingData.findIndex(item => item.lv === level);
   let action;
 
-  if (index === -1 && typeof newData === 'object') {
+  if (typeof newData !== 'object') {
+    if (existingData.length !== 0 && index !== -1) {
+      existingData.splice(index, 1);
+      action = 'removed';
+    } else {
+      action = 'not found';
+    }
+  } else if (index === -1) {
     existingData.push(newData);
     existingData.sort((a, b) => a > b);
     action = 'added';
   } else {
-    if (typeof newData === 'object') {
-      existingData[index] = newData;
-      action = 'updated';
-    } else {
-      if (existingData.length !== 0) {
-        existingData.splice(index, 1);
-        action = 'removed';
-      } else {
-        action = 'error';
-      }
-    }
+    existingData[index] = newData;
+    action = 'updated';
   }
   return [action, JSON.stringify(existingData)];
 }

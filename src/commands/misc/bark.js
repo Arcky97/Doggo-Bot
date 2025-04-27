@@ -10,7 +10,7 @@ module.exports = {
     try {
       interaction.editReply('Woof!');
 
-      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'bark' });
+      await setBotStats(interaction.guild?.id, 'command', { category: 'misc', command: 'bark' });
     } catch (error) {
       console.error('Error with the Bark Command:', error);
 
@@ -18,7 +18,6 @@ module.exports = {
         int: interaction,
         descr: 'There was an error with the Bark Command. Please try again later.'
       });
-      
       interaction.editReply({ embeds: [embed]});
     }
   }

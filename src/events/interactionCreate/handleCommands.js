@@ -15,7 +15,7 @@ module.exports = async (interaction) => {
 
   try {
     // Dev-only check
-    if (commandObject.devOnly && !devs.includes(interaction.member.id)) {
+    if (commandObject.devOnly && !devs.includes(interaction.member?.id)) {
       embed = createInfoEmbed({
         int: interaction,
         descr: 'Only **Developers** are allowed to run this command.'
