@@ -29,6 +29,7 @@ module.exports = async (oldGuild, newGuild) => {
 
     const oldBanner = oldGuild.bannerURL();
     const newBanner = newGuild.bannerURL();
+    console.log([oldGuild, newGuild]);
 
     const oldAfkChannel = oldGuild.afkChannel;
     const newAfkChannel = newGuild.afkChannel;
@@ -95,10 +96,10 @@ module.exports = async (oldGuild, newGuild) => {
 
     const oldSafetyChannel = oldGuild.safetyAlertsChannel;
     const newSafetyChannel = newGuild.safetyAlertsChannel;
-
+/*
     const oldLocal = getPreferredLocaleName(oldGuild.preferredLocale);
     const newLocal = getPreferredLocaleName(newGuild.perferredLocale);
-     
+*/
     const oldDescr = oldGuild.description;
     const newDescr = newGuild.description;
 
@@ -116,16 +117,17 @@ module.exports = async (oldGuild, newGuild) => {
 
     if (oldSafetyChannel !== newSafetyChannel) {
       title = !title ? `Safety Notifications Channel ${oldSafetyChannel ? 'Updated' : 'Set'}` : 'Server Updated';
-      fields.push({ name: 'Safety Notification Channel Before:', value: `${oldSafetyChannel}`});µ
+      fields.push({ name: 'Safety Notification Channel Before:', value: `${oldSafetyChannel}`});
       fields.push({ name: 'Safety Notification Channel After:', value: `${newSafetyChannel}`})
     }
 
+/*
     if (oldLocal !== newLocal) {
       title = !title ? `Preferred Local Language Changed` : 'Server Updated';
       fields.push({ name: 'Preferred Langauge Before:', value: oldLocal});
       fields.push({ name: 'Preferred Language After:', value: newLocal});
     }
-
+*/
     if (oldDescr !== newDescr) {
       title = !title ? `Server Description ${oldDescr ? 'Updated' : 'Set'}` : 'Server Updated';
       fields.push({ name: 'Description Before:', value: oldDescr});

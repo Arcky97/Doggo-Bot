@@ -768,7 +768,7 @@ module.exports = {
           break;
         case 'roles':
           lvsysAction = await lvsysRoles(interaction, guildId, subCmd, value, levSettings);
-          interaction.editreply({ embeds: [lvsysAction.embed] });
+          interaction.editReply({ embeds: [lvsysAction.embed] });
           break;
         case 'voice':
           switch(subCmd) {
