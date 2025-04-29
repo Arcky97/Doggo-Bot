@@ -29,7 +29,6 @@ module.exports = async (oldGuild, newGuild) => {
 
     const oldBanner = oldGuild.bannerURL();
     const newBanner = newGuild.bannerURL();
-    console.log([oldGuild, newGuild]);
 
     const oldAfkChannel = oldGuild.afkChannel;
     const newAfkChannel = newGuild.afkChannel;
