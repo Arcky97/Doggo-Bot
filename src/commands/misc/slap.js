@@ -49,8 +49,8 @@ module.exports = {
 
       if (!replies) {
         replies = [
-          `You slapped ${target} with ${getVowel(object)}!`, 
-          `You used ${getVowel(object)} to slap ${target}!`
+          `${user} slapped ${target} with ${getVowel(object)}!`, 
+          `${user} used ${getVowel(object)} to slap ${target}!`
         ];
         embed = createSuccessEmbed({
           int: interaction, 

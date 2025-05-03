@@ -23,6 +23,8 @@ module.exports = async (guildId, memberId, targetId, action, cmdKey, replies, ob
             return firstLetterToUpperCase(getVowel(object));
           case 'object-nv':
             return `${object}`;
+          case 'user':
+            return `<@${memberId}>`;
           default:
             return `{${placeholder}}`;
         }

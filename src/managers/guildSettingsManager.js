@@ -121,7 +121,7 @@ async function setGuildSettings(guildId, settingName, value) {
       existingData = await getJoinRoles(guildId);
       type = 'role';
     }
-    [action, setData] = setChannelOrRoleArray({ type: type, data: existingData, id: value.id});
+    [action, setData] = setChannelOrRoleArray({ type: type, data: existingData || [], id: value.id});
     data = {
       [column]: setData
     }

@@ -20,8 +20,8 @@ module.exports = {
 
     try {
       const settings = await getGuildSettings(guildId);
-      const ignoreLogging = JSON.parse(settings.ignoreLogging);
-      const joinRoles = JSON.parse(settings.joinRoles);
+      const ignoreLogging = JSON.parse(settings.ignoreLogging) || [];
+      const joinRoles = JSON.parse(settings.joinRoles) || [];
 
       const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
       if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
