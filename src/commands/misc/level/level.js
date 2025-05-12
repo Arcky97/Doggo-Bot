@@ -61,7 +61,7 @@ module.exports = {
       const globalUsers = await getAllGlobalUsersLevel();
       const xpSettings = await getXpSettings(interaction.guild.id);
 
-      const permEmbed = await createMissingPermissionsEmbed(interaction, member, ['AttachFiles']);
+      const permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['AttachFiles']);
       if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });
       
       guildUsers.sort((a, b) => {

@@ -61,7 +61,7 @@ function setAnnounceLevelArray(levSettings, newData) {
     }
   } else if (index === -1) {
     existingData.push(newData);
-    existingData.sort((a, b) => a > b);
+    existingData.sort((a, b) => a.lv - b.lv);
     action = 'added';
   } else {
     existingData[index] = newData;

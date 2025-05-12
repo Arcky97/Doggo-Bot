@@ -4,6 +4,7 @@ const { Client, IntentsBitField, Partials } = require('discord.js');
 const eventHandler = require('./handlers/eventHandler');
 const { initDatabase } = require('./managers/databaseManager.js');
 const { checkModerationTasks } = require('./tasks/moderationTasks.js');
+const { startAPI } = require('./api.js');
 
 global.client = new Client({
   intents: [
@@ -34,6 +35,7 @@ async function startBot() {
     await initDatabase();
     await client.login(process.env.CLIENT_TOKEN);
     await checkModerationTasks('scheduled');
+    if (client.user.id !== '1270100901067100230') startAPI();
   } catch (error) {
     console.error('Error starting the bot:', error);
   }

@@ -75,7 +75,7 @@ module.exports = async (interaction, guildId, subCmd, value, levSettings, xpSett
         title: interaction.options.getString('title') || '{user global} has leveled up!',
         description: interaction.options.getString('description') || 'Congrats you level up to lv. {level}!',
         color: !color ? '{user color}' : color.startsWith('{') ? color : await getOrConvertColor(color),
-        thumbnailUrl: interaction.options.getBoolean('thumbnailUrl') ? '{user avatar}' : null,
+        thumbnailUrl: interaction.options.getBoolean('thumbnailurl') ? '{user avatar}' : null,
         imageUrl: interaction.options.getString('imageurl'),
         footer: {
           text: interaction.options.getString('footer') || '{server name}',

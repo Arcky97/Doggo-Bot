@@ -25,47 +25,48 @@ module.exports = async (member) => {
     }
 
     const logChannel = await getLogChannel(guildId, 'joinleave');
-    if(!logChannel) return;
 
     const configLogging = await checkLogTypeConfig({ guildId: guildId, type: 'joinLeave', option: 'joins'});
-    if (!configLogging) return;
 
-    const guildSettings = getGuildSettings(guildId);
-    if (guildSettings.joinRoles) {
-      guildSettings.joinRoles.forEach(role => {
-        member.roles.add(role);
+    const guildSettings = await getGuildSettings(guildId);
+    const joinRoles = JSON.parse(guildSettings.joinRoles);
+    if (joinRoles) {
+      joinRoles.forEach(role => {
+        member.roles.add(role.roleId);
       });
     }
     
-    const userAge = await formatTime(member.user.createdAt);
-    const embed = new EmbedBuilder()
-      .setColor('Orange')
-      .setAuthor({
-        name: member.user.globalName,
-        iconURL: member.user.avatarURL()
-      })
-      .setTitle(`Member Joined`)
-      .setFields(
-        {
-          name: 'User name',
-          value: `<@${member.id}>`
-        },
-        {
-          name: 'Member count',
-          value: `${getOrdinalSuffix(member.guild.memberCount)}`
-        },
-        {
-          name: 'Created',
-          value: `${userAge} ago`
-        }
-      )
-      .setTimestamp()
-      .setFooter({
-        text: `User ID: ${member.id}`
-      });
+    if (logChannel && configLogging) {
+      const userAge = await formatTime(member.user.createdAt);
+      const embed = new EmbedBuilder()
+        .setColor('Orange')
+        .setAuthor({
+          name: member.user.globalName,
+          iconURL: member.user.avatarURL()
+        })
+        .setTitle(`Member Joined`)
+        .setFields(
+          {
+            name: 'User name',
+            value: `<@${member.id}>`
+          },
+          {
+            name: 'Member count',
+            value: `${getOrdinalSuffix(member.guild.memberCount)}`
+          },
+          {
+            name: 'Created',
+            value: `${userAge} ago`
+          }
+        )
+        .setTimestamp()
+        .setFooter({
+          text: `User ID: ${member.id}`
+        });
+  
+      await eventTimeoutHandler('joinleave', member.id, embed, logChannel);
+    }
 
-    await eventTimeoutHandler('joinleave', member.id, embed, logChannel);
- 
     await botActivityService('Bot Status Updated');
   } catch (error) {
     console.error('Failed to update Activity!', error)

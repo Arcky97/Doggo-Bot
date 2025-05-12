@@ -3,8 +3,9 @@ const { EmbedBuilder } = require("discord.js")
 module.exports = (levSettings) => {
   const annDef = JSON.parse(levSettings.announceDefaultMessage);
   const annLev = JSON.parse(levSettings.announceLevelMessages)
-    .map(data => `- lv. ${data.lv}`
-    ).join('\n').trim() || 'none';
+    .sort((a, b) => a.lv - b.lv)
+    .map(data => `- lv. ${data.lv}`)
+    .join('\n').trim() || 'none';
   let embed = new EmbedBuilder()
     .setColor('Green')
     .setTitle('Level System Announcement Settings')
