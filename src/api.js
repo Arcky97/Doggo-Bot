@@ -4,28 +4,12 @@ const app = express();
 const cors = require('cors');
 const verifyAPIAccess = require('./middleware/api/verifyAPIAccess');
 const fetchGuild = require('./middleware/api/fetchGuild');
+const fetchChannel = require('./middleware/api/fetchChannel');
+const fetchMessage = require('./middleware/api/fetchMessage');
 
 app.use(cors({
   origin: 'http://localhost:3000'
 }));
-
-app.get('/api/server-data', async (req, res) => {
-  console.log('API Server Data request received');
-  if (req.query.token !== process.env.API_TOKEN) return res.status(403).json({ error: 'Access Denied!'});
-
-  const guildId = req.query.guildId;
-  if (!client) return res.status(500).json({ error: 'Bot not initialized' });
-
-  const guild = client.guilds.cache.get(guildId);
-  if (!guild) return res.status(404).json({ error: 'Server not found' });
-
-  const roles = client
-  await guild.fetch();
-  res.json({
-    id: guild.id,
-    name: guild.name
-  });
-});
 
 app.get('/api/discord/:guildId/channels', verifyAPIAccess, fetchGuild, (req, res) => {
   console.log('API Channel Request received.');
@@ -33,35 +17,52 @@ app.get('/api/discord/:guildId/channels', verifyAPIAccess, fetchGuild, (req, res
   const channels = req.guild.channels.cache.map(channel => ({
     id: channel.id,
     name: channel.name,
-    type: channel.type
+    type: channel.type,
+    parentId: channel.parentId
   }));
-  res.json({ channels });
+  res.json(channels);
+  console.log('API Channel Response sent!');
 });
 
-app.get('/api/discord/:guildId/members', (req, res) => {
+app.get('/api/discord/:guildId/members', verifyAPIAccess, fetchGuild, (req, res) => {
   console.log('API Member Request received.');
   
   const members = req.guild.users.cache.map(user => ({
     id: user.id,
-    name: user.globalName,
+    bot: user.bot,
+    avatar: user.avatar,
+    defaultAvatarUrl: user.defaultAvatarUrl,
+    globalName: user.globalName,
+    username: user.username
   }));
-  res.json({ members });
+  res.json(members);
+  console.log('API Member Response sent!');
 });
 
-app.get('/api/discord/:guildId/roles', (req, res) => {
+app.get('/api/discord/:guildId/roles', verifyAPIAccess, fetchGuild, (req, res) => {
   console.log('API Roles Request received.');
   
+  const roles = req.guild.roles.cache.map(role => ({
+    id: role.id,
+    name: role.name,
+    color: role.color,
+    hexColor: role.hexColor
+  }));
+  res.json(roles);
+  console.log('API Role Response sent!');
 });
 
-app.get('/api/discord/:guildId/:channelId/message', (req, res) => {
-  console.log('API Message Request received.');
-});
-
-app.get('/api/discord/:guildId/:channelId/:messageId/reactions', (req, res) => {
+app.get('/api/discord/:guildId/:channelId/:messageId/reactions', verifyAPIAccess, fetchGuild, fetchChannel, fetchMessage, (req, res) => {
   console.log('API Message Reaction Request received.');
+
+  const reactions = req.message.reactions.cache.map(reaction => ({
+    id: reaction.id,
+    name: reaction.name,
+    reaction: reaction.reaction
+  }));
+  res.json(reactions);
+  console.log('API Message Reaction Response sent!')
 });
-
-
 
 function startAPI() {
   const PORT = process.env.API_PORT || 3001;

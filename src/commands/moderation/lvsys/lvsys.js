@@ -487,8 +487,8 @@ module.exports = {
               type: ApplicationCommandOptionType.Number,
               name: 'value',
               description: 'the amount of XP.',
-              minValue: 1,
-              maxValue: 500,
+              minValue: 0.01,
+              maxValue: 5,
               required: true
             }
           ]

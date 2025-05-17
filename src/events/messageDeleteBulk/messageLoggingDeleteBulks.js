@@ -12,7 +12,7 @@ module.exports = async (bulk) => {
     const logChannel = await getLogChannel(bulk.first().guild.id, 'message');
     if (!logChannel) return;
 
-    if (await ignoreLogging(bulk.guild.id, logChannel.id)) return;
+    if (await ignoreLogging(bulk.guild.id, bulk.channel.id)) return;
 
     let bulkContent = [];
 

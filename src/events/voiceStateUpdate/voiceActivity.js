@@ -21,7 +21,7 @@ module.exports = async (oldState, newState) => {
     const logChannel = await getLogChannel(oldState.guild.id, 'voice');
     if (!logChannel) return;
 
-    if (await ignoreLogging(oldState.guild.id, logChannel.id)) return;
+    if (await ignoreLogging(guildId, oldState.channelId)) return;
 
     const levelSettings = await getLevelSettings(oldState.guild.id);
 
@@ -152,7 +152,7 @@ module.exports = async (oldState, newState) => {
         }
       }
     }
-    
+    if (!embed.data.color && !embed.data.title) return;
     await eventTimeoutHandler('voice', newState.member.user.id, embed, logChannel);
   } catch (error) {
     console.error('Failed to log Voice Activity', error);
