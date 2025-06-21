@@ -3,9 +3,14 @@ const fs = require('fs');
 const path = require('path');
 const databaseLogging = require("../logging/databaseLogging.js");
 
+/**
+ * 
+ * @param {string} table - The name of the table.
+ * @param {string|null} guildId - Guild ID (null for all data or global tables).
+ * @param {boolean} returnFile - returns as a json file when true.
+ * @returns 
+ */
 module.exports = async (table, guildId, returnFile = false) => {
-  // Skip exporting data for the Main Bot.
-  //if (client.user.id === '1265675649759182868') return;
   
   const exportEntireTable = (table === 'BotReplies' || table === 'PremiumUsersAndGuilds' || returnFile);
   try {

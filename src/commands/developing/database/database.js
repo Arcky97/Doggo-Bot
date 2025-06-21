@@ -3,6 +3,7 @@ const { query } = require("../../../managers/databaseManager");
 const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createInfoEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
 const exportToJson = require("../../../services/database/exportDataToJson");
 const { setBotStats } = require("../../../managers/botStatsManager");
+const { importFromDownloads, importJsonToData } = require("../../../services/database/importJsonToData");
 
 module.exports = {
   name: 'database',
@@ -259,6 +260,19 @@ module.exports = {
           required: true
         }
       ]
+    },
+    {
+      type: ApplicationCommandOptionType.Subcommand,
+      name: 'import',
+      description: 'Import data from a JSON file to the Database!',
+      options: [
+        {
+          type: ApplicationCommandOptionType.String,
+          name: 'table',
+          description: 'The Table Name to Import.',
+          required: true
+        }
+      ]
     }
   ],
   devOnly: true,
@@ -345,23 +359,44 @@ module.exports = {
             }
             break;
           default:
-            const result = await exportToJson(table, null, true);
-            await setBotStats(interaction.guild.id, 'command', { category: 'developing', command: 'database' });
-            if (result) {
-              const { buffer, fileName } = result;
-              embed = createSuccessEmbed({
-                int: interaction,
-                title: `${table} Table Exported`,
-                descr: `The ${table} Table has been exported to a JSON file.`
-              });
-              return interaction.editReply({ embeds: [embed], files: [{ attachment: buffer, name: fileName }] });
-            } else {
-              embed = createInfoEmbed({
-                int: interaction,
-                title: 'Table does not Exist',
-                descr: `The ${table} Table does not exist in the Database.`
-              });
-              return interaction.editReply({ embeds: [embed] });
+            switch(subCmd) {
+              case 'export':
+                const result = await exportToJson(table, null, true);
+                await setBotStats(interaction.guild.id, 'command', { category: 'developing', command: 'database' });
+                if (result) {
+                  const { buffer, fileName } = result;
+                  embed = createSuccessEmbed({
+                    int: interaction,
+                    title: `${table} Table Exported`,
+                    descr: `The ${table} Table has been exported to a JSON file.`
+                  });
+                  return interaction.editReply({ embeds: [embed], files: [{ attachment: buffer, name: fileName }] });
+                } else {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    title: 'Table does not Exist',
+                    descr: `The ${table} Table does not exist in the Database.`
+                  });
+                  return interaction.editReply({ embeds: [embed] });
+                }
+              case 'import':
+                const file = await importFromDownloads(table);
+                if (file) {
+                  await importJsonToData(table, file);
+                  embed = createSuccessEmbed({
+                    int: interaction,
+                    title: 'File has been found!',
+                    descr: `The file was found: ${file}`
+                  });
+                  return interaction.editReply({ embeds: [embed] });
+                } else {
+                  embed = createInfoEmbed({
+                    int: interaction,
+                    title: 'File not found',
+                    descr: `I could not find a file named as ${table}.json. Please check the spelling.`
+                  });
+                  return interaction.editReply({ embeds: [embed] });
+                }
             }
         }
         embed = createSuccessEmbed({
@@ -382,7 +417,7 @@ module.exports = {
       //console.error(`Error executing the ${subCmdGroup} ${subCmd} command.`, error);
       embed = createErrorEmbed({
         int: interaction, 
-        descr: `There was an error with the \`database ${subCmdGroup} ${subCmd}\` command: \`${error.message.split('\n')[0]}\`.`
+        descr: `There was an error with the \`database ${subCmdGroup ?? ''} ${subCmd}\` command: \`${error.message.split('\n')[0]}\`.`
       })
     }
     interaction.editReply({ embeds: [embed] });

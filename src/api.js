@@ -26,15 +26,20 @@ app.get('/api/discord/:guildId/channels', verifyAPIAccess, fetchGuild, (req, res
 
 app.get('/api/discord/:guildId/members', verifyAPIAccess, fetchGuild, (req, res) => {
   console.log('API Member Request received.');
+
+  const members = req.guild.members.cache.map(member => {
+    const user = member.user;
+    return {
+      id: member.id,
+      bot: user.bot,
+      avatar: user.avatar || member.avatar,
+      defaultAvatarUrl: user.defaultAvatarUrl,
+      globalName: user.globalName || null,
+      username: user.username || null,
+      nickname: member.nickname || null 
+    };
+  });
   
-  const members = req.guild.users.cache.map(user => ({
-    id: user.id,
-    bot: user.bot,
-    avatar: user.avatar,
-    defaultAvatarUrl: user.defaultAvatarUrl,
-    globalName: user.globalName,
-    username: user.username
-  }));
   res.json(members);
   console.log('API Member Response sent!');
 });
