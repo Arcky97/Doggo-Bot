@@ -35,7 +35,7 @@ module.exports = async (guildId, user, userLevelInfo, xpSettings, xpToGive) => {
       }
     }
   }
-  await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: newLevel, xp: newXp })
+  await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: newLevel, xp: newXp, oldXp: userLevelInfo.xp })
   if (newUserInfo) {
     let embed = await getAnnounceEmbed(guildId, user, newUserInfo);
     await channel.send({content: ping, embeds: [ embed ]});

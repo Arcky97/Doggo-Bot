@@ -16,11 +16,12 @@ module.exports = async (guildId, user, xpToGive, xpSettings) => {
     userInfo = {
       level: newLevel,
       xp: newXp,
+      oldXp: userLvInfo.xp,
       color: userLvInfo.color
     }
-    await setUserLevelInfo(userLvInfo, { guildId: guildId, memberId: user.id }, { level: newLevel, xp: newXp });
+    await setUserLevelInfo(userLvInfo, { guildId: guildId, memberId: user.id }, { level: newLevel, xp: newXp, oldXp: userLvInfo.xp });
   } else {
-    await setUserLevelInfo(userLvInfo, { guildId, memberId: user.id }, { xp: newXp });
+    await setUserLevelInfo(userLvInfo, { guildId, memberId: user.id }, { xp: newXp, oldXp: userLvInfo.xp });
   }
   
   const levelCounter = { "xp": Math.max((newXp - userLvInfo.xp), 0), "levels": Math.max((newLevel - userLvInfo.level), 0) };

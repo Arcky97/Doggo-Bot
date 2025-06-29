@@ -1017,7 +1017,7 @@ module.exports = {
               }
               if (!embed) {
                 xpToGive = getXpFromLevel(levelToGive, xpSettings)
-                await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive });
+                await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive, oldXp: userLevelInfo.xp });
                 embed = createSuccessEmbed({ int: interaction, title: 'User Level Modified!', descr: `${user}'s Level has been modified to Lv. ${levelToGive}!`});
               }
               break;
@@ -1041,7 +1041,7 @@ module.exports = {
                 embed = createInfoEmbed({ int: interaction, title: 'User XP not Modified!', descr: `${user}'s XP has not been modified because it exceeds the maximum level of 999!`});
               }
               if (!embed) {
-                await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive });
+                await setUserLevelInfo(userLevelInfo, { guildId: guildId, memberId: user.id }, { level: levelToGive, xp: xpToGive, oldXp: userLevelInfo.xp });
                 embed = createSuccessEmbed({ int: interaction, title: 'User XP Modified!', descr: `${user}'s XP has been modified to ${xpToGive} XP!`});
               }
               break;

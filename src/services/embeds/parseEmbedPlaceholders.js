@@ -1,5 +1,6 @@
 const { getLevelRoles, getXpSettings } = require("../../managers/levelSettingsManager");
 const { getUserLevel } = require("../../managers/levelSystemManager");
+const getLevelFromXp = require("../../managers/levels/getLevelFromXp");
 const getXpFromLevel = require("../../managers/levels/getXpFromLevel");
 
 
@@ -31,8 +32,8 @@ module.exports = async (text, input, userInfo) => {
     '{user xp}': `${userLevelInfo.xp}`,
     '{user color}': userLevelInfo.color || '#f97316',
     '{level}': `${userLevelInfo.level}`,
-    '{level previous}': `${userLevelInfo.level - 1}`,
-    '{level previous xp}': getXpFromLevel(userLevelInfo.level - 1, xpSettings),
+    '{level previous}': getLevelFromXp(userLevelInfo.oldXp, xpSettings),
+    '{level previous xp}': getXpFromLevel(getLevelFromXp(userLevelInfo.oldXp, xpSettings), xpSettings),
     '{level next}': userLevelInfo.level + 1,
     '{level next xp}': getXpFromLevel(userLevelInfo.level + 1, xpSettings),
     '{reward}': reward && reward !== 'no reward' ? `<@&${reward.roleId}>` : reward,

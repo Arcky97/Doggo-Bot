@@ -8,5 +8,5 @@ module.exports = (userXp, xpSettings) => {
     totalLevel += 1;
     xp = getXpFromLevel(totalLevel, xpSettings);
   }
-  return totalLevel - 1;
+  return Math.max(totalLevel - 1, 0);
 }

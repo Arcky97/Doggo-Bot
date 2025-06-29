@@ -50,6 +50,7 @@ async function initDatabase() {
           memberId VARCHAR(100) NOT NULL,
           level INT DEFAULT 0,
           xp BIGINT DEFAULT 0,
+          oldXp BIGINT DEFAULT 0,
           color VARCHAR(10) DEFAULT '#f97316',
           deletionDate TIMESTAMP NULL,
           PRIMARY KEY (guildId, memberId)
