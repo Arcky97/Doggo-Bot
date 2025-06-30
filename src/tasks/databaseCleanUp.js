@@ -31,7 +31,7 @@ cron.schedule('0 0 * * *', async () => {
     cleanupInfo.forEach(info => {
       console.log(`Table: ${info.table}, Rows deleted: ${info.rowsDeleted}`);
     });
-    showDatabaseCount();
+    //showDatabaseCount();
   } catch (error) {
     console.error('Error running cleanup job:', error);
   }

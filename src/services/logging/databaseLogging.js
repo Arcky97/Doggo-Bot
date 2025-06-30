@@ -3,6 +3,7 @@ const path = require('path');
 const moment = require("moment");
 
 module.exports = async (event) => {
+  /*
   try {
     const dirPath = path.resolve(__dirname, "../../../database");
     const filePath = path.join(dirPath, "databaseLogging.txt");
@@ -14,5 +15,5 @@ module.exports = async (event) => {
 
   } catch (error) {
     console.error('Error exporting event to log file:', error);
-  }
+  }*/
 };

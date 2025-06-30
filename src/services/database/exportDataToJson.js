@@ -11,7 +11,7 @@ const databaseLogging = require("../logging/databaseLogging.js");
  * @returns 
  */
 module.exports = async (table, guildId, returnFile = false) => {
-  
+  /*
   const exportEntireTable = (table === 'BotReplies' || table === 'PremiumUsersAndGuilds' || returnFile);
   try {
     // Query data for the specific guild, unless it's the BotReplies Table.
@@ -77,5 +77,5 @@ module.exports = async (table, guildId, returnFile = false) => {
         ? `Error exporting data from ${table} to JSON.`
         : `Error exporting data for guild ${guildId} from ${table} to JSON.`
     );
-  }
+  }*/
 }

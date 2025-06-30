@@ -5,7 +5,7 @@ const dirPath = path.resolve(__dirname, "../../database/");
 const filePath = path.join(dirPath, "databaseCount.json");
 
 function addToDatabaseCount (table, action) {
-  
+  /*
   try {
 
     let databaseCount = {};
@@ -27,10 +27,11 @@ function addToDatabaseCount (table, action) {
     fs.writeFileSync(filePath, JSON.stringify(databaseCount, null, 2), 'utf8');
   } catch (error) {
     console.error('Error exporting event to log file:', error);
-  }
+  }*/
 }
 
 function showDatabaseCount () {
+  /*
   let databaseCount = {};
   if (fs.existsSync(filePath)) {
     const rawData = fs.readFileSync(filePath, 'utf8');
@@ -50,6 +51,7 @@ function showDatabaseCount () {
   console.log('-----------------------------------');
   databaseCount = {};
   fs.writeFileSync(filePath, JSON.stringify(databaseCount, null, 2), 'utf8');
+  */
 }
 
 module.exports = { addToDatabaseCount, showDatabaseCount }
