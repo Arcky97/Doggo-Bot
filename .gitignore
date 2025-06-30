@@ -1,5 +1,4 @@
 node_modules
 .env
 .DS_Store
-database/*
 run_bot.sh

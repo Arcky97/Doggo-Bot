@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "guildId": "1263545537303416863",
+    "userId": "235148962103951360",
+    "modId": "755687070210457644",
+    "timeoutId": null,
+    "action": "timeout remove",
+    "reason": "No reason provided.",
+    "status": "completed",
+    "formatDuration": null,
+    "logging": 1,
+    "logChannel": null,
+    "date": "2025-01-26T14:17:49.000Z",
+    "endTime": null,
+    "deletionDate": null
+  },
+  {
+    "id": 2,
+    "guildId": "1263545537303416863",
+    "userId": "235148962103951360",
+    "modId": "755687070210457644",
+    "timeoutId": null,
+    "action": "mute",
+    "reason": "No reason provided.",
+    "status": "pending",
+    "formatDuration": "No Duration given",
+    "logging": 1,
+    "logChannel": null,
+    "date": "2025-01-26T14:28:15.000Z",
+    "endTime": null,
+    "deletionDate": null
+  },
+  {
+    "id": 3,
+    "guildId": "1263545537303416863",
+    "userId": "235148962103951360",
+    "modId": "755687070210457644",
+    "timeoutId": null,
+    "action": "unmute",
+    "reason": "No reason provided.",
+    "status": "completed",
+    "formatDuration": null,
+    "logging": 1,
+    "logChannel": null,
+    "date": "2025-01-26T14:28:28.000Z",
+    "endTime": null,
+    "deletionDate": null
+  }
+]

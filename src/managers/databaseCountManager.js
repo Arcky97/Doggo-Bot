@@ -5,6 +5,7 @@ const dirPath = path.resolve(__dirname, "../../database/");
 const filePath = path.join(dirPath, "databaseCount.json");
 
 function addToDatabaseCount (table, action) {
+  
   try {
 
     let databaseCount = {};

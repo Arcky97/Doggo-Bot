@@ -1,0 +1,50 @@
+{
+  "BotStats": {
+    "selects": 0,
+    "inserts": 7,
+    "updates": 696,
+    "deletes": 0
+  },
+  "GuildSettings": {
+    "selects": 0,
+    "inserts": 22,
+    "updates": 30,
+    "deletes": 0
+  },
+  "BotReplies": {
+    "selects": 0,
+    "inserts": 8,
+    "updates": 0,
+    "deletes": 0
+  },
+  "LevelSettings": {
+    "selects": 0,
+    "inserts": 6,
+    "updates": 65,
+    "deletes": 0
+  },
+  "LevelSystem": {
+    "selects": 0,
+    "inserts": 12,
+    "updates": 61,
+    "deletes": 2
+  },
+  "GeneratedEmbeds": {
+    "selects": 0,
+    "inserts": 15,
+    "updates": 13,
+    "deletes": 11
+  },
+  "EventEmbeds": {
+    "selects": 0,
+    "inserts": 1,
+    "updates": 0,
+    "deletes": 0
+  },
+  "PremiumUsersAndGuilds": {
+    "selects": 0,
+    "inserts": 4,
+    "updates": 0,
+    "deletes": 0
+  }
+}

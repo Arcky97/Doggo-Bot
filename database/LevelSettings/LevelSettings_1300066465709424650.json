@@ -1,0 +1,47 @@
+[
+  {
+    "guildId": "1300066465709424650",
+    "globalMultiplier": 100,
+    "levelRoles": [],
+    "roleReplace": 0,
+    "announceChannel": "not set",
+    "announcePing": 0,
+    "announceDefaultMessage": {
+      "title": "{user global} leveled up!",
+      "description": "Congrats, {user global}, you leveled up to lv. {level}!",
+      "color": "{user color}",
+      "thumbnailUrl": "{user avatar}",
+      "imageURL": null,
+      "footer": {
+        "text": "{server name}",
+        "iconUrl": "{server icon}"
+      },
+      "timeStamp": true
+    },
+    "announceLevelMessages": [],
+    "roleMultipliers": [],
+    "channelMultipliers": [],
+    "categoryMultipliers": [],
+    "multiplierReplace": {
+      "category": true,
+      "channel": true
+    },
+    "blackListRoles": [],
+    "blackListChannels": [],
+    "blackListCategories": [],
+    "xpCooldown": 30,
+    "xpSettings": {
+      "step": 40,
+      "min": 15,
+      "max": 25,
+      "minLength": 15,
+      "maxLength": 115
+    },
+    "xpType": "random",
+    "clearOnLeave": 0,
+    "voiceEnable": 0,
+    "voiceMultiplier": 1,
+    "voiceCooldown": 2,
+    "deletionDate": null
+  }
+]

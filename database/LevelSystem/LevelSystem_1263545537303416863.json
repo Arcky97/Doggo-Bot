@@ -1,0 +1,29 @@
+[
+  {
+    "guildId": "1263545537303416863",
+    "memberId": "755687070210457644",
+    "level": 4,
+    "xp": 218,
+    "oldXp": 0,
+    "color": "#f97316",
+    "deletionDate": null
+  },
+  {
+    "guildId": "1263545537303416863",
+    "memberId": "763287145615982592",
+    "level": 2,
+    "xp": 86,
+    "oldXp": 0,
+    "color": "#f97316",
+    "deletionDate": null
+  },
+  {
+    "guildId": "1263545537303416863",
+    "memberId": "835094939724808232",
+    "level": 11,
+    "xp": 2039,
+    "oldXp": 1992,
+    "color": "#f97316",
+    "deletionDate": null
+  }
+]

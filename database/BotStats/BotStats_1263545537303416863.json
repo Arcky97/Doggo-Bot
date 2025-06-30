@@ -1,0 +1,50 @@
+[
+  {
+    "guildId": "1263545537303416863",
+    "totalCount": {
+      "current": 107,
+      "total": 107
+    },
+    "eventCount": {
+      "current": {
+        "messageCreate": 35,
+        "userUpdate": 1,
+        "voiceActivity": 10
+      },
+      "total": {
+        "messageCreate": 35,
+        "userUpdate": 1,
+        "voiceActivity": 10
+      }
+    },
+    "commandCount": {
+      "current": {
+        "misc": {
+          "level": 18
+        },
+        "moderation": {
+          "lvsys": 7
+        }
+      },
+      "total": {
+        "misc": {
+          "level": 18
+        },
+        "moderation": {
+          "lvsys": 7
+        }
+      }
+    },
+    "levelSystemCount": {
+      "current": {
+        "xp": 7060,
+        "levels": 30
+      },
+      "total": {
+        "xp": 7060,
+        "levels": 30
+      }
+    },
+    "deletionDate": null
+  }
+]
