@@ -1,0 +1,6 @@
+version: '3'
+services:
+  api:
+    image: ghcr.io/arcky97/Doggo-Bot:main
+    ports:
+      - "3011:3011"
