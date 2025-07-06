@@ -1,10 +1,11 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const loggingTypes = require('../../data/loggingTypes.json');
-const firstLetterToUpperCase = require('../utils/firstLetterToUpperCase');
-const { flattenObject } = require('../utils/flattenObject');
+import { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import firstLetterToUpperCase from '../utils/firstLetterToUpperCase.js';
+import flattenObject from '../utils/flattenObject.js';
+import { findJsonFile } from '../managers/jsonDataManager.js';
 
+const loggingTypes = findJsonFile('loggingTypes.json', 'data');
 
-module.exports = (type) => {
+export default (type) => {
   let logObject = loggingTypes[type];
 
   if (!logObject) throw new Error(`No logging configuration found for type: ${type}`);

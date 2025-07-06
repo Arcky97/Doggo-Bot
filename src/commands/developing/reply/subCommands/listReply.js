@@ -1,8 +1,8 @@
-const { EmbedBuilder } = require("discord.js");
-const pagination = require("../../../../handlers/pagination");
-const { getReplies } = require("../../../../managers/botRepliesManager");
+import { EmbedBuilder } from "discord.js";
+import pagination from "../../../../handlers/pagination.js";
+import { getReplies } from "../../../../managers/botRepliesManager.js";
 
-module.exports = async (interaction) => {
+export default async (interaction) => {
   const embeds = [];
   const pageSize = 9;
   try {

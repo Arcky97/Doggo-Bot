@@ -1,18 +1,18 @@
-const { EmbedBuilder } = require("discord.js");
-const botActivityService = require("../../services/botActivityService");
-const moment = require("moment");
-const getLogChannel = require("../../managers/logging/getLogChannel");
-const getMemberRoles = require("../../managers/logging/getMemberRoles");
-const formatTime = require("../../utils/formatTime");
-const { getLevelSettings } = require("../../managers/levelSettingsManager");
-const { resetLevelSystem } = require("../../managers/levelSystemManager");
-const { getEventEmbed } = require("../../managers/embedDataManager");
-const { createEventEmbed } = require("../../services/embeds/createDynamicEmbed");
-const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
-const checkLogTypeConfig = require("../../managers/logging/checkLogTypeConfig");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { EmbedBuilder } from "discord.js";
+import botActivityService from "../../services/botActivityService.js";
+import moment from "moment";
+import getLogChannel from "../../managers/logging/getLogChannel.js";
+import getMemberRoles from "../../managers/logging/getMemberRoles.js";
+import formatTime from "../../utils/formatTime.js";
+import { getLevelSettings } from "../../managers/levelSettingsManager.js";
+import { resetLevelSystem } from "../../managers/levelSystemManager.js";
+import { getEventEmbed } from "../../managers/embedDataManager.js";
+import { createEventEmbed } from "../../services/embeds/createDynamicEmbed.js";
+import eventTimeoutHandler from "../../handlers/eventTimeoutHandler.js";
+import checkLogTypeConfig from "../../managers/logging/checkLogTypeConfig.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = async (member) => {
+export default async (member) => {
   const guildId = member.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'guildMemberRemove' });

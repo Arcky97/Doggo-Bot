@@ -1,4 +1,4 @@
-module.exports = (verb) => {
+export default (verb) => {
   // Split multi-word verbs
   const words = verb.split(' ');
   let mainVerb = words.pop();

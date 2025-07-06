@@ -1,11 +1,12 @@
-require('dotenv').config();
-const mysql = require('mysql2/promise');
+import dotenv from 'dotenv';
+dotenv.config();
+import { createPool } from 'mysql2/promise.js';
 
 let pool; // Declare a variable to hold the database connection
 
-async function initDatabase() {
+export async function initDatabase() {
   try {
-    pool = mysql.createPool({
+    pool = createPool({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
@@ -258,7 +259,7 @@ async function checkTableUpdates(tableName) {
 }
 
 // Function to execute queries
-async function query(sql, params) {
+export async function query(sql, params) {
   const connection = await pool.getConnection();
   try {
     const rows = await connection.execute(sql, params);
@@ -267,6 +268,3 @@ async function query(sql, params) {
     connection.release();
   }
 }
-
-// Export the functions and connection
-module.exports = { initDatabase, query };

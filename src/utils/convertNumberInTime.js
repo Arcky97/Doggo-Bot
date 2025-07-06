@@ -1,4 +1,4 @@
-module.exports = (input, format) => {
+export default (input, format) => {
   switch (format) {
     case 'Miliseconds':
     case 'Seconds':

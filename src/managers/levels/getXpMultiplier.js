@@ -1,6 +1,6 @@
-const getMemberRoles = require("../logging/getMemberRoles")
+import getMemberRoles from "../logging/getMemberRoles.js";
 
-module.exports = ({settings, user, channel, roles, notRandom, message, premiumServer}) => {
+export default ({settings, user, channel, roles, notRandom, message, premiumServer}) => {
   // if roles are given, use roles, otherwise get the user roles.
   const userRoles = roles ? roles : getMemberRoles(user);
   const globMult = settings.globalMultiplier;

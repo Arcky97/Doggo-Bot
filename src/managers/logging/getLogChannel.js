@@ -1,7 +1,7 @@
-const { getGuildSettings } = require("../../managers/guildSettingsManager.js");
-const { checkChannelPermissions } = require("../../middleware/permissions/checkPermissions");
+import { getGuildSettings } from "../../managers/guildSettingsManager.js";
+import { checkChannelPermissions } from "../../middleware/permissions/checkPermissions.js";
 
-module.exports = async (guildId, log, returnMissing = false) => {
+export default async (guildId, log, returnMissing = false) => {
   const logChannels = await getGuildSettings(guildId);
   if (!logChannels) return;
 

@@ -1,4 +1,6 @@
-const { devs } = require('../../config.json');
+import { findJsonFile } from "../managers/jsonDataManager.js";
+
+const { devs } = findJsonFile ('config.json');
 
 const adminPerms = [
   "ManageChannels",
@@ -17,7 +19,7 @@ const adminPerms = [
   "Administrator"
 ]
 
-module.exports = (input) => {
+export default (input) => {
   let output = [];
   for (const { member, perms } of input) {
     if (!member) continue;

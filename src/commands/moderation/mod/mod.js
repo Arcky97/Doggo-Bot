@@ -1,24 +1,24 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { nextModerationLogId } = require("../../../managers/moderationLogsManager.js");
-const { createSuccessEmbed, createInfoEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
-const convertNumberInTime = require("../../../utils/convertNumberInTime");
-const calculateEndTime = require('../../../utils/calculateEndTime');
-const getLogChannel = require("../../../managers/logging/getLogChannel");
-const formatTime = require("../../../utils/formatTime");
-const { getMuteRole } = require("../../../managers/guildSettingsManager.js");
-const { createTimeoutUUID } = require("../../../tasks/moderationTasks");
-const timeUntilTomorrow = require("../../../utils/timeUntilTomorrow");
-const modKick = require("./subCommands/modKick");
-const modUnban = require("./subCommands/modUnban");
-const modMute = require("./subCommands/modMute");
-const ModUnmute = require("./subCommands/ModUnmute");
-const modWarn = require("./subCommands/modWarn");
-const modTimeout = require("./subCommands/modTimeout");
-const modBan = require("./subCommands/modBan");
-const pagination = require("../../../handlers/pagination");
-const { setBotStats } = require("../../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { nextModerationLogId } from "../../../managers/moderationLogsManager.js";
+import { createSuccessEmbed, createInfoEmbed, createNotDMEmbed } from "../../../services/embeds/createReplyEmbed.js";
+import convertNumberInTime from "../../../utils/convertNumberInTime.js";
+import calculateEndTime from '../../../utils/calculateEndTime.js';
+import getLogChannel from "../../../managers/logging/getLogChannel.js";
+import formatTime from "../../../utils/formatTime.js";
+import { getMuteRole } from "../../../managers/guildSettingsManager.js";
+import { createTimeoutUUID } from "../../../tasks/moderationTasks.js";
+import timeUntilTomorrow from "../../../utils/timeUntilTomorrow.js";
+import modKick from "./subCommands/modKick.js";
+import modUnban from "./subCommands/modUnban.js";
+import modMute from "./subCommands/modMute.js";
+import ModUnmute from "./subCommands/ModUnmute.js";
+import modWarn from "./subCommands/modWarn.js";
+import modTimeout from "./subCommands/modTimeout.js";
+import modBan from "./subCommands/modBan.js";
+import pagination from "../../../handlers/pagination.js";
+import { setBotStats } from "../../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'mod',
   description: 'Various Moderation Commands.',
   //deleted: true,

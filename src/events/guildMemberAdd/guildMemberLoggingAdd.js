@@ -1,16 +1,16 @@
-const { EmbedBuilder } = require("discord.js");
-const botActivityService = require("../../services/botActivityService");
-const getLogChannel = require("../../managers/logging/getLogChannel");
-const formatTime = require("../../utils/formatTime");
-const getOrdinalSuffix = require("../../utils/getOrdinalSuffix");
-const { getEventEmbed } = require("../../managers/embedDataManager");
-const { createEventEmbed } = require("../../services/embeds/createDynamicEmbed");
-const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
-const checkLogTypeConfig = require("../../managers/logging/checkLogTypeConfig");
-const { getGuildSettings } = require("../../managers/guildSettingsManager.js");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { EmbedBuilder } from "discord.js";
+import botActivityService from "../../services/botActivityService.js";
+import getLogChannel from "../../managers/logging/getLogChannel.js";
+import formatTime from "../../utils/formatTime.js";
+import getOrdinalSuffix from "../../utils/getOrdinalSuffix.js";
+import { getEventEmbed } from "../../managers/embedDataManager.js";
+import { createEventEmbed } from "../../services/embeds/createDynamicEmbed.js";
+import eventTimeoutHandler from "../../handlers/eventTimeoutHandler.js";
+import checkLogTypeConfig from "../../managers/logging/checkLogTypeConfig.js";
+import { getGuildSettings } from "../../managers/guildSettingsManager.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = async (member) => {
+export default async (member) => {
   const guildId = member.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'guildMemberAdd' });

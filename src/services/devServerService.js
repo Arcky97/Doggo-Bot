@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require("discord.js");
+import { EmbedBuilder } from "discord.js";
 
-module.exports = async (channelId, message) => {
+export default async (channelId, message) => {
   const channel = client.channels.cache.get(channelId);
 
   if (channel) {

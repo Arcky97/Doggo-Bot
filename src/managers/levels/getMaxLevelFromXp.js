@@ -1,4 +1,4 @@
-module.exports = (maxXp, xpSettings) => {
+export default (maxXp, xpSettings) => {
   const initialXp = 35;
   const step = xpSettings.step;
 

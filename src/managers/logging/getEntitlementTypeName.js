@@ -1,6 +1,6 @@
-const { EntitlementType } = require('discord.js');
+import { EntitlementType } from 'discord.js';
 
-module.exports = (entitlement) => {
+export default (entitlement) => {
   switch(entitlement.type) {
     case EntitlementType.Purchase:
       return 'Purchase';

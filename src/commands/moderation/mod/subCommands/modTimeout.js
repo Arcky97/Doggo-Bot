@@ -1,17 +1,19 @@
-const { addModerationLogs, getModerationLogs } = require("../../../../managers/moderationLogsManager");
-const { createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const { createTimeoutAddLogEmbed, createTimeoutRemoveLogEmbed } = require("../../../../services/moderationLogService");
-const { updateUserAttempts } = require("../../../../managers/userStatsManager");
-const { addModerationTask, removeModerationTask } = require("../../../../tasks/moderationTasks");
-const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
-const getUserClass = require("../../../../utils/getUserClass");
-const getCmdReplyKey = require("../../../../utils/getCmdReplyKey");
-const getCommandReply = require("../../../../utils/getCommandReply");
-const createMissingPermissionsEmbed = require("../../../../utils/createMissingPermissionsEmbed");
-const formatTime = require("../../../../utils/formatTime");
-const commandReplies = require("../../../../../data/commandReplies.json");
+import { addModerationLogs, getModerationLogs } from "../../../../managers/moderationLogsManager.js";
+import { createInfoEmbed, createErrorEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import { createTimeoutAddLogEmbed, createTimeoutRemoveLogEmbed } from "../../../../services/moderationLogService.js";
+import { updateUserAttempts } from "../../../../managers/userStatsManager.js";
+import { addModerationTask, removeModerationTask } from "../../../../tasks/moderationTasks.js";
+import checkLogTypeConfig from "../../../../managers/logging/checkLogTypeConfig.js";
+import getUserClass from "../../../../utils/getUserClass.js";
+import getCmdReplyKey from "../../../../utils/getCmdReplyKey.js";
+import getCommandReply from "../../../../utils/getCommandReply.js";
+import createMissingPermissionsEmbed from "../../../../utils/createMissingPermissionsEmbed.js";
+import formatTime from "../../../../utils/formatTime.js";
+import { findJsonFile } from "../../../../managers/jsonDataManager.js";
 
-module.exports = async (interaction, guild, member, mod, reason, nextId, formatDuration, logChannel, beginTime, endTime, durationMs, timeoutUUID, durationToTomorrow, subCmd) => {
+const commandReplies = findJsonFile('commandReplies.json', 'data');
+
+export default async (interaction, guild, member, mod, reason, nextId, formatDuration, logChannel, beginTime, endTime, durationMs, timeoutUUID, durationToTomorrow, subCmd) => {
   const embeds = [];
   let title, description, fetchMember;
   let fields = [];

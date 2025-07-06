@@ -1,12 +1,12 @@
-const getMultiplierSettings = require("../../../../managers/levels/getMultiplierSettings");
-const { getRoleOrChannelMultipliers } = require("../../../../managers/levelSettingsManager");
-const getChannelTypeName = require("../../../../managers/logging/getChannelTypeName");
-const { createSuccessEmbed, createWarningEmbed, createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const createListFromArray = require("../../../../utils/createListFromArray");
-const firstLetterToUpperCase = require("../../../../utils/firstLetterToUpperCase");
-const { setChannelOrRoleArray } = require("../../../../utils/setArrayValues");
+import getMultiplierSettings from "../../../../managers/levels/getMultiplierSettings.js";
+import { getRoleOrChannelMultipliers } from "../../../../managers/levelSettingsManager.js";
+import getChannelTypeName from "../../../../managers/logging/getChannelTypeName.js";
+import { createSuccessEmbed, createWarningEmbed, createInfoEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import createListFromArray from "../../../../utils/createListFromArray.js";
+import firstLetterToUpperCase from "../../../../utils/firstLetterToUpperCase.js";
+import { setChannelOrRoleArray } from "../../../../utils/setArrayValues.js";
 
-module.exports = async (interaction, guildId, subCmdGroup, subCmd, value, levSettings) => {
+export default async (interaction, guildId, subCmdGroup, subCmd, value, levSettings) => {
   let data, setting, embed, action, setData;
   value = Math.round(value * 100);
   const replace = interaction.options.getBoolean('replace') || false;

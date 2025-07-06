@@ -1,13 +1,13 @@
-const getBlacklistSettings = require("../../../../managers/levels/getBlacklistSettings");
-const { getRoleOrChannelBlacklist } = require("../../../../managers/levelSettingsManager");
-const getChannelTypeName = require("../../../../managers/logging/getChannelTypeName");
-const { createWarningEmbed, createSuccessEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const createListFromArray = require("../../../../utils/createListFromArray");
-const firstLetterToUpperCase = require("../../../../utils/firstLetterToUpperCase");
-const getVowel = require("../../../../utils/getVowel");
-const { setChannelOrRoleArray } = require("../../../../utils/setArrayValues");
+import getBlacklistSettings from "../../../../managers/levels/getBlacklistSettings.js";
+import { getRoleOrChannelBlacklist } from "../../../../managers/levelSettingsManager.js";
+import getChannelTypeName from "../../../../managers/logging/getChannelTypeName.js";
+import { createWarningEmbed, createSuccessEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import createListFromArray from "../../../../utils/createListFromArray.js";
+import firstLetterToUpperCase from "../../../../utils/firstLetterToUpperCase.js";
+import getVowel from "../../../../utils/getVowel.js";
+import { setChannelOrRoleArray } from "../../../../utils/setArrayValues.js";
 
-module.exports = async (interaction, guildId, subCmdGroup, subCmd, levSettings) => {
+export default async (interaction, guildId, subCmdGroup, subCmd, levSettings) => {
   let setting, embed, action, setData;
   const data = await getRoleOrChannelBlacklist({ id: guildId, type: subCmd });
   switch(subCmd) {

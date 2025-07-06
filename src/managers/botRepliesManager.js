@@ -1,12 +1,11 @@
-const { selectData } = require('../services/database/selectData');
-const { insertData } = require('../services/database/insertData');
-const { updateData } = require('../services/database/updateData');
-const { deleteData } = require('../services/database/deleteData');
-const { query } = require('./databaseManager');
-const exportToJson = require('../services/database/exportDataToJson');
-const Fuse = require('fuse.js');
+import { selectData } from '../services/database/selectData.js';
+import { insertData } from '../services/database/insertData.js';
+import { updateData } from '../services/database/updateData.js';
+import { deleteData } from '../services/database/deleteData.js';
+import { query } from './databaseManager.js';
+import Fuse from 'fuse.js';
 
-async function getTriggers() {
+export async function getTriggers() {
   try {
     const [rows] = await query('SELECT triggers FROM BotReplies');
     return rows.map(row => JSON.parse(row.triggers));
@@ -16,7 +15,7 @@ async function getTriggers() {
   }
 }
 
-async function getReplies() {
+export async function getReplies() {
   try {
     const [rows] = await query('SELECT * FROM BotReplies');
     return rows.map(row => ({
@@ -40,7 +39,7 @@ async function getIDs() {
   }
 }
 
-async function findClosestMatch(target, array) {
+export async function findClosestMatch(target, array) {
   if (array.length < 1) return;
 
   const flattenedArray = array.flat();
@@ -72,7 +71,7 @@ async function findClosestMatch(target, array) {
   return { matches: closestMatches.slice(0, 5), color: color };
 }
 
-async function setBotReplies({ trigger, response, action, id }) {
+export async function setBotReplies({ trigger, response, action, id }) {
   const { customAlphabet } = await import('nanoid');
   const numbers = '0123456789';
 
@@ -179,12 +178,9 @@ async function setBotReplies({ trigger, response, action, id }) {
         return `Oh no! Something went wrong when retrieving the reply with ID:${key.id} from the database. Please try again.`
       }
     }
-    exportToJson('BotReplies');
     return message;
   } catch (error) {
     console.error(`Error when trying to ${action} Reply:`, error);
     return `There was an error when trying to ${action} the given data. Please try again later.`;
   }
 }
-
-module.exports = { setBotReplies, findClosestMatch, getTriggers, getReplies };

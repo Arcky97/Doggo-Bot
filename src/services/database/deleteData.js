@@ -1,8 +1,7 @@
-const { addToDatabaseCount } = require("../../managers/databaseCountManager");
-const databaseLogging = require("../logging/databaseLogging");
-const { query } = require("../../managers/databaseManager");
+import databaseLogging from "../logging/databaseLogging.js";
+import { query } from "../../managers/databaseManager.js";
 
-async function deleteData(table, key, data) {
+export async function deleteData(table, key, data) {
   let deleteQuery;
   const whereClause = Object.keys(key).map(key => `${key} = ?`).join(' AND ');
   const whereValues = Object.values(key);
@@ -24,11 +23,8 @@ async function deleteData(table, key, data) {
   try {
     await query(deleteQuery, whereValues);
     databaseLogging(`Data Deleted from ${table} table.`);
-    addToDatabaseCount(table, "deletes");
   } catch (error) {
     console.error(`Error Deleting data in ${table} table:`, error);
     databaseLogging(`Error Deleting data from ${table} table.`);
   }
 }
-
-module.exports = { deleteData };

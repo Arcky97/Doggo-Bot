@@ -1,5 +1,5 @@
-const { EmbedBuilder } = require("discord.js");
-const eventTimeoutHandler = require("../handlers/eventTimeoutHandler");
+import { EmbedBuilder } from "discord.js";
+import eventTimeoutHandler from "../handlers/eventTimeoutHandler.js";
 
 async function sendModerationLogEvent (guild, channel, color, title, fields) {
   try {
@@ -19,17 +19,50 @@ async function sendModerationLogEvent (guild, channel, color, title, fields) {
   }
 }
 
-module.exports = {
-  createWarningAddLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Red', 'Warning Added', fields),
-  createWarningRemoveLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Orange', 'Warning Removed', fields),
-  createWarningClearLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Yellow', 'Warnings Cleared', fields),
-  createMuteLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Red', 'Mute', fields),
-  createUnmuteLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Green', 'Unmute', fields),
-  createTimeoutAddLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Red', 'Timeout Added', fields),
-  createTimeoutRemoveLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Orange', 'Timeout Removed', fields),
-  createKickLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Red', 'Kick', fields),
-  createRegularBanLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Red', 'Ban', fields),
-  createSoftBanLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Yellow', 'Soft Ban', fields),
-  createTempBanLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Orange', 'Temp Ban', fields),
-  createUnbanLogEmbed: (guild, channel, fields) => sendModerationLogEvent(guild, channel, 'Orange', 'Unban', fields) 
+export function createWarningAddLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Red', 'Warning Added', fields);
 }
+  
+export function createWarningRemoveLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Orange', 'Warning Removed', fields)
+}
+
+export function createWarningClearLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Yellow', 'Warnings Cleared', fields)
+}
+
+export function createMuteLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Red', 'Mute', fields)
+}
+
+export function createUnmuteLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Green', 'Unmute', fields)
+}
+  
+export function createTimeoutAddLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Red', 'Timeout Added', fields)
+}
+  
+export function createTimeoutRemoveLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Orange', 'Timeout Removed', fields)
+}
+  
+export function createKickLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Red', 'Kick', fields)
+}
+  
+export function createRegularBanLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Red', 'Ban', fields)
+}
+  
+export function createSoftBanLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Yellow', 'Soft Ban', fields)
+}
+  
+export function createTempBanLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Orange', 'Temp Ban', fields)
+}
+  
+export function createUnbanLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Orange', 'Unban', fields)
+} 

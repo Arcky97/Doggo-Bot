@@ -1,4 +1,4 @@
-module.exports = (targetClass, userId, targetId) => {
+export default (targetClass, userId, targetId) => {
   if (!targetId) return "user";
   if (targetClass === 'default') {
     return 'member';

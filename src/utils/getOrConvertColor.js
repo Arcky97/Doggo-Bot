@@ -1,7 +1,7 @@
-const ntc = require("ntc");
-const { findClosestMatch } = require("../managers/botRepliesManager");
+import ntc from "ntc";
+import { findClosestMatch } from "../managers/botRepliesManager.js";
 
-module.exports = async (input, output = false) => {
+export default async (input, output = false) => {
   let hexColor;
   let message;
   if (!input) return;

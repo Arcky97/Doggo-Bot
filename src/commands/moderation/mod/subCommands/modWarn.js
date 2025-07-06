@@ -1,16 +1,18 @@
-const { addModerationLogs, removeModerationLogs, getModerationLogs, clearModerationLogs, getModerationLogsById } = require("../../../../managers/moderationLogsManager");
-const { createSuccessEmbed, createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const { createWarningAddLogEmbed, createWarningRemoveLogEmbed, createWarningClearLogEmbed } = require("../../../../services/moderationLogService");
-const { updateUserAttempts } = require("../../../../managers/userStatsManager");
-const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
-const getUserClass = require("../../../../utils/getUserClass");
-const getCmdReplyKey = require("../../../../utils/getCmdReplyKey");
-const getCommandReply = require("../../../../utils/getCommandReply");
-const createMissingPermissionsEmbed = require("../../../../utils/createMissingPermissionsEmbed");
-const getOrdinalSuffix = require("../../../../utils/getOrdinalSuffix");
-const commandReplies = require("../../../../../data/commandReplies.json");
+import { addModerationLogs, removeModerationLogs, getModerationLogs, clearModerationLogs, getModerationLogsById } from "../../../../managers/moderationLogsManager.js";
+import { createSuccessEmbed, createInfoEmbed, createErrorEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import { createWarningAddLogEmbed, createWarningRemoveLogEmbed, createWarningClearLogEmbed } from "../../../../services/moderationLogService.js";
+import { updateUserAttempts } from "../../../../managers/userStatsManager.js";
+import checkLogTypeConfig from "../../../../managers/logging/checkLogTypeConfig.js";
+import getUserClass from "../../../../utils/getUserClass.js";
+import getCmdReplyKey from "../../../../utils/getCmdReplyKey.js";
+import getCommandReply from "../../../../utils/getCommandReply.js";
+import createMissingPermissionsEmbed from "../../../../utils/createMissingPermissionsEmbed.js";
+import getOrdinalSuffix from "../../../../utils/getOrdinalSuffix.js";
+import { findJsonFile } from "../../../../managers/jsonDataManager.js";
 
-module.exports = async (interaction, guild, member, mod, reason, nextId, logChannel, subCmd) => {
+const commandReplies = findJsonFile('commandReplies.json', 'data');
+
+export default async (interaction, guild, member, mod, reason, nextId, logChannel, subCmd) => {
   const embeds = [];
   let title, description, fetchMember;
   let fields = [];

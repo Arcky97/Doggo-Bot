@@ -1,5 +1,7 @@
-const { EmbedBuilder } = require("discord.js");
-const botMood = require('../../../data/images.json');
+import { EmbedBuilder } from "discord.js";
+import { findJsonFile } from '../../managers/jsonDataManager.js';
+
+const botMood = findJsonFile('images.json', 'data');
 
 /**
  * 
@@ -33,11 +35,26 @@ function createReplyEmbed(interaction, color, title, description, footer = true,
   }
 }
 
-module.exports = {
-  createSuccessEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Green', title, descr, footer, false, "happy"),
-  createInfoEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Yellow', `${title ? title : 'Info'}`, descr, footer, !title, "sad"),
-  createWarningEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Orange', `${title ? title : 'Warning'}`, descr, footer, !title, "annoyed"),
-  createErrorEmbed: ({int, title, descr, footer}) => createReplyEmbed(int, 'Red', `${title ? title: 'Error'}`, descr, footer, !title, "shocked"),
-  createUnfinishedEmbed: (int) => createReplyEmbed(int, 'Blue', 'Unfinished', 'Sorry, this Command is not finished yet.', true, true, "Sleepy"),
-  createNotDMEmbed: (int) => createReplyEmbed(int, 'Fuchsia', 'Not DM Command', 'This command cannot be executed in DM with the bot. Try it out in a Server instead.', true, false, "annoyed")
+export function createSuccessEmbed ({int, title, descr, footer}) {
+  return createReplyEmbed(int, 'Green', title, descr, footer, false, "happy")
+}
+
+export function createInfoEmbed ({int, title, descr, footer}) {
+  return createReplyEmbed(int, 'Yellow', `${title ? title : 'Info'}`, descr, footer, !title, "sad")
+}
+
+export function createWarningEmbed ({int, title, descr, footer}) {
+  return createReplyEmbed(int, 'Orange', `${title ? title : 'Warning'}`, descr, footer, !title, "annoyed")
+}
+
+export function createErrorEmbed ({int, title, descr, footer}) {
+  return createReplyEmbed(int, 'Red', `${title ? title: 'Error'}`, descr, footer, !title, "shocked")
+}
+
+export function createUnfinishedEmbed (int) {
+  return createReplyEmbed(int, 'Blue', 'Unfinished', 'Sorry, this Command is not finished yet.', true, true, "Sleepy")
+}
+
+export function createNotDMEmbed (int) {
+  return createReplyEmbed(int, 'Fuchsia', 'Not DM Command', 'This command cannot be executed in DM with the bot. Try it out in a Server instead.', true, false, "annoyed")
 }

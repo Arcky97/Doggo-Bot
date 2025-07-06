@@ -1,29 +1,24 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { setLevelSettings, getLevelSettings, getRoleOrChannelBlacklist, getLevelRoles, resetLevelSettings } = require("../../../managers/levelSettingsManager");
-const { setChannelOrRoleArray, setLevelRolesArray } = require("../../../utils/setArrayValues");
-const createListFromArray = require("../../../utils/createListFromArray");
-const getLevelSystemSettings = require("../../../managers/levels/getLevelSystemSettings");
-const getBlacklistSettings = require("../../../managers/levels/getBlacklistSettings");
-const getVoiceSettings = require("../../../managers/levels/getVoiceSettings");
-const { resetLevelSystem, getAllGuildUsersLevel, getUserLevel, setUserLevelInfo } = require("../../../managers/levelSystemManager");
-const { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
-const getChannelTypeName = require("../../../managers/logging/getChannelTypeName");
-const firstLetterToUpperCase = require("../../../utils/firstLetterToUpperCase");
-const getVowel = require("../../../utils/getVowel");
-const getLevelFromXp = require("../../../managers/levels/getLevelFromXp");
-const getXpFromLevel = require("../../../managers/levels/getXpFromLevel");
-const getXpMultiplier = require("../../../managers/levels/getXpMultiplier");
-const getMemberRoles = require("../../../managers/logging/getMemberRoles");
-const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
-const { getPremiumById } = require("../../../managers/premiumManager");
-const getXpSettings = require("../../../managers/levels/getXpSettings");
-const { setBotStats } = require("../../../managers/botStatsManager");
-const lvsysMultiplier = require("./subCommands/lvsysMultiplier");
-const lvsysAnnounce = require("./subCommands/lvsysAnnounce");
-const lvsysBlacklist = require("./subCommands/lvsysBlacklist");
-const lvsysRoles = require("./subCommands/lvsysRoles");
+import { ApplicationCommandOptionType } from "discord.js";
+import { setLevelSettings, getLevelSettings, resetLevelSettings } from "../../../managers/levelSettingsManager.js";
+import createListFromArray from "../../../utils/createListFromArray.js";
+import getLevelSystemSettings from "../../../managers/levels/getLevelSystemSettings.js";
+import getVoiceSettings from "../../../managers/levels/getVoiceSettings.js";
+import { resetLevelSystem, getAllGuildUsersLevel, getUserLevel, setUserLevelInfo } from "../../../managers/levelSystemManager.js";
+import { createErrorEmbed, createSuccessEmbed, createWarningEmbed, createInfoEmbed, createNotDMEmbed } from "../../../services/embeds/createReplyEmbed.js";
+import getLevelFromXp from "../../../managers/levels/getLevelFromXp.js";
+import getXpFromLevel from "../../../managers/levels/getXpFromLevel.js";
+import getXpMultiplier from "../../../managers/levels/getXpMultiplier.js";
+import getMemberRoles from "../../../managers/logging/getMemberRoles.js";
+import createMissingPermissionsEmbed from "../../../utils/createMissingPermissionsEmbed.js";
+import { getPremiumById } from "../../../managers/premiumManager.js";
+import getXpSettings from "../../../managers/levels/getXpSettings.js";
+import { setBotStats } from "../../../managers/botStatsManager.js";
+import lvsysMultiplier from "./subCommands/lvsysMultiplier.js";
+import lvsysAnnounce from "./subCommands/lvsysAnnounce.js";
+import lvsysBlacklist from "./subCommands/lvsysBlacklist.js";
+import lvsysRoles from "./subCommands/lvsysRoles.js";
 
-module.exports = {
+export default {
   name: 'lvsys',
   description: 'Level System Management.',
   options: [

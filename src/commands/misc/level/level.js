@@ -1,14 +1,14 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { getUserLevel, getAllGuildUsersLevel, getAllGlobalUsersLevel } = require("../../../managers/levelSystemManager")
-const { getXpSettings } = require("../../../managers/levelSettingsManager");
-const levelColor = require("./subCommands/levelColor");
-const levelLeaderboard = require("./subCommands/levelLeaderboard");
-const levelShow = require("./subCommands/levelShow");
-const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
-const { createErrorEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
-const { setBotStats } = require("../../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { getUserLevel, getAllGuildUsersLevel, getAllGlobalUsersLevel } from "../../../managers/levelSystemManager.js";
+import { getXpSettings } from "../../../managers/levelSettingsManager.js";
+import levelColor from "./subCommands/levelColor.js";
+import levelLeaderboard from "./subCommands/levelLeaderboard.js";
+import levelShow from "./subCommands/levelShow.js";
+import createMissingPermissionsEmbed from "../../../utils/createMissingPermissionsEmbed.js";
+import { createErrorEmbed, createNotDMEmbed } from "../../../services/embeds/createReplyEmbed.js";
+import { setBotStats } from "../../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'level',
   description: 'Various commands for the Level System',
   options: [

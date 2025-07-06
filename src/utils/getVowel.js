@@ -1,4 +1,4 @@
-module.exports = (text, combine = true) => {
+export default (text, combine = true) => {
   const vowel = ['a', 'e', 'i', 'o', 'u'];
   const firstLetter = text.charAt(0).toLowerCase();
   const article = (vowel.includes(firstLetter) ? 'an' : 'a');

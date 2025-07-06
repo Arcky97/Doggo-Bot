@@ -1,12 +1,8 @@
-const { setBotStats } = require("../../managers/botStatsManager");
-const { setGeneratedEmbed, setEventEmbed } = require("../../managers/embedDataManager");
-const { getGuildSettings, setGuildLoggingConfig } = require("../../managers/guildSettingsManager");
-const { setLevelSettings } = require("../../managers/levelSettingsManager");
-const exportToJson = require("../../services/database/exportDataToJson");
-const { selectData } = require("../../services/database/selectData");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
+import { setBotStats } from "../../managers/botStatsManager.js";
+import { getGuildSettings, setGuildLoggingConfig } from "../../managers/guildSettingsManager.js";
+import { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
 
-module.exports = {
+export default {
   name: 'fix',
   description: 'fix some stuff in the database.',
   devOnly: true,
@@ -51,7 +47,7 @@ module.exports = {
     interaction.editReply({ embeds: [embed] });
     await setBotStats(guildId, 'command', { category: 'developing', command: 'fix' });
   }
-}
+};
 
 const renameKeyPreserveOrder = (obj, oldKey, newKey) => {
   return Object.fromEntries(

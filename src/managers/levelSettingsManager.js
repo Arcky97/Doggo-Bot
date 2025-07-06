@@ -1,16 +1,14 @@
-const { selectData } = require("../services/database/selectData");
-const { insertData } = require("../services/database/insertData");
-const { updateData } = require("../services/database/updateData");
-const { deleteData } = require("../services/database/deleteData");
-const exportToJson = require("../services/database/exportDataToJson");
+import { selectData } from "../services/database/selectData.js";
+import { insertData } from "../services/database/insertData.js";
+import { updateData } from "../services/database/updateData.js";
+import { deleteData } from "../services/database/deleteData.js";
 
-async function getLevelSettings(id) {
+export async function getLevelSettings(id) {
   try {
     let data = await selectData('LevelSettings', { guildId: id });
     if (!data) {
       await insertData('LevelSettings', { guildId: id });
       data = await selectData('LevelSettings', { guildId: id });
-      exportToJson('LevelSettings', id);
     }
     return data;
   } catch (error) {
@@ -19,7 +17,7 @@ async function getLevelSettings(id) {
   }
 }
 
-async function getRoleOrChannelMultipliers({id, type}) {
+export async function getRoleOrChannelMultipliers({id, type}) {
   const data = await getLevelSettings(id);
   if (type === 'role') {
     return JSON.parse(data.roleMultipliers);
@@ -30,12 +28,12 @@ async function getRoleOrChannelMultipliers({id, type}) {
   }
 }
 
-async function getMultiplierReplace(id) {
+export async function getMultiplierReplace(id) {
   const data = await getLevelSettings(id);
   return JSON.parse(data.multiplierReplace);
 }
 
-async function getRoleOrChannelBlacklist({id, type}) {
+export async function getRoleOrChannelBlacklist({id, type}) {
   const data = await getLevelSettings(id);
   if (type === 'role') {
     return JSON.parse(data.blackListRoles);
@@ -46,12 +44,12 @@ async function getRoleOrChannelBlacklist({id, type}) {
   }
 }
 
-async function getLevelRoles(id) {
+export async function getLevelRoles(id) {
   const data = await getLevelSettings(id);
   return JSON.parse(data.levelRoles);
 }
 
-async function getAnnounceChannel(id) {
+export async function getAnnounceChannel(id) {
   const data = await getLevelSettings(id);
   const channel = data.announceChannel;
   if (channel !== 'not set') {
@@ -61,17 +59,17 @@ async function getAnnounceChannel(id) {
   }
 }
 
-async function getXpCoolDown(id) {
+export async function getXpCoolDown(id) {
   const data = await getLevelSettings(id);
   return data.xpCooldown;
 }
 
-async function getAnnouncePing(id) {
+export async function getAnnouncePing(id) {
   const data = await getLevelSettings(id);
   return data.announcePing;
 }
 
-async function getAnnounceMessage(id, level) {
+export async function getAnnounceMessage(id, level) {
   const data = await getLevelSettings(id);
   let message = JSON.parse(data.announceLevelMessages).find(mes => mes.lv === level);
   if (!message) {
@@ -80,17 +78,17 @@ async function getAnnounceMessage(id, level) {
   return message;
 }
 
-async function getRoleReplace(id) {
+export async function getRoleReplace(id) {
   const data = await getLevelSettings(id);
   return data.roleReplace;
 }
 
-async function getXpSettings(id) {
+export async function getXpSettings(id) {
   let data = await getLevelSettings(id);
   return JSON.parse(data.xpSettings);
 }
 
-async function setLevelSettings({ id, setting}) {
+export async function setLevelSettings({ id, setting}) {
   let levSettings = await getLevelSettings(id);
   if (!setting) return;
   const settingKey = Object.keys(setting)[0];
@@ -110,30 +108,12 @@ async function setLevelSettings({ id, setting}) {
   } catch (error) {
     console.log('Error setting level settings', error);
   }
-  exportToJson('LevelSettings', id);
 }
 
-async function resetLevelSettings(id) {
+export async function resetLevelSettings(id) {
   try {
     await deleteData('LevelSettings', {guildId: id});
   } catch (error) {
     console.error('Failed to reset LevelSettings', error);
   }
-  exportToJson('LevelSettings', id);
 }
-
-module.exports = { 
-  setLevelSettings, 
-  getLevelSettings, 
-  getRoleOrChannelMultipliers, 
-  getMultiplierReplace,
-  getRoleOrChannelBlacklist, 
-  getLevelRoles, 
-  getAnnounceChannel, 
-  getAnnounceMessage, 
-  getXpCoolDown, 
-  getAnnouncePing, 
-  getRoleReplace, 
-  getXpSettings,
-  resetLevelSettings 
-};

@@ -1,14 +1,14 @@
-const { Client, Message } = require('discord.js');
+import { Client, Message } from 'discord.js';
 const cooldowns = new Set();
-const { getLevelSettings, getXpCoolDown, getXpSettings } = require('../../managers/levelSettingsManager');
-const getXpMultiplier = require('../../managers/levels/getXpMultiplier');
-const giveUserLevelRole = require('../../managers/levels/giveUserLevelRole');
-const sendAnnounceMessage = require('../../managers/levels/sendAnnounceMessage');
-const getUserInfo = require('../../managers/levels/getUserInfo');
-const { getPremiumById } = require('../../managers/premiumManager');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { getLevelSettings, getXpCoolDown, getXpSettings } from '../../managers/levelSettingsManager.js';
+import getXpMultiplier from '../../managers/levels/getXpMultiplier.js';
+import giveUserLevelRole from '../../managers/levels/giveUserLevelRole.js';
+import sendAnnounceMessage from '../../managers/levels/sendAnnounceMessage.js';
+import getUserInfo from '../../managers/levels/getUserInfo.js';
+import { getPremiumById } from '../../managers/premiumManager.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (message) => {
+export default async (message) => {
   const guildId = message.guild?.id;
   if (!message.inGuild() || message.author.bot || cooldowns.has(guildId + message.author.id)) return;
 

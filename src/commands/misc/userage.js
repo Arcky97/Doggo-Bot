@@ -1,9 +1,9 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const formatTime = require("../../utils/formatTime");
-const { createSuccessEmbed, createErrorEmbed, createInfoEmbed } = require("../../services/embeds/createReplyEmbed");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import formatTime from "../../utils/formatTime.js";
+import { createSuccessEmbed, createErrorEmbed } from "../../services/embeds/createReplyEmbed.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'userage',
   description: "Find out how old an User's Account is.",
   options: [

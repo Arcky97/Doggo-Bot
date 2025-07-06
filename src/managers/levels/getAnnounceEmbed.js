@@ -1,8 +1,8 @@
-const { EmbedBuilder } = require("discord.js");
-const { getAnnounceMessage } = require("../levelSettingsManager");
-const parseEmbedPlaceholders = require("../../services/embeds/parseEmbedPlaceholders");
+import { EmbedBuilder } from "discord.js";
+import { getAnnounceMessage } from "../levelSettingsManager.js";
+import parseEmbedPlaceholders from "../../services/embeds/parseEmbedPlaceholders.js";
 
-module.exports = async (guildId, user, userLevelInfo) => {
+export default async (guildId, user, userLevelInfo) => {
   let annMessage = await getAnnounceMessage(guildId, userLevelInfo.level);
   if (annMessage.lv) annMessage = annMessage.options; 
   const footerIcon = await parseEmbedPlaceholders(annMessage.footer.iconUrl, user, userLevelInfo);

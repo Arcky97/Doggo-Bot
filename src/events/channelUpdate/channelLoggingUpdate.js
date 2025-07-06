@@ -1,14 +1,14 @@
-const { Client, GuildChannel, EmbedBuilder } = require('discord.js');
-const getLogChannel = require("../../managers/logging/getLogChannel");
-const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
-const getChannelTypeName = require('../../managers/logging/getChannelTypeName');
-const convertNumberInTime = require('../../utils/convertNumberInTime');
-const formatOverwrite = require('../../middleware/permissions/formatOverwrite');
-const comparePermissions = require('../../middleware/permissions/comparePermissions');
-const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, GuildChannel, EmbedBuilder } from 'discord.js';
+import getLogChannel from "../../managers/logging/getLogChannel.js";
+import eventTimeoutHandler from "../../handlers/eventTimeoutHandler.js";
+import getChannelTypeName from '../../managers/logging/getChannelTypeName.js';
+import convertNumberInTime from '../../utils/convertNumberInTime.js';
+import formatOverwrite from '../../middleware/permissions/formatOverwrite.js';
+import comparePermissions from '../../middleware/permissions/comparePermissions.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (oldChannel, newChannel) => {
+export default async (oldChannel, newChannel) => {
   const guildId = oldChannel.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'channelUpdate' });

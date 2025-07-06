@@ -1,11 +1,11 @@
-const { getUserAttempts, resetUserAttempts } = require("../managers/userStatsManager");
-const firstLetterToUpperCase = require("./firstLetterToUpperCase");
-const getPresentParticle = require("./getPresentParticle");
-const getVowel = require("./getVowel");
+import { getUserAttempts, resetUserAttempts } from "../managers/userStatsManager.js";
+import firstLetterToUpperCase from "./firstLetterToUpperCase.js";
+import getPresentParticle from "./getPresentParticle.js";
+import getVowel from "./getVowel.js";
 
 const cooldowns = new Set();
 
-module.exports = async (guildId, memberId, targetId, action, cmdKey, replies, object = null) => {
+export default async (guildId, memberId, targetId, action, cmdKey, replies, object = null) => {
   const userAttempts = await getUserAttempts(guildId, memberId);
   const attempts = userAttempts[action][cmdKey][targetId];
   const responseArray = replies[Math.min(attempts.temp - 1, replies.length - 1)];

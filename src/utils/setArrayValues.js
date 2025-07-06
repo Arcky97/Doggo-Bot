@@ -1,4 +1,4 @@
-function setChannelOrRoleArray({type, data, id, value, replace, remove}) {
+export function setChannelOrRoleArray({type, data, id, value, replace, remove}) {
   const index = data.findIndex(item => item[`${type}Id`] === id);
   let action; 
 
@@ -28,7 +28,7 @@ function setChannelOrRoleArray({type, data, id, value, replace, remove}) {
   return [action, JSON.stringify(data)];
 }
 
-function setLevelRolesArray(action, data, level, id) {
+export function setLevelRolesArray(action, data, level, id) {
   const index = data.findIndex(item => item.level === level);
   if (action === 'add') {
     if (index === -1) {
@@ -46,7 +46,7 @@ function setLevelRolesArray(action, data, level, id) {
   return [action, JSON.stringify(data)];  
 }
 
-function setAnnounceLevelArray(levSettings, newData) {
+export function setAnnounceLevelArray(levSettings, newData) {
   existingData = JSON.parse(levSettings.announceLevelMessages);
   const level = typeof newData === 'object' ? newData.lv : newData
   const index = existingData.findIndex(item => item.lv === level);
@@ -69,5 +69,3 @@ function setAnnounceLevelArray(levSettings, newData) {
   }
   return [action, JSON.stringify(existingData)];
 }
-
-module.exports = { setChannelOrRoleArray, setAnnounceLevelArray, setLevelRolesArray }

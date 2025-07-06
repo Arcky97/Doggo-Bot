@@ -1,13 +1,15 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig, convertSetupCommand } = require("../../managers/guildSettingsManager.js");
-const { createErrorEmbed, createSuccessEmbed, createInfoEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
-const createLoggingMenu = require("../../handlers/loggingMenuHandler.js");
-const firstLetterToUpperCase = require("../../utils/firstLetterToUpperCase");
-const loggingTypes = require('../../../data/loggingTypes.json');
-const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { setGuildSettings, getGuildLoggingConfig, setGuildLoggingConfig, convertSetupCommand } from "../../managers/guildSettingsManager.js";
+import { createErrorEmbed, createSuccessEmbed, createInfoEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
+import createLoggingMenu from "../../handlers/loggingMenuHandler.js";
+import firstLetterToUpperCase from "../../utils/firstLetterToUpperCase.js";
+import createMissingPermissionsEmbed from "../../utils/createMissingPermissionsEmbed.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
+import { findJsonFile } from "../../managers/jsonDataManager.js";
 
-module.exports = {
+const loggingTypes = findJsonFile('loggingTypes.json', 'data');
+
+export default {
   name: 'setup',
   description: 'setup channels for chatting and logging.',
   options: [
@@ -208,13 +210,11 @@ module.exports = {
       embeds: [createNotDMEmbed(interaction)]
     });
 
-    
     let embed, title, description, choice;
     const subCmd = interaction.options.getSubcommand();
     const channel = interaction.options.getChannel('channel');
     const role = interaction.options.getRole('role');
     const guildId = interaction.guild.id;
-
 
     let permEmbed = await createMissingPermissionsEmbed(interaction, interaction.member, ['ManageGuild']);
     if (permEmbed) return interaction.editReply({ embeds: [permEmbed] });

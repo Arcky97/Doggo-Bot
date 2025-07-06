@@ -1,9 +1,8 @@
-const cron = require('node-cron');
-const { query } = require('../managers/databaseManager');
-const { deleteData } = require('../services/database/deleteData');
-const { updateData } = require('../services/database/updateData');
-const moment = require("moment");
-const { showDatabaseCount } = require('../managers/databaseCountManager');
+import cron from 'node-cron';
+import { deleteData } from '../services/database/deleteData.js';
+import { updateData } from '../services/database/updateData.js';
+import moment from "moment";
+import { query } from '../managers/databaseManager.js';
 
 const tables = ['GuildSettings', 'LevelSystem', 'LevelSettings', 'EventEmbeds', 'GeneratedEmbeds', 'ReactionRoles'];
 
@@ -31,7 +30,6 @@ cron.schedule('0 0 * * *', async () => {
     cleanupInfo.forEach(info => {
       console.log(`Table: ${info.table}, Rows deleted: ${info.rowsDeleted}`);
     });
-    //showDatabaseCount();
   } catch (error) {
     console.error('Error running cleanup job:', error);
   }
@@ -62,7 +60,7 @@ async function cleanupExpiredData(now) {
   return cleanupInfo;
 }
 
-async function setDeletionDate(id, data) {
+export async function setDeletionDate(id, data) {
   for (const table of tables) {
     try {
       await updateData(table, {guildId: id}, {deletionDate: data});
@@ -72,7 +70,7 @@ async function setDeletionDate(id, data) {
   }  
 }
 
-async function resetDeletionDate(id) {
+export async function resetDeletionDate(id) {
   let hasMarkedData = false;
 
   for (const table of tables) {
@@ -93,5 +91,3 @@ async function resetDeletionDate(id) {
   }
   return hasMarkedData;
 }
-
-module.exports = { setDeletionDate, resetDeletionDate };

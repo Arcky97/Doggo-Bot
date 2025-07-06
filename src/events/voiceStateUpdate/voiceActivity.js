@@ -1,19 +1,19 @@
-const { Client, VoiceState, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const ignoreLogging = require('../../managers/logging/ignoreLogging');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const { getLevelSettings, getXpSettings } = require('../../managers/levelSettingsManager');
-const getVoiceXp = require('../../managers/levels/getVoiceXp');
-const formatTime = require('../../utils/formatTime');
-const giveUserLevelRole = require('../../managers/levels/giveUserLevelRole');
-const sendAnnounceMessage = require('../../managers/levels/sendAnnounceMessage');
-const getUserInfo = require('../../managers/levels/getUserInfo');
-const { setBotStats } = require('../../managers/botStatsManager');
-const { getGuildLoggingConfig } = require('../../managers/guildSettingsManager');
-const { botStartTime } = require('../..');
+import { EmbedBuilder } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import ignoreLogging from '../../managers/logging/ignoreLogging.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { getLevelSettings, getXpSettings } from '../../managers/levelSettingsManager.js';
+import getVoiceXp from '../../managers/levels/getVoiceXp.js';
+import formatTime from '../../utils/formatTime.js';
+import giveUserLevelRole from '../../managers/levels/giveUserLevelRole.js';
+import sendAnnounceMessage from '../../managers/levels/sendAnnounceMessage.js';
+import getUserInfo from '../../managers/levels/getUserInfo.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
+import { getGuildLoggingConfig } from '../../managers/guildSettingsManager.js';
+import { botStartTime } from '../../index.js';
 const voiceActivity = new Map();
 
-module.exports = async (oldState, newState) => {
+export default async (oldState, newState) => {
   const guildId = oldState.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'voiceActivity' });

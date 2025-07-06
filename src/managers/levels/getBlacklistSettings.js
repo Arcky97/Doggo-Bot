@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require("discord.js")
+import { EmbedBuilder } from "discord.js";
 
-module.exports = (blackListRoles, blackListChannels, blackListCategories) => {
+export default (blackListRoles, blackListChannels, blackListCategories) => {
   let embed = new EmbedBuilder()
     .setColor('Green')
     .setTitle('Level System Black List Settings')

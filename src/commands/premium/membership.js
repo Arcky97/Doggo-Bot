@@ -1,10 +1,10 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { getPremiumById } = require("../../managers/premiumManager");
-const formatTime = require("../../utils/formatTime");
-const { createSuccessEmbed, createErrorEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { getPremiumById } from "../../managers/premiumManager.js";
+import formatTime from "../../utils/formatTime.js";
+import { createSuccessEmbed, createErrorEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'membership',
   description: 'Check how long you have been a Premium User.',
   options: [

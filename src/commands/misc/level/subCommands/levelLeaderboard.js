@@ -1,8 +1,9 @@
-const { EmbedBuilder } = require("discord.js");
-const getXpFromLevel = require("../../../../managers/levels/getXpFromLevel");
-const { createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
+import { EmbedBuilder } from "discord.js";
+import getXpFromLevel from "../../../../managers/levels/getXpFromLevel.js";
+import { createInfoEmbed } from "../../../../services/embeds/createReplyEmbed.js";
 
-module.exports = async (interaction, guildUsers, xpSettings) => {
+export default async (interaction, guildUsers, xpSettings) => {
+  let embed;
   if (guildUsers.length > 0) {
     embed = new EmbedBuilder()
       .setColor('Green')

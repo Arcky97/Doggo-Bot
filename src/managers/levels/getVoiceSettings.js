@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require("discord.js")
+import { EmbedBuilder } from "discord.js";
 
-module.exports = (levSettings) => {
+export default (levSettings) => {
   let voiceEnable = levSettings.voiceEnable;
   let voiceMult = levSettings.voiceMultiplier;
   let voiceCooldown = levSettings.voiceCooldown;

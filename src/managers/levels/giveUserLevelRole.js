@@ -1,6 +1,6 @@
-const { getLevelRoles, getRoleReplace } = require("../../managers/levelSettingsManager");
+import { getLevelRoles, getRoleReplace } from "../../managers/levelSettingsManager.js";
 
-module.exports = async (guildId, member, userInfo) => {
+export default async (guildId, member, userInfo) => {
   const levelRoles = await getLevelRoles(guildId);
   if (levelRoles.length === 0) return;
   const replaceRoles = await getRoleReplace(guildId) === 1;

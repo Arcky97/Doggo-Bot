@@ -1,15 +1,17 @@
-const { addModerationLogs } = require("../../../../managers/moderationLogsManager");
-const { updateUserAttempts } = require("../../../../managers/userStatsManager");
-const createMissingPermissionsEmbed = require("../../../../utils/createMissingPermissionsEmbed");
-const { createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const getCmdReplyKey = require("../../../../utils/getCmdReplyKey");
-const getCommandReply = require("../../../../utils/getCommandReply");
-const getUserClass = require("../../../../utils/getUserClass");
-const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
-const { createKickLogEmbed } = require("../../../../services/moderationLogService");
-const commandReplies = require("../../../../../data/commandReplies.json");
+import { addModerationLogs } from "../../../../managers/moderationLogsManager.js";
+import { updateUserAttempts } from "../../../../managers/userStatsManager.js";
+import createMissingPermissionsEmbed from "../../../../utils/createMissingPermissionsEmbed.js";
+import { createInfoEmbed, createErrorEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import getCmdReplyKey from "../../../../utils/getCmdReplyKey.js";
+import getCommandReply from "../../../../utils/getCommandReply.js";
+import getUserClass from "../../../../utils/getUserClass.js";
+import checkLogTypeConfig from "../../../../managers/logging/checkLogTypeConfig.js";
+import { createKickLogEmbed } from "../../../../services/moderationLogService.js";
+import { findJsonFile } from "../../../../managers/jsonDataManager.js";
 
-module.exports = async (interaction, guild, member, mod, reason, nextId, logChannel, beginTime) => {
+const commandReplies = findJsonFile('commandReplies.json', 'data');
+
+export default async (interaction, guild, member, mod, reason, nextId, logChannel, beginTime) => {
   const embeds = [];
   let title, description, fetchMember;
   let fields = [];

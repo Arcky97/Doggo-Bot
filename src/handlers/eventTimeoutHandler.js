@@ -1,6 +1,6 @@
 const embedQueue = new Map()
 
-module.exports = async (type, id, embed, channel) => {
+export default async (type, id, embed, channel) => {
   try {
     const queueKey = type + id
     if (!embedQueue.has(queueKey)) {

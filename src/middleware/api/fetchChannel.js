@@ -1,4 +1,4 @@
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
   if (!client) {
     return res.status(500).json({ error: 'Bot is not initialized.'});
   }

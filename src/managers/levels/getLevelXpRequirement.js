@@ -1,6 +1,6 @@
-const { query } = require("../../managers/databaseManager");
+import { query } from "../../managers/databaseManager.js";
 
-module.exports = async () => {
+export default async () => {
   const initialXp = 35;
   const incrementStep = 40;
 

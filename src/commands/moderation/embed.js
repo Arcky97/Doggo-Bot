@@ -1,11 +1,11 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } = require("../../managers/embedDataManager");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
-const { createGeneratedEmbed } = require("../../services/embeds/createDynamicEmbed");
-const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } from "../../managers/embedDataManager.js";
+import { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
+import { createGeneratedEmbed } from "../../services/embeds/createDynamicEmbed.js";
+import createMissingPermissionsEmbed from "../../utils/createMissingPermissionsEmbed.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'embed',
   description: 'Create embeds and send them to a channel of your choice.',
   options: [

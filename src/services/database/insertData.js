@@ -1,8 +1,7 @@
-const { addToDatabaseCount } = require("../../managers/databaseCountManager");
-const databaseLogging = require("../logging/databaseLogging");
-const { query } = require("../../managers/databaseManager");
+import databaseLogging from "../logging/databaseLogging.js";
+import { query } from "../../managers/databaseManager.js";
 
-async function insertData(table, key, data) {
+export async function insertData(table, key, data) {
   const combinedData = { ...key, ...data };
   const columns = Object.keys(combinedData);
   const placeholders = columns.map(() => '?').join(', ');
@@ -15,11 +14,8 @@ async function insertData(table, key, data) {
   try {
     await query(insertQuery, Object.values(combinedData));
     databaseLogging(`Data Inserted in ${table} table.`);
-    addToDatabaseCount (table, "inserts");
   } catch (error) {
     console.error(`Error inserting data in ${table} table:`, error);
     databaseLogging(`Error Inserting data in ${table} table.`)
   }
 }
-
-module.exports = { insertData };

@@ -40,7 +40,7 @@ const validateOptions = (options, commandName) => {
   return true;
 };
 
-module.exports = (command) => {
+export default (command) => {
   const { options = [] } = command;
 
   return validateOptions(options, command.name);

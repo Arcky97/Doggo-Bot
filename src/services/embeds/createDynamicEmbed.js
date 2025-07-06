@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require("discord.js")
-const parseEmbedPlaceholders = require("./parseEmbedPlaceholders")
-const getOrConvertColor = require("../../utils/getOrConvertColor")
+import { EmbedBuilder } from "discord.js";
+import parseEmbedPlaceholders from "./parseEmbedPlaceholders.js";
+import getOrConvertColor from "../../utils/getOrConvertColor.js";
 
 async function createEmbed(input, embedData) {
   let embed = new EmbedBuilder()
@@ -47,7 +47,10 @@ async function createEmbed(input, embedData) {
   return embed;
 }
 
-module.exports = {
-  createEventEmbed: (input, embedData) => createEmbed(input, embedData),
-  createGeneratedEmbed: (input, embedData) => createEmbed(input, embedData)
+export function createEventEmbed (input, embedData) {
+  createEmbed(input, embedData)
+};
+
+export function createGeneratedEmbed (input, embedData) {
+  createEmbed(input, embedData)
 };

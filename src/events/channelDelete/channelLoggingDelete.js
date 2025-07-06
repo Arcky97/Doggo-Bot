@@ -1,13 +1,13 @@
-const { Client, GuildChannel, EmbedBuilder } = require("discord.js");
-const getLogChannel = require("../../managers/logging/getLogChannel");
-const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
-const getChannelTypeName = require("../../managers/logging/getChannelTypeName");
-const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require("../../managers/levelSettingsManager");
-const { setChannelOrRoleArray } = require('../../utils/setArrayValues');
-const checkLogTypeConfig = require("../../managers/logging/checkLogTypeConfig");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { Client, GuildChannel, EmbedBuilder } from "discord.js";
+import getLogChannel from "../../managers/logging/getLogChannel.js";
+import eventTimeoutHandler from "../../handlers/eventTimeoutHandler.js";
+import getChannelTypeName from "../../managers/logging/getChannelTypeName.js";
+import { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } from "../../managers/levelSettingsManager.js";
+import { setChannelOrRoleArray } from '../../utils/setArrayValues.js';
+import checkLogTypeConfig from "../../managers/logging/checkLogTypeConfig.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = async (channel) => {
+export default async (channel) => {
   const guildId = channel.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'channelDelete' });

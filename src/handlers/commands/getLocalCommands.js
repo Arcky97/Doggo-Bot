@@ -1,7 +1,11 @@
-const path = require('path');
-const getAllFiles = require('./getAllFiles');
+import path from 'path';
+import getAllFiles from './getAllFiles.js';
+import { fileURLToPath, pathToFileURL } from 'url';
 
-module.exports = (exceptions = []) => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default async (exceptions = []) => {
   let localCommands = [];
 
   const commandCategories = getAllFiles(
@@ -13,7 +17,8 @@ module.exports = (exceptions = []) => {
     const commandFiles = getAllFiles(commandCategory);
     
     for (const commandFile of commandFiles) {
-      const commandObject = require(commandFile);
+      const commandModule = await import(pathToFileURL(commandFile).href);
+      const commandObject = commandModule.default;
       if (exceptions.includes(commandObject.name)) {
         continue;
       }

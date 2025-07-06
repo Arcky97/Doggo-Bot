@@ -1,16 +1,16 @@
-const { EmbedBuilder } = require("discord.js");
-const getAnnounceEmbed = require("../../../../managers/levels/getAnnounceEmbed");
-const getAnnouncementSettings = require("../../../../managers/levels/getAnnouncementSettings");
-const getLevelFromXp = require("../../../../managers/levels/getLevelFromXp");
-const { getUserLevel } = require("../../../../managers/levelSystemManager");
-const { createSuccessEmbed, createInfoEmbed, createWarningEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const createMissingPermissionsEmbed = require("../../../../utils/createMissingPermissionsEmbed");
-const getOrConvertColor = require("../../../../utils/getOrConvertColor");
-const { setAnnounceLevelArray } = require("../../../../utils/setArrayValues");
-const parseEmbedPlaceholders = require("../../../../services/embeds/parseEmbedPlaceholders");
-const getChannelTypeName = require("../../../../managers/logging/getChannelTypeName");
+import { EmbedBuilder } from "discord.js";
+import getAnnounceEmbed from "../../../../managers/levels/getAnnounceEmbed.js";
+import getAnnouncementSettings from "../../../../managers/levels/getAnnouncementSettings.js";
+import getLevelFromXp from "../../../../managers/levels/getLevelFromXp.js";
+import { getUserLevel } from "../../../../managers/levelSystemManager.js";
+import { createSuccessEmbed, createInfoEmbed, createWarningEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import createMissingPermissionsEmbed from "../../../../utils/createMissingPermissionsEmbed.js";
+import getOrConvertColor from "../../../../utils/getOrConvertColor.js";
+import { setAnnounceLevelArray } from "../../../../utils/setArrayValues.js";
+import parseEmbedPlaceholders from "../../../../services/embeds/parseEmbedPlaceholders.js";
+import getChannelTypeName from "../../../../managers/logging/getChannelTypeName.js";
 
-module.exports = async (interaction, guildId, subCmd, value, levSettings, xpSettings) => {
+export default async (interaction, guildId, subCmd, value, levSettings, xpSettings) => {
   let setting, embed, currentValue, embedOptions, level, action, setData
   switch(subCmd) {
     case 'channel':

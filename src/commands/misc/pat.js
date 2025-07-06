@@ -1,7 +1,7 @@
-const { setBotStats } = require("../../managers/botStatsManager");
-const { createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
+import { setBotStats } from "../../managers/botStatsManager.js";
+import { createErrorEmbed } from "../../services/embeds/createReplyEmbed.js";
 
-module.exports = {
+export default {
   name: 'pat',
   description: 'Give the bot a pat.',
   callback: async (interaction) => {

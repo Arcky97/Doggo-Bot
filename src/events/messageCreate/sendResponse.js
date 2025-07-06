@@ -1,8 +1,8 @@
-const { Client, Message } = require('discord.js');
-const { selectData } = require('../../services/database/selectData');
-const { getReplies, findClosestMatch, getTriggers } = require('../../managers/botRepliesManager');
+import { Client, Message } from 'discord.js';
+import { selectData } from '../../services/database/selectData.js';
+import { getReplies, findClosestMatch, getTriggers } from '../../managers/botRepliesManager.js';
 
-module.exports = async (message) => {
+export default async (message) => {
   if (message.author.bot) return;
   try {
     let chatChannelId;

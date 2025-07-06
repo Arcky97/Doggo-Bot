@@ -1,6 +1,6 @@
-const { getLevelSettings } = require("../../managers/levelSettingsManager")
+import { getLevelSettings } from "../../managers/levelSettingsManager.js";
 
-module.exports = async (guildId, channel, timeSpent) => {
+export default async (guildId, channel, timeSpent) => {
   const levelSettings = await getLevelSettings(guildId);
 
   const voiceMult = levelSettings.voiceMultiplier;

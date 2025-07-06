@@ -1,11 +1,11 @@
-const areCommandsDifferent = require('../../handlers/commands/areCommandsDifferent');
-const getApplicationCommands = require('../../handlers/commands/getApplicationCommands');
-const getLocalCommands = require('../../handlers/commands/getLocalCommands');
-const validateCommandProperties = require('../../handlers/commands/validateCommandProperties');
+import areCommandsDifferent from '../../handlers/commands/areCommandsDifferent.js';
+import getApplicationCommands from '../../handlers/commands/getApplicationCommands.js';
+import getLocalCommands from '../../handlers/commands/getLocalCommands.js';
+import validateCommandProperties from '../../handlers/commands/validateCommandProperties.js';
 
-module.exports = async (guild) => {
+export default async (guild) => {
   try {
-    const localCommands = getLocalCommands();
+    const localCommands = await getLocalCommands();
     const applicationCommands = await getApplicationCommands(guild.id);
     console.log(
       `Checking ${localCommands.length} Commands`

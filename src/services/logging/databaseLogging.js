@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const moment = require("moment");
+import fs from 'fs';
+import path from 'path';
+import moment from "moment";
 
-module.exports = async (event) => {
+export default async (event) => {
   /*
   try {
     const dirPath = path.resolve(__dirname, "../../../database");

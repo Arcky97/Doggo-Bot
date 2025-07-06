@@ -1,5 +1,4 @@
-
-function flattenObject (obj, parentKey = '', result = {}) {
+export default (obj, parentKey = '', result = {}) => {
   for (const key in obj) {
     const value = obj[key];
     const newKey = parentKey ? `${parentKey}.${key}` : key;
@@ -12,5 +11,3 @@ function flattenObject (obj, parentKey = '', result = {}) {
   }
   return result;
 }
-
-module.exports = { flattenObject };

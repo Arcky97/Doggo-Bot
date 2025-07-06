@@ -1,10 +1,9 @@
-const { getLevelRoles, getXpSettings } = require("../../managers/levelSettingsManager");
-const { getUserLevel } = require("../../managers/levelSystemManager");
-const getLevelFromXp = require("../../managers/levels/getLevelFromXp");
-const getXpFromLevel = require("../../managers/levels/getXpFromLevel");
+import { getLevelRoles, getXpSettings } from "../../managers/levelSettingsManager.js";
+import { getUserLevel } from "../../managers/levelSystemManager.js";
+import getLevelFromXp from "../../managers/levels/getLevelFromXp.js";
+import getXpFromLevel from "../../managers/levels/getXpFromLevel.js";
 
-
-module.exports = async (text, input, userInfo) => {
+export default async (text, input, userInfo) => {
   if (!text) return null;
   const guild = input.guild;
   const xpSettings = await getXpSettings(guild.id);

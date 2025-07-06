@@ -1,11 +1,11 @@
-const { EmbedBuilder } = require("discord.js");
-const { getGuildSettings } = require('../../managers/guildSettingsManager.js');
-const { createErrorEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed.js");
-const createListFromArray = require("../../utils/createListFromArray.js");
-const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed.js");
-const { setBotStats } = require("../../managers/botStatsManager.js");
+import { EmbedBuilder } from "discord.js";
+import { getGuildSettings } from '../../managers/guildSettingsManager.js';
+import { createErrorEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
+import createListFromArray from "../../utils/createListFromArray.js";
+import createMissingPermissionsEmbed from "../../utils/createMissingPermissionsEmbed.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'settings',
   description: 'Shows the settings of the bot.',
   callback: async (interaction) => {

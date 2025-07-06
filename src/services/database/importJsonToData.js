@@ -1,10 +1,10 @@
-const { query } = require('../../managers/databaseManager');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const databaseLogging = require('../logging/databaseLogging')
+import { query } from '../../managers/databaseManager.js';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import databaseLogging from '../logging/databaseLogging.js';
 
-async function importFromDownloads(table) {
+export async function importFromDownloads(table) {
   const downloadsFolder = path.join(os.homedir(), 'Downloads');
 
   const possibleNames = [
@@ -37,7 +37,7 @@ async function importFromDownloads(table) {
  * @param {string} table - The name of the table.
  * @param {string} jsonFilePath - Path to the JSON file to import.
  */
-async function importJsonToData(table, jsonFilePath) {
+export async function importJsonToData(table, jsonFilePath) {
   const isGlobalTable = (table === 'BotReplies' || table === 'PremiumUsersAndGuilds');
 
   try {
@@ -89,5 +89,3 @@ async function importJsonToData(table, jsonFilePath) {
     )
   }
 }
-
-module.exports = { importFromDownloads, importJsonToData };

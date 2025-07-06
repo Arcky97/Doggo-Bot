@@ -1,4 +1,4 @@
-module.exports = (level, xpSettings) => {
+export default (level, xpSettings) => {
   const initialXp = 35;
   const incrStep = xpSettings.step;
 

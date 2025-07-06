@@ -1,7 +1,7 @@
-const { EmbedBuilder } = require("discord.js")
+import { EmbedBuilder } from "discord.js";
 
 
-module.exports = (levSettings, premiumServer) => {
+export default (levSettings, premiumServer) => {
   const xpSettings = JSON.parse(levSettings.xpSettings);
   const embed = new EmbedBuilder()
     .setColor('Green')

@@ -1,12 +1,14 @@
-const { devs, testServer } = require('../../../config.json');
-const { getPremiumById } = require('../../managers/premiumManager');
-const getLocalCommands = require('../../handlers/commands/getLocalCommands');
-const { createInfoEmbed, createWarningEmbed, createErrorEmbed } = require('../../services/embeds/createReplyEmbed');
+import { getPremiumById } from '../../managers/premiumManager.js';
+import getLocalCommands from '../../handlers/commands/getLocalCommands.js';
+import { createInfoEmbed, createWarningEmbed, createErrorEmbed } from '../../services/embeds/createReplyEmbed.js';
+import { findJsonFile } from '../../managers/jsonDataManager.js';
 
-module.exports = async (interaction) => {
+const { devs, testServer } = findJsonFile('config.json');
+
+export default async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  const localCommands = getLocalCommands();
+  const localCommands = await getLocalCommands();
   const commandObject = localCommands.find((cmd) => cmd.name === interaction.commandName);
   if (!commandObject) return;
 

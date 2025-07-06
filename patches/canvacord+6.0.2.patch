@@ -1,0 +1,471 @@
+# npx patch-package canvacord
+diff --git a/node_modules/canvacord/dist/index.d.mts b/node_modules/canvacord/dist/index.d.mts
+index 5064f5e..493ceaa 100644
+--- a/node_modules/canvacord/dist/index.d.mts
++++ b/node_modules/canvacord/dist/index.d.mts
+@@ -1042,6 +1042,7 @@ declare class RankCardBuilder extends Builder<RankCardBuilderProps> {
+      *     .setRequiredXP(600)
+      *     .setLevel(2)
+      *     .setRank(5)
++     *     .setGlobalRank(10)
+      *     .setStatus('online');
+      *
+      * const pngBuffer = await card.build({
+@@ -1103,6 +1104,11 @@ declare class RankCardBuilder extends Builder<RankCardBuilderProps> {
+      * @param rank The rank of this rank card.
+      */
+     setRank(rank: number): this;
++    /**
++     * Set the global rank of this rank car.
++     * @param global The global rank of this rank card.
++     */
++    setGlobalRank(global: number): this; 
+     /**
+      * Configures the renderer for this rank card.
+      * @param config The configuration for this rank card.
+diff --git a/node_modules/canvacord/dist/index.d.ts b/node_modules/canvacord/dist/index.d.ts
+index 5064f5e..3618289 100644
+--- a/node_modules/canvacord/dist/index.d.ts
++++ b/node_modules/canvacord/dist/index.d.ts
+@@ -859,6 +859,7 @@ interface LeaderboardProps {
+         level: string;
+         xp: string;
+         rank: string;
++        global: string;
+     };
+     /**
+      * Whether or not to abbreviate the numeric values.
+@@ -946,6 +947,7 @@ interface RankCardProps {
+     currentXP: number | null;
+     requiredXP: number | null;
+     rank: number | null;
++    global: number | null;
+     level: number | null;
+     backgroundColor: string;
+     overlay: boolean | number | string;
+@@ -955,6 +957,7 @@ interface RankCardProps {
+         level: string;
+         xp: string;
+         rank: string;
++        global: string;
+     }>;
+     styles: Partial<{
+         container: Stylable;
+@@ -992,6 +995,11 @@ interface RankCardProps {
+                 text: Stylable;
+                 value: Stylable;
+             }>;
++            global: Partial<{
++                container: Stylable;
++                text: Stylable;
++                value: Stylable;
++            }>;
+         }>;
+     }>;
+ }
+@@ -1026,6 +1034,10 @@ interface RankCardBuilderProps extends Omit<RankCardProps, "avatar" | "backgroun
+                 text: string;
+                 value: string;
+             }>;
++            global: Partial<{
++                text: string;
++                value: string;
++            }>;
+         }>;
+     }>;
+ }
+@@ -1042,6 +1054,7 @@ declare class RankCardBuilder extends Builder<RankCardBuilderProps> {
+      *     .setRequiredXP(600)
+      *     .setLevel(2)
+      *     .setRank(5)
++     *     .setGlobalRank(10)
+      *     .setStatus('online');
+      *
+      * const pngBuffer = await card.build({
+@@ -1103,6 +1116,11 @@ declare class RankCardBuilder extends Builder<RankCardBuilderProps> {
+      * @param rank The rank of this rank card.
+      */
+     setRank(rank: number): this;
++    /**
++     * Set the global rank of this rank car.
++     * @param global The global rank of this rank card.
++     */
++    setGlobalRank(global: number): this; 
+     /**
+      * Configures the renderer for this rank card.
+      * @param config The configuration for this rank card.
+diff --git a/node_modules/canvacord/dist/index.js b/node_modules/canvacord/dist/index.js
+index e3b735e..6630e45 100644
+--- a/node_modules/canvacord/dist/index.js
++++ b/node_modules/canvacord/dist/index.js
+@@ -1725,11 +1725,20 @@ var TemplateFactory = {
+   })
+ };
+ 
+-// src/helpers/utils.ts
+ var fixed = /* @__PURE__ */ __name((v, r) => {
+-  if (!r)
+-    return v;
+-  const formatter = new Intl.NumberFormat("en-US", { notation: "compact" });
++  if (!r) return v;
++
++  if (v < 1000000) {
++    // Show full number with 3 decimal places if necessary
++    return v.toLocaleString("en-US", { maximumFractionDigits: 3 });
++  }
++
++  // Use compact notation for numbers 10,000 and above
++  const formatter = new Intl.NumberFormat("en-US", {
++    notation: "compact",
++    maximumFractionDigits: 3
++  });
++
+   return formatter.format(v);
+ }, "fixed");
+ var getDefaultFont = /* @__PURE__ */ __name(() => {
+@@ -2049,6 +2058,7 @@ var _LeaderboardBuilder = class _LeaderboardBuilder extends Builder {
+       text: {
+         level: "Level",
+         rank: "Rank",
++        global: "Global",
+         xp: "XP"
+       }
+     });
+@@ -2281,6 +2291,7 @@ var clamp = /* @__PURE__ */ __name((value) => Math.max(0, Math.min(100, value)),
+ function NeoClassicalCard(props) {
+   const {
+     rank,
++    global,
+     level,
+     currentXP,
+     requiredXP,
+@@ -2397,7 +2408,7 @@ function NeoClassicalCard(props) {
+             "div",
+             {
+               className: StyleSheet.cn(
+-                "bg-[#484b4e] w-160 h-6 rounded-xl flex",
++                "bg-[#484b4e] w-233 h-6 flex",
+                 StyleSheet.tw(styles.progressbar?.track)
+               ),
+               style: StyleSheet.css(styles.progressbar?.track)
+@@ -2407,7 +2418,7 @@ function NeoClassicalCard(props) {
+             "div",
+             {
+               className: StyleSheet.cn(
+-                "bg-[#fff] max-w-160 h-6 rounded-xl absolute flex",
++                "bg-[#fff] h-6 absolute flex",
+                 `w-[${progressWidth}%]`,
+                 StyleSheet.tw(styles.progressbar?.thumb)
+               ),
+@@ -2415,91 +2426,111 @@ function NeoClassicalCard(props) {
+             }
+           )
+         ),
+-        /* @__PURE__ */ JSX.createElement(
++        level != null && /* @__PURE__ */ JSX.createElement(
+           "div",
+           {
+-            className: StyleSheet.cn("flex", StyleSheet.tw(styles.statistics?.container)),
+-            style: StyleSheet.css(styles.statistics?.container)
++            className: StyleSheet.cn(
++              "flex items-center text-[#808386] font-medium mt-4",
++              StyleSheet.tw(styles.statistics?.level?.container)
++            ),
++            style: StyleSheet.css(styles.statistics?.level?.container)
+           },
+-          level != null && /* @__PURE__ */ JSX.createElement(
+-            "div",
++          /* @__PURE__ */ JSX.createElement(
++            "h3",
+             {
+-              className: StyleSheet.cn(
+-                "flex items-center text-[#808386] font-medium",
+-                StyleSheet.tw(styles.statistics?.level?.container)
+-              ),
+-              style: StyleSheet.css(styles.statistics?.level?.container)
++              className: StyleSheet.tw(styles.statistics?.level?.text),
++              style: StyleSheet.css(styles.statistics?.level?.text)
+             },
++            texts.level || "LEVEL:",
+             /* @__PURE__ */ JSX.createElement(
+-              "h3",
++              "span",
+               {
+-                className: StyleSheet.tw(styles.statistics?.level?.text),
+-                style: StyleSheet.css(styles.statistics?.level?.text)
++                className: StyleSheet.cn("text-white ml-1", StyleSheet.tw(styles.statistics?.level?.value)),
++                style: StyleSheet.css(styles.statistics?.level?.value)
+               },
+-              texts.level || "LEVEL:",
+-              /* @__PURE__ */ JSX.createElement(
+-                "span",
+-                {
+-                  className: StyleSheet.cn("text-white ml-1", StyleSheet.tw(styles.statistics?.level?.value)),
+-                  style: StyleSheet.css(styles.statistics?.level?.value)
+-                },
+-                fixed(level, abbreviate)
+-              )
++              fixed(level, abbreviate)
+             )
+-          ),
+-          !shouldSkipStats && /* @__PURE__ */ JSX.createElement(
+-            "div",
++          )
++        ),
++        !shouldSkipStats && /* @__PURE__ */ JSX.createElement(
++          "div",
++          {
++            className: StyleSheet.cn(
++              "flex items-center text-[#808386] font-medium mt-4",
++              StyleSheet.tw(styles.statistics?.xp?.container)
++            ),
++            style: StyleSheet.css(styles.statistics?.xp?.container)
++          },
++          /* @__PURE__ */ JSX.createElement(
++            "h3",
+             {
+-              className: StyleSheet.cn(
+-                "flex items-center text-[#808386] font-medium ml-8",
+-                StyleSheet.tw(styles.statistics?.xp?.container)
+-              ),
+-              style: StyleSheet.css(styles.statistics?.xp?.container)
++              className: StyleSheet.tw(styles.statistics?.xp?.text),
++              style: StyleSheet.css(styles.statistics?.xp?.text)
+             },
++            texts.xp || "XP:",
+             /* @__PURE__ */ JSX.createElement(
+-              "h3",
++              "span",
+               {
+-                className: StyleSheet.tw(styles.statistics?.xp?.text),
+-                style: StyleSheet.css(styles.statistics?.xp?.text)
++                className: StyleSheet.cn("text-white ml-1", StyleSheet.tw(styles.statistics?.xp?.value)),
++                style: StyleSheet.css(styles.statistics?.xp?.value)
+               },
+-              texts.xp || "XP:",
+-              /* @__PURE__ */ JSX.createElement(
+-                "span",
+-                {
+-                  className: StyleSheet.cn("text-white ml-1", StyleSheet.tw(styles.statistics?.xp?.value)),
+-                  style: StyleSheet.css(styles.statistics?.xp?.value)
+-                },
+-                fixed(currentXP ?? 0, abbreviate),
+-                "/",
+-                fixed(requiredXP ?? 0, abbreviate)
+-              )
++              fixed(currentXP ?? 0, abbreviate),
++              "/",
++              fixed(requiredXP ?? 0, abbreviate)
+             )
+-          ),
+-          rank != null && /* @__PURE__ */ JSX.createElement(
+-            "div",
++          )
++        ),
++        rank != null && /* @__PURE__ */ JSX.createElement(
++          "div",
++          {
++            className: StyleSheet.cn(
++              "flex items-center text-[#808386] font-medium mt-4",
++              StyleSheet.tw(styles.statistics?.rank?.container)
++            ),
++            style: StyleSheet.css(styles.statistics?.rank?.container)
++          },
++          /* @__PURE__ */ JSX.createElement(
++            "h3",
+             {
+-              className: StyleSheet.cn(
+-                "flex items-center text-[#808386] font-medium ml-8",
+-                StyleSheet.tw(styles.statistics?.rank?.container)
+-              ),
+-              style: StyleSheet.css(styles.statistics?.rank?.container)
++              className: StyleSheet.tw(styles.statistics?.rank?.text),
++              style: StyleSheet.css(styles.statistics?.rank?.text)
++            },
++            texts.rank || "RANK:",
++            /* @__PURE__ */ JSX.createElement(
++              "span",
++              {
++                className: StyleSheet.cn("text-white ml-1", StyleSheet.tw(styles.statistics?.rank?.value)),
++                style: StyleSheet.css(styles.statistics?.rank?.value)
++              },
++              "#",
++              fixed(rank, abbreviate)
++            )
++          )
++        ),
++        global != null && /* @__PURE__ */ JSX.createElement(
++          "div",
++          {
++            className: StyleSheet.cn(
++              "flex items-center text-[#808386] font-medium mt-4",
++              StyleSheet.tw(styles.statistics?.global?.container)
++            ),
++            style: StyleSheet.css(styles.statistics?.global?.container)
++          },
++          /* @__PURE__ */ JSX.createElement(
++            "h3",
++            {
++              className: StyleSheet.tw(styles.statistics?.global?.text),
++              style: StyleSheet.css(styles.statistics?.global?.text)
+             },
++            texts.global || "GLOBAL:",
+             /* @__PURE__ */ JSX.createElement(
+-              "h3",
++              "span",
+               {
+-                className: StyleSheet.tw(styles.statistics?.rank?.text),
+-                style: StyleSheet.css(styles.statistics?.rank?.text)
++                className: StyleSheet.cn("text-white ml-1", StyleSheet.tw(styles.statistics?.global?.value)),
++                style: StyleSheet.css(styles.statistics?.global?.value)
+               },
+-              texts.rank || "RANK:",
+-              /* @__PURE__ */ JSX.createElement(
+-                "span",
+-                {
+-                  className: StyleSheet.cn("text-white ml-1", StyleSheet.tw(styles.statistics?.rank?.value)),
+-                  style: StyleSheet.css(styles.statistics?.rank?.value)
+-                },
+-                "#",
+-                fixed(rank, abbreviate)
+-              )
++              "#",
++              fixed(global, abbreviate)
+             )
+           )
+         )
+@@ -2524,6 +2555,7 @@ var _RankCardBuilder = class _RankCardBuilder extends Builder {
+    *     .setLevel(2)
+    *     .setRank(5)
+    *     .setStatus('online');
++   *     .setStatus('online');
+    *
+    * const pngBuffer = await card.build({
+    *   format: 'png'
+@@ -2540,13 +2572,14 @@ var _RankCardBuilder = class _RankCardBuilder extends Builder {
+       level: null,
+       overlay: 90,
+       rank: null,
++      global: null,
+       requiredXP: 0,
+       status: RankCardUserStatus.None,
+       styles: {},
+       texts: {},
+       username: null,
+       fonts: {},
+-      calculateProgress: (currentXP, requiredXP) => (currentXP ?? 0) / (requiredXP ?? 0) * 100
++      calculateProgress: (currentXP, requiredXP) => (currentXP ?? 0) / (requiredXP ?? 0) * 945
+     });
+   }
+   /**
+@@ -2636,6 +2669,14 @@ var _RankCardBuilder = class _RankCardBuilder extends Builder {
+     this.options.set("rank", rank);
+     return this;
+   }
++  /**
++  * Set the global rank of this rank card.
++  * @param global The global rank of this rank card.
++  */
++  setGlobalRank(global) {
++    this.options.set("global", global);
++    return this;
++  }
+   /**
+    * Configures the renderer for this rank card.
+    * @param config The configuration for this rank card.
+@@ -2713,6 +2754,10 @@ var _RankCardBuilder = class _RankCardBuilder extends Builder {
+         rank: {
+           text: firstFont.name,
+           value: firstFont.name
++        },
++        global: {
++          text: firstFont.name,
++          value: firstFont.name
+         }
+       };
+     }
+diff --git a/node_modules/canvacord/dist/index.mjs b/node_modules/canvacord/dist/index.mjs
+index 9783ecd..b340ffe 100644
+--- a/node_modules/canvacord/dist/index.mjs
++++ b/node_modules/canvacord/dist/index.mjs
+@@ -1992,6 +1992,7 @@ var _LeaderboardBuilder = class _LeaderboardBuilder extends Builder {
+       text: {
+         level: "Level",
+         rank: "Rank",
++        global: "Global",
+         xp: "XP"
+       }
+     });
+@@ -2224,6 +2225,7 @@ var clamp = /* @__PURE__ */ __name((value) => Math.max(0, Math.min(100, value)),
+ function NeoClassicalCard(props) {
+   const {
+     rank,
++    global,
+     level,
+     currentXP,
+     requiredXP,
+@@ -2444,6 +2446,33 @@ function NeoClassicalCard(props) {
+                 fixed(rank, abbreviate)
+               )
+             )
++          ),
++          global != null && /* @__PURE__ */ JSX.createElement(
++            "div",
++            {
++              className: StyleSheet.cn(
++                "flex items-center text-[#808386] font-medium ml-8",
++                StyleSheet.tw(styles.statistics?.global?.container)
++              ),
++              style: StyleSheet.css(styles.statistics?.global?.container)
++            },
++            /* @__PURE__ */ JSX.createElement(
++              "h3",
++              {
++                className: StyleSheet.tw(styles.statistics?.global?.text),
++                style: StyleSheet.css(styles.statistics?.global?.text)
++              },
++              texts.global || "GLOBAL:",
++              /* @__PURE__ */ JSX.createElement(
++                "span",
++                {
++                  className: StyleSheet.cn("text-white ml-1", StyleSheet.tw(styles.statistics?.global?.value)),
++                  style: StyleSheet.css(styles.statistics?.global?.value)
++                },
++                "#",
++                fixed(global, abbreviate)
++              )
++            )
+           )
+         )
+       )
+@@ -2466,6 +2495,7 @@ var _RankCardBuilder = class _RankCardBuilder extends Builder {
+    *     .setRequiredXP(600)
+    *     .setLevel(2)
+    *     .setRank(5)
++   *     .setGlobalRank(10)
+    *     .setStatus('online');
+    *
+    * const pngBuffer = await card.build({
+@@ -2483,6 +2513,7 @@ var _RankCardBuilder = class _RankCardBuilder extends Builder {
+       level: null,
+       overlay: 90,
+       rank: null,
++      global: null,
+       requiredXP: 0,
+       status: RankCardUserStatus.None,
+       styles: {},
+@@ -2579,6 +2610,14 @@ var _RankCardBuilder = class _RankCardBuilder extends Builder {
+     this.options.set("rank", rank);
+     return this;
+   }
++  /**
++   * Set the global rank of this rank card.
++   * @param global The global rank of this rank card.
++   */
++  setGlobalRank(global) {
++    this.options.set("global", global);
++    return this;
++  }
+   /**
+    * Configures the renderer for this rank card.
+    * @param config The configuration for this rank card.

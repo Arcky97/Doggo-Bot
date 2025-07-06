@@ -1,8 +1,7 @@
-const exportToJson = require("../services/database/exportDataToJson");
-const { deleteData } = require("../services/database/deleteData");
-const { insertData } = require("../services/database/insertData");
-const { selectData } = require("../services/database/selectData");
-const { updateData } = require("../services/database/updateData");
+import { deleteData } from "../services/database/deleteData.js";
+import { insertData } from "../services/database/insertData.js";
+import { selectData } from "../services/database/selectData.js";
+import { updateData } from "../services/database/updateData.js";
 
 function reactionRolesKeys(guild, channel, message) {
   return {
@@ -18,13 +17,13 @@ function stringifyReactionRoles(input) {
   }
 }
 
-async function getReactionRoles(guild, channel, message) {
+export async function getReactionRoles(guild, channel, message) {
   const keys = reactionRolesKeys(guild, channel, message);
 
   return await selectData('ReactionRoles', keys);
 }
 
-async function insertReactionRoles(guild, channel, message, input) {
+export async function insertReactionRoles(guild, channel, message, input) {
   const keys = reactionRolesKeys(guild, channel, message);
 
   const data = stringifyReactionRoles(input);
@@ -33,7 +32,7 @@ async function insertReactionRoles(guild, channel, message, input) {
 
 }
 
-async function updateReactionRoles(guild, channel, message, input) {
+export async function updateReactionRoles(guild, channel, message, input) {
   const keys = reactionRolesKeys(guild, channel, message);
 
   const data = stringifyReactionRoles(input);
@@ -41,18 +40,16 @@ async function updateReactionRoles(guild, channel, message, input) {
   await updateData('ReactionRoles', keys, data);
 }
 
-async function removeReactionRoles(guild, channel, message) {
+export async function removeReactionRoles(guild, channel, message) {
   const keys = reactionRolesKeys(guild, channel, message);
 
   await deleteData('ReactionRoles', keys);
 }
 
-async function setReactionOrRoleLimit(guild, channel, message, limit) {
+export async function setReactionOrRoleLimit(guild, channel, message, limit) {
   const keys = reactionRolesKeys(guild, channel, message);
 
   const data = limit 
 
   await updateData('ReactionRoles', keys, data);
 }
-
-module.exports = { getReactionRoles, insertReactionRoles, updateReactionRoles, removeReactionRoles, setReactionOrRoleLimit };

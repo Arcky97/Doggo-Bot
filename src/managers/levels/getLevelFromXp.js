@@ -1,6 +1,6 @@
-const getXpFromLevel = require("./getXpFromLevel");
+import getXpFromLevel from "./getXpFromLevel.js";
 
-module.exports = (userXp, xpSettings) => {
+export default (userXp, xpSettings) => {
   const initialLevel = 0;
   let totalLevel = initialLevel;
   let xp = getXpFromLevel(totalLevel, xpSettings);

@@ -1,10 +1,10 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { botStartTime } = require("../..");
-const { createSuccessEmbed, createUnfinishedEmbed, createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
-const formatTime = require("../../utils/formatTime");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { botStartTime } from "../../index.js";
+import { createSuccessEmbed, createUnfinishedEmbed, createErrorEmbed } from "../../services/embeds/createReplyEmbed.js";
+import formatTime from "../../utils/formatTime.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'bot',
   description: 'Various Bot information commands',
   deleted: true,

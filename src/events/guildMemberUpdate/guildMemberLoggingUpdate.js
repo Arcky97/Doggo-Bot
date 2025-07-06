@@ -1,11 +1,11 @@
-const { Client, GuildMember, EmbedBuilder } = require('discord.js');
-const getMemberRoles = require('../../managers/logging/getMemberRoles');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const { getGuildLoggingConfig } = require('../../managers/guildSettingsManager.js');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, GuildMember, EmbedBuilder } from 'discord.js';
+import getMemberRoles from '../../managers/logging/getMemberRoles.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { getGuildLoggingConfig } from '../../managers/guildSettingsManager.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (oldMember, newMember) => {
+export default async (oldMember, newMember) => {
   const guildId = oldMember.guild.id
   try {
     await setBotStats(guildId, 'event', { event: 'guildMemberUpdate' });

@@ -1,8 +1,8 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { setBotStats } = require("../../managers/botStatsManager");
-const { createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
+import { ApplicationCommandOptionType } from "discord.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
+import { createErrorEmbed } from "../../services/embeds/createReplyEmbed.js";
 
-module.exports = {
+export default {
   name: 'say',
   description: 'Repeats your message.',
   options: [

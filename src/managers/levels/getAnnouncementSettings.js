@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require("discord.js")
+import { EmbedBuilder } from "discord.js";
 
-module.exports = (levSettings) => {
+export default (levSettings) => {
   const annDef = JSON.parse(levSettings.announceDefaultMessage);
   const annLev = JSON.parse(levSettings.announceLevelMessages)
     .sort((a, b) => a.lv - b.lv)

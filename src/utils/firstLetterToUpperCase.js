@@ -1,3 +1,3 @@
-module.exports = (input) => {
+export default (input) => {
   return input.charAt(0).toUpperCase() + input.slice(1);
 }

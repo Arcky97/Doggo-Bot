@@ -1,11 +1,10 @@
-const { ApplicationCommandOptionType, PermissionFlagsBits } = require("discord.js");
-const { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setReactionOrRoleLimit } = require("../../managers/reactionRolesManager");
-const exportToJson = require("../../services/database/exportDataToJson");
-const setMessageReactions = require("../../middleware/interactions/setMessageReactions");
-const createMissingPermissionsEmbed = require("../../utils/createMissingPermissionsEmbed");
-const { createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
+import { ApplicationCommandOptionType } from "discord.js";
+import { insertReactionRoles, getReactionRoles, updateReactionRoles, removeReactionRoles, setReactionOrRoleLimit } from "../../managers/reactionRolesManager.js";
+import setMessageReactions from "../../middleware/interactions/setMessageReactions.js";
+import createMissingPermissionsEmbed from "../../utils/createMissingPermissionsEmbed.js";
+import { createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
 
-module.exports = {
+export default {
   name: 'reaction',
   description: 'Manage your Reaction Roles.',
   options: [
@@ -214,7 +213,6 @@ module.exports = {
           await setReactionOrRoleLimit(guildId, channel.id, messageId, { maxReactions: limit } );
         }
       }
-      await exportToJson('ReactionRoles', guildId);
       await setBotStats(guildId, 'command', { category: 'moderation', command: 'reactionroles' });
     }
     catch (error) {

@@ -1,7 +1,7 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { createNotDMEmbed, createUnfinishedEmbed } = require("../../../services/embeds/createReplyEmbed");
+import { ApplicationCommandOptionType } from "discord.js";
+import { createNotDMEmbed, createUnfinishedEmbed } from "../../../services/embeds/createReplyEmbed.js";
 
-module.exports = {
+export default {
   name: 'doggoboard',
   description: 'DoggoBoard Command',
   deleted: true,

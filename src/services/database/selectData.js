@@ -1,9 +1,8 @@
-const { addToDatabaseCount } = require("../../managers/databaseCountManager");
-const databaseLogging = require("../logging/databaseLogging");
-const { query } = require("../../managers/databaseManager");
+import databaseLogging from "../logging/databaseLogging.js";
+import { query } from "../../managers/databaseManager.js";
 
 
-async function selectData(table, keys = {}, selectAll = false) {
+export async function selectData(table, keys = {}, selectAll = false) {
   let whereClause = '';
   let whereValues = [];
 
@@ -26,9 +25,6 @@ async function selectData(table, keys = {}, selectAll = false) {
   } catch (error) {
     console.error(`Error selecting data from ${table} table:`, error);
     databaseLogging(`Error Selecting data from ${table} table.`);
-    addToDatabaseCount(table, "selects");
     return null;
   }
 }
-
-module.exports = { selectData };

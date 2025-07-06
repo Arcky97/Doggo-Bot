@@ -1,4 +1,4 @@
-module.exports = (text, maxLength = 1024) => {
+export default (text, maxLength = 1024) => {
   if (text.length <= maxLength) return text;
 
   const ellipsis = '...';

@@ -1,7 +1,7 @@
-const { EmbedBuilder } = require("discord.js");
-const { setBotReplies } = require("../../../../managers/botRepliesManager");
+import { EmbedBuilder } from "discord.js";
+import { setBotReplies } from "../../../../managers/botRepliesManager.js";
 
-module.exports = async (interaction) => {
+export default async (interaction) => {
   const trigger = interaction.options.getString('trigger');
   const message = await setBotReplies({trigger: trigger, action: 'check'});
   try {

@@ -1,6 +1,6 @@
-const { query } = require("../../managers/databaseManager");
+import { query } from "../../managers/databaseManager.js";
 
-module.exports = {
+export default {
   name: 'test',
   description: 'Let\'s you test code that you are not sure it\'ll work.',
   devOnly: true,
@@ -23,4 +23,4 @@ module.exports = {
     interaction.reply('Command processed...');
     await setBotStats(guildId, 'command', { category: 'developing', command: 'test' });
   }
-}
+};

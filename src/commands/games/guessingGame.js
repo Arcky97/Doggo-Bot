@@ -1,9 +1,10 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { createSuccessEmbed } = require("../../services/embeds/createReplyEmbed");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { createSuccessEmbed } from "../../services/embeds/createReplyEmbed.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
 const attempts = {}
-module.exports = {
+
+export default {
   name: 'games',
   description: 'Guess the very magic secret number.',
   options: [

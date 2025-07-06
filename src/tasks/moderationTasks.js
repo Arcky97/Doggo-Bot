@@ -1,9 +1,9 @@
-const cron = require('node-cron');
-const { createTimeoutRemoveLogEmbed, createUnmuteLogEmbed, createUnbanLogEmbed } = require('../services/moderationLogService');
-const { nextModerationLogId, addModerationLogs, addModerationLogTimeoutId, setModerationLogStatus } = require('../managers/moderationLogsManager');
-const { getMuteRole } = require('../managers/guildSettingsManager');
-const { v4: uuidv4 } = require('uuid');
-const { query } = require('../managers/databaseManager');
+import cron from 'node-cron';
+import { createTimeoutRemoveLogEmbed, createUnmuteLogEmbed, createUnbanLogEmbed } from '../services/moderationLogService.js';
+import { nextModerationLogId, addModerationLogs, addModerationLogTimeoutId, setModerationLogStatus } from '../managers/moderationLogsManager.js';
+import { getMuteRole } from '../managers/guildSettingsManager.js';
+import { v4 as uuidv4 } from 'uuid';
+import { query } from '../managers/databaseManager.js';
 
 const activeTimeouts = new Map();
 
@@ -17,7 +17,7 @@ cron.schedule('0 0 * * *', async () => {
   await checkModerationTasks('pending');
 });
 
-async function checkModerationTasks(status) {
+export async function checkModerationTasks(status) {
   console.log(
     '-----------------------------------\n' +
     'Moderation Tasks Check Started'
@@ -79,14 +79,14 @@ async function checkModerationTasks(status) {
   }));
 }
 
-async function createTimeoutUUID(id, guildId) {
+export async function createTimeoutUUID(id, guildId) {
   const timeoutUUID = uuidv4();
   await addModerationLogTimeoutId(id, guildId, timeoutUUID);
   return timeoutUUID;
 }
 
 // add a task in a setTimeout Function.
-async function addModerationTask(id, timeoutUUID, guild, member, modId, duration, action, formatDuration, logging, logChannel, beginTime) {
+export async function addModerationTask(id, timeoutUUID, guild, member, modId, duration, action, formatDuration, logging, logChannel, beginTime) {
   await setModerationLogStatus(id, guild.id, 'scheduled');
   const timeoutId = setTimeout(async () => {
     await setModerationLogStatus(id, guild.id, 'completed');
@@ -135,11 +135,9 @@ async function addModerationTask(id, timeoutUUID, guild, member, modId, duration
   console.log('Added to the setTimeout function');
 }
 
-async function removeModerationTask(id, guildId, timeoutUUID) {
+export async function removeModerationTask(id, guildId, timeoutUUID) {
   const timeoutId = activeTimeouts.get(timeoutUUID);
   clearTimeout(timeoutId);
   await setModerationLogStatus(id, guildId, 'completed');
   console.log('Removed from the setTimeout function');
 }
-
-module.exports = { addModerationTask, removeModerationTask, checkModerationTasks, createTimeoutUUID };

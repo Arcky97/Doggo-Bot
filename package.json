@@ -2,9 +2,11 @@
   "name": "doggo-bot",
   "version": "1.0.0",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js --delay 330"
+    "start": "nodemon src/index.js --delay 330",
+    "postinstall": "patch-package"
   },
   "keywords": [],
   "author": "Arcky",
@@ -25,5 +27,9 @@
     "ntc": "^0.0.1",
     "uuid": "^11.1.0"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0"
+  }
 }

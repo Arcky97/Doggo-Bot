@@ -1,4 +1,4 @@
-module.exports = (overwrite, guildId) => {
+export default (overwrite, guildId) => {
   if (overwrite.type === 0) {
     if (overwrite.id === guildId) {
       return '@everyone';

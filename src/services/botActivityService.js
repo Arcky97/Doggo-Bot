@@ -1,8 +1,9 @@
-const { ActivityType } = require('discord.js');
-const devServerService = require('./devServerService');
+import { ActivityType } from 'discord.js';
+import devServerService from './devServerService.js';
 
-module.exports = async (message) => {
-  let serverCount = totalMembers = 0;
+export default async (message) => {
+  let serverCount = 0;
+  let totalMembers = serverCount;
   client.guilds.cache.forEach(guild => {
     totalMembers += guild.memberCount - 1;
     serverCount ++;

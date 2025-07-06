@@ -1,13 +1,13 @@
 
-const { addModerationLogs, getModerationLogs } = require("../../../../managers/moderationLogsManager");
-const { createInfoEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const checkLogTypeConfig = require("../../../../managers/logging/checkLogTypeConfig");
-const {  createUnmuteLogEmbed } = require("../../../../services/moderationLogService");
-const formatTime = require("../../../../utils/formatTime");
-const { removeModerationTask } = require("../../../../tasks/moderationTasks");
-const createMissingPermissionsEmbed = require("../../../../utils/createMissingPermissionsEmbed");
+import { addModerationLogs, getModerationLogs } from "../../../../managers/moderationLogsManager.js";
+import { createInfoEmbed, createErrorEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import checkLogTypeConfig from "../../../../managers/logging/checkLogTypeConfig.js";
+import {  createUnmuteLogEmbed } from "../../../../services/moderationLogService.js";
+import formatTime from "../../../../utils/formatTime.js";
+import { removeModerationTask } from "../../../../tasks/moderationTasks.js";
+import createMissingPermissionsEmbed from "../../../../utils/createMissingPermissionsEmbed.js";
 
-module.exports = async (interaction, guild, member, mod, reason, nextId, logChannel, beginTime, muteRole) => {
+export default async (interaction, guild, member, mod, reason, nextId, logChannel, beginTime, muteRole) => {
   const embeds = [];
   let title, description, fetchMember;
   let fields = [];

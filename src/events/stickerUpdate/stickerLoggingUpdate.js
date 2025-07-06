@@ -1,10 +1,10 @@
-const { Client, Sticker, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, Sticker, EmbedBuilder } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (oldSticker, newSticker) => {
+export default async (oldSticker, newSticker) => {
   const guildId = oldSticker.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'stickerUpdate' });

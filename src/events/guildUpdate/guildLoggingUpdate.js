@@ -1,13 +1,12 @@
-const { Client, Guild, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
-const convertNumberInTime = require('../../utils/convertNumberInTime');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const getNsfwLevelName = require('../../managers/logging/getNsfwLevelName');
-const getPreferredLocaleName = require('../../managers/logging/getPreferredLocaleName');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, Guild, EmbedBuilder } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import convertNumberInTime from '../../utils/convertNumberInTime.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import getNsfwLevelName from '../../managers/logging/getNsfwLevelName.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (oldGuild, newGuild) => {
+export default async (oldGuild, newGuild) => {
   const guildId = oldGuild.id
   try {
     await setBotStats(guildId, 'event', { event: 'guildUpdate' });

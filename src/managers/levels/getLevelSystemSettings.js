@@ -1,9 +1,8 @@
-const { EmbedBuilder } = require("discord.js");
+import { EmbedBuilder } from "discord.js";
 
-module.exports = (interaction, levSettings, globalMult, roleMults, categoryMults, channelMults, levelRoles, blackListRoles, blackListCategories, blackListChannels, annMess) => {
+export default (interaction, levSettings, globalMult, roleMults, categoryMults, channelMults, levelRoles, blackListRoles, blackListCategories, blackListChannels, annMess) => {
   let embed;
-
-  if(levSettings) {
+  if (levSettings) {
     let roleMultLength = JSON.parse(levSettings.roleMultipliers).length;
     let categoryMultLength = JSON.parse(levSettings.categoryMultipliers).length;
     let channelMultLength = JSON.parse(levSettings.channelMultipliers).length;

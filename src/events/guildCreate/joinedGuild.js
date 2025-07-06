@@ -1,12 +1,12 @@
-const { Client, Guild, EmbedBuilder } = require('discord.js');
-const botActivityService = require('../../services/botActivityService');
-const { setLevelSettings } = require('../../managers/levelSettingsManager');
-const { resetDeletionDate } = require('../../tasks/databaseCleanUp');
-const devServerService = require('../../services/devServerService');
-const formatTime = require('../../utils/formatTime');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, Guild, EmbedBuilder } from 'discord.js';
+import botActivityService from '../../services/botActivityService.js';
+import { setLevelSettings } from '../../managers/levelSettingsManager.js';
+import { resetDeletionDate } from '../../tasks/databaseCleanUp.js';
+import devServerService from '../../services/devServerService.js';
+import formatTime from '../../utils/formatTime.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (guild) => {
+export default async (guild) => {
   try {
     await setBotStats(guild.id, 'event', { event: 'guildCreate' });
 

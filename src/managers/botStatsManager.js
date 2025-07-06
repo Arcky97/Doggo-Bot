@@ -1,15 +1,13 @@
-const exportToJson = require("../services/database/exportDataToJson");
-const { insertData } = require("../services/database/insertData");
-const { selectData } = require("../services/database/selectData");
-const { updateData } = require("../services/database/updateData");
+import { insertData } from "../services/database/insertData.js";
+import { selectData } from "../services/database/selectData.js";
+import { updateData } from "../services/database/updateData.js";
 
-async function getBotStats(guildId) {
+export async function getBotStats(guildId) {
   try {
     let data = await selectData('BotStats', { guildId: guildId });
     if (!data) {
       await insertData('BotStats', { guildId: guildId });
       data = await selectData('BotStats', { guildId: guildId });
-      exportToJson('BotStats', guildId);
     }
     return data; 
   } catch (error) {
@@ -18,7 +16,7 @@ async function getBotStats(guildId) {
   }
 }
 
-async function setBotStats(guildId, type, data) {
+export async function setBotStats(guildId, type, data) {
   if (!guildId) return;
   try {
     const stats = await getBotStats(guildId);
@@ -38,7 +36,6 @@ async function setBotStats(guildId, type, data) {
       let totalCount = JSON.parse(stats.totalCount);
       totalCount = addToCounter(totalCount, [], 1);
       await updateData('BotStats', { guildId: guildId }, { [`${type}Count`]: newData, totalCount: JSON.stringify(totalCount) });
-      await exportToJson('BotStats', guildId);
     } else {
       console.info(`${type} is not a valid counter.`);
     }
@@ -95,5 +92,3 @@ function addToCounter(counter, dataArray, increment) {
   });
   return counter;
 }
-
-module.exports = { getBotStats, setBotStats };

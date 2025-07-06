@@ -1,12 +1,12 @@
-const { Client, Role, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } = require('../../managers/levelSettingsManager');
-const { setChannelOrRoleArray } = require('../../utils/setArrayValues');
-const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, Role, EmbedBuilder } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { getRoleOrChannelBlacklist, getRoleOrChannelMultipliers, setLevelSettings } from '../../managers/levelSettingsManager.js';
+import { setChannelOrRoleArray } from '../../utils/setArrayValues.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (role) => {
+export default async (role) => {
   const guildId = role.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'roleDelete' });

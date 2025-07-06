@@ -1,6 +1,6 @@
-const moment = require("moment");
+import moment from "moment";
 
-module.exports = async (time, full = false) => {
+export default async (time, full = false) => {
   const timeInLocal = moment(time).local();
   const duration = moment.duration(moment().diff(timeInLocal));
   const years = Math.abs(duration.years());

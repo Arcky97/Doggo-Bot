@@ -1,11 +1,11 @@
-const { getAnnounceChannel, getAnnouncePing } = require("../../managers/levelSettingsManager");
-const { setUserLevelInfo } = require("../../managers/levelSystemManager");
-const getLevelFromXp = require("./getLevelFromXp");
-const getXpFromLevel = require("./getXpFromLevel");
-const getAnnounceEmbed = require("./getAnnounceEmbed");
-const giveUserLevelRole = require("./giveUserLevelRole");
+import { getAnnounceChannel, getAnnouncePing } from "../../managers/levelSettingsManager.js";
+import { setUserLevelInfo } from "../../managers/levelSystemManager.js";
+import getLevelFromXp from "./getLevelFromXp.js";
+import getXpFromLevel from "./getXpFromLevel.js";
+import getAnnounceEmbed from "./getAnnounceEmbed.js";
+import giveUserLevelRole from "./giveUserLevelRole.js";
 
-module.exports = async (guildId, user, userLevelInfo, xpSettings, xpToGive) => {
+export default async (guildId, user, userLevelInfo, xpSettings, xpToGive) => {
   let newLevel = 0;
   let newXp = 0;
   const channel = client.channels.cache.get(await getAnnounceChannel(guildId));

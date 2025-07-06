@@ -1,9 +1,8 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const createMissingPermissionsEmbed = require("../../../utils/createMissingPermissionsEmbed");
-const infoBot = require("./subCommands/infoBot");
-const { createErrorEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
+import { ApplicationCommandOptionType } from "discord.js";
+import infoBot from "./subCommands/infoBot.js";
+import { createErrorEmbed, createNotDMEmbed } from "../../../services/embeds/createReplyEmbed.js";
 
-module.exports = {
+export default {
   name: "info",
   description: "Check various information about Users, Channels, Roles, the Server, Doggo Bot.",
   options: [

@@ -1,6 +1,6 @@
-const { ChannelType } = require("discord.js");
+import { ChannelType } from "discord.js";
 
-module.exports = (channel) => {
+export default (channel) => {
   switch (channel.type) {
     case ChannelType.GuildText:
       return 'Text Channel';

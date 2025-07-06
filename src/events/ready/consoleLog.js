@@ -1,6 +1,6 @@
-const botActivityService = require("../../services/botActivityService");
+import botActivityService from "../../services/botActivityService.js";
 
-module.exports = () => {
+export default () => {
   console.log(
     `'${client.user.username}' is ready!\n` + 
     '-----------------------------------'

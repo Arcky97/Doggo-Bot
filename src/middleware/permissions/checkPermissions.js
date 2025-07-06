@@ -1,6 +1,7 @@
-const { PermissionsBitField } = require('discord.js');
-const categorizedPermissions = require('../../../data/loggingPermissions.json');
+import { PermissionsBitField } from 'discord.js';
+import { findJsonFile } from '../../managers/jsonDataManager.js';
 
+const categorizedPermissions = findJsonFile('loggingPermissions.json', 'data');
 const globalPermissions = [
   'Administrator',
   'ManageRoles',
@@ -87,8 +88,14 @@ async function checkPermissions (channel, perms, member) {
   }
 }
 
-module.exports = {
-  checkChannelPermissions: (channel, perms) => checkPermissions(channel, perms, channel.guild.members.me),
-  checkClientPermissions: (channel, perms) => checkPermissions(channel, perms, channel.guild.members.me),
-  checkUserPermissions: (channel, perms, user) => checkPermissions(channel, perms, user)
+export async function checkChannelPermissions (channel, perms) { 
+  return await checkPermissions(channel, perms, channel.guild.members.me)
+}
+
+export async function checkClientPermissions (channel, perms) { 
+  return await checkPermissions(channel, perms, channel.guild.members.me)
+}
+
+export async function checkUserPermissions (channel, perms, user) {
+  return await checkPermissions(channel, perms, user)
 }

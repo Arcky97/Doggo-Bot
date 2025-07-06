@@ -1,6 +1,6 @@
-const { EmbedBuilder } = require("discord.js")
+import { EmbedBuilder } from "discord.js";
 
-module.exports = (levSettings, globalMult, roleMults, channelMults, categoryMults) => {
+export default (levSettings, globalMult, roleMults, channelMults, categoryMults) => {
   let embed = new EmbedBuilder()
     .setColor('Green')
     .setTitle('Level System Multiplier Settings')

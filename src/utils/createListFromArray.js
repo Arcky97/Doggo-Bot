@@ -1,4 +1,4 @@
-module.exports = (input, format, parse = true) => {
+export default (input, format, parse = true) => {
   const data = parse ? JSON.parse(input) : input;
   return data
     .map(d => 

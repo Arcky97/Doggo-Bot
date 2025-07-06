@@ -1,8 +1,8 @@
-const { getLevelRoles } = require("../../../../managers/levelSettingsManager");
-const { createSuccessEmbed, createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const { setLevelRolesArray } = require("../../../../utils/setArrayValues");
+import { getLevelRoles } from "../../../../managers/levelSettingsManager.js";
+import { createSuccessEmbed, createInfoEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import { setLevelRolesArray } from "../../../../utils/setArrayValues.js";
 
-module.exports = async (interaction, guildId, subCmd, value, levSettings) => {
+export default async (interaction, guildId, subCmd, value, levSettings) => {
   let setting, embed, action, setData;
   const data = await getLevelRoles(guildId) || [];
   const level = interaction.options.getInteger('level');

@@ -1,10 +1,10 @@
-const { Client, User, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const { setBotStats } = require('../../managers/botStatsManager');
-const { getGuildLoggingConfig } = require('../../managers/guildSettingsManager');
+import { Client, User, EmbedBuilder } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
+import { getGuildLoggingConfig } from '../../managers/guildSettingsManager.js';
 
-module.exports = async (oldUser, newUser) => {
+export default async (oldUser, newUser) => {
   try {
     // Loop through all guilds to find where the user exists
 

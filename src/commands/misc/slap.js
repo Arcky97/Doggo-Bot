@@ -1,14 +1,17 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { createSuccessEmbed, createInfoEmbed, createErrorEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
-const getVowel = require("../../utils/getVowel");
-const { updateUserAttempts } = require("../../managers/userStatsManager");
-const getUserClass = require("../../utils/getUserClass");
-const commandReplies = require('../../../data/commandReplies.json');
-const getCmdReplyKey = require("../../utils/getCmdReplyKey");
-const getCommandReply = require("../../utils/getCommandReply");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { createSuccessEmbed, createInfoEmbed, createErrorEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
+import getVowel from "../../utils/getVowel.js";
+import { updateUserAttempts } from "../../managers/userStatsManager.js";
+import getUserClass from "../../utils/getUserClass.js";
+import getCmdReplyKey from "../../utils/getCmdReplyKey.js";
+import getCommandReply from "../../utils/getCommandReply.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
+import { findJsonFile } from '../../managers/jsonDataManager.js';
 
-module.exports = {
+const commandReplies = findJsonFile('commandReplies.json', 'data');
+
+
+export default {
   name: 'slap',
   description: 'Slap a person with an object',
   options: [

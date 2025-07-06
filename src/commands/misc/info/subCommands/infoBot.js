@@ -1,9 +1,9 @@
-const { EmbedBuilder } = require("@discordjs/builders");
-const { botStartTime } = require("../../../..");
-const { createSuccessEmbed, createErrorEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const formatTime = require("../../../../utils/formatTime")
+import { EmbedBuilder } from "@discordjs/builders";
+import { botStartTime } from "../../../../index.js";
+import { createSuccessEmbed, createErrorEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import formatTime from "../../../../utils/formatTime.js";
 
-module.exports = async (interaction, subCmd) => {
+export default async (interaction, subCmd) => {
   let embed;
   try {
     const upTime = await formatTime(botStartTime, true);

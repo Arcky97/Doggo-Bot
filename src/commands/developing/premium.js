@@ -1,9 +1,9 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { getPremiumById, setPremium, removePremium } = require("../../managers/premiumManager");
-const { createInfoEmbed, createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import { getPremiumById, setPremium, removePremium } from "../../managers/premiumManager.js";
+import { createInfoEmbed, createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'premium',
   description: 'Manage Premium Membership of Users.',
   options: [

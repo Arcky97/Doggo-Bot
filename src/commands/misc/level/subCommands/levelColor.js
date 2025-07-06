@@ -1,9 +1,10 @@
-const { EmbedBuilder } = require("discord.js");
-const { addUserColor } = require("../../../../managers/levelSystemManager");
-const getOrConvertColor = require("../../../../utils/getOrConvertColor");
-const { createErrorEmbed, createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
+import { EmbedBuilder } from "discord.js";
+import { addUserColor } from "../../../../managers/levelSystemManager.js";
+import getOrConvertColor from "../../../../utils/getOrConvertColor.js";
+import { createErrorEmbed, createInfoEmbed } from "../../../../services/embeds/createReplyEmbed.js";
 
-module.exports = async (interaction, userLevel) => {
+export default async (interaction, userLevel) => {
+  let embed;
   if (userLevel) {
     const colorChoice = interaction.options.get('color').value;
     let { hexColor, message } = await getOrConvertColor(colorChoice, true);

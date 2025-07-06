@@ -1,10 +1,11 @@
-require('dotenv').config();
-require('./tasks/databaseCleanUp.js');
-const { Client, IntentsBitField, Partials } = require('discord.js');
-const eventHandler = require('./handlers/eventHandler');
-const { initDatabase } = require('./managers/databaseManager.js');
-const { checkModerationTasks } = require('./tasks/moderationTasks.js');
-const { startAPI } = require('./api.js');
+import dotenv from 'dotenv';
+dotenv.config();
+import './tasks/databaseCleanUp.js';
+import { Client, IntentsBitField, Partials } from 'discord.js';
+import eventHandler from './handlers/eventHandler.js';
+import { initDatabase } from './managers/databaseManager.js';
+import { checkModerationTasks } from './tasks/moderationTasks.js';
+import { startAPI } from './api.js';
 
 global.client = new Client({
   intents: [
@@ -43,6 +44,4 @@ async function startBot() {
 
 startBot();
 
-const botStartTime = Date.now();
-
-module.exports = { botStartTime };
+export const botStartTime = Date.now();

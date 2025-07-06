@@ -1,6 +1,6 @@
-const { GuildNSFWLevel } = require("discord.js");
+import { GuildNSFWLevel } from "discord.js";
 
-module.exports = (nsfwLevel) => {
+export default (nsfwLevel) => {
   switch (nsfwLevel) {
     case GuildNSFWLevel.AgeRestricted:
       return 'Age Restricted';

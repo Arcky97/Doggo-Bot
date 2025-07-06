@@ -1,12 +1,12 @@
-const { Client, Guild, EmbedBuilder } = require('discord.js');
-const botActivityService = require('../../services/botActivityService');
-const { setDeletionDate } = require('../../tasks/databaseCleanUp');
-const moment = require("moment");
-const formatTime = require('../../utils/formatTime');
-const devServerService = require('../../services/devServerService');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, Guild, EmbedBuilder } from 'discord.js';
+import botActivityService from '../../services/botActivityService.js';
+import { setDeletionDate } from '../../tasks/databaseCleanUp.js';
+import moment from "moment";
+import formatTime from '../../utils/formatTime.js';
+import devServerService from '../../services/devServerService.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (guild) => {
+export default async (guild) => {
   const deletionDate = new Date();
   deletionDate.setDate(deletionDate.getDate() + 11); // 11 days from now
   try {

@@ -1,10 +1,10 @@
-const { Client, GuildBan, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, GuildBan, EmbedBuilder } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (ban) => {
+export default async (ban) => {
   const guildId = ban.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'guildBanRemove' });

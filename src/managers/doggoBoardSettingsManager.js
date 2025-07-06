@@ -1,14 +1,12 @@
-const exportDataToJson = require("../services/database/exportDataToJson");
-const { insertData } = require("../services/database/insertData");
-const { selectData } = require("../services/database/selectData");
+import { insertData } from "../services/database/insertData.js";
+import { selectData } from "../services/database/selectData.js";
 
-async function getDoggoBoardSettings(id) {
+export async function getDoggoBoardSettings(id) {
   try {
     let data = await selectData('DoggoBoardSettings', { guildId: id } );
     if (!data) {
       await insertData("DoggoBoardSettings", { guildId: id });
       data = await selectData('DoggoBoardSettings', { guildId: id });
-      exportDataToJson('DoggoBoardSettings', id);
     }
     return data;
   } catch (error) {
@@ -16,7 +14,3 @@ async function getDoggoBoardSettings(id) {
     return [];
   }
 }
-
-module.exports = {
-  getDoggoBoardSettings
-};

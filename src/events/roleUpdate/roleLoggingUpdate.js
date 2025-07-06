@@ -1,11 +1,13 @@
-const { Client, Role, EmbedBuilder, PermissionsBitField } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const categorizedPermissions = require('./../../../data/loggingPermissions.json');
-const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { EmbedBuilder, PermissionsBitField } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
+import { findJsonFile } from '../../managers/jsonDataManager.js';
 
-module.exports = async (oldRole, newRole) => {
+const categorizedPermissions = findJsonFile('loggingPermissions.json', 'data');
+
+export default async (oldRole, newRole) => {
   const guildId = oldRole.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'roleUpdate' });

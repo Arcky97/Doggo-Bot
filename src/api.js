@@ -1,11 +1,12 @@
-require('dotenv').config();
-const express = require('express');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
 const app = express();
-const cors = require('cors');
-const verifyAPIAccess = require('./middleware/api/verifyAPIAccess');
-const fetchGuild = require('./middleware/api/fetchGuild');
-const fetchChannel = require('./middleware/api/fetchChannel');
-const fetchMessage = require('./middleware/api/fetchMessage');
+import cors from 'cors';
+import verifyAPIAccess from './middleware/api/verifyAPIAccess.js';
+import fetchGuild from './middleware/api/fetchGuild.js';
+import fetchChannel from './middleware/api/fetchChannel.js';
+import fetchMessage from './middleware/api/fetchMessage.js';
 
 app.use(cors({
   origin: 'http://localhost:3000'
@@ -69,7 +70,7 @@ app.get('/api/discord/:guildId/:channelId/:messageId/reactions', verifyAPIAccess
   console.log('API Message Reaction Response sent!')
 });
 
-function startAPI() {
+export function startAPI() {
   const PORT = process.env.API_PORT || 3001;
   app.listen(PORT, () => {
     console.log('-----------------------------------');
@@ -77,5 +78,3 @@ function startAPI() {
     console.log('-----------------------------------');
   });
 }
-
-module.exports = { startAPI };

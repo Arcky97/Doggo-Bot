@@ -1,7 +1,7 @@
-const { createWarningEmbed } = require("../services/embeds/createReplyEmbed");
-const { checkClientPermissions, checkUserPermissions } = require("../middleware/permissions/checkPermissions")
+import { createWarningEmbed } from "../services/embeds/createReplyEmbed.js";
+import { checkClientPermissions, checkUserPermissions } from "../middleware/permissions/checkPermissions.js";
 
-module.exports = async (interaction, user, perms, channel) => {
+export default async (interaction, user, perms, channel) => {
 
   const chan = channel || interaction.channel;
   const botPerms = await checkClientPermissions(chan, [...perms, 'EmbedLinks']);

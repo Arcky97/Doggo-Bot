@@ -1,11 +1,10 @@
-const { selectData } = require("../services/database/selectData");
-const { insertData } = require("../services/database/insertData");
-const { deleteData } = require("../services/database/deleteData");
-const exportToJson = require("../services/database/exportDataToJson");
-const { query } = require("./databaseManager");
-const { updateData } = require("../services/database/updateData");
+import { selectData } from "../services/database/selectData.js";
+import { insertData } from "../services/database/insertData.js";
+import { deleteData } from "../services/database/deleteData.js";
+import { query } from "./databaseManager.js";
+import { updateData } from "../services/database/updateData.js";
 
-async function getModerationLogs({guildId, userId, action, last}) {
+export async function getModerationLogs({guildId, userId, action, last}) {
   const keys = {
     guildId: guildId,
     userId: userId,
@@ -28,7 +27,7 @@ async function getModerationLogs({guildId, userId, action, last}) {
   }
 }
 
-async function getModerationLogsById(guildId, id) {
+export async function getModerationLogsById(guildId, id) {
   try {
     const data = await selectData('ModerationLogs', {guildId: guildId, id: id});
     if (data) {
@@ -45,7 +44,7 @@ async function getModerationLogsById(guildId, id) {
 /**
  * @returns {Promise<number>}
  */
-async function nextModerationLogId() {
+export async function nextModerationLogId() {
   const autoIncrementQuery = `
     SHOW TABLE STATUS LIKE 'ModerationLogs';
   `;
@@ -74,7 +73,7 @@ async function nextModerationLogId() {
  * @param {string} [params.data] - The date the Moderation action was taken.
  * @param {string} [params.duration] - The duration of the Moderation action.
  */
-async function addModerationLogs({guildId, userId, modId, action, reason, status, formatDuration, logging, logChannel, date, duration}) {
+export async function addModerationLogs({guildId, userId, modId, action, reason, status, formatDuration, logging, logChannel, date, duration}) {
   try {
     const data = {
       guildId: guildId,
@@ -90,22 +89,20 @@ async function addModerationLogs({guildId, userId, modId, action, reason, status
     if (date) data.date = date;
     if (duration) data.endTime = duration;
     await insertData('ModerationLogs', {}, data);
-    exportToJson('ModerationLogs', guildId);
   } catch (error) {
     console.error('Error adding Moderation Log:', error);
   }
 }
 
-async function addModerationLogTimeoutId(id, guildId, timeoutId) {
+export async function addModerationLogTimeoutId(id, guildId, timeoutId) {
   try {
     await updateData('ModerationLogs', { id: id }, { timeoutId: timeoutId });
-    exportToJson('ModerationLogs', guildId);
   } catch (error) {
     console.error('Error adding Timeout ID to Moderation Log:', error);
   }
 }
 
-async function getModerationLogTimeoutId(guildId, userId, action) {
+export async function getModerationLogTimeoutId(guildId, userId, action) {
   try {
     const data = await selectData('ModerationLogs', { guildId: guildId, userId: userId, action: action });
     if (data) {
@@ -117,11 +114,11 @@ async function getModerationLogTimeoutId(guildId, userId, action) {
     console.error('Error getting timeoutId from Moderation Logs:', error);
   }
 }
-async function setModerationLogStatus(id, guildId, status) {
+
+export async function setModerationLogStatus(id, guildId, status) {
   try {
     if (['completed', 'pending', 'scheduled', 'failed'].includes(status)) {
       await updateData('ModerationLogs', {id: id}, {status: status});
-      exportToJson('ModerationLogs', guildId);
     } else {
       console.error('Ivalid status:', status);
     }
@@ -130,16 +127,15 @@ async function setModerationLogStatus(id, guildId, status) {
   }
 }
 
-async function removeModerationLogs(guildId, id) {
+export async function removeModerationLogs(guildId, id) {
   try {
     await deleteData('ModerationLogs', {id: id});
-    exportToJson('ModerationLogs', guildId);
   } catch (error) {
     console.error('Error removing Moderation Log:', error);
   }
 }
 
-async function clearModerationLogs(guildId, userId, action) {
+export async function clearModerationLogs(guildId, userId, action) {
   try {
     const data = await getModerationLogs({guildId: guildId, userId: userId, action: action});
     if (data.length > 0) {
@@ -150,8 +146,4 @@ async function clearModerationLogs(guildId, userId, action) {
   } catch (error) {
     console.error('Error clearing Moderation Logs:', error);
   }
-}
-
-module.exports = {
-  getModerationLogs, addModerationLogs, addModerationLogTimeoutId, getModerationLogTimeoutId, setModerationLogStatus, removeModerationLogs, clearModerationLogs, nextModerationLogId, getModerationLogsById
 }

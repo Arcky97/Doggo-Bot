@@ -1,10 +1,9 @@
-const { selectData } = require("../services/database/selectData");
-const { insertData } = require("../services/database/insertData");
-const { updateData } = require("../services/database/updateData");
-const { deleteData } = require("../services/database/deleteData");
-const exportToJson = require("../services/database/exportDataToJson");
+import { selectData } from "../services/database/selectData.js";
+import { insertData } from "../services/database/insertData.js";
+import { updateData } from "../services/database/updateData.js";
+import { deleteData } from "../services/database/deleteData.js";
 
-async function getAllGuildUsersLevel(guildId) {
+export async function getAllGuildUsersLevel(guildId) {
   try {
     return await selectData('LevelSystem', {guildId: guildId }, true);
   } catch (error) {
@@ -13,7 +12,7 @@ async function getAllGuildUsersLevel(guildId) {
   }
 }
 
-async function getAllGlobalUsersLevel() {
+export async function getAllGlobalUsersLevel() {
   try {
     let data = await Promise.all(client.guilds.cache.map(async guild => {
       return await getAllGuildUsersLevel(guild.id);
@@ -35,26 +34,24 @@ async function getAllGlobalUsersLevel() {
   }
 }
 
-async function getUserLevel(guildId, memberId) {
+export async function getUserLevel(guildId, memberId) {
   const data = await selectData('LevelSystem', { guildId: guildId, memberId: memberId });
   return data || { level: 0, xp: 0, color: '#f97316'};
 }
 
-async function addUserColor(guildId, memberId, color) {
+export async function addUserColor(guildId, memberId, color) {
   await updateData('LevelSystem', { guildId: guildId, memberId: memberId} , {color: color });
-  exportToJson('LevelSystem', guildId)
 }
 
-async function setUserLevelInfo(user, keys, data) {
+export async function setUserLevelInfo(user, keys, data) {
   if (user.xp !== 0 || user.level !== 0) {
     await updateData('LevelSystem', keys, data);
   } else {
     await insertData('LevelSystem', keys, data);
   }
-  exportToJson('LevelSystem', keys.guildId);
 }
 
-async function resetLevelSystem(id, member) {
+export async function resetLevelSystem(id, member) {
   try {
     if (member) {
       await deleteData('LevelSystem', {guildId: id, memberId: member.id});
@@ -64,14 +61,4 @@ async function resetLevelSystem(id, member) {
   } catch (error) {
     console.error('Failed to Reset Level(s)', error);
   }
-  exportToJson('LevelSystem', id);
-}
-
-module.exports = { 
-  getAllGuildUsersLevel, 
-  getAllGlobalUsersLevel,
-  getUserLevel, 
-  addUserColor, 
-  setUserLevelInfo, 
-  resetLevelSystem 
 }

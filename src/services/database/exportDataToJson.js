@@ -1,7 +1,7 @@
-const { query } = require('../../managers/databaseManager.js');
-const fs = require('fs');
-const path = require('path');
-const databaseLogging = require("../logging/databaseLogging.js");
+import { query } from '../../managers/databaseManager.js';
+import fs from 'fs';
+import path from 'path';
+import databaseLogging from "../logging/databaseLogging.js";
 
 /**
  * 
@@ -10,8 +10,7 @@ const databaseLogging = require("../logging/databaseLogging.js");
  * @param {boolean} returnFile - returns as a json file when true.
  * @returns 
  */
-module.exports = async (table, guildId, returnFile = false) => {
-  /*
+export default async (table, guildId, returnFile = false) => {
   const exportEntireTable = (table === 'BotReplies' || table === 'PremiumUsersAndGuilds' || returnFile);
   try {
     // Query data for the specific guild, unless it's the BotReplies Table.
@@ -77,5 +76,5 @@ module.exports = async (table, guildId, returnFile = false) => {
         ? `Error exporting data from ${table} to JSON.`
         : `Error exporting data for guild ${guildId} from ${table} to JSON.`
     );
-  }*/
+  }
 }

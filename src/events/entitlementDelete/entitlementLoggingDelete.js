@@ -1,10 +1,10 @@
 // Premium Access 
-const { Client, Entitlement, EmbedBuilder } = require('discord.js');
-const getEntitlementTypeName = require('../../managers/logging/getEntitlementTypeName');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, Entitlement, EmbedBuilder } from 'discord.js';
+import getEntitlementTypeName from '../../managers/logging/getEntitlementTypeName.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (entitlement) => {
+export default async (entitlement) => {
   const guildId = entitlement.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'entitlementDelete' });

@@ -1,9 +1,9 @@
-const { setBotStats } = require("../../managers/botStatsManager");
-const { getUserLevel, setUserLevelInfo } = require("../../managers/levelSystemManager");
-const getLevelFromXp = require("./getLevelFromXp");
-const getXpFromLevel = require("./getXpFromLevel");
+import { setBotStats } from "../../managers/botStatsManager.js";
+import { getUserLevel, setUserLevelInfo } from "../../managers/levelSystemManager.js";
+import getLevelFromXp from "./getLevelFromXp.js";
+import getXpFromLevel from "./getXpFromLevel.js";
 
-module.exports = async (guildId, user, xpToGive, xpSettings) => {
+export default async (guildId, user, xpToGive, xpSettings) => {
   const userLvInfo = await getUserLevel(guildId, user.id) 
 
   const newXp = userLvInfo.xp + xpToGive;

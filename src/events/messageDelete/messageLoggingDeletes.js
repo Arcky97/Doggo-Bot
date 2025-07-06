@@ -1,12 +1,12 @@
-const { Client, Message, EmbedBuilder, GuildWidgetStyle } = require("discord.js");
-const getLogChannel = require("../../managers/logging/getLogChannel");
-const truncateText = require("../../utils/truncateText");
-const ignoreLogging = require("../../managers/logging/ignoreLogging");
-const eventTimeoutHandler = require("../../handlers/eventTimeoutHandler");
-const checkLogTypeConfig = require("../../managers/logging/checkLogTypeConfig");
-const { setBotStats } = require("../../managers/botStatsManager");
+import { EmbedBuilder } from "discord.js";
+import getLogChannel from "../../managers/logging/getLogChannel.js";
+import truncateText from "../../utils/truncateText.js";
+import ignoreLogging from "../../managers/logging/ignoreLogging.js";
+import eventTimeoutHandler from "../../handlers/eventTimeoutHandler.js";
+import checkLogTypeConfig from "../../managers/logging/checkLogTypeConfig.js";
+import { setBotStats } from "../../managers/botStatsManager.js";
 
-module.exports = async (message) => {
+export default async (message) => {
   if (!message.inGuild() || !message.author || message.author.bot) return;
   
   const guildId = message.guild.id;

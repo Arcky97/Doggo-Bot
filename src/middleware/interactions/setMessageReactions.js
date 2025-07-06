@@ -1,4 +1,4 @@
-module.exports = async (interaction, message, pairs, overwrite = false) => {
+export default async (interaction, message, pairs, overwrite = false) => {
   try {
     const existingReactions = message.reactions.cache.map(reaction => reaction.emoji.name || reaction.emoji.id);
     const newReactions = pairs.map(({ emoji }) => emoji.trim());

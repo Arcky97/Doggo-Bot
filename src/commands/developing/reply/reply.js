@@ -1,13 +1,13 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const addReply = require("./subCommands/addReply");
-const updateReply = require("./subCommands/updateReply");
-const removeReply = require("./subCommands/removeReply");
-const checkReply = require("./subCommands/checkReply");
-const listReply = require("./subCommands/listReply");
-const { createErrorEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
-const { setBotStats } = require("../../../managers/botStatsManager");
+import { ApplicationCommandOptionType } from "discord.js";
+import addReply from "./subCommands/addReply.js";
+import updateReply from "./subCommands/updateReply.js";
+import removeReply from "./subCommands/removeReply.js";
+import checkReply from "./subCommands/checkReply.js";
+import listReply from "./subCommands/listReply.js";
+import { createErrorEmbed, createNotDMEmbed } from "../../../services/embeds/createReplyEmbed.js";
+import { setBotStats } from "../../../managers/botStatsManager.js";
 
-module.exports = {
+export default {
   name: 'reply',
   description: 'manage the bot reply system.',
   devOnly: true,

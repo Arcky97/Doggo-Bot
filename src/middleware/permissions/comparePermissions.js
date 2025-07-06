@@ -1,7 +1,9 @@
-const { PermissionsBitField } = require("discord.js");
-const categorizedPermissions = require('../../../data/loggingPermissions.json');
+import { PermissionsBitField } from "discord.js";
+import { findJsonFile } from '../../managers/jsonDataManager.js';
 
-module.exports = (oldOverwrite, newOverwrite) => {
+const categorizedPermissions = findJsonFile('loggingPermissions.json', 'data');
+
+export default (oldOverwrite, newOverwrite) => {
   const changes = {};
 
   for (const [category, permissions] of Object.entries(categorizedPermissions)) {

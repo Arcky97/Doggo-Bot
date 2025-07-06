@@ -1,10 +1,10 @@
-const { Client, StageInstance, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, StageInstance, EmbedBuilder } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (oldStageInstance, newStageInstance) => {
+export default async (oldStageInstance, newStageInstance) => {
   const guildId = oldStageInstance.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'stageInstanceUpdate' });

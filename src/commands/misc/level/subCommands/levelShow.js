@@ -1,10 +1,10 @@
-const { AttachmentBuilder } = require("discord.js");
-const getXpFromLevel = require("../../../../managers/levels/getXpFromLevel");
-const { Font, RankCardBuilder } = require("canvacord");
-const { createErrorEmbed, createInfoEmbed } = require("../../../../services/embeds/createReplyEmbed");
-const { setBotStats } = require("../../../../managers/botStatsManager");
+import { ALLOWED_EXTENSIONS, AttachmentBuilder } from "discord.js";
+import getXpFromLevel from "../../../../managers/levels/getXpFromLevel.js";
+import { Font, RankCardBuilder } from "canvacord";
+import { createErrorEmbed, createInfoEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import { setBotStats } from "../../../../managers/botStatsManager.js";
 
-module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, globalUsers) => {
+export default async (interaction, userLevel, xpSettings, user, guildUsers, globalUsers) => {
   const member = interaction.guild.members.cache.get(user.id);
   let embed;
 
@@ -12,7 +12,7 @@ module.exports = async (interaction, userLevel, xpSettings, user, guildUsers, gl
     embed = createInfoEmbed({int: interaction, title: 'Info: No level yet!', descr: `${user ? `${targetUserObj.user.tag} doesn\'t have a level yet.`: 'You don\'t have a level yet.'}`});
     return embed;
   }
-  const targetAvatarURL = user.displayAvatarURL({ size: 256 })
+  const targetAvatarURL = user.displayAvatarURL({ size: 256 }).replace('.gif', '.png');
   const color = userLevel.color;
   const startLevelXp = getXpFromLevel(userLevel.level, xpSettings);
   const endLevelXp = getXpFromLevel(userLevel.level + 1, xpSettings);

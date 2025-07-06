@@ -1,6 +1,6 @@
-const { Locale } = require("discord.js");
+import { Locale } from "discord.js";
 
-module.exports = (local) => {
+export default (local) => {
   switch (local) {
     case Locale.Bulgarian:
       return 'Bulgairan';

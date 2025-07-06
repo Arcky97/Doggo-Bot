@@ -1,8 +1,8 @@
-const { setBotStats } = require("../../managers/botStatsManager");
-const { createInfoEmbed, createNotDMEmbed } = require("../../services/embeds/createReplyEmbed");
-const setActivity = require("../../services/botActivityService")
+import { setBotStats } from "../../managers/botStatsManager.js";
+import { createInfoEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
+import setActivity from "../../services/botActivityService.js";
 
-module.exports = {
+export default {
   name: 'refresh',
   description: 'Refreshes the bot',
   devOnly: true,

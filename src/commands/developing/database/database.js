@@ -1,11 +1,11 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const { query } = require("../../../managers/databaseManager");
-const { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createInfoEmbed, createNotDMEmbed } = require("../../../services/embeds/createReplyEmbed");
-const exportToJson = require("../../../services/database/exportDataToJson");
-const { setBotStats } = require("../../../managers/botStatsManager");
-const { importFromDownloads, importJsonToData } = require("../../../services/database/importJsonToData");
+import { ApplicationCommandOptionType } from "discord.js";
+import { query } from "../../../managers/databaseManager.js";
+import { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createInfoEmbed, createNotDMEmbed } from "../../../services/embeds/createReplyEmbed.js";
+import exportToJson from "../../../services/database/exportDataToJson.js";
+import { setBotStats } from "../../../managers/botStatsManager.js";
+import { importFromDownloads, importJsonToData } from "../../../services/database/importJsonToData.js";
 
-module.exports = {
+export default {
   name: 'database',
   description: 'Add, Remove or Edit Tables and Columns in the Database with a command.',
   options: [

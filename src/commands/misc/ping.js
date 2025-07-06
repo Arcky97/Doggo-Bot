@@ -1,7 +1,7 @@
-const { setBotStats } = require("../../managers/botStatsManager");
-const { createSuccessEmbed, createErrorEmbed } = require("../../services/embeds/createReplyEmbed");
+import { setBotStats } from "../../managers/botStatsManager.js";
+import { createSuccessEmbed, createErrorEmbed } from "../../services/embeds/createReplyEmbed.js";
 
-module.exports = {
+export default {
   name: 'ping',
   description: 'Replies with the bot ping!',
   callback: async (interaction) => {

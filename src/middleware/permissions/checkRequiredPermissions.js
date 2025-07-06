@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+import { PermissionsBitField } from 'discord.js';
 
 /**
  * Checks if a member has the required permissions.
@@ -7,7 +7,7 @@ const { PermissionsBitField } = require('discord.js');
  * @param {Array<String>} requiredPermissions - An array of PermissionFlagsBits to check against.
  * @returns {Object} - An object containing `hasAll` (boolean) and `missingPermissions` (array).
  */
-module.exports = (member, channel, requiredPermissions) => {
+export default (member, channel, requiredPermissions) => {
   const permissions = channel
     ? channel.permissionsFor(member)
     : member.permissions;

@@ -1,11 +1,11 @@
-const { Client, Invite, EmbedBuilder } = require('discord.js');
-const getLogChannel = require('../../managers/logging/getLogChannel');
-const checkLogTypeConfig = require('../../managers/logging/checkLogTypeConfig');
-const eventTimeoutHandler = require('../../handlers/eventTimeoutHandler');
-const convertNumberInTime = require('../../utils/convertNumberInTime');
-const { setBotStats } = require('../../managers/botStatsManager');
+import { Client, Invite, EmbedBuilder } from 'discord.js';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import convertNumberInTime from '../../utils/convertNumberInTime.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
-module.exports = async (invite) => {
+export default async (invite) => {
   const guildId = invite.guild.id;
   try {
     await setBotStats(guildId, 'event', { event: 'inviteCreate' });

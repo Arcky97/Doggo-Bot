@@ -1,8 +1,8 @@
-const { EmbedBuilder } = require("discord.js");
-const { createErrorEmbed } = require('../../../../services/embeds/createReplyEmbed');
-const { setBotReplies } = require("../../../../managers/botRepliesManager");
+import { EmbedBuilder } from "discord.js";
+import { createErrorEmbed } from '../../../../services/embeds/createReplyEmbed.js';
+import { setBotReplies } from "../../../../managers/botRepliesManager.js";
 
-module.exports = async (interaction, type) => {
+export default async (interaction, type) => {
   const replyID = interaction.options.getString('id');
   let input = interaction.options.getString('new');
   if (input.includes(';')) {

@@ -1,12 +1,11 @@
-const { selectData } = require("../services/database/selectData");
-const { insertData } = require("../services/database/insertData");
-const { updateData } = require("../services/database/updateData");
-const { deleteData } = require("../services/database/deleteData");
-const exportToJson = require("../services/database/exportDataToJson");
-const firstLetterToUpperCase = require("../utils/firstLetterToUpperCase");
-const { setChannelOrRoleArray } = require("../utils/setArrayValues");
+import { selectData } from "../services/database/selectData.js";
+import { insertData } from "../services/database/insertData.js";
+import { updateData } from "../services/database/updateData.js";
+import { deleteData } from "../services/database/deleteData.js";
+import firstLetterToUpperCase from "../utils/firstLetterToUpperCase.js";
+import { setChannelOrRoleArray } from "../utils/setArrayValues.js";
 
-const convertSetupCommand = (setting => {
+export const convertSetupCommand = (setting => {
   const columnMapping = {
     'bot-chat': 'chattingChannel',
     'message': 'messageLogging',
@@ -31,7 +30,7 @@ const convertSetupCommand = (setting => {
   }
 })
 
-async function getGuildLoggingConfig(guildId, type) {
+export async function getGuildLoggingConfig(guildId, type) {
   try {
     const data = await getGuildSettings(guildId);
     return JSON.parse(data[`${type}Config`]);
@@ -41,22 +40,20 @@ async function getGuildLoggingConfig(guildId, type) {
   }
 }
 
-async function setGuildLoggingConfig(guildId, type, data) {
+export async function setGuildLoggingConfig(guildId, type, data) {
   try {
     await updateData('GuildSettings', {guildId: guildId}, { [`${type}Config`]: JSON.stringify(data) });
   } catch (error) {
     console.error('Error Updating Guild Logging Config data:', error);
   }
-  exportToJson('GuildSettings', guildId);
 }
 
-async function getGuildSettings(guildId) {
+export async function getGuildSettings(guildId) {
   try {
     let data = await selectData('GuildSettings', { guildId: guildId });
     if (!data) {
       await insertData('GuildSettings', { guildId: guildId });
       data = await selectData('GuildSettings', { guildId: guildId });
-      exportToJson('GuildSettings', guildId);
     }
     return data;
   } catch (error) {
@@ -65,7 +62,7 @@ async function getGuildSettings(guildId) {
   }
 }
 
-async function getIgnoreLoggingChannels(guildId) {
+export async function getIgnoreLoggingChannels(guildId) {
   try {
     const data = await getGuildSettings(guildId);
     return JSON.parse(data.ignoreLogging);
@@ -80,7 +77,7 @@ async function getIgnoreLoggingChannels(guildId) {
  * @param {String} guildId - The ID of the guild. 
  * @returns {Promise<String>} - The ID of the mute role.
  */
-async function getMuteRole(guildId) {
+export async function getMuteRole(guildId) {
   try {
     const data = await getGuildSettings(guildId);
     return data.muteRole;
@@ -98,7 +95,7 @@ async function getJoinRoles(guildId) {
   }
 }
 
-async function setGuildSettings(guildId, settingName, value) {
+export async function setGuildSettings(guildId, settingName, value) {
   const column = convertSetupCommand(settingName);
   if (!column) return;
 
@@ -191,7 +188,6 @@ async function setGuildSettings(guildId, settingName, value) {
           }
         }        
       }
-      exportToJson('GuildSettings', guildId);
       return [title, descr];
     } catch (error) {
       console.error('Error setting channel:', error);
@@ -203,21 +199,10 @@ async function setGuildSettings(guildId, settingName, value) {
   }
 }
 
-async function resetGuildSettings(id) {
+export async function resetGuildSettings(id) {
   try {
     await deleteData('GuildSettings', {guildId: id});
   } catch (error) {
     console.error(`Failed to reset Guild Settings for guild ${id}`, error);
   }
 }
-
-module.exports = { 
-  setGuildSettings, 
-  getGuildSettings, 
-  convertSetupCommand, 
-  resetGuildSettings, 
-  getIgnoreLoggingChannels, 
-  getGuildLoggingConfig, 
-  setGuildLoggingConfig,
-  getMuteRole
-};

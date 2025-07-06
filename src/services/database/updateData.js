@@ -1,9 +1,8 @@
-const { addToDatabaseCount } = require("../../managers/databaseCountManager");
-const databaseLogging = require("../logging/databaseLogging");
-const { query } = require("../../managers/databaseManager");
+import databaseLogging from "../logging/databaseLogging.js";
+import { query } from "../../managers/databaseManager.js";
 
 
-async function updateData(table, key, data) {
+export async function updateData(table, key, data) {
   const setClause = Object.keys(data)
     .map((column) => `${column} = ?`)
     .join(', ');
@@ -23,11 +22,8 @@ async function updateData(table, key, data) {
   try {
     await query(updateQuery, values);
     databaseLogging(`Data Updated in ${table} table.`);
-    addToDatabaseCount(table, "updates");
   } catch (error) {
     console.error(`Error updating data in ${table} table:`, error);
     databaseLogging(`Error Updating data in ${table} table.`)
   }
 }
-
-module.exports = { updateData };
