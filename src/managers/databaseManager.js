@@ -100,7 +100,7 @@ export async function initDatabase() {
           message VARCHAR(2000) DEFAULT NULL,
           color VARCHAR(10) DEFAULT NULL,
           author JSON DEFAULT '{ "name": null, "url": null, "iconUrl": null }',
-          title VARCHAR(256) DEFAULT NULL,
+          title VARCHAR(256) NOT NULL,
           url VARCHAR(512) DEFAULT NULL,
           description VARCHAR(2048) NOT NULL,
           fields JSON DEFAULT NULL,
