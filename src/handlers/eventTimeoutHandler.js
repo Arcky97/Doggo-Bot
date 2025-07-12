@@ -2,6 +2,7 @@ const embedQueue = new Map()
 
 export default async (type, id, embed, channel) => {
   try {
+    console.log(`Event Timeout Handler: ${type}`);
     const queueKey = type + id
     if (!embedQueue.has(queueKey)) {
       embedQueue.set(queueKey, { embeds: [embed], timeout: null });
