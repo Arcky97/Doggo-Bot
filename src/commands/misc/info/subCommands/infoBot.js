@@ -22,6 +22,7 @@ export default async (interaction, subCmd) => {
         embed = new EmbedBuilder()
           .setColor(5763719)
           .setTitle('Doggo Bot Information')
+          .setThumbnail(client.user.avatarURL())
           .addFields(
             {
               name: 'Name',
@@ -43,11 +44,11 @@ export default async (interaction, subCmd) => {
               value: `\`\`\`${upTime}\`\`\``
             },
             {
-              name: 'Created At',
+              name: 'Account Age',
               value: `\`\`\`${botAge}\`\`\``
             },
             {
-              name: 'Joined At',
+              name: 'Time in Server',
               value: `\`\`\`${botJoin}\`\`\``
             }
           )

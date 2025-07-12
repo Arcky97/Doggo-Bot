@@ -22,7 +22,8 @@ export default async (oldRole, newRole) => {
       .setColor('Orange')  
       .setTitle(`Role Updated: ${oldRole.name}`)
 
-    let beforeSettings = afterSettings = '';
+    let beforeSettings = '';
+    let afterSettings = '';
     if (oldRole.name !== newRole.name) {
       beforeSettings += `**Name:** ${oldRole.name}\n`;
       afterSettings += `**Name:** ${newRole.name}\n`;
