@@ -50,7 +50,7 @@ export default async (guild) => {
       .setTimestamp()
 
     const channel = client.channels.cache.get('1314702619196784743');
-    await channel.send({ embeds: [embed] });
+    if (channel) await channel.send({ embeds: [embed] });
   } catch (error) {
     console.error(`❌ Failed to join the guild: ${guild.name} (${guild.id}).`, error);
   }

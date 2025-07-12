@@ -13,9 +13,11 @@ export default async (type, id, embed, channel) => {
     }
 
     embedQueue.get(queueKey).timeout = setTimeout(async () => {
+      console.log(`Event Timeout Handler: ${type}`);
       const data = embedQueue.get(queueKey);
       if (!data) return;
       const { embeds } = data;
+      if (!client.channels.cache.find(channel.id)) return;
       await channel.send({ embeds });
       embedQueue.delete(queueKey);
     }, 5500);
