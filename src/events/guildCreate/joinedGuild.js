@@ -48,10 +48,9 @@ export default async (guild) => {
       )
       .setFooter({ text: `Server ID: ${guild.id}`})
       .setTimestamp()
-    
-    const channelId = '1314702619196784743';
 
-    await devServerService(channelId, { embeds: [embed] });
+    const channel = client.channels.cache.get('1314702619196784743');
+    await channel.send({ embeds: [embed] });
   } catch (error) {
     console.error(`❌ Failed to join the guild: ${guild.name} (${guild.id}).`, error);
   }

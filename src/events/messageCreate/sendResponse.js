@@ -1,4 +1,3 @@
-import { Client, Message } from 'discord.js';
 import { selectData } from '../../services/database/selectData.js';
 import { getReplies, findClosestMatch, getTriggers } from '../../managers/botRepliesManager.js';
 
@@ -8,7 +7,8 @@ export default async (message) => {
     let chatChannelId;
     if (message.inGuild()) {
       const getData = await selectData('GuildSettings', {guildId: message.guildId });
-      chatChannelId = getData['chattingChannel']
+      if (!getData) return;
+      chatChannelId = getData['chattingChannel'];
     } else {
       chatChannelId = message.channel.id;
     }

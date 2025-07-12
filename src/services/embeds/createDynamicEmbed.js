@@ -47,10 +47,10 @@ async function createEmbed(input, embedData) {
   return embed;
 }
 
-export function createEventEmbed (input, embedData) {
-  createEmbed(input, embedData)
+export async function createEventEmbed (input, embedData) {
+  return await createEmbed(input, embedData);
 };
 
-export function createGeneratedEmbed (input, embedData) {
-  createEmbed(input, embedData)
+export async function createGeneratedEmbed (input, embedData) {
+  return await createEmbed(input, embedData);
 };
