@@ -1,8 +1,8 @@
 import { Client, GuildBan, EmbedBuilder } from 'discord.js';
-import getLogChannel from '../../managers/logging/getLogChannel';
-import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig';
-import eventTimeoutHandler from '../../handlers/eventTimeoutHandler';
-import { setBotStats } from '../../managers/botStatsManager';
+import getLogChannel from '../../managers/logging/getLogChannel.js';
+import checkLogTypeConfig from '../../managers/logging/checkLogTypeConfig.js';
+import eventTimeoutHandler from '../../handlers/eventTimeoutHandler.js';
+import { setBotStats } from '../../managers/botStatsManager.js';
 
 export default async (ban) => {
   const guildId = ban.guild.id;
