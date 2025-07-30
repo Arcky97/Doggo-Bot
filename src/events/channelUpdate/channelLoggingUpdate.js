@@ -23,7 +23,8 @@ export default async (oldChannel, newChannel) => {
       .setColor('Orange')
       .setTitle(`${getChannelTypeName(oldChannel)} Update: ${oldChannel}`)
 
-    let beforeSettings = afterSettings = '';
+    let beforeSettings = '';
+    let afterSettings = '';
     if (oldChannel.name !== newChannel.name) {
       beforeSettings += `**Name:** ${oldChannel.name}\n`;
       afterSettings += `**Name:** ${newChannel.name}\n`;

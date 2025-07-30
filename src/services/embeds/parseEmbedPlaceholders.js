@@ -31,7 +31,7 @@ export default async (text, input, userInfo) => {
     '{user xp}': `${userLevelInfo.xp}`,
     '{user color}': userLevelInfo.color || '#f97316',
     '{level}': `${userLevelInfo.level}`,
-    '{level previous}': getLevelFromXp(userLevelInfo.oldXp, xpSettings),
+    '{level previous}': getLevelFromXp(userLevelInfo.oldXp, xpSettings) || 0,
     '{level previous xp}': getXpFromLevel(getLevelFromXp(userLevelInfo.oldXp, xpSettings), xpSettings),
     '{level next}': userLevelInfo.level + 1,
     '{level next xp}': getXpFromLevel(userLevelInfo.level + 1, xpSettings),
