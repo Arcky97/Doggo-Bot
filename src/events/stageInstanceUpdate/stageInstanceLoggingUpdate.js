@@ -19,7 +19,8 @@ export default async (oldStageInstance, newStageInstance) => {
       .setColor('Orange')
       .setTitle('Stage Instance Updated')
 
-    let beforeSettings = afterSettings = '';
+    let beforeSettings = '';
+    let afterSettings = '';
     if (oldStageInstance.channelId !== newStageInstance.channelId) {
       beforeSettings += `**Stage Channel:** \n${oldStageInstance.channel}`;
       afterSettings += `**Stage Channel:** \n${newStageInstance.channel}`;

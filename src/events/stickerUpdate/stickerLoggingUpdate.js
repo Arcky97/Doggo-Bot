@@ -19,7 +19,8 @@ export default async (oldSticker, newSticker) => {
       .setColor('Orange')
       .setTitle('Sticker Updated')
       
-    let beforeSettings = afterSettings = '';
+    let beforeSettings = ''; 
+    let afterSettings = '';
     if (oldSticker.name !== newSticker.name) {
       beforeSettings += `**Name:** ${oldSticker.name}`;
       afterSettings += `**Name:** ${newSticker.name}`;
