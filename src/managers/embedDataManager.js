@@ -38,7 +38,6 @@ async function setEmbedData(table, guildId, keys, data) {
     } else {
       await updateData(table, keys, data);
     }
-    exportToJson(table, guildId);
   } catch (error) {
     console.error('There was an error setting Data for the Embed:', error);
   }
