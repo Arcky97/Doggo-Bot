@@ -60,10 +60,10 @@ async function cleanupExpiredData(now) {
   return cleanupInfo;
 }
 
-export async function setDeletionDate(id, data) {
+export async function setDeletionDate(id, date) {
   for (const table of tables) {
     try {
-      await updateData(table, {guildId: id}, {deletionDate: data});
+      await updateData(table, {guildId: id}, {deletionDate: date});
     } catch (error) {
       console.error(`Failed to set the deletionDate for guild ${id}.`, error);
     }

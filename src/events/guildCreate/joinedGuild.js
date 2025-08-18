@@ -5,6 +5,7 @@ import { resetDeletionDate } from '../../tasks/databaseCleanUp.js';
 import devServerService from '../../services/devServerService.js';
 import formatTime from '../../utils/formatTime.js';
 import { setBotStats } from '../../managers/botStatsManager.js';
+import { getGuildSettings } from '../../managers/guildSettingsManager.js';
 
 export default async (guild) => {
   try {
@@ -15,6 +16,8 @@ export default async (guild) => {
     setLevelSettings({ id: guild.id });
 
     const result = await resetDeletionDate(guild.id);
+
+    await getGuildSettings(guild.id);
 
     if (result) {
       console.log(`Data for guild ${guild.id} is no longer marked for deletion.`);

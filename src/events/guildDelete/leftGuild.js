@@ -47,7 +47,7 @@ export default async (guild) => {
         },
         {
           name: 'Time Spent',
-          value: `${timeSpent} || Unknown`
+          value: `${timeSpent}` || "Unknown"
         }
       )
       .setFooter({ text: `Server ID: ${guild.id}`})
