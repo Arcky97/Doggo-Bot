@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import './tasks/databaseCleanUp.js';
+import './tasks/memberVerificationCheck.js';
 import { Client, IntentsBitField, Partials } from 'discord.js';
 import eventHandler from './handlers/eventHandler.js';
 import { initDatabase } from './managers/databaseManager.js';

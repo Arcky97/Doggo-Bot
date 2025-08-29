@@ -50,6 +50,10 @@ export function createTimeoutRemoveLogEmbed (guild, channel, fields) {
 export function createKickLogEmbed (guild, channel, fields) {
   return sendModerationLogEvent(guild, channel, 'Red', 'Kick', fields)
 }
+
+export function createVerifyKickLogEmbed (guild, channel, fields) {
+  return sendModerationLogEvent(guild, channel, 'Red', 'Verification Kick', fields)
+}
   
 export function createRegularBanLogEmbed (guild, channel, fields) {
   return sendModerationLogEvent(guild, channel, 'Red', 'Ban', fields)
