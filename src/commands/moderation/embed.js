@@ -393,7 +393,7 @@ export default {
             replyMessage = `You have already set a ${type} message, use '/embed edit' to update the ${type} message.`;
           } else {
             replyMessage = `Your ${type}'s message has been saved successfully!`;
-            await setEventEmbed(guildId, channel.id, type, embedOptions);
+            await setEventEmbed(guildId, channel.id, type, { ...embedOptions, channelId: channel.id});
           }
         }
         embed = createSuccessEmbed({int: interaction, title: 'Hoorray!', descr: replyMessage});
@@ -423,13 +423,12 @@ export default {
         }
         if (embedAction === 'edit') {
           if (type === 'regular') {
-            console.log(embedOptions);
             await message.edit({ content: embedOptions.message, embeds: [embed] });
             await setGeneratedEmbed(guildId, channel.id, message.id, embedOptions);
             replyMessage = `Your embed in <#${channel.id}> has been updated successfully.`;
           } else {
             replyMessage = `Your ${type} message has been updated successfully. Changes will be applied the next time the message is triggered.`;
-            await setEventEmbed(guildId, channel.id, type, embedOptions);
+            await setEventEmbed(guildId, channel.id, type, { ...embedOptions, channelId: channel.id});
           }
           embed = createSuccessEmbed({int: interaction, title: 'Embed Updated!', descr: replyMessage});
         } else if (embedAction === 'delete') {
