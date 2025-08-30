@@ -4,14 +4,13 @@ import { selectData } from "../services/database/selectData.js";
 import { updateData } from "../services/database/updateData.js";
 
 const getUniq = (table, messageOrType) => {
-  return table === 'GeneratedEmbeds' ? { messageId: messageOrType } : { type: messageOrType }
+  return table === 'GeneratedEmbeds' ? { messageId: messageOrType, channelId: channel } : { type: messageOrType }
 }
 
 async function setEmbed(table, guildId, channel, messageOrType, data) {
   const keys = {
     guildId: guildId,
-    channelId: channel,
-    ...getUniq(table, messageOrType)
+    ...getUniq(table, messageOrType, channel)
   };
   if (typeof data.author !== 'string') data.author = JSON.stringify(data.author);
   if (typeof data.footer !== 'string') data.footer = JSON.stringify(data.footer);

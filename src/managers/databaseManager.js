@@ -95,7 +95,7 @@ export async function initDatabase() {
       EventEmbeds: `
         CREATE TABLE IF NOT EXISTS EventEmbeds (
           guildId VARCHAR(100) NOT NULL,
-          channelId VARCHAR(100) NOT NULL,
+          channelId VARCHAR(100) DEFAULT NULL,
           type VARCHAR(50) NOT NULL,
           message VARCHAR(2000) DEFAULT NULL,
           color VARCHAR(10) DEFAULT NULL,
@@ -109,7 +109,7 @@ export async function initDatabase() {
           footer JSON DEFAULT '{ "text": null, "iconUrl": null }',
           timeStamp BOOLEAN DEFAULT true,
           deletionDate TIMESTAMP NULL,
-          PRIMARY KEY (guildId, channelId, type)
+          PRIMARY KEY (guildId, type)
         )
       `,
       GeneratedEmbeds: `
