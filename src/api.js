@@ -74,7 +74,7 @@ export function startAPI() {
   const PORT = process.env.API_PORT || 3001;
   app.listen(PORT, () => {
     console.log('-----------------------------------');
-    console.log(`API Sever running on port ${PORT}`);
+    console.log(`API Server running on port ${PORT}`);
     console.log('-----------------------------------');
   });
 }

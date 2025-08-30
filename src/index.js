@@ -37,7 +37,7 @@ async function startBot() {
     await initDatabase();
     await client.login(process.env.CLIENT_TOKEN);
     await checkModerationTasks('scheduled');
-    if (client.user.id !== '1270100901067100230') startAPI();
+    startAPI();
   } catch (error) {
     console.error('Error starting the bot:', error);
   }
