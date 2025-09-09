@@ -5,6 +5,7 @@ import getXpFromLevel from "../../managers/levels/getXpFromLevel.js";
 
 export default async (text, input, userInfo) => {
   if (!text) return null;
+  if (!input) return text;
   const guild = input.guild;
   const xpSettings = await getXpSettings(guild.id);
   let userLevelInfo = userInfo ? userInfo : await getUserLevel(guild.id, input.user.id);

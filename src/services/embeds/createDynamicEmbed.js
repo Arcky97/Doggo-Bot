@@ -2,7 +2,7 @@ import { EmbedBuilder } from "discord.js";
 import parseEmbedPlaceholders from "./parseEmbedPlaceholders.js";
 import getOrConvertColor from "../../utils/getOrConvertColor.js";
 
-async function createEmbed(input, embedData) {
+export async function createEmbed(input, embedData) {
   let embed = new EmbedBuilder()
     .setTitle(await parseEmbedPlaceholders(embedData.title, input))
     .setDescription(await parseEmbedPlaceholders(embedData.description, input))

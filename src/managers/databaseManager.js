@@ -100,9 +100,9 @@ export async function initDatabase() {
           message VARCHAR(2000) DEFAULT NULL,
           color VARCHAR(10) DEFAULT NULL,
           author JSON DEFAULT '{ "name": null, "url": null, "iconUrl": null }',
-          title VARCHAR(256) NOT NULL,
+          title VARCHAR(256) DEFAULT NULL,
           url VARCHAR(512) DEFAULT NULL,
-          description VARCHAR(2048) NOT NULL,
+          description VARCHAR(2048) DEFAULT NULL,
           fields JSON DEFAULT NULL,
           imageUrl VARCHAR(512) DEFAULT NULL,
           thumbnailUrl VARCHAR(512) DEFAULT NULL,
@@ -114,22 +114,23 @@ export async function initDatabase() {
       `,
       GeneratedEmbeds: `
         CREATE TABLE IF NOT EXISTS GeneratedEmbeds (
+          id INT AUTO_INCREMENT,
           guildId VARCHAR(100) NOT NULL,
           channelId VARCHAR(100) NOT NULL,
           messageId VARCHAR(100) NOT NULL,
           message VARCHAR(2000) DEFAULT NULL,
           color VARCHAR(10) DEFAULT NULL,
           author JSON DEFAULT '{ "name": null, "url": null, "iconUrl": null }',
-          title VARCHAR(256) NOT NULL,
+          title VARCHAR(256) DEFAULT NULL,
           url VARCHAR(512) DEFAULT NULL,
-          description VARCHAR(2048) NOT NULL,
+          description VARCHAR(2048) DEFAULT NULL,
           fields JSON DEFAULT NULL,
           imageUrl VARCHAR(512) DEFAULT NULL,
           thumbnailUrl VARCHAR(512) DEFAULT NULL,
           footer JSON DEFAULT '{ "text": null, "iconUrl": null }',
           timeStamp BOOLEAN DEFAULT true,
           deletionDate TIMESTAMP NULL,
-          PRIMARY KEY (guildId, channelId, messageId)
+          PRIMARY KEY (guildId, id)
         )
       `,
       ReactionRoles: `

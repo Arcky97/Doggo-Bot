@@ -7,6 +7,10 @@ import verifyAPIAccess from './middleware/api/verifyAPIAccess.js';
 import fetchGuild from './middleware/api/fetchGuild.js';
 import fetchChannel from './middleware/api/fetchChannel.js';
 import fetchMessage from './middleware/api/fetchMessage.js';
+import { selectData } from './services/database/selectData.js';
+import { EmbedBuilder } from 'discord.js';
+import { updateData } from './services/database/updateData.js';
+import { createEmbed } from './services/embeds/createDynamicEmbed.js'
 
 app.use(cors({
   origin: 'http://localhost:3000'
@@ -69,6 +73,71 @@ app.get('/api/discord/:guildId/:channelId/:messageId/reactions', verifyAPIAccess
   res.json(reactions);
   console.log('API Message Reaction Response sent!')
 });
+
+app.post('/api/discord/:guildId/:embedId/send-embed', verifyAPIAccess, fetchGuild, async (req, res) => {
+  try {
+    console.log('API Send or Update Embed Request received.');
+
+    const { guildId: guild, embedId } = req.params;
+
+    const [embedRow] = await Promise.all([
+        selectData("GeneratedEmbeds", { guildId: guild, id: embedId }),
+      ]);
+
+    if (!embedRow) return res.status(404).json({ error: "Embed not found" });
+
+    const { id, guildId, channelId, messageId, ...options } = embedRow;
+
+    if (!channelId) return res.status(400).json({ error: "No channelId set for this embed" });
+
+    const guildObj = await client.guilds.fetch(guildId);
+    const channelObj = await guildObj.channels.fetch(channelId);
+
+    if (!channelObj || !channelObj.isTextBased()) {
+      return res.status(400).json({ error: "Invalid channel" });
+    }
+
+/*    
+    const embed = new EmbedBuilder()
+      .setTitle(options.title)
+      
+      .setDescription(options.description)
+      .setFields(JSON.parse(options.fields))
+      .setColor(options.color)
+      .setImage(options.imageUrl)
+      .setThumbnail(options.thumbnail)
+      .setFooter(JSON.parse(options.footer));
+    if (options.author) embed.setAuthor(JSON.parse(options.author))
+    if (options.timeStamp === 1) embed.setTimestamp
+*/
+    const embed = await createEmbed(null, options);
+
+    let sentMessage;
+    let message;
+    if (messageId) {
+      try {
+        const existingMessage = await channelObj.messages.fetch(messageId);
+        sentMessage = await existingMessage.edit({ embeds: [embed] });
+        message = "Embed Updated Successfully.";
+      } catch (error) {
+        console.warn("Message not found, sending a new one instead");
+        sentMessage = await channelObj.send({ embeds: [embed] });
+        message = "Embed was sent again due to not found.";
+      }
+    } else {
+      sentMessage = await channelObj.send({ embeds: [embed] });
+      message = "Message Sent Successfully";
+    }
+
+    await updateData("GeneratedEmbeds", { guildId, id }, { messageId: sentMessage.id });
+
+    console.log("API Send or Update Embed Response sent!");
+    return res.status(200).json({ success: true, messageId: sentMessage.id, message });
+  } catch(error) {
+    console.error("Error handling send-embed:", error);
+    return res.status(500).json({ error: "Internal Server Error", message: "Embed was not sent!" });
+  }
+})
 
 export function startAPI() {
   const PORT = process.env.API_PORT || 3001;

@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { setGeneratedEmbed, getGeneratedEmbed, deleteGeneratedEmbed, setEventEmbed, getEventEmbed, deleteEventEmbed } from "../../managers/embedDataManager.js";
-import { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
+import { createSuccessEmbed, createErrorEmbed, createWarningEmbed, createNotDMEmbed, createInfoEmbed } from "../../services/embeds/createReplyEmbed.js";
 import { createGeneratedEmbed } from "../../services/embeds/createDynamicEmbed.js";
 import createMissingPermissionsEmbed from "../../utils/createMissingPermissionsEmbed.js";
 import { setBotStats } from "../../managers/botStatsManager.js";
@@ -276,6 +276,15 @@ export default {
       embeds: [createNotDMEmbed(interaction)]
     });
     
+    let embed;
+
+    embed = createInfoEmbed({ 
+      int: interaction, 
+      title: "Embed Commands deprecated!", 
+      descr: "Embed commands have been disabled as of September 8 2025, you should make use of the Embed Manager and Builder on [my dashboard instead](https://www.arcky-tech.be/doggo-bot).\n Use discord to login and get access to the Dashboard for your Server(s)."},
+    );
+    return interaction.editReply({embeds: [embed]});
+
     const embedAction = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
     const channel = interaction.options.getChannel('channel');
@@ -307,7 +316,7 @@ export default {
     };
 
     let embedData;
-    let embed;
+
 
     if (embedAction === 'edit' ) {
       const messageId = interaction.options.getString('messageid');
@@ -442,7 +451,6 @@ export default {
             embed = createSuccessEmbed({int: interaction, title: 'Embed Deleted!', descr: `The embed with message ID: ${messageId} in <#${channel.id}> was deleted succesfully.`});
           } else {
             embed = createWarningEmbed({int: interaction, descr: `The embed with message ID: ${messageId} does not exist. \nPlease check the message ID again.`});
-            
           }
         }
       }
