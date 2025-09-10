@@ -81,7 +81,7 @@ app.post('/api/discord/:guildId/:embedId/send-embed', verifyAPIAccess, fetchGuil
     const { guildId: guild, embedId } = req.params;
 
     const [embedRow] = await Promise.all([
-        selectData("GeneratedEmbeds", { guildId: guild, id: embedId }),
+        selectData("GeneratedEmbeds", { guildId: guild, id: parseInt(embedId) }),
       ]);
 
     if (!embedRow) return res.status(404).json({ error: "Embed not found" });
