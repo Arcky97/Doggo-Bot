@@ -11,6 +11,7 @@ import { selectData } from './services/database/selectData.js';
 import { EmbedBuilder } from 'discord.js';
 import { updateData } from './services/database/updateData.js';
 import { createEmbed } from './services/embeds/createDynamicEmbed.js'
+import { checkClientPermissions } from './middleware/permissions/checkPermissions.js';
 
 app.use(cors({
   origin: 'http://localhost:3000'
@@ -94,24 +95,22 @@ app.post('/api/discord/:guildId/:embedId/send-embed', verifyAPIAccess, fetchGuil
     const channelObj = await guildObj.channels.fetch(channelId);
 
     if (!channelObj || !channelObj.isTextBased()) {
-      return res.status(400).json({ error: "Invalid channel" });
+      return res.status(200).json({ message: "The selected channel is not valid!" });
     }
 
-/*    
-    const embed = new EmbedBuilder()
-      .setTitle(options.title)
-      
-      .setDescription(options.description)
-      .setFields(JSON.parse(options.fields))
-      .setColor(options.color)
-      .setImage(options.imageUrl)
-      .setThumbnail(options.thumbnail)
-      .setFooter(JSON.parse(options.footer));
-    if (options.author) embed.setAuthor(JSON.parse(options.author))
-    if (options.timeStamp === 1) embed.setTimestamp
-*/
-    const embed = await createEmbed(null, options);
+    const botPerms = await checkClientPermissions(channelObj, []);
+    if (!botPerms.hasAll) {
+      return res.status(200).json({ message: `Missing permissions to send embed to selected channel! Required: ${botPerms.array.join(', ')}.`});
+    }
 
+    const parsedOptions = {
+      ...options,
+      author: JSON.parse(options.author),
+      fields: JSON.parse(options.fields),
+      footer: JSON.parse(options.footer),
+    };
+
+    const embed = await createEmbed(null, parsedOptions);
     let sentMessage;
     let message;
     if (messageId) {
@@ -122,7 +121,7 @@ app.post('/api/discord/:guildId/:embedId/send-embed', verifyAPIAccess, fetchGuil
       } catch (error) {
         console.warn("Message not found, sending a new one instead");
         sentMessage = await channelObj.send({ embeds: [embed] });
-        message = "Embed was sent again due to not found.";
+        message = "Embed was sent again because it was either deleted or the destination channel was changed.";
       }
     } else {
       sentMessage = await channelObj.send({ embeds: [embed] });
