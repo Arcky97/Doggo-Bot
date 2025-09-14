@@ -1,9 +1,10 @@
 import { EmbedBuilder } from "@discordjs/builders";
 import { botStartTime } from "../../../../index.js";
-import { createSuccessEmbed, createErrorEmbed } from "../../../../services/embeds/createReplyEmbed.js";
+import { createSuccessEmbed, createErrorEmbed, createInfoEmbed, createUnfinishedEmbed } from "../../../../services/embeds/createReplyEmbed.js";
 import formatTime from "../../../../utils/formatTime.js";
+import { getBotStats } from "../../../../managers/botStatsManager.js";
 
-export default async (interaction, subCmd) => {
+export default async (interaction, subCmd, guildId) => {
   let embed;
   try {
     const upTime = await formatTime(botStartTime, true);
@@ -52,6 +53,40 @@ export default async (interaction, subCmd) => {
               value: `\`\`\`${botJoin}\`\`\``
             }
           )
+        break;
+      case "stats":
+        const stats = await getBotStats(guildId);
+        embed = new EmbedBuilder()
+          .setColor(5763719)
+          .setTitle('Doggo Bot Stats')
+          .addFields(
+            {
+              name: 'Total Count',
+              value: `\`\`\`${JSON.parse(stats.totalCount)}\`\`\``,
+            },
+            {
+              name: 'Event Count',
+              value: `\`\`\`${(Object.entries(JSON.parse(stats.eventCount))).map(([event, value]) =>
+                `- ${event}: ${value}`
+              ).join(' \n')}\`\`\``,
+            },
+            {
+              name: 'Command Count',
+              value: `\`\`\`${(Object.entries(JSON.parse(stats.commandCount))).map(([command, value]) =>
+                `- ${command}: ${Object.entries(value).map(([command, value]) => 
+                  `\n   - ${command}: ${value}`
+                ).join('')}`
+              ).join(' \n')}\`\`\``,
+            },
+            {
+              name: 'Level System Count',
+              value: `\`\`\`${(Object.entries(JSON.parse(stats.levelSystemCount))).map(([key, value]) => 
+                `- ${key}: ${value}`
+              ).join(' \n')}\`\`\``,
+            }
+          )
+        //embed = createUnfinishedEmbed(interaction);
+        break;
     }
   } catch (error) {
     console.error(error);

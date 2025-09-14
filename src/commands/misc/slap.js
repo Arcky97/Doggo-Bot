@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import { createSuccessEmbed, createInfoEmbed, createErrorEmbed, createNotDMEmbed } from "../../services/embeds/createReplyEmbed.js";
 import getVowel from "../../utils/getVowel.js";
-import { updateUserAttempts } from "../../managers/userStatsManager.js";
+import { setUserCommandStats, updateUserAttempts } from "../../managers/userStatsManager.js";
 import getUserClass from "../../utils/getUserClass.js";
 import getCmdReplyKey from "../../utils/getCmdReplyKey.js";
 import getCommandReply from "../../utils/getCommandReply.js";
@@ -9,7 +9,6 @@ import { setBotStats } from "../../managers/botStatsManager.js";
 import { findJsonFile } from '../../managers/jsonDataManager.js';
 
 const commandReplies = findJsonFile('commandReplies.json', 'data');
-
 
 export default {
   name: 'slap',
@@ -38,7 +37,8 @@ export default {
     let embed;
     const guildId = interaction.guild.id;
     const user = interaction.member;
-    const userId = interaction.member.id;
+    const userId = user.id;
+    const cmd = { category: 'misc', command: 'slap' };
     const target = interaction.options.getMentionable('target');
     const object = interaction.options.getString('object');
     
@@ -70,7 +70,8 @@ export default {
         });
       } 
       
-      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'slap' });
+      await setBotStats(guildId, 'command', cmd);
+      await setUserCommandStats(guildId, userId, cmd);
     } catch (error) {
       console.error('Error with the Slap Command:', error);
 

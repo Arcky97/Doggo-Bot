@@ -51,7 +51,7 @@ async function addEventCount(counter, data) {
   return JSON.stringify(counter);
 }
 
-async function addCommandCount(counter, data) {
+export async function addCommandCount(counter, data) {
   // data = { category: "developing", command: "reply" };
   counter = addToCounter(counter, [data.category, data.command], 1);
   return JSON.stringify(counter);

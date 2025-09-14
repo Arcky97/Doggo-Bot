@@ -7,6 +7,7 @@ import levelShow from "./subCommands/levelShow.js";
 import createMissingPermissionsEmbed from "../../../utils/createMissingPermissionsEmbed.js";
 import { createErrorEmbed, createNotDMEmbed } from "../../../services/embeds/createReplyEmbed.js";
 import { setBotStats } from "../../../managers/botStatsManager.js";
+import { setUserCommandStats } from "../../../managers/userStatsManager.js";
 
 export default {
   name: 'level',
@@ -44,6 +45,10 @@ export default {
     }
   ],
   callback: async (interaction) => {
+    const guildId = interaction.guild.id;
+    const memberId = interaction.member.id;
+    const cmd = { category: 'misc', command: 'level' };
+
     await interaction.deferReply();
     
     if (!interaction.inGuild()) return interaction.editReply({ 
@@ -53,7 +58,6 @@ export default {
     let embed; 
     const subCmnd = interaction.options.getSubcommand();
     const user = interaction.options.getUser('user') || interaction.user;
-    const member = interaction.options.getMember('user') || interaction.member;
 
     try {
       const userLevel = await getUserLevel(interaction.guild.id, user.id);
@@ -83,7 +87,8 @@ export default {
           break;
       }
       
-      await setBotStats(interaction.guild.id, 'command', { category: 'misc', command: 'level' });
+      await setBotStats(guildId, 'command', cmd);
+      await setUserCommandStats(guildId, memberId, cmd);
     } catch (error) {
       console.error('Error with the Level Command:', error);
       embed = createErrorEmbed({

@@ -151,6 +151,7 @@ export async function initDatabase() {
           guildId VARCHAR(100) NOT NULL,
           memberId VARCHAR(100) NOT NULL,
           attempts JSON DEFAULT '{ "slap": { }, "kick": { }, "ban": { }, "mute": { }, "warn": { }, "timeout": { } }',
+          commands JSON DEFAULT '{}',
           PRIMARY KEY (guildId, memberId)
         )
       `,
@@ -188,7 +189,6 @@ export async function initDatabase() {
           eventCount JSON DEFAULT '{ }',
           commandCount JSON DEFAULT '{ }',
           levelSystemCount JSON DEFAULT '{ "xp": 0, "levels": 0 }',
-          deletionDate TIMESTAMP NULL, 
           INDEX idx_guildId (guildId)
         )
       `,

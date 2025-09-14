@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType } from "discord.js";
 import formatTime from "../../utils/formatTime.js";
 import { createSuccessEmbed, createErrorEmbed } from "../../services/embeds/createReplyEmbed.js";
 import { setBotStats } from "../../managers/botStatsManager.js";
+import { setUserCommandStats } from "../../managers/userStatsManager.js";
 
 export default {
   name: 'userage',
@@ -15,6 +16,10 @@ export default {
     }
   ],
   callback: async (interaction) => {
+    const guildId = interaction.guild.id;
+    const memberId = interaction.member.id;
+    const cmd = { category: 'misc', command: 'userage' };
+    console.log([interaction.user.id, interaction.member.id]);
     const member = interaction.options.getUser('user');
     
     let embed;
@@ -30,7 +35,8 @@ export default {
         footer: false
       });
 
-      await setBotStats(interaction.guild?.id, 'command', { category: 'misc', command: 'userage' });
+      await setBotStats(guildId, 'command', cmd);
+      await setUserCommandStats(guildId, memberId, cmd);
     } catch (error) {
       console.error('Error with the Userage Command:', error);
 

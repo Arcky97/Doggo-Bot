@@ -1,6 +1,7 @@
 import { selectData } from "../services/database/selectData.js";
 import { insertData } from "../services/database/insertData.js";
 import { updateData } from "../services/database/updateData.js";
+import { addCommandCount } from "./botStatsManager.js";
 
 async function getUserStats(guildId, memberId) {
   return await selectData('UserStats', {guildId: guildId, memberId: memberId});
@@ -65,5 +66,16 @@ export async function resetUserAttempts(guildId, memberId, targetId, action, cmd
     }
   } catch (error) {
     console.error('Error resetting userAttempts:', error);
+  }
+}
+
+export async function setUserCommandStats(guildId, memberId, data) {
+  if (!guildId || !memberId) return;
+  try {
+    const stats = await getUserStats(guildId, memberId);
+    const newData = await addCommandCount(JSON.parse(stats.commands), data);
+    await updateData('UserStats', { guildId, memberId }, { commands: newData });
+  } catch (error) {
+    console.error(`Error increasing commands stat for user: ${memberId} in guild: ${guildId}:`, error);
   }
 }
