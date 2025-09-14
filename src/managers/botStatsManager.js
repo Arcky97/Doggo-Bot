@@ -19,6 +19,7 @@ export async function getBotStats(guildId) {
 export async function setBotStats(guildId, type, data) {
   if (!guildId) return;
   try {
+    // Get all Data for entire table
     const stats = await getBotStats(guildId);
     let newData;
     if (`${type}Count` in stats) {
@@ -65,30 +66,26 @@ async function addLevelSystemCount(counter, data) {
 }
 
 function addToCounter(counter, dataArray, increment) {
-  ['current', 'total'].forEach(type => {
-    if (type in counter) {
-      if (dataArray.length >= 1) {
-        let subCounter = counter[type];
-        dataArray.forEach((data, index) => {
-          if (typeof data === 'string') {
-            if (index !== dataArray.length - 1) {
-              if (!(data in subCounter)) {
-                subCounter[data] = {};
-              }
-              subCounter = subCounter[data];
-            } else {
-              if (!(data in subCounter)) {
-                subCounter[data] = increment;
-              } else {
-                subCounter[data] += increment;
-              }
-            }
+  if (dataArray.length >= 1) {
+    let subCounter = counter;
+    dataArray.forEach((data, index) => {
+      if (typeof data === 'string') {
+        if (index !== dataArray.length - 1) {
+          if (!(data in subCounter)) {
+            subCounter[data] = {};
           }
-        });
-      } else {
-        counter[type] += increment;
+          subCounter = subCounter[data];
+        } else {
+          if (!(data in subCounter)) {
+            subCounter[data] = increment;
+          } else {
+            subCounter[data] += increment;
+          }
+        }
       }
-    }
-  });
+    });
+  } else {
+    counter += increment;
+  }
   return counter;
 }

@@ -184,10 +184,10 @@ export async function initDatabase() {
       BotStats: `
         CREATE TABLE IF NOT EXISTS BotStats (
           guildId VARCHAR(100) NOT NULL PRIMARY KEY,
-          totalCount JSON DEFAULT '{ "current": 0, "total": 0 }',
-          eventCount JSON DEFAULT '{ "current": { }, "total": { } }',
-          commandCount JSON DEFAULT '{ "current": { }, "total": { } }',
-          levelSystemCount JSON DEFAULT '{ "current": { "xp": 0, "levels": 0 }, "total": { "xp": 0, "levels": 0 } }',
+          totalCount JSON DEFAULT '0',
+          eventCount JSON DEFAULT '{ }',
+          commandCount JSON DEFAULT '{ }',
+          levelSystemCount JSON DEFAULT '{ "xp": 0, "levels": 0 }',
           deletionDate TIMESTAMP NULL, 
           INDEX idx_guildId (guildId)
         )
