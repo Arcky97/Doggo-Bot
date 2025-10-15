@@ -90,7 +90,6 @@ export default async (reaction, user) => {
     }
   
     try {
-  
       await member.roles.add(role);
     } catch (error) {
       console.error('Failed to assign role:', error);

@@ -9,6 +9,7 @@ import eventTimeoutHandler from "../../handlers/eventTimeoutHandler.js";
 import checkLogTypeConfig from "../../managers/logging/checkLogTypeConfig.js";
 import { getGuildSettings } from "../../managers/guildSettingsManager.js";
 import { setBotStats } from "../../managers/botStatsManager.js";
+import createMissingPermissionsEmbed from "../../utils/createMissingPermissionsEmbed.js";
 
 export default async (member) => {
   const guildId = member.guild.id;
@@ -30,6 +31,10 @@ export default async (member) => {
 
     const guildSettings = await getGuildSettings(guildId);
     const joinRoles = JSON.parse(guildSettings.joinRoles);
+
+    const permEmbed = createMissingPermissionsEmbed({channel: message.channel, guild: message.guild }, member, ["ManageRoles"], member.channel);
+    if (permEmbed) return await member.channel.send({ embeds: [permEmbed] });
+    
     if (joinRoles) {
       joinRoles.forEach(role => {
         member.roles.add(role.roleId);

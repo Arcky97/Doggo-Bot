@@ -37,7 +37,7 @@ export default async (message) => {
 
     if (userInfo) {
       await sendAnnounceMessage(message, message.author, userInfo);
-      await giveUserLevelRole(guildId, message.member, userInfo);
+      await giveUserLevelRole(guildId, message.member, userInfo, message);
     }
   } catch (error) {
     console.log(`Error giving xp:`, error);
