@@ -32,8 +32,8 @@ export default async (member) => {
     const guildSettings = await getGuildSettings(guildId);
     const joinRoles = JSON.parse(guildSettings.joinRoles);
 
-    const permEmbed = createMissingPermissionsEmbed({channel: member.channel, guild: member.guild }, member, ["ManageRoles"], member.channel);
-    if (permEmbed) return await member.channel.send({ embeds: [permEmbed] });
+    /*const permEmbed = createMissingPermissionsEmbed({channel: member.channel, guild: member.guild }, member, ["ManageRoles"], member.channel);
+    if (permEmbed) return await member.channel.send({ embeds: [permEmbed] });*/
     
     if (joinRoles) {
       joinRoles.forEach(role => {
