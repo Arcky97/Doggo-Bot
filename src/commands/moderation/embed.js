@@ -278,13 +278,6 @@ export default {
     
     let embed;
 
-    embed = createInfoEmbed({ 
-      int: interaction, 
-      title: "Embed Commands deprecated!", 
-      descr: "Embed commands have been disabled as of September 8 2025, you should make use of the Embed Manager and Builder on [my dashboard instead](https://www.arcky-tech.be/doggo-bot).\n Use discord to login and get access to the Dashboard for your Server(s)."},
-    );
-    return interaction.editReply({embeds: [embed]});
-
     const embedAction = interaction.options.getSubcommand();
     const guildId = interaction.guild.id;
     const channel = interaction.options.getChannel('channel');
